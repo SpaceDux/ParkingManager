@@ -447,19 +447,19 @@ $('.modal').on('shown.bs.modal', function() {
 $(this).find('[autofocus]').focus();
 });
 function saveData(){
-var company = $('#company').val();
-var reg = $('#reg').val();
-var type = $(".type:checked").val();
-var timein = $('#timein').val();
-var tid = $('#tid').val();
-var column = $(".column:checked").val();
-var paid = $('#paid').val();
-$.ajax({
-type: "POST",
-//remember to update this!
-url: "/core/processor.php?p=add",
-data: "company="+company+"&reg="+reg+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
-})
+  var company = $('#company').val();
+  var reg = $('#reg').val();
+  var type = $(".type:checked").val();
+  var timein = $('#timein').val();
+  var tid = $('#tid').val();
+  var column = $(".column:checked").val();
+  var paid = $('#paid').val();
+  $.ajax({
+  type: "POST",
+  //remember to update this!
+  url: "http://localhost/ParkingManager/core/processor.php?p=add",
+  data: "company="+company+"&reg="+reg+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
+  })
 }
 </script>
 </script>

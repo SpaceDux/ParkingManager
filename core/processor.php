@@ -10,7 +10,7 @@ if ($page=='add') {
   $paid = $_POST['paid'];
   $column = $_POST['column'];
   //sql time
-  $stmt = $db->prepare("INSERT into parking VALUES ('', ?, ?, ?, ?, ?, ?, ?, null)");
+  $stmt = $db->prepare("INSERT into parking VALUES (?, ?, ?, ?, ?, ?, ?)");
   $stmt->bindParam(1, $company);
   $stmt->bindParam(2, $reg);
   $stmt->bindParam(3, $type);
@@ -18,13 +18,7 @@ if ($page=='add') {
   $stmt->bindParam(5, $tid);
   $stmt->bindParam(6, $column);
   $stmt->bindParam(7, $paid);
-  if ( $stmt->execute(); ) {
-    die("it should be in pal");
-  } else {
-    die(PDOException $e) {
-  echo $e->getMessage();)
-  }
-
+  $stmt->execute();
 } else if ($page == 'update') {
 //coming soon
 } else if ($page == 'del') {
