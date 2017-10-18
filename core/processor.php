@@ -20,6 +20,8 @@ if ($page=='add') {
   $stmt->bindParam(7, $paid);
   $stmt->execute();
 
-} else if ($page == 'edit') {
-
+} else if ($page == 'update') {
+//coming soon
 } else if ($page == 'del') {
+//coming soon
+}
