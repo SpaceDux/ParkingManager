@@ -10,7 +10,7 @@ if ($page=='add') {
   $paid = $_POST['paid'];
   $column = $_POST['column'];
   //sql time
-  $stmt = $db->prepare("INSERT into parking VALUES (?, ?, ?, ?, ?, ?, ?)");
+  $stmt = $db->prepare("INSERT into parking VALUES ('', ?, ?, ?, ?, ?, ?, ?, null, null)");
   $stmt->bindParam(1, $company);
   $stmt->bindParam(2, $reg);
   $stmt->bindParam(3, $type);
