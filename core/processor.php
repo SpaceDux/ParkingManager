@@ -25,8 +25,6 @@ if ($page=='add') {
   echo $e->getMessage();)
   }
 
-} else if ($page == 'update') {
-//coming soon
+} else if ($page == 'edit') {
+
 } else if ($page == 'del') {
-//coming soon
-}

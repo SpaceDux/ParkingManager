@@ -184,7 +184,11 @@
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
+<<<<<<< HEAD
                                         <a href="/ParkingManager/update.php?id=<?php echo $selData['id']; ?>" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
+=======
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#updateModal" id="<?php echo $selData['id']?>"> Update <span class="glyphicon glyphicon-cog"></span></button>
+>>>>>>> parent of e1a5a4c... fuck knows
                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <span class="caret"></span>
                                           <span class="sr-only">Toggle Dropdown</span>
@@ -314,6 +318,7 @@
           </div>
       </div>
     </div>
+<<<<<<< HEAD
     <!-- Modal / Add vehicle -->
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
       <div class="modal-dialog" role="document">
@@ -417,9 +422,228 @@
             <button type="submit" onclick="saveData()" class="btn btn-primary">Add Vehicle</button>
             </form>
           </div>
+=======
+                <!-- Modal / Add vehicle -->
+                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title" id="addModalLabel">Add vehicle to the log</h4>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+
+                          <div class="form-group">
+                            <label>Company</label>
+                            <input type="text" class="form-control" id="company" name="company" placeholder="Company..." autofocus>
+                          </div>
+
+                          <div class="form-group">
+                            <label>Registration Number &amp; Trailer Number (Accounts)</label>
+                            <input type="text" class="form-control" id="reg" name="reg" placeholder="Registration Number (Trailer Number)...">
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="type" value="1" checked>
+                              Cab &amp; Trailer
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="type" value="2">
+                              Cab
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="type" value="3">
+                              Trailer
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="type" value="4">
+                              Rigid
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="type" value="5">
+                              Coach
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="type" value="6">
+                              Car
+                            </label>
+                          </div>
+
+                          <div class="form-group">
+                            <label>Time in</label>
+                            <input type="text" class="form-control" id="timein" name="timein" placeholder="Time of Arrival...">
+                          </div>
+
+                          <div class="form-group">
+                            <label>Ticket ID</label>
+                            <input type="text" class="form-control" id="tid" name="tid" placeholder="Ticket ID...">
+                          </div>
+
+                          <div class="form-group">
+                            <label>Payment Detail</label>
+                            <input type="text" class="form-control" id="paid" name="paid" placeholder="FUEL £23 EXT">
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="column" name="column" value="1" checked>
+                              Break (2hours)
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="column" name="column" value="2">
+                              Paid
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="column" name="column" value="3">
+                              Exited
+                            </label>
+                          </div>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" onclick="saveData()" class="btn btn-primary">Add Vehicle</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <!-- Modal / Update vehicle -->
+                <div class="modal fade" id="updModal" tabindex="-1" role="dialog" aria-labelledby="updModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title" id="updModalLabel">Add vehicle to the log</h4>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+
+                          <div class="form-group">
+                            <label>Company</label>
+                            <input type="text" class="form-control" id="upd_company" name="company" placeholder="Company..." autofocus>
+                          </div>
+
+                          <div class="form-group">
+                            <label>Registration Number &amp; Trailer Number (Accounts)</label>
+                            <input type="text" class="form-control" id="upd_reg" name="reg" placeholder="Registration Number (Trailer Number)...">
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="upd_type" value="1" checked>
+                              Cab &amp; Trailer
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="upd_type" value="2">
+                              Cab
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="upd_type" value="3">
+                              Trailer
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="upd_type" value="4">
+                              Rigid
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="upd_type" value="5">
+                              Coach
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="type" name="upd_type" value="6">
+                              Car
+                            </label>
+                          </div>
+
+                          <div class="form-group">
+                            <label>Time in</label>
+                            <input type="text" class="form-control" id="upd_timein" name="timein" placeholder="Time of Arrival...">
+                          </div>
+
+                          <div class="form-group">
+                            <label>Ticket ID</label>
+                            <input type="text" class="form-control" id="upd_tid" name="tid" placeholder="Ticket ID...">
+                          </div>
+
+                          <div class="form-group">
+                            <label>Payment Detail</label>
+                            <input type="text" class="form-control" id="upd_paid" name="paid" placeholder="FUEL £23 EXT">
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="column" name="upd_column" value="1" checked>
+                              Break (2hours)
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="column" name="upd_column" value="2">
+                              Paid
+                            </label>
+                          </div>
+
+                          <div class="radio">
+                            <label>
+                              <input type="radio" class="column" name="upd_column" value="3">
+                              Exited
+                            </label>
+                          </div>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" onclick="saveData()" class="btn btn-primary">Add Vehicle</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            <!-- /. PAGE INNER  -->
+>>>>>>> parent of e1a5a4c... fuck knows
         </div>
       </div>
     </div>
+<<<<<<< HEAD
 <!-- /. PAGE INNER  -->
 </div>
 <!-- /. PAGE WRAPPER  -->
@@ -463,6 +687,66 @@ dataType: 'json'
 })
 }
 </script>
+=======
+    <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="assets/js/jquery-1.10.2.js"></script>
+    <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Js -->
+    <script src="assets/js/jquery.metisMenu.js"></script>
+    <!-- Morris Chart Js -->
+    <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+    <script src="assets/js/morris/morris.js"></script>
+
+	 <script src="assets/js/Lightweight-Chart/jquery.chart.js"></script>
+
+    <!-- Custom Js -->
+    <script src="assets/js/custom-scripts.js"></script>
+
+      <script>
+      $('.modal').on('shown.bs.modal', function() {
+        $(this).find('[autofocus]').focus();
+      });
+      function saveData(){
+        var company = $('#company').val();
+        var reg = $('#reg').val();
+        var type = $(".type:checked").val();
+        var timein = $('#timein').val();
+        var tid = $('#tid').val();
+        var column = $(".column:checked").val();
+        var paid = $('#paid').val();
+        $.ajax({
+          type: "POST",
+          url: "/core/processor.php?p=add",
+          data: "company="+company+"&reg="+reg+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
+        })
+      }
+      </script>
+      <script>
+      $(document).on('click', '.edit_data', function(){
+     var truck_id = $(this).attr("id");
+     $.ajax({
+          url:"fetch.php",
+          method:"POST",
+          data:{truck_id:truck_id},
+          dataType:"json",
+          success:function(data){
+               $('#name').val(data.name);
+               $('#address').val(data.address);
+               $('#gender').val(data.gender);
+               $('#designation').val(data.designation);
+               $('#age').val(data.age);
+               $('#employee_id').val(data.id);
+               $('#insert').val("Update");
+               $('#add_data_Modal').modal('show');
+          }
+     });
+});
+      </script>
+>>>>>>> parent of e1a5a4c... fuck knows
 </script>
 
 </body>
