@@ -183,7 +183,7 @@
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
-                                        <button type="button" class="btn btn-danger edit_data" data-toggle="modal" data-target="#updModal" id="<?php echo $selData['id']?>"> Update <span class="glyphicon glyphicon-cog"></span></button>
+                                        <a href="/ParkingManager/update.php?id=<?php echo $selData['id']?>" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <span class="caret"></span>
                                           <span class="sr-only">Toggle Dropdown</span>

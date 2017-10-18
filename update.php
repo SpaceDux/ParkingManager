@@ -1,3 +1,14 @@
+<?php
+  $db = new PDO("mysql:host=localhost;dbname=rkpm;", 'root', '1123');
+
+  $stmt = $db->prepare("SELECT * FROM parking WHERE id = ?");
+  $stmt->bindParam(1, $_GET['id']);
+  $stmt->execute();
+
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -75,7 +86,7 @@
                       </h1>
           <ol class="breadcrumb">
           <li><a href="#">Home</a></li>
-          <li class="active">Updating <?php echo $reg ?>'s Record</li>
+          <li class="active">Updating <?php echo $result['reg'] ?>'s Record</li>
           </ol>
 
   </div>
@@ -84,7 +95,7 @@
      <div class="col-lg-12">
          <div class="panel panel-default">
              <div class="panel-heading">
-                 Updating Record for <?php echo $reg ?>
+                 Updating Record for <?php echo $result['reg'] ?>
              </div>
              <div class="panel-body">
                  <div class="row">
@@ -92,56 +103,65 @@
                          <form role="form">
                              <div class="form-group">
                                  <label>Company</label>
-                                 <input class="form-control">
+                                 <input class="form-control" value="<?php echo $result['company']?>">
                              </div>
                              <div class="form-group">
                                  <label>Registration Number (Trailer Number)</label>
-                                 <input class="form-control">
+                                 <input class="form-control" value="<?php echo $result['reg']?>">
                                </div>
                                <div class="radio">
                                  <label>
-                                   <input type="radio" class="type" name="type" value="1" checked>
+                                   <input type="radio" class="type" name="type" value="1" <?php if($result['type'] == 1) echo "checked" ?>>
                                    Cab &amp; Trailer
                                  </label>
                                </div>
-
                                <div class="radio">
                                  <label>
-                                   <input type="radio" class="type" name="type" value="2">
+                                   <input type="radio" class="type" name="type" value="2" <?php if($result['type'] == 2) echo "checked" ?>>
                                    Cab
                                  </label>
                                </div>
 
                                <div class="radio">
                                  <label>
-                                   <input type="radio" class="type" name="type" value="3">
+                                   <input type="radio" class="type" name="type" value="3" <?php if($result['type'] == 3) echo "checked" ?>>
                                    Trailer
                                  </label>
                                </div>
-
                                <div class="radio">
                                  <label>
-                                   <input type="radio" class="type" name="type" value="4">
+                                   <input type="radio" class="type" name="type" value="4" <?php if($result['type'] == 4) echo "checked" ?>>
                                    Rigid
                                  </label>
                                </div>
-
                                <div class="radio">
                                  <label>
-                                   <input type="radio" class="type" name="type" value="5">
+                                   <input type="radio" class="type" name="type" value="5" <?php if($result['type'] == 5) echo "checked" ?>>
                                    Coach
                                  </label>
                                </div>
 
                                <div class="radio">
                                  <label>
-                                   <input type="radio" class="type" name="type" value="6">
+                                   <input type="radio" class="type" name="type" value="6" <?php if($result['type'] == 6) echo "checked" ?>>
                                    Car
                                  </label>
                                </div>
                      </div>
                      <!-- /.col-lg-6 (nested) -->
                      <div class="col-lg-6">
+                       <div class="form-group">
+                           <label>Time IN</label>
+                           <input class="form-control" value="<?php echo $result['timein']?>">
+                         </div>
+                     <div class="form-group">
+                         <label>Ticket ID</label>
+                         <input class="form-control" value="<?php echo $result['tid']?>">
+                       </div>
+                   <div class="form-group">
+                     <label>Payment Details</label>
+                       <input class="form-control" value="<?php echo $result['paid']?>">
+                     </div>
                      <!-- /.col-lg-6 (nested) -->
                         </form>
                  </div>
