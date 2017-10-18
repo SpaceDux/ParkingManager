@@ -7,6 +7,7 @@
 
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+  $stmt2 = $db->prepare("UPDATE parking SET (company, reg, type, timein, tid, col, paid, timeout, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
   $stmt2->bindParam(1, $_POST['company']);
   $stmt2->bindParam(2, $_POST['reg']);
   $stmt2->bindParam(3, $_POST['type']);
