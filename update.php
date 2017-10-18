@@ -7,6 +7,18 @@
 
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+  $stmt2->bindParam(1, $_POST['company']);
+  $stmt2->bindParam(2, $_POST['reg']);
+  $stmt2->bindParam(3, $_POST['type']);
+  $stmt2->bindParam(4, $_POST['timein']);
+  $stmt2->bindParam(5, $_POST['tid']);
+  $stmt2->bindParam(6, $_POST['col']);
+  $stmt2->bindParam(7, $_POST['paid']);
+  $stmt2->bindParam(8, $_POST['timeout']);
+  $stmt2->bindParam(9, $_POST['comment']);
+
+  $stmt2->execute();
+
 
 ?>
 <!DOCTYPE html>
@@ -147,6 +159,10 @@
                                    Car
                                  </label>
                                </div>
+                               <div class="form-group">
+                                 <label>Add a Comment</label>
+                                   <textarea class="form-control" rows="4" value="<?php echo $result['comment']?>"></textarea>
+                                 </div>
                      </div>
                      <!-- /.col-lg-6 (nested) -->
                      <div class="col-lg-6">
@@ -162,7 +178,33 @@
                      <label>Payment Details</label>
                        <input class="form-control" value="<?php echo $result['paid']?>">
                      </div>
+
+                     <div class="radio">
+                       <label>
+                         <input type="radio" class="column" name="column" value="1" <?php if($result['col'] == 1) echo "checked" ?>>
+                         Break (2hours)
+                       </label>
+                     </div>
+
+                     <div class="radio">
+                       <label>
+                         <input type="radio" class="column" name="column" value="2" <?php if($result['col'] == 2) echo "checked" ?>>
+                         Paid
+                       </label>
+                     </div>
+
+                     <div class="radio">
+                       <label>
+                         <input type="radio" class="column" name="column" value="3" <?php if($result['col'] == 3) echo "checked" ?>>
+                         Exited
+                       </label>
+                     </div>
+                     <div class="form-group">
+                       <label>Time EXIT</label>
+                         <input class="form-control" placeholder="Leave blank until vehicle leaves, use format 22/11:23" value="<?php echo $result['timeout']?>">
+                       </div>
                      <!-- /.col-lg-6 (nested) -->
+                       <button type="submit" class="btn btn-primary">Update Vehicle</button>
                         </form>
                  </div>
                  <!-- /.row (nested) -->

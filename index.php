@@ -1,7 +1,9 @@
 <?php
   require_once("/core/seldata.php");
   $selData = new Parking;
-  $Parked = $selData->fetchParked();
+  $Parked = $selData->fetchParked1();
+  $Parked2 = $selData->fetchParked2();
+  $Parked3 = $selData->fetchParked3();
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -33,7 +35,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html"><strong>Parking Manager</strong></a>
+                <a class="navbar-brand" href="index.php"><strong>Parking Manager</strong></a>
 
 		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
             </div>
@@ -62,10 +64,10 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a class="active-menu" href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a>
+                        <a class="active-menu" href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="ui-elements.html"><i class="fa fa-truck"></i> Vehicle Index</a>
+                        <a href="ui-elements.php"><i class="fa fa-truck"></i> Vehicle Index</a>
                     </li>
                 </ul>
 
@@ -145,7 +147,7 @@
               <div class="panel panel-default">
                   <div class="panel-heading">
                     <button class="btn btn-primary pull-right" type="button" data-toggle="modal" data-target="#addModal">  Register Vehicle</button>
-                      Unpaid / Renewals
+                      Break / Unpaid
                   </div>
                   <div class="panel-body">
                       <div class="table-responsive">
@@ -177,13 +179,12 @@
                                         echo "<td>COACH</td>";
                                       } else if ($selData['type'] == 6) {
                                         echo "<td>CAR</td>";
-                                      }
-                                      ?>
+                                      } ?>
                                       <td><?php echo $selData['timein']?></td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
-                                        <a href="/ParkingManager/update.php?id=<?php echo $selData['id']?>" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
+                                        <a href="/ParkingManager/update.php?id=<?php echo $selData['id']; ?>" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <span class="caret"></span>
                                           <span class="sr-only">Toggle Dropdown</span>
@@ -221,17 +222,31 @@
                                   </tr>
                               </thead>
                               <tbody>
+                                  <?php foreach($Parked2 as $selData) {?>
                                   <tr>
-                                      <td>Dixon</td>
-                                      <td>DX11FGJ</td>
-                                      <td>C+T</td>
-                                      <td>22/0929</td>
-                                      <td>78854</td>
-                                      <td>FUEL £23 EXT</td>
+                                      <td><?php echo $selData['company']?></td>
+                                      <td><?php echo $selData['reg']?></td>
+                                      <?php
+                                      if ($selData['type'] == 1) {
+                                        echo "<td>C/T</td>";
+                                      } else if ($selData['type'] == 2) {
+                                        echo "<td>CAB</td>";
+                                      } else if ($selData['type'] == 3) {
+                                        echo "<td>TRL</td>";
+                                      } else if ($selData['type'] == 4) {
+                                        echo "<td>RIGID</td>";
+                                      } else if ($selData['type'] == 5) {
+                                        echo "<td>COACH</td>";
+                                      } else if ($selData['type'] == 6) {
+                                        echo "<td>CAR</td>";
+                                      } ?>
+                                      <td><?php echo $selData['timein']?></td>
+                                      <td><?php echo $selData['tid']?></td>
+                                      <td><?php echo $selData['paid']?></td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
-                                        <button type="button" class="btn btn-danger">Update <span class="glyphicon glyphicon-cog"></span></button>
+                                        <a href="/ParkingManager/update.php?id=<?php echo $selData['id']; ?>" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <span class="caret"></span>
                                           <span class="sr-only">Toggle Dropdown</span>
@@ -242,6 +257,7 @@
                                       </div>
                                       </td>
                                   </tr>
+                                <?php } ?>
 
                               </tbody>
                           </table>
@@ -268,15 +284,16 @@
                                   </tr>
                               </thead>
                               <tbody>
+                                  <?php foreach($Parked3 as $selData) { ?>
                                   <tr>
-                                      <td>Dixon</td>
-                                      <td>DX11FGJ</td>
-                                      <td>22/1233</td>
-                                      <td>23/0929</td>
+                                      <td><?php echo $selData['company']?></td>
+                                      <td><?php echo $selData['reg']?></td>
+                                      <td><?php echo $selData['timein']?></td>
+                                      <td><?php echo $selData['timeout']?></td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
-                                        <button type="button" class="btn btn-danger">Update <span class="glyphicon glyphicon-cog"></span></button>
+                                        <a href="/ParkingManager/update.php?id=<?php echo $selData['id']; ?>" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <span class="caret"></span>
                                           <span class="sr-only">Toggle Dropdown</span>
@@ -287,63 +304,7 @@
                                       </div>
                                       </td>
                                   </tr>
-                                  <tr>
-                                      <td>Dixon</td>
-                                      <td>DX11FGJ</td>
-                                      <td>22/1233</td>
-                                      <td>23/0929</td>
-                                      <td>
-                                        <!-- Split button -->
-                                      <div class="btn-group pull-right">
-                                        <button type="button" class="btn btn-danger">Update <span class="glyphicon glyphicon-cog"></span></button>
-                                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          <span class="caret"></span>
-                                          <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                          <li><a href="#delete">Delete Record</a></li>
-                                        </ul>
-                                      </div>
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                      <td>Dixon</td>
-                                      <td>DX11FGJ</td>
-                                      <td>22/1233</td>
-                                      <td>23/0929</td>
-                                      <td>
-                                        <!-- Split button -->
-                                      <div class="btn-group pull-right">
-                                        <button type="button" class="btn btn-danger">Update <span class="glyphicon glyphicon-cog"></span></button>
-                                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          <span class="caret"></span>
-                                          <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                          <li><a href="#delete">Delete Record</a></li>
-                                        </ul>
-                                      </div>
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                      <td>Dixon</td>
-                                      <td>DX11FGJ</td>
-                                      <td>22/1233</td>
-                                      <td>23/0929</td>
-                                      <td>
-                                        <!-- Split button -->
-                                      <div class="btn-group pull-right">
-                                        <button type="button" class="btn btn-danger">Update <span class="glyphicon glyphicon-cog"></span></button>
-                                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          <span class="caret"></span>
-                                          <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                          <li><a href="#delete">Delete Record</a></li>
-                                        </ul>
-                                      </div>
-                                      </td>
-                                  </tr>
+                                <?php } ?>
 
                               </tbody>
                         </div>
@@ -353,155 +314,155 @@
           </div>
       </div>
     </div>
-                <!-- Modal / Add vehicle -->
-                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h4 class="modal-title" id="addModalLabel">Add vehicle to the log</h4>
-                      </div>
-                      <div class="modal-body">
-                        <form>
+    <!-- Modal / Add vehicle -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="addModalLabel">Add vehicle to the log</h4>
+          </div>
+          <div class="modal-body">
+            <form>
 
-                          <div class="form-group">
-                            <label>Company</label>
-                            <input type="text" class="form-control" id="company" name="company" placeholder="Company..." autofocus>
-                          </div>
+              <div class="form-group">
+                <label>Company</label>
+                <input type="text" class="form-control" id="company" name="company" placeholder="Company..." autofocus>
+              </div>
 
-                          <div class="form-group">
-                            <label>Registration Number &amp; Trailer Number (Accounts)</label>
-                            <input type="text" class="form-control" id="reg" name="reg" placeholder="Registration Number (Trailer Number)...">
-                          </div>
+              <div class="form-group">
+                <label>Registration Number &amp; Trailer Number (Accounts)</label>
+                <input type="text" class="form-control" id="reg" name="reg" placeholder="Registration Number (Trailer Number)...">
+              </div>
 
-                          <div class="radio">
-                            <label>
-                              <input type="radio" class="type" name="type" value="1" checked>
-                              Cab &amp; Trailer
-                            </label>
-                          </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="1" checked>
+                  Cab &amp; Trailer
+                </label>
+              </div>
 
-                          <div class="radio">
-                            <label>
-                              <input type="radio" class="type" name="type" value="2">
-                              Cab
-                            </label>
-                          </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="2">
+                  Cab
+                </label>
+              </div>
 
-                          <div class="radio">
-                            <label>
-                              <input type="radio" class="type" name="type" value="3">
-                              Trailer
-                            </label>
-                          </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="3">
+                  Trailer
+                </label>
+              </div>
 
-                          <div class="radio">
-                            <label>
-                              <input type="radio" class="type" name="type" value="4">
-                              Rigid
-                            </label>
-                          </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="4">
+                  Rigid
+                </label>
+              </div>
 
-                          <div class="radio">
-                            <label>
-                              <input type="radio" class="type" name="type" value="5">
-                              Coach
-                            </label>
-                          </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="5">
+                  Coach
+                </label>
+              </div>
 
-                          <div class="radio">
-                            <label>
-                              <input type="radio" class="type" name="type" value="6">
-                              Car
-                            </label>
-                          </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="6">
+                  Car
+                </label>
+              </div>
 
-                          <div class="form-group">
-                            <label>Time in</label>
-                            <input type="text" class="form-control" id="timein" name="timein" value="<?php echo date("d/h:i")?>" placeholder="Time of Arrival...">
-                          </div>
+              <div class="form-group">
+                <label>Time in</label>
+                <input type="text" class="form-control" id="timein" name="timein" value="<?php echo date("d/h:i")?>" placeholder="Time of Arrival...">
+              </div>
 
-                          <div class="form-group">
-                            <label>Ticket ID</label>
-                            <input type="text" class="form-control" id="tid" name="tid" placeholder="Ticket ID...">
-                          </div>
+              <div class="form-group">
+                <label>Ticket ID</label>
+                <input type="text" class="form-control" id="tid" name="tid" placeholder="Ticket ID...">
+              </div>
 
-                          <div class="form-group">
-                            <label>Payment Detail</label>
-                            <input type="text" class="form-control" id="paid" name="paid" placeholder="FUEL £23 EXT">
-                          </div>
+              <div class="form-group">
+                <label>Payment Detail</label>
+                <input type="text" class="form-control" id="paid" name="paid" placeholder="FUEL £23 EXT">
+              </div>
 
-                          <div class="radio">
-                            <label>
-                              <input type="radio" class="column" name="column" value="1" checked>
-                              Break (2hours)
-                            </label>
-                          </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" class="column" name="column" value="1" checked>
+                  Break (2hours)
+                </label>
+              </div>
 
-                          <div class="radio">
-                            <label>
-                              <input type="radio" class="column" name="column" value="2">
-                              Paid
-                            </label>
-                          </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" class="column" name="column" value="2">
+                  Paid
+                </label>
+              </div>
 
-                          <div class="radio">
-                            <label>
-                              <input type="radio" class="column" name="column" value="3">
-                              Exited
-                            </label>
-                          </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" class="column" name="column" value="3">
+                  Exited
+                </label>
+              </div>
 
-                      </div>
-                      <div class="modal-footer">
-                        <button type="submit" onclick="saveData()" class="btn btn-primary">Add Vehicle</button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            <!-- /. PAGE INNER  -->
+          </div>
+          <div class="modal-footer">
+            <button type="submit" onclick="saveData()" class="btn btn-primary">Add Vehicle</button>
+            </form>
+          </div>
         </div>
-        <!-- /. PAGE WRAPPER  -->
+      </div>
     </div>
-    <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
-    <!-- Bootstrap Js -->
-    <script src="assets/js/bootstrap.min.js"></script>
+<!-- /. PAGE INNER  -->
+</div>
+<!-- /. PAGE WRAPPER  -->
+</div>
+<!-- /. WRAPPER  -->
+<!-- JS Scripts-->
+<!-- jQuery Js -->
+<script src="assets/js/jquery-1.10.2.js"></script>
+<!-- Bootstrap Js -->
+<script src="assets/js/bootstrap.min.js"></script>
 
-    <!-- Metis Menu Js -->
-    <script src="assets/js/jquery.metisMenu.js"></script>
-    <!-- Morris Chart Js -->
-    <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
-    <script src="assets/js/morris/morris.js"></script>
+<!-- Metis Menu Js -->
+<script src="assets/js/jquery.metisMenu.js"></script>
+<!-- Morris Chart Js -->
+<script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+<script src="assets/js/morris/morris.js"></script>
 
-	 <script src="assets/js/Lightweight-Chart/jquery.chart.js"></script>
+<script src="assets/js/Lightweight-Chart/jquery.chart.js"></script>
 
-    <!-- Custom Js -->
-    <script src="assets/js/custom-scripts.js"></script>
+<!-- Custom Js -->
+<script src="assets/js/custom-scripts.js"></script>
 
-      <script>
-      $('.modal').on('shown.bs.modal', function() {
-        $(this).find('[autofocus]').focus();
-      });
-      function saveData(){
-        var company = $('#company').val();
-        var reg = $('#reg').val();
-        var type = $(".type:checked").val();
-        var timein = $('#timein').val();
-        var tid = $('#tid').val();
-        var column = $(".column:checked").val();
-        var paid = $('#paid').val();
-        $.ajax({
-          type: "POST",
-          //remember to update this!
-          url: "http://localhost/ParkingManager/core/processor.php?p=add",
-          data: "company="+company+"&reg="+reg+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid,
-          dataType: 'json'
-        })
-      }
-      </script>
+<script>
+$('.modal').on('shown.bs.modal', function() {
+$(this).find('[autofocus]').focus();
+});
+function saveData(){
+var company = $('#company').val();
+var reg = $('#reg').val();
+var type = $(".type:checked").val();
+var timein = $('#timein').val();
+var tid = $('#tid').val();
+var column = $(".column:checked").val();
+var paid = $('#paid').val();
+$.ajax({
+type: "POST",
+//remember to update this!
+url: "http://localhost/ParkingManager/core/processor.php?p=add",
+data: "company="+company+"&reg="+reg+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid,
+dataType: 'json'
+})
+}
+</script>
 </script>
 
 </body>

@@ -18,7 +18,12 @@ if ($page=='add') {
   $stmt->bindParam(5, $tid);
   $stmt->bindParam(6, $column);
   $stmt->bindParam(7, $paid);
-  $stmt->execute();
+  if ( $stmt->execute(); ) {
+    die("it should be in pal");
+  } else {
+    die(PDOException $e) {
+  echo $e->getMessage();)
+  }
 
 } else if ($page == 'update') {
 //coming soon
