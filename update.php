@@ -9,7 +9,7 @@
 
   $id = $_GET['id'];
 
-  $stmt2 = $db->prepare("UPDATE parking SET (company, reg, type, timein, tid, col, paid, timeout, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = $id");
+  $stmt2 = $db->prepare("UPDATE parking SET (company, reg, type, timein, tid, col, paid, timeout, ) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = $id");
   $stmt2->bindParam(1, $_POST['company']);
   $stmt2->bindParam(2, $_POST['reg']);
   $stmt2->bindParam(3, $_POST['type']);
@@ -18,7 +18,7 @@
   $stmt2->bindParam(6, $_POST['column']);
   $stmt2->bindParam(7, $_POST['paid']);
   $stmt2->bindParam(8, $_POST['timeout']);
-  $stmt2->bindParam(9, $_POST['comment']);
+  //$stmt2->bindParam(9, $_POST['comment']);
 
   if($stmt2->execute()) {
     header('loocation: /index.php');
@@ -119,7 +119,7 @@
              <div class="panel-body">
                  <div class="row">
                      <div class="col-lg-6">
-                         <form role="form">
+                         <form action="update.php" method="post" >
                              <div class="form-group">
                                  <label>Company</label>
                                  <input class="form-control" name="company" value="<?php echo $result['company']?>">
@@ -211,7 +211,7 @@
                          <input class="form-control" name="timeout" placeholder="Leave blank until vehicle leaves, use format 22/11:23" value="<?php echo $result['timeout']?>">
                        </div>
                      <!-- /.col-lg-6 (nested) -->
-                       <button type="submit" class="btn btn-primary">Update Vehicle</button>
+                       <input type="submit" class="btn btn-primary" value="Update"></input>
                         </form>
                  </div>
                  <!-- /.row (nested) -->
