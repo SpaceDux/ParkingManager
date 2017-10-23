@@ -1,31 +1,13 @@
 <?php
   $db = new PDO("mysql:host=localhost;dbname=rkpm;", 'root', '1123');
-
+  if (isset($_GET['id'])) {
   $stmt = $db->prepare("SELECT * FROM parking WHERE id = ?");
   $stmt->bindParam(1, $_GET['id']);
   $stmt->execute();
-
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-  $id = $_GET['id'];
-
-  $stmt2 = $db->prepare("UPDATE parking SET (company, reg, type, timein, tid, col, paid, timeout, ) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = $id");
-  $stmt2->bindParam(1, $_POST['company']);
-  $stmt2->bindParam(2, $_POST['reg']);
-  $stmt2->bindParam(3, $_POST['type']);
-  $stmt2->bindParam(4, $_POST['timein']);
-  $stmt2->bindParam(5, $_POST['tid']);
-  $stmt2->bindParam(6, $_POST['column']);
-  $stmt2->bindParam(7, $_POST['paid']);
-  $stmt2->bindParam(8, $_POST['timeout']);
-  //$stmt2->bindParam(9, $_POST['comment']);
-
-  if($stmt2->execute()) {
-    header('loocation: /index.php');
-  } else {
-    //do something
-  }
-
+} else {
+  header("Location: index.php");
+}
 
 ?>
 <!DOCTYPE html>
@@ -59,7 +41,7 @@
               </button>
               <a class="navbar-brand" href="index.html"><strong>Parking Manager</strong></a>
 
-  <div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+            <div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
           </div>
           <ul class="nav navbar-top-links navbar-right">
               <li class="dropdown">
@@ -122,11 +104,11 @@
                          <form action="update.php" method="post" >
                              <div class="form-group">
                                  <label>Company</label>
-                                 <input class="form-control" name="company" value="<?php echo $result['company']?>">
+                                 <input type="text" class="form-control" name="company" value="<?php echo $result['company']?>">
                              </div>
                              <div class="form-group">
                                  <label>Registration Number (Trailer Number)</label>
-                                 <input class="form-control" name="reg" value="<?php echo $result['reg']?>">
+                                 <input type="text" class="form-control" name="reg" value="<?php echo $result['reg']?>">
                                </div>
                                <div class="radio">
                                  <label>
@@ -168,22 +150,22 @@
                                </div>
                                <div class="form-group">
                                  <label>Add a Comment</label>
-                                   <textarea class="form-control" name="comment" rows="4" value="<?php echo $result['comment']?>"></textarea>
+                                   <textarea type="text" class="form-control" name="comment" rows="4" value="<?php echo $result['comment']?>"></textarea>
                                  </div>
                      </div>
                      <!-- /.col-lg-6 (nested) -->
                      <div class="col-lg-6">
                        <div class="form-group">
                            <label>Time IN</label>
-                           <input class="form-control" name="timein" value="<?php echo $result['timein']?>">
+                           <input type="text" class="form-control" name="timein" value="<?php echo $result['timein']?>">
                          </div>
                      <div class="form-group">
                          <label>Ticket ID</label>
-                         <input class="form-control" name="tid" value="<?php echo $result['tid']?>">
+                         <input type="text" class="form-control" name="tid" value="<?php echo $result['tid']?>">
                        </div>
                    <div class="form-group">
                      <label>Payment Details</label>
-                       <input class="form-control" name="paid" value="<?php echo $result['paid']?>">
+                       <input type="text" class="form-control" name="paid" value="<?php echo $result['paid']?>">
                      </div>
 
                      <div class="radio">
@@ -208,7 +190,7 @@
                      </div>
                      <div class="form-group">
                        <label>Time EXIT</label>
-                         <input class="form-control" name="timeout" placeholder="Leave blank until vehicle leaves, use format 22/11:23" value="<?php echo $result['timeout']?>">
+                         <input type="text" class="form-control" name="timeout" placeholder="Leave blank until vehicle leaves, use format 22/11:23" value="<?php echo $result['timeout']?>">
                        </div>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Update"></input>
