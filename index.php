@@ -1,10 +1,3 @@
-<?php
-  require_once("/core/seldata.php");
-  $selData = new Parking;
-  $Parked = $selData->fetchParked1();
-  $Parked2 = $selData->fetchParked2();
-  $Parked3 = $selData->fetchParked3();
-?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
