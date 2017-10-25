@@ -260,6 +260,154 @@
           </div>
       </div>
     </div>
+    <!-- Modal / Add vehicle -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="addModalLabel">Add vehicle to the log</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+
+              <div class="form-group">
+                <label>Company</label>
+                <input type="text" class="form-control" id="company" name="company" placeholder="Company..." autofocus>
+              </div>
+
+              <div class="form-group">
+                <label>Registration Number &amp; Trailer Number (Accounts)</label>
+                <input type="text" class="form-control" id="reg" name="reg" placeholder="Registration Number (Trailer Number)...">
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="1" checked>
+                  Cab &amp; Trailer
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="2">
+                  Cab
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="3">
+                  Trailer
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="4">
+                  Rigid
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="5">
+                  Coach
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="6">
+                  Car
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label>Time in</label>
+                <input type="text" class="form-control" id="timein" name="timein" value="<?php echo date("d/h:i")?>" placeholder="Time of Arrival...">
+              </div>
+
+              <div class="form-group">
+                <label>Ticket ID</label>
+                <input type="text" class="form-control" id="tid" name="tid" placeholder="Ticket ID...">
+              </div>
+
+              <div class="form-group">
+                <label>Payment Detail</label>
+                <input type="text" class="form-control" id="paid" name="paid" placeholder="FUEL £23 EXT">
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="column" name="column" value="1" checked>
+                  Break (2hours)
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="column" name="column" value="2">
+                  Paid
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="column" name="column" value="3">
+                  Exited
+                </label>
+              </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="submit" onclick="saveData()" class="btn btn-primary">Add Vehicle</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- /. PAGE INNER  -->
+</div>
+<!-- /. PAGE WRAPPER  -->
+</div>
+<!-- /. WRAPPER  -->
+<!-- JS Scripts-->
+<!-- jQuery Js -->
+<script src="assets/js/jquery-1.10.2.js"></script>
+<!-- Bootstrap Js -->
+<script src="assets/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Js -->
+<script src="assets/js/jquery.metisMenu.js"></script>
+<!-- Morris Chart Js -->
+<script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+<script src="assets/js/morris/morris.js"></script>
+
+<script src="assets/js/Lightweight-Chart/jquery.chart.js"></script>
+
+<!-- Custom Js -->
+<script src="assets/js/custom-scripts.js"></script>
+
+<script>
+$('.modal').on('shown.bs.modal', function() {
+$(this).find('[autofocus]').focus();
+});
+function saveData(){
+  var company = $('#company').val();
+  var reg = $('#reg').val();
+  var type = $(".type:checked").val();
+  var timein = $('#timein').val();
+  var tid = $('#tid').val();
+  var column = $(".column:checked").val();
+  var paid = $('#paid').val();
+  $.ajax({
+  type: "POST",
+  //remember to update this!
+  url: "http://localhost/ParkingManager/core/processor.php?p=add",
+  data: "company="+company+"&reg="+reg+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
+  })
+}
+</script>
 
 
 </html>
