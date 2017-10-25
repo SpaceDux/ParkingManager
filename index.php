@@ -1,7 +1,8 @@
 <?php
 	require_once __DIR__.("/init.php"); //require the initiation file
 	
-	
+	$Parked = new fetchParked();
+	$fetchBreak = $Parked->fetchBreak();
 	
 ?>
 <!DOCTYPE html>
@@ -135,12 +136,26 @@
                                       <th>Options</th>
                                   </tr>
                               </thead>
+                              <?php foreach ($fetchBreak as $Parked) { ?>
                               <tbody>
                                   <tr>
-                                      <td>DIXON</td>
-                                      <td>KY65OMR</td>
-                                      <td>CAB</td>
-                                      <td>21/13:12</td>
+                                      <td><?php echo $Parked['company'] ?></td>
+                                      <td><?php echo $Parked['reg'] ?></td>
+                                     <?php if ($Parked['type'] == 1) {
+	                                     echo "<td>C/T</td>";
+                                     } else if ($Parked['type'] == 2) {
+	                                     echo "<td>CAB</td>";
+                                     } else if ($Parked['type'] == 3) {
+	                                     echo "<td>TRL</td>";
+                                     } else if ($Parked['type'] == 4) {
+	                                     echo "<td>RIGID</td>";
+                                     } else if ($Parked['type'] == 5) {
+	                                     echo "<td>COACH</td>";
+                                     } else if ($Parked['type'] == 6) {
+	                                     echo "<td>CAR</td>";
+                                     }
+                                     ?>
+                                      <td><?php echo $Parked['timein'] ?></td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
@@ -155,8 +170,8 @@
                                       </div>
                                       </td>
                                   </tr>
-
                               </tbody>
+                              <?php } ?>
                           </table>
                       </div>
                   </div>
