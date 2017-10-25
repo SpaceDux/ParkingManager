@@ -6,9 +6,8 @@
 	  $stmt->bindParam(1, $_GET['id']);
 	  $stmt->execute();
 	  $result = $stmt->fetch(PDO::FETCH_ASSOC);
-	} else {
-	  header("Location: index.php");
 	}
+	$id = $_GET['id'];
 	
 	if (!empty($_POST['reg'])) {
 		$sql = "UPDATE parking SET company = :company,
@@ -19,21 +18,19 @@
 		col = :col, 
 		paid = :paid, 
 		timeout = :timeout, 
-		comment = :comment WHERE id = :id";
-		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(':company', $_POST['company']);
-		$stmt->bindParam(':reg', $_POST['reg']);
-		$stmt->bindParam(':type', $_POST['type']);
-		$stmt->bindParam(':timein', $_POST['timein']);
-		$stmt->bindParam(':tid', $_POST['tid']);
-		$stmt->bindParam(':col', $_POST['column']);
-		$stmt->bindParam(':paid', $_POST['paid']);
-		$stmt->bindParam(':paid', $_POST['paid']);
-		$stmt->bindParam(':timeout', $_POST['timeout']);
-		$stmt->bindParam(':comment', $_POST['comment']);
-		$stmt->bindParam(':id', $_GET['id']);
+		comment = :comment WHERE id = $id";
+		$stmt2 = $dbConn->prepare($sql);
+		$stmt2->bindParam(':company', $_POST['company']);
+		$stmt2->bindParam(':reg', $_POST['reg']);
+		$stmt2->bindParam(':type', $_POST['type']);
+		$stmt2->bindParam(':timein', $_POST['timein']);
+		$stmt2->bindParam(':tid', $_POST['tid']);
+		$stmt2->bindParam(':col', $_POST['column']);
+		$stmt2->bindParam(':paid', $_POST['paid']);
+		$stmt2->bindParam(':timeout', $_POST['timeout']);
+		$stmt2->bindParam(':comment', $_POST['comment']);
 		
-		if($stmt->execute()) {
+		if($stmt2->execute()) {
 			$message = "You have successfully update the record!";
 		} else {
 			$message = "The record has not been updated!";
@@ -132,7 +129,7 @@
              <div class="panel-body">
                  <div class="row">
                      <div class="col-lg-6">
-                         <form action="update.php" method="post" >
+                         <form method="post" >
                              <div class="form-group">
                                  <label>Company</label>
                                  <input type="text" class="form-control" name="company" value="<?php echo $result['company']?>">

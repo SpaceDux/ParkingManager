@@ -341,7 +341,7 @@
 
               <div class="form-group">
                 <label>Time in</label>
-                <input type="text" class="form-control" id="timein" name="timein" value="<?php echo date("d/h:i")?>" placeholder="Time of Arrival...">
+                <input type="text" class="form-control" id="timein" name="timein" value="<?php echo date("d/H:i")?>" placeholder="Time of Arrival...">
               </div>
 
               <div class="form-group">

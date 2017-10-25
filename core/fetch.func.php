@@ -18,7 +18,7 @@
 		}
 		function fetchExit() {
 			global $dbConn;
-			$sql = "SELECT * FROM parking WHERE col = 3";
+			$sql = "SELECT * FROM parking WHERE col = 3 ORDER BY timeout DESC";
 			$stmt = $dbConn->prepare($sql);
 			$stmt->execute();
 			
