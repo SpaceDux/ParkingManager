@@ -1,5 +1,5 @@
 <?php
-$db = new PDO("mysql:host=localhost;dbname=rkpm;", 'root', '1123');
+$db = new PDO("mysql:host=localhost;dbname=rkpm;", 'root', '');
 $page = isset($_GET['p'])?$_GET['p']:'';
 if ($page=='add') {
   $company = $_POST['company'];
