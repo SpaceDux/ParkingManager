@@ -1,4 +1,6 @@
 <?php
+	require_once __DIR__.("/init.php"); //require the initiation file
+	
 	
 	
 ?>
@@ -134,29 +136,15 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                <?php foreach ($Parked as $selData) { ?>
                                   <tr>
-                                      <td><?php echo $selData['company'] ?> </td>
-                                      <td><?php echo $selData['reg'] ?></td>
-                                      <?php
-                                      if ($selData['type'] == 1) {
-                                      echo "<td>C/T</td>";
-                                      } else if ($selData['type'] == 2) {
-                                        echo "<td>CAB</td>";
-                                      } else if ($selData['type'] == 3) {
-                                        echo "<td>TRL</td>";
-                                      } else if ($selData['type'] == 4) {
-                                        echo "<td>RIGID</td>";
-                                      } else if ($selData['type'] == 5) {
-                                        echo "<td>COACH</td>";
-                                      } else if ($selData['type'] == 6) {
-                                        echo "<td>CAR</td>";
-                                      } ?>
-                                      <td><?php echo $selData['timein']?></td>
+                                      <td>DIXON</td>
+                                      <td>KY65OMR</td>
+                                      <td>CAB</td>
+                                      <td>21/13:12</td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
-                                        <a href="/ParkingManager/update.php?id=<?php echo $selData['id']; ?>" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
+                                        <a href="/ParkingManager/update.php?id=" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <span class="caret"></span>
                                           <span class="sr-only">Toggle Dropdown</span>
@@ -167,12 +155,96 @@
                                       </div>
                                       </td>
                                   </tr>
-                             <?php } ?>
 
                               </tbody>
                           </table>
                       </div>
                   </div>
               </div>
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      Paid
+                  </div>
+                  <div class="panel-body">
+                      <div class="table-responsive">
+                          <table class="table table-striped table-bordered table-hover">
+                              <thead>
+                                  <tr>
+                                      <th>Company</th>
+                                      <th>Registration</th>
+                                      <th>Type</th>
+                                      <th>Time In</th>
+                                      <th>Ticket ID</th>
+                                      <th>Paid</th>
+                                      <th>Options</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td>NOLAN</td>
+                                      <td>07WX2232</td>
+                                      <td>C/T</td>
+                                      <td>21/12:22</td>
+                                      <td>86777</td>
+                                      <td>ACCT£10</td>
+                                      <td>
+                                        <!-- Split button -->
+                                      <div class="btn-group pull-right">
+                                        <a href="/ParkingManager/update.php?id=" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
+                                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <span class="caret"></span>
+                                          <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                          <li><a href="#delete">Delete Record</a></li>
+                                        </ul>
+                                      </div>
+                                      </td>
+                                  </tr>
+
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+           </div>
+           
+
+          <div class="col-md-5 col-sm-12 col-xs-12">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      Exited Vehicles
+                  </div>
+                  <div class="panel-body">
+                      <div class="table-responsive">
+                          <table class="table table-striped table-bordered table-hover">
+                              <thead>
+                                  <tr>
+                                      <th>Company</th>
+                                      <th>Registration</th>
+                                      <th>Time Out</th>
+                                      <th>Options</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td>MARKTRANS</td>
+                                      <td>WPR1445M</td>
+                                      <td>13/11:22</td>
+                                      <td>
+                                        <!-- Split button -->
+                                      <div class="btn-group pull-right">
+                                        <a href="/ParkingManager/update.php?id=" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-cog"></span></a>
+                                      </div>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                        </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
 
 </html>
