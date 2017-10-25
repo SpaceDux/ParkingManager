@@ -4,6 +4,7 @@
 	$Parked = new fetchParked();
 	$fetchBreak = $Parked->fetchBreak();
 	$fetchPaid = $Parked->fetchPaid();
+	$fetchExit = $Parked->fetchExit();
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -255,11 +256,12 @@
                                       <th>Options</th>
                                   </tr>
                               </thead>
+                              <?php foreach ($fetchExit as $Parked) { ?>
                               <tbody>
                                   <tr>
-                                      <td>MARKTRANS</td>
-                                      <td>WPR1445M</td>
-                                      <td>13/11:22</td>
+                                      <td><?php echo $Parked['company']?></td>
+                                      <td><?php echo $Parked['reg']?></td>
+                                      <td><?php echo $Parked['timeout']?></td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
@@ -268,6 +270,7 @@
                                       </td>
                                   </tr>
                               </tbody>
+                              <?php } ?>
                         </div>
                   </div>
               </div>
