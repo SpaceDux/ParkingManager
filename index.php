@@ -1,5 +1,5 @@
 <?php
-	require_once __DIR__.("/init.php"); //require the initiation file
+	require_once __DIR__.('/init.php'); //require the initiation file
 	
 	$Parked = new fetchParked();
 	$fetchBreak = $Parked->fetchBreak();
@@ -72,7 +72,7 @@
                         <div class="panel panel-primary text-center no-boder blue">
 
                             <div class="panel-right">
-								                 <h3>67</h3>
+								                 <h3><?php echo count($fetchBreak) + count($fetchPaid) ?></h3>
                                <strong> Total Spaces Used</strong>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
 								</div>
 
                             <div class="panel-right">
-							<h3>12 </h3>
+							<h3><?php echo count($fetchBreak) ?></h3>
                                <strong> Total Awaiting Payment</strong>
 
                             </div>
