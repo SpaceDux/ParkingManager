@@ -72,7 +72,7 @@
                         <div class="panel panel-primary text-center no-boder blue">
 
                             <div class="panel-right">
-								                 <h3>67</h3>
+							<h3><?php echo count($fetchBreak) + count($fetchPaid)?></h3>
                                <strong> Total Spaces Used</strong>
                             </div>
                         </div>
