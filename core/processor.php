@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/core/manage/db.con.php';
+require_once __DIR__.'/manage/db.con.php';
 $page = isset($_GET['p'])?$_GET['p']:'';
 if ($page=='add') {
   $company = $_POST['company'];

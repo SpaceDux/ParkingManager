@@ -5,4 +5,6 @@
 	
 	require_once __DIR__.'/core/fetch.func.php'; //Fetch the parked vehicles
 	
+?>
+	
 	

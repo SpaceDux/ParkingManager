@@ -3,7 +3,7 @@
 	
 	$Parked = new fetchParked();
 	$fetchBreak = $Parked->fetchBreak();
-	
+	$fetchPaid = $Parked->fetchPaid();
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -194,14 +194,28 @@
                                       <th>Options</th>
                                   </tr>
                               </thead>
+                              <?php foreach ($fetchPaid as $Parked) { ?>
                               <tbody>
                                   <tr>
-                                      <td>NOLAN</td>
-                                      <td>07WX2232</td>
-                                      <td>C/T</td>
-                                      <td>21/12:22</td>
-                                      <td>86777</td>
-                                      <td>ACCT£10</td>
+                                      <td><?php echo $Parked['company'] ?></td>
+                                      <td><?php echo $Parked['reg'] ?></td>
+                                     <?php if ($Parked['type'] == 1) {
+	                                     echo "<td>C/T</td>";
+                                     } else if ($Parked['type'] == 2) {
+	                                     echo "<td>CAB</td>";
+                                     } else if ($Parked['type'] == 3) {
+	                                     echo "<td>TRL</td>";
+                                     } else if ($Parked['type'] == 4) {
+	                                     echo "<td>RIGID</td>";
+                                     } else if ($Parked['type'] == 5) {
+	                                     echo "<td>COACH</td>";
+                                     } else if ($Parked['type'] == 6) {
+	                                     echo "<td>CAR</td>";
+                                     }
+                                     ?>
+                                      <td><?php echo $Parked['timein'] ?></td>
+                                      <td><?php echo $Parked['tid'] ?></td>
+                                      <td><?php echo $Parked['paid'] ?></td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
@@ -216,8 +230,8 @@
                                       </div>
                                       </td>
                                   </tr>
-
                               </tbody>
+                              <?php } ?>
                           </table>
                       </div>
                   </div>
