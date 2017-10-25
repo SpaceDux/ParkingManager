@@ -4,7 +4,7 @@
 	//Data Base Connection Configuration
 	
 	//Host Address
-	$dbHost = "127.0.0.1:9000";
+	$dbHost = "127.0.0.1";
 	//Mysql USername
 	$dbU = "root";
 	//Mysql password
