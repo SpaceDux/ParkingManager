@@ -1,5 +1,5 @@
 <?php
-  require_once("/core/seldata.php");
+  require_once(__DIR__."/core/seldata.php");
   $selData = new Parking;
   $Parked = $selData->fetchParked1();
   $Parked2 = $selData->fetchParked2();

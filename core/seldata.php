@@ -1,5 +1,5 @@
 <?php
-  $db = new PDO("mysql:host=localhost;dbname=rkpm;", 'root', '1123');
+  $db = new PDO("mysql:host=localhost;dbname=rkpm;", 'root', '');
   class Parking {
     function fetchParked1() {
       global $db;
