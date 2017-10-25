@@ -17,8 +17,7 @@
 		tid = :tid, 
 		col = :col, 
 		paid = :paid, 
-		timeout = :timeout, 
-		comment = :comment WHERE id = $id";
+		timeout = :timeout WHERE id = $id";
 		$stmt2 = $dbConn->prepare($sql);
 		$stmt2->bindParam(':company', $_POST['company']);
 		$stmt2->bindParam(':reg', $_POST['reg']);
@@ -28,7 +27,6 @@
 		$stmt2->bindParam(':col', $_POST['column']);
 		$stmt2->bindParam(':paid', $_POST['paid']);
 		$stmt2->bindParam(':timeout', $_POST['timeout']);
-		$stmt2->bindParam(':comment', $_POST['comment']);
 		
 		if($stmt2->execute()) {
 			$message = "You have successfully update the record!";
@@ -176,10 +174,6 @@
                                    Car
                                  </label>
                                </div>
-                               <div class="form-group">
-                                 <label>Add a Comment</label>
-                                   <textarea type="text" class="form-control" name="comment" rows="4" value="<?php echo $result['comment']?>"></textarea>
-                                 </div>
                      </div>
                      <!-- /.col-lg-6 (nested) -->
                      <div class="col-lg-6">
