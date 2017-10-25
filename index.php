@@ -160,7 +160,7 @@
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
-                                        <a href="/ParkingManager/update.php?id=" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
+                                        <a href="/ParkingManager/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <span class="caret"></span>
                                           <span class="sr-only">Toggle Dropdown</span>
@@ -220,7 +220,7 @@
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
-                                        <a href="/ParkingManager/update.php?id=" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
+                                        <a href="/ParkingManager/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <span class="caret"></span>
                                           <span class="sr-only">Toggle Dropdown</span>
@@ -265,7 +265,7 @@
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
-                                        <a href="/ParkingManager/update.php?id=" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-cog"></span></a>
+                                        <a href="/ParkingManager/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-cog"></span></a>
                                       </div>
                                       </td>
                                   </tr>
