@@ -170,7 +170,7 @@
                                           <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                          <li><a href="#delete">Delete Record</a></li>
+                                          <li><a href="/ParkingManager/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
                                         </ul>
                                       </div>
                                       </td>
@@ -230,7 +230,7 @@
                                           <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                          <li><a href="#delete">Delete Record</a></li>
+                                          <li><a href="/ParkingManager/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
                                         </ul>
                                       </div>
                                       </td>
