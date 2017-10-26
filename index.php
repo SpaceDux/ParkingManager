@@ -47,7 +47,7 @@
                         <a class="active-menu" href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="v_index.php"><i class="fa fa-truck"></i> Vehicle Index</a>
+                        <a href="vehindex.php"><i class="fa fa-truck"></i> Vehicle Index</a>
                     </li>
                 </ul>
 
@@ -293,12 +293,12 @@
 
               <div class="form-group">
                 <label>Company</label>
-                <input type="text" class="form-control" id="company" name="company" placeholder="Company..." autofocus>
+                <input type="text" class="form-control" id="company" name="company" placeholder="Company..." style="text-transform: uppercase;" autofocus>
               </div>
 
               <div class="form-group">
                 <label>Registration Number &amp; Trailer Number (Accounts)</label>
-                <input type="text" class="form-control" id="reg" name="reg" placeholder="Registration Number (Trailer Number)...">
+                <input type="text" class="form-control" id="reg" name="reg" placeholder="Registration Number (Trailer Number)..." style="text-transform: uppercase;">
               </div>
 
               <div class="radio">
@@ -355,7 +355,7 @@
 
               <div class="form-group">
                 <label>Payment Detail</label>
-                <input type="text" class="form-control" id="paid" name="paid" placeholder="FUEL £23 EXT">
+                <input type="text" class="form-control" id="paid" name="paid" placeholder="FUEL £23 EXT" style="text-transform: uppercase;">
               </div>
 
               <div class="radio">

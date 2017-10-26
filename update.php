@@ -130,11 +130,11 @@
                          <form method="post" >
                              <div class="form-group">
                                  <label>Company</label>
-                                 <input type="text" class="form-control" name="company" value="<?php echo $result['company']?>">
+                                 <input type="text" class="form-control" name="company" style="text-transform: uppercase;" value="<?php echo $result['company']?>">
                              </div>
                              <div class="form-group">
                                  <label>Registration Number (Trailer Number)</label>
-                                 <input type="text" class="form-control" name="reg" value="<?php echo $result['reg']?>">
+                                 <input type="text" class="form-control" name="reg" style="text-transform: uppercase;" value="<?php echo $result['reg']?>">
                                </div>
                                <div class="radio">
                                  <label>
@@ -187,7 +187,7 @@
                        </div>
                    <div class="form-group">
                      <label>Payment Details</label>
-                       <input type="text" class="form-control" name="paid" value="<?php echo $result['paid']?>">
+                       <input type="text" class="form-control" name="paid" style="text-transform: uppercase;" value="<?php echo $result['paid']?>">
                      </div>
 
                      <div class="radio">
