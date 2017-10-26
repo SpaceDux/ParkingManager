@@ -16,6 +16,8 @@ Notice Board;
 
 Renewals System;
   A highlighting feature to mark renewals and more.
+  
+  Hightlighting DONE 27/2004
 
 Hotkeys;
   Add hotkeys example; pressing shift+tab will bring up the Add Vehicle modal.

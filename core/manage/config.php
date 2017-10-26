@@ -1,5 +1,6 @@
 <?php
-	//Parking Manager made by Ryan Williams (BACKEND) & Daniel Pullan (FRONTEND)
+	//Parking Manager made by Ryan Williams ~ http://ryanadamwilliams.co.uk
+	//Tested by Daniel Pullan ~ http://danielpullan.co.uk
 	
 	//Data Base Connection Configuration
 	
