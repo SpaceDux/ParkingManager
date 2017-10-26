@@ -35,7 +35,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php"><strong>Parking Manager</strong></a>
+                <a class="navbar-brand" href="<?php echo $url ?>/index.php"><strong>Parking Manager</strong></a>
 
         </nav>
                 <!--/. NAV TOP  -->
@@ -44,10 +44,10 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a class="active-menu" href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
+                        <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="vehindex.php"><i class="fa fa-truck"></i> Vehicle Index</a>
+                        <a href="<?php echo $url ?>/vehindex.php"><i class="fa fa-truck"></i> Vehicle Index</a>
                     </li>
                 </ul>
 
@@ -143,7 +143,15 @@
                               </thead>
                               <?php foreach ($fetchBreak as $Parked) { ?>
                               <tbody>
-                                  <tr>
+                                  <tr <?php if ($Parked['h_light'] == 1) {
+	                                 	echo 'class="warning"'; //Renewal mark
+	                                  } else if ($Parked['h_light'] == 2) {
+		                              	echo 'class="success"'; //48hr
+	                                  } else if ($Parked['h_light'] == 3) {
+		                              	echo 'class="info"'; //72hr
+	                                  } else if ($Parked['h_light'] == 0) {
+		                              	echo ""; //no highlight 
+	                                  }?>>
                                       <td><?php echo $Parked['company'] ?></td>
                                       <td><?php echo $Parked['reg'] ?></td>
                                      <?php if ($Parked['type'] == 1) {
@@ -171,6 +179,12 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                           <li><a href="<?php echo $url ?>/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
+                                          <li role="separator" class="divider"></li>
+                                          <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=1">Renewal</a></li>
+                                          <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
+                                          <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
+                                          <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
+                                          
                                         </ul>
                                       </div>
                                       </td>
@@ -201,7 +215,15 @@
                               </thead>
                               <?php foreach ($fetchPaid as $Parked) { ?>
                               <tbody>
-                                  <tr>
+                                  <tr <?php if ($Parked['h_light'] == 1) {
+	                                 	echo 'class="warning"'; //Renewal mark
+	                                  } else if ($Parked['h_light'] == 2) {
+		                              	echo 'class="success"'; //48hr
+	                                  } else if ($Parked['h_light'] == 3) {
+		                              	echo 'class="info"'; //72hr
+	                                  } else if ($Parked['h_light'] == 0) {
+		                              	echo ""; //no highlight 
+	                                  }?>>
                                       <td><?php echo $Parked['company'] ?></td>
                                       <td><?php echo $Parked['reg'] ?></td>
                                      <?php if ($Parked['type'] == 1) {
@@ -231,6 +253,12 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                           <li><a href="<?php echo $url ?>/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
+                                          <li role="separator" class="divider"></li>
+                                          <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=1">Renewal</a></li>
+                                          <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
+                                          <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
+                                          <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
+                                          
                                         </ul>
                                       </div>
                                       </td>

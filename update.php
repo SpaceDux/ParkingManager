@@ -69,28 +69,7 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="index.html"><strong>Parking Manager</strong></a>
-
-            <div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
-          </div>
-          <ul class="nav navbar-top-links navbar-right">
-              <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                      <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                  </a>
-                  <ul class="dropdown-menu dropdown-user">
-                      <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                      </li>
-                      <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                      </li>
-                      <li class="divider"></li>
-                      <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                      </li>
-                  </ul>
-                  <!-- /.dropdown-user -->
-              </li>
-              <!-- /.dropdown -->
-          </ul>
+              <a class="navbar-brand" href="<?php echo $url ?>/index.html"><strong>Parking Manager</strong></a>
       </nav>
       <!--/. NAV TOP  -->
       <nav class="navbar-default navbar-side" role="navigation">
@@ -98,10 +77,10 @@
               <ul class="nav" id="main-menu">
 
                   <li>
-                      <a class="active-menu" href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
+                      <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                   </li>
                   <li>
-                      <a href="/vehindex.php"><i class="fa fa-truck"></i> Vehicle Index</a>
+                      <a href="<?php echo $url ?>/vehindex.php"><i class="fa fa-truck"></i> Vehicle Index</a>
                   </li>
               </ul>
 
