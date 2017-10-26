@@ -29,7 +29,7 @@
 		$stmt2->bindParam(':timeout', $_POST['timeout']);
 		
 		if($stmt2->execute()) {
-			$message = "You have successfully update the record!";
+			//Create a redirect
 		} else {
 			$message = "The record has not been updated!";
 		}
@@ -97,7 +97,7 @@
                       <a class="active-menu" href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                   </li>
                   <li>
-                      <a href="ui-elements.html"><i class="fa fa-truck"></i> Vehicle Index</a>
+                      <a href="/vehindex.php"><i class="fa fa-truck"></i> Vehicle Index</a>
                   </li>
               </ul>
 

@@ -70,10 +70,14 @@
                 <div class="row">
                     <div class="col-md-3 col-sm-12 col-xs-12">
                         <div class="panel panel-primary text-center no-boder blue">
+                              <div class="panel-left pull-left blue">
+                                <i class="fa fa-road fa-5x"></i>
+								</div>
 
                             <div class="panel-right">
-							<h3><?php echo count($fetchBreak) + count($fetchPaid)?></h3>
+							<h3><?php echo count($fetchBreak) + count($fetchPaid)?><SMALL>/220</SMALL></h3>
                                <strong> Total Spaces Used</strong>
+
                             </div>
                         </div>
                     </div>
@@ -84,7 +88,7 @@
 								</div>
 
                             <div class="panel-right">
-							<h3>12 </h3>
+							<h3><?php echo count($fetchBreak) ?> </h3>
                                <strong> Total Awaiting Payment</strong>
 
                             </div>
