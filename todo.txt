@@ -1,0 +1,18 @@
+Delete Record;
+  Probably create a column in the db "deleted" instead of running an sql script to delete it(?)
+
+Vehicle Index;
+  Vehicle index for account customers which will make it easier  to browse all accounts for specific
+  registrations, also make it so when account vehicles are inserted, it will automatically recognise
+  the reg and place the company name in (handy for unknown trucks)
+
+Global Search;
+  A feature to search every record that is in the database that belongs to a specific reg, e.g "141MH123"
+  the system will search for every entry that corresponds to that reg, it will make snap queries &
+  other various checks easier and faster.
+
+Notice Board;
+  Exactly what the title says, a notice board for security to post too, mainly for problems etc.
+
+Renewals System;
+  A highlighting feature to mark renewals and more.

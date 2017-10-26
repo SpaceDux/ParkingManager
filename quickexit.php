@@ -9,7 +9,7 @@
   if ($stmt->execute()) {
     header('Location: /ParkingManager/index.php');
   } else {
-    die("IT DIDNT WORK");
+    die("IT DIDNT WORK"); //This shouldn't ever happen!
   }
 
 ?>
