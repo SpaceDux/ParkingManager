@@ -1,6 +1,6 @@
 <?php
 	require_once __DIR__.("/init.php"); //require the initiation file
-	
+
 	$Parked = new fetchParked();
 	$fetchBreak = $Parked->fetchBreak();
 	$fetchPaid = $Parked->fetchPaid();
@@ -75,7 +75,7 @@
 								</div>
 
                             <div class="panel-right">
-							<h3><?php echo count($fetchBreak) + count($fetchPaid)?><SMALL>/220</SMALL></h3>
+							<h3><?php echo count($fetchBreak) + count($fetchPaid)?><small>/220</small></h3>
                                <strong> Total Spaces Used</strong>
 
                             </div>
@@ -126,7 +126,7 @@
 
               <div class="panel panel-default">
                   <div class="panel-heading">
-                    <button class="btn btn-primary pull-right" type="button" data-toggle="modal" data-target="#addModal">  Register Vehicle</button>
+                    <button class="btn btn-primary pull-right" type="button" data-toggle="modal" data-target="#addModal">Register Vehicle <i class="fa fa-plus" aria-hidden="true"></i></button>
                       Break / Unpaid
                   </div>
                   <div class="panel-body">
@@ -242,7 +242,7 @@
                   </div>
               </div>
            </div>
-           
+
 
           <div class="col-md-5 col-sm-12 col-xs-12">
               <div class="panel panel-default">
