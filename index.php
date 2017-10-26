@@ -170,7 +170,7 @@
                                           <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                          <li><a href="/ParkingManager/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
+                                          <li><a href="<?php echo $url ?>/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
                                         </ul>
                                       </div>
                                       </td>
@@ -224,13 +224,13 @@
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
-                                        <a href="/ParkingManager/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
+                                        <a href="/ParkingManager/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-cog"></span></a>
                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <span class="caret"></span>
                                           <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                          <li><a href="/ParkingManager/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
+                                          <li><a href="<?php echo $url ?>/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
                                         </ul>
                                       </div>
                                       </td>
@@ -297,8 +297,13 @@
               </div>
 
               <div class="form-group">
-                <label>Registration Number &amp; Trailer Number (Accounts)</label>
+                <label>Registration Number</label>
                 <input type="text" class="form-control" id="reg" name="reg" placeholder="Registration Number (Trailer Number)..." style="text-transform: uppercase;">
+              </div>
+              
+              <div class="form-group">
+                <label>Trailer Number</label>
+                <input type="text" class="form-control" id="trlno" name="trlno" placeholder="Trailer Number" style="text-transform: uppercase;">
               </div>
 
               <div class="radio">
@@ -416,6 +421,7 @@ $(this).find('[autofocus]').focus();
 function saveData(){
   var company = $('#company').val();
   var reg = $('#reg').val();
+  var trlno = $('#trlno').val();
   var type = $(".type:checked").val();
   var timein = $('#timein').val();
   var tid = $('#tid').val();
@@ -425,7 +431,7 @@ function saveData(){
   type: "POST",
   //remember to update this!
   url: "http://localhost/ParkingManager/core/processor.php?p=add",
-  data: "company="+company+"&reg="+reg+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
+  data: "company="+company+"&reg="+reg+"&trlno="+trlno+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
   })
 }
 </script>

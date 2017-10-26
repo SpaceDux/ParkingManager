@@ -7,7 +7,7 @@
   $stmt->bindParam(':timeout', date("d/H:i"));
 
   if ($stmt->execute()) {
-    header('Location: /ParkingManager/index.php');
+    header('Location:'.$url.'/index.php');
   } else {
     die("IT DIDNT WORK"); //This shouldn't ever happen!
   }

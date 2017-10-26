@@ -15,6 +15,6 @@
 	
 	//Website Configuration
 	//Website URL
-	$url = "http://localhost:9000/ParkingManager";
+	$url = "http://localhost/ParkingManager";
 	
 ?>

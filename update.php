@@ -8,10 +8,12 @@
 	  $result = $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 	$id = $_GET['id'];
+	$message = "";
 	
 	if (!empty($_POST['reg'])) {
 		$sql = "UPDATE parking SET company = :company,
 		reg = :reg, 
+		trlno = :trlno, 
 		type = :type, 
 		timein = :timein, 
 		tid = :tid, 
@@ -19,17 +21,19 @@
 		paid = :paid, 
 		timeout = :timeout WHERE id = $id";
 		$stmt2 = $dbConn->prepare($sql);
-		$stmt2->bindParam(':company', $_POST['company']);
-		$stmt2->bindParam(':reg', $_POST['reg']);
+		$stmt2->bindParam(':company', strtoupper($_POST['company']));
+		$stmt2->bindParam(':reg', strtoupper($_POST['reg']));
+		$stmt2->bindParam(':trlno', strtoupper($_POST['trlno']));
 		$stmt2->bindParam(':type', $_POST['type']);
 		$stmt2->bindParam(':timein', $_POST['timein']);
 		$stmt2->bindParam(':tid', $_POST['tid']);
 		$stmt2->bindParam(':col', $_POST['column']);
-		$stmt2->bindParam(':paid', $_POST['paid']);
+		$stmt2->bindParam(':paid', strtoupper($_POST['paid']));
 		$stmt2->bindParam(':timeout', $_POST['timeout']);
 		
 		if($stmt2->execute()) {
-			//Create a redirect
+			header('Location:'.$url.'/update.php?id='.$id);
+			$message = "You have successfully updated this record!";
 		} else {
 			$message = "The record has not been updated!";
 		}
@@ -127,14 +131,19 @@
              <div class="panel-body">
                  <div class="row">
                      <div class="col-lg-6">
+	                     <?php echo $message ?>
                          <form method="post" >
                              <div class="form-group">
                                  <label>Company</label>
                                  <input type="text" class="form-control" name="company" style="text-transform: uppercase;" value="<?php echo $result['company']?>">
                              </div>
                              <div class="form-group">
-                                 <label>Registration Number (Trailer Number)</label>
+                                 <label>Registration Number</label>
                                  <input type="text" class="form-control" name="reg" style="text-transform: uppercase;" value="<?php echo $result['reg']?>">
+                               </div>
+                             <div class="form-group">
+                                 <label>Trailer Number</label>
+                                 <input type="text" class="form-control" name="trlno" style="text-transform: uppercase;" value="<?php echo $result['trlno']?>">
                                </div>
                                <div class="radio">
                                  <label>
