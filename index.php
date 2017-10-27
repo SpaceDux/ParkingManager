@@ -44,9 +44,11 @@
                         <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="<?php echo $url ?>/vehindex.php"><i class="fa fa-truck"></i> Vehicle Index</a>
+                        <a href="<?php echo $url ?>/index.php"><i class="fa fa-truck"></i> Vehicle Index</a>
                     </li>
-                </ul>
+                    <li>
+                        <a href="<?php echo $url ?>/index.php"><i class="fa fa-flag-o"></i> Account Reports</a>
+                    </li>
 
             </div>
         </nav>
@@ -71,7 +73,7 @@
 								</div>
 
                             <div class="panel-right">
-							<h3><?php echo count($fetchBreak) + count($fetchPaid)?><small>/220</small></h3>
+							<h3><?php echo count($fetchBreak) + count($fetchPaid)?><small>/200</small></h3>
                                <strong> Total Spaces Used</strong>
 
                             </div>

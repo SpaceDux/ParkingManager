@@ -22,3 +22,6 @@ Renewals System;
 Hotkeys;
   Add hotkeys example; pressing shift+tab will bring up the Add Vehicle modal.
   
+Accounts;
+	Create an system to count the number of transactions for accounts & count time etc.
+	
