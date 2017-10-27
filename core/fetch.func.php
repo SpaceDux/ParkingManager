@@ -2,7 +2,7 @@
 	class fetchParked {
 		function fetchBreak() {
 			global $dbConn;
-			$sql = "SELECT * FROM parking WHERE col = 1";
+			$sql = "SELECT * FROM parking WHERE col = 1 ORDER BY timein DESC";
 			$stmt = $dbConn->prepare($sql);
 			$stmt->execute();
 			
@@ -10,7 +10,7 @@
 		}
 		function fetchPaid() {
 			global $dbConn;
-			$sql = "SELECT * FROM parking WHERE col = 2";
+			$sql = "SELECT * FROM parking WHERE col = 2 ORDER BY timein asc";
 			$stmt = $dbConn->prepare($sql);
 			$stmt->execute();
 			
