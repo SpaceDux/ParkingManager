@@ -107,12 +107,11 @@
 						  	   <td><?php echo $report['timein'] ?></td>
 						  	   <td><?php echo $report['timeout'] ?></td>
 						  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
-							  	   $time1 = strtotime($report['timein']);
-										 $time2 = strtotime($report['timeout']);
-										 
-										 $duration = $time2 - $time1;
+									$datetime1 = new DateTime($report['timein']);
+									$datetime2 = new DateTime($report['timeout']);
+									$interval = $datetime1->diff($datetime2);
+									echo "<td>".$interval->format('%h')." Hours ".$interval->format('%i')." Minutes</td>";
 						  	   }?>
-						  	   <td><?php echo round(abs($duration/(3600))) ?> Hours</td>
 					  	 	</tr>
 					  	 </tbody>
 					  	 	<?php } ?>

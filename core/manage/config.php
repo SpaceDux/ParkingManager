@@ -9,7 +9,7 @@
 	//Mysql USername
 	$dbU = "root";
 	//Mysql password
-	$dbPw = "1123";
+	$dbPw = "";
 	//Database name
 	$dbSel = "rkpm";
 	
