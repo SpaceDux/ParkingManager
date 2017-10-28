@@ -1,20 +1,20 @@
 <?php
 	require_once __DIR__.'/init.php'; //Init file
-	
+
 	if(isset($_GET['a'])) {
-		
+
 	$sql = "SELECT * FROM parking WHERE company = ?";
-	
+
 	$stmt = $dbConn->prepare($sql);
 	$stmt->bindParam(1, $_GET['a']);
-	
+
 	$stmt->execute();
-	
+
 	$result = $stmt->fetchAll();
-	
+
 	}
-	
-	
+
+
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -68,7 +68,7 @@
   <div id="page-wrapper">
     <div class="header">
                       <h1 class="page-header">
-                          Dashboard <small>// update record</small>
+                          Account <small>// Reports</small>
                       </h1>
           <ol class="breadcrumb">
           <li><a href="#">Home</a></li>
@@ -107,11 +107,14 @@
 						  	   <td><?php echo $report['timein'] ?></td>
 						  	   <td><?php echo $report['timeout'] ?></td>
 						  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
-							  	   $duration = abs($report['timein'] - $report['timeout']) / 3600,2);
+							  	   $time1 = strtotime($report['timein']);
+										 $time2 = strtotime($report['timeout']);
+										 
+										 $duration = $time2 - $time1;
 						  	   }?>
-						  	   <td><?php echo $duration ?></td>
+						  	   <td><?php echo round(abs($duration/(3600))) ?> Hours</td>
 					  	 	</tr>
-					  	 </tbody> 
+					  	 </tbody>
 					  	 	<?php } ?>
 					</table>
                  <!-- /.row (nested) -->
