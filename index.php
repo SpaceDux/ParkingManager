@@ -451,9 +451,9 @@ function saveData(){
   var column = $(".column:checked").val();
   var paid = $('#paid').val();
   $.ajax({
-  type: "POST",
   //remember to update this!
   url: "http://localhost:8080/ParkingManager/core/processor.php?p=add",
+  type: "POST",
   data: "company="+company+"&reg="+reg+"&trlno="+trlno+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
   })
 }
