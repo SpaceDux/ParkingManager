@@ -453,7 +453,7 @@ function saveData(){
   $.ajax({
   type: "POST",
   //remember to update this!
-  url: "http://localhost/ParkingManager/core/processor.php?p=add",
+  url: "http://localhost:8080/ParkingManager/core/processor.php?p=add",
   data: "company="+company+"&reg="+reg+"&trlno="+trlno+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
   })
 }
