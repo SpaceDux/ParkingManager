@@ -103,7 +103,20 @@
 						  	   <td><?php echo $report['reg'] ?></td>
 						  	   <td><?php echo $report['trlno'] ?></td>
 						  	   <td><?php echo $report['tid'] ?></td>
-						  	   <td><?php echo $report['type'] ?></td>
+									 <?php if ($report['type'] == 1) {
+										echo "<td>C/T</td>";
+									} else if ($report['type'] == 2) {
+										echo "<td>CAB</td>";
+									} else if ($report['type'] == 3) {
+										echo "<td>TRL</td>";
+									} else if ($report['type'] == 4) {
+										echo "<td>RIGID</td>";
+									} else if ($report['type'] == 5) {
+										echo "<td>COACH</td>";
+									} else if ($report['type'] == 6) {
+										echo "<td>CAR</td>";
+									 }
+									 ?>
 						  	   <td><?php echo $report['timein'] ?></td>
 						  	   <td><?php echo $report['timeout'] ?></td>
 						  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
