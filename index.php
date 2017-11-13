@@ -166,7 +166,7 @@
 	                                     echo "<td>CAR</td>";
                                      }
                                      ?>
-                                      <td><?php echo $Parked['timein'] ?></td>
+                                      <td><?php echo substr_replace($Parked['timein'],"/", 2, 9) ?></td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
@@ -238,7 +238,7 @@
 	                                     echo "<td>CAR</td>";
                                      }
                                      ?>
-                                      <td><?php echo $Parked['timein'] ?></td>
+                                      <td><?php echo substr_replace($Parked['timein'],"/", 2, 9) ?></td>
                                       <td><?php echo $Parked['tid'] ?></td>
                                       <td><?php echo $Parked['paid'] ?></td>
                                       <td>
@@ -291,7 +291,7 @@
                                   <tr>
                                       <td><?php echo $Parked['company']?></td>
                                       <td><?php echo $Parked['reg']?></td>
-                                      <td><?php echo $Parked['timeout']?></td>
+                                      <td><?php echo substr_replace($Parked['timeout'],"/", 2, 9)?></td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
