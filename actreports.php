@@ -107,10 +107,10 @@
 						  	   <td><?php echo $report['timein'] ?></td>
 						  	   <td><?php echo $report['timeout'] ?></td>
 						  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
-									$datetime1 = new DateTime($report['timein']);
-									$datetime2 = new DateTime($report['timeout']);
-									$interval = $datetime1->diff($datetime2);
-									echo "<td>".$interval->format('%h')." Hours ".$interval->format('%i')." Minutes</td>";
+									$datetime1 = date_create($report['timein']);
+									$datetime2 = date_create($report['timeout']);
+									$interval = $datetime2->diff($datetime1);
+									echo "<td>".$interval->format('%d')." days ".$interval->format('%h')." Hours ".$interval->format('%i')." Minutes</td>";
 						  	   }?>
 					  	 	</tr>
 					  	 </tbody>
