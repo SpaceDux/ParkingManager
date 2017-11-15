@@ -26,3 +26,4 @@ if ($page=='add') {
 } else if ($page == 'del') {
 //coming soon
 }
+?>

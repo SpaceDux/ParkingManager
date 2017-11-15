@@ -5,6 +5,7 @@
 	$fetchBreak = $Parked->fetchBreak();
 	$fetchPaid = $Parked->fetchPaid();
 	$fetchExit = $Parked->fetchExit();
+
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -148,7 +149,7 @@
 	                                  } else if ($Parked['h_light'] == 3) {
 		                              	echo 'class="info"'; //72hr
 	                                  } else if ($Parked['h_light'] == 0) {
-		                              	echo ""; //no highlight 
+		                              	echo ""; //no highlight
 	                                  }?>>
                                       <td><?php echo $Parked['company'] ?></td>
                                       <td><?php echo $Parked['reg'] ?></td>
@@ -182,7 +183,7 @@
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
-                                          
+
                                         </ul>
                                       </div>
                                       </td>
@@ -220,7 +221,7 @@
 	                                  } else if ($Parked['h_light'] == 3) {
 		                              	echo 'class="info"'; //72hr
 	                                  } else if ($Parked['h_light'] == 0) {
-		                              	echo ""; //no highlight 
+		                              	echo ""; //no highlight
 	                                  }?>>
                                       <td><?php echo $Parked['company'] ?></td>
                                       <td><?php echo $Parked['reg'] ?></td>
@@ -256,7 +257,7 @@
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
-                                          
+
                                         </ul>
                                       </div>
                                       </td>
@@ -326,7 +327,7 @@
                 <label>Registration Number</label>
                 <input type="text" class="form-control" id="reg" name="reg" placeholder="Registration Number (Trailer Number)..." style="text-transform: uppercase;">
               </div>
-              
+
               <div class="form-group">
                 <label>Trailer Number</label>
                 <input type="text" class="form-control" id="trlno" name="trlno" placeholder="Trailer Number" style="text-transform: uppercase;">
