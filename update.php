@@ -1,6 +1,6 @@
 <?php
 	require_once __DIR__.'/init.php'; //require the init file
-	
+
 	if (isset($_GET['id'])) {
 	  $stmt = $dbConn->prepare("SELECT * FROM parking WHERE id = ?");
 	  $stmt->bindParam(1, $_GET['id']);
@@ -9,16 +9,16 @@
 	}
 	$id = $_GET['id'];
 	$message = "";
-	
+
 	if (!empty($_POST['reg'])) {
 		$sql = "UPDATE parking SET company = :company,
-		reg = :reg, 
-		trlno = :trlno, 
-		type = :type, 
-		timein = :timein, 
-		tid = :tid, 
-		col = :col, 
-		paid = :paid, 
+		reg = :reg,
+		trlno = :trlno,
+		type = :type,
+		timein = :timein,
+		tid = :tid,
+		col = :col,
+		paid = :paid,
 		timeout = :timeout WHERE id = $id";
 		$stmt2 = $dbConn->prepare($sql);
 		$stmt2->bindParam(':company', strtoupper($_POST['company']));
@@ -30,9 +30,9 @@
 		$stmt2->bindParam(':col', $_POST['column']);
 		$stmt2->bindParam(':paid', strtoupper($_POST['paid']));
 		$stmt2->bindParam(':timeout', $_POST['timeout']);
-		
+
 		if($stmt2->execute()) {
-			header('Location:'.$url.'/update.php?id='.$id);
+			header('Location:'.$url.'/update.php?id='.$id.'?ud=success');
 			$message = "You have successfully updated this record!";
 		} else {
 			$message = "The record has not been updated!";
@@ -69,7 +69,7 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="<?php echo $url ?>/index.html"><strong>Parking Manager</strong></a>
+              <a class="navbar-brand" href="<?php echo $url ?>/index.php"><strong>Parking Manager</strong></a>
       </nav>
       <!--/. NAV TOP  -->
       <nav class="navbar-default navbar-side" role="navigation">
