@@ -1,19 +1,4 @@
 <?php
-	require_once __DIR__.'/init.php'; //Init file
-
-	if(isset($_GET['a'])) {
-
-	$sql = "SELECT * FROM parking WHERE company = ?";
-
-	$stmt = $dbConn->prepare($sql);
-	$stmt->bindParam(1, $_GET['a']);
-
-	$stmt->execute();
-
-	$result = $stmt->fetchAll();
-
-	}
-
 
 ?>
 <!DOCTYPE html>
@@ -56,7 +41,7 @@
                       <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                   </li>
                   <li>
-                      <a href="<?php echo $url ?>/vehindex.php"><i class="fa fa-truck"></i> Vehicle Index</a>
+                      <a href="<?php echo $url ?>/index.php"><i class="fa fa-truck"></i> Vehicle Index</a>
                   </li>
               </ul>
 
@@ -68,11 +53,11 @@
   <div id="page-wrapper">
     <div class="header">
                       <h1 class="page-header">
-                          Account <small>// Reports</small>
+                          Dashboard <small>// account reports</small>
                       </h1>
           <ol class="breadcrumb">
           <li><a href="#">Home</a></li>
-          <li class="active">Account Report</li>
+          <li class="active">Reports Hub</li>
           </ol>
 
   </div>
@@ -81,56 +66,24 @@
      <div class="col-lg-12">
          <div class="panel panel-default">
              <div class="panel-heading">
-                 Account Report for <?php echo $_GET['a']?>
+                 Select an account to generate a report..
              </div>
-			 		<table class="table table-bordered">
-			 			 <thead>
-                          <tr>
-                              <th>Company</th>
-                              <td>Registration</td>
-                              <td>Trailer Number</td>
-                              <td>Ticket ID</td>
-                              <th>Type</th>
-                              <th>Time In</th>
-                              <th>Time Out</th>
-                              <th>Duration</th>
-                          </tr>
-                      	 </thead>
-                      	 	<?php foreach( $result as $report ) { ?>
-					  	 <tbody>
-					  	 	<tr>
-						  	   <td><?php echo $report['company'] ?></td>
-						  	   <td><?php echo $report['reg'] ?></td>
-						  	   <td><?php echo $report['trlno'] ?></td>
-						  	   <td><?php echo $report['tid'] ?></td>
-									 <?php if ($report['type'] == 1) {
-										echo "<td>C/T</td>";
-									} else if ($report['type'] == 2) {
-										echo "<td>CAB</td>";
-									} else if ($report['type'] == 3) {
-										echo "<td>TRL</td>";
-									} else if ($report['type'] == 4) {
-										echo "<td>RIGID</td>";
-									} else if ($report['type'] == 5) {
-										echo "<td>COACH</td>";
-									} else if ($report['type'] == 6) {
-										echo "<td>CAR</td>";
-									 }
-									 ?>
-						  	   <td><?php echo $report['timein'] ?></td>
-						  	   <td><?php echo $report['timeout'] ?></td>
-						  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
-									$datetime1 = new DateTime($report['timein']);
-									$datetime2 = new DateTime($report['timeout']);
-									$interval = $datetime2->diff($datetime1);
-									$hours = $interval->h;
-									$hours = $hours + ($interval->days*24);
-									echo "<td>".$hours." Hours & ".$interval->format('%i')." Minutes</td>";
-						  	   }?>
-					  	 	</tr>
-					  	 </tbody>
-					  	 	<?php } ?>
-					</table>
+             <div class="panel-body">
+                 <div class="row">
+                     <div class="col-lg-6">
+                         <form method="post" >
+                             <div class="form-group">
+                                 <label>Account</label>
+                                <select class="form-control">
+                                  <option name="NOLAN">Nolan</option>
+                                  <option>Dixon</option>
+                                  <option>Virginia</option>
+                                </select>
+                            </div>
+                     <!-- /.col-lg-6 (nested) -->
+                       <input type="submit" class="btn btn-primary" value="Generate Report"></input>
+                        </form>
+                 </div>
                  <!-- /.row (nested) -->
              </div>
              <!-- /.panel-body -->
