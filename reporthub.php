@@ -1,5 +1,7 @@
 <?php
-
+  if(isset($_POST['act'])) {
+    header('Location:'.$url.'/actreports.php?a='.$_POST['act'].'&ti='.$_POST['ti'].'&to='.$_POST['to']);
+  }
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -71,14 +73,22 @@
              <div class="panel-body">
                  <div class="row">
                      <div class="col-lg-6">
-                         <form method="post" >
+                         <form method="post" action="actreports.php?a=".$_POST['act']."&ti=".$_POST['ti']."&to=".$_POST['to']."">
                              <div class="form-group">
                                  <label>Account</label>
                                 <select class="form-control">
-                                  <option name="NOLAN">Nolan</option>
-                                  <option>Dixon</option>
-                                  <option>Virginia</option>
+                                  <option name="act" value="NOLAN">Nolan</option>
+                                  <option name="act">Dixon</option>
+                                  <option name="act">Virginia</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Report Start</label>
+                                <input type="text" class="form-control" name="ti" style="text-transform: uppercase;" value="<?php echo date("d-m-Y 00:00:00")?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Report End</label>
+                                <input type="text" class="form-control" name="to" style="text-transform: uppercase;" value="<?php echo date("d-m-Y 00:00:00")?>">
                             </div>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Generate Report"></input>
