@@ -17,11 +17,13 @@ Notice Board;
 Renewals System;
   A highlighting feature to mark renewals and more.
   
-  Hightlighting DONE 27/2004
+  Hightlighting DONE 27/10/2017
 
 Hotkeys;
   Add hotkeys example; pressing shift+tab will bring up the Add Vehicle modal.
   
 Accounts;
 	Create an system to count the number of transactions for accounts & count time etc.
+
+	Account Reports DONE 19/11/2017
 	

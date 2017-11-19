@@ -469,7 +469,7 @@ function saveData(){
   var paid = $('#paid').val();
   $.ajax({
   //remember to update this!
-  url: "http://localhost:8080<?php echo $url ?>core/processor.php?p=add",
+  url: "<?php echo $url ?>/core/processor.php?p=add",
   type: "POST",
   data: "company="+company+"&reg="+reg+"&trlno="+trlno+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
   })
