@@ -3,10 +3,12 @@
 
 	if(isset($_GET['a'])) {
 
-	$sql = "SELECT * FROM parking WHERE company = ?";
+	$sql = "SELECT * FROM parking WHERE company = ? AND timein BETWEEN ? and ?";
 
 	$stmt = $dbConn->prepare($sql);
 	$stmt->bindParam(1, $_GET['a']);
+	$stmt->bindParam(1, $_GET['ti']);
+	$stmt->bindParam(1, $_GET['to']);
 
 	$stmt->execute();
 
@@ -37,7 +39,7 @@
 </head>
 <body>
   <div id="wrapper">
-      <nav class="navbar navbar-default top-navbar" role="navigation">
+      <nav class="navbar navbar-default top-navbar no-print" role="navigation">
           <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
                   <span class="sr-only">Toggle navigation</span>
@@ -45,10 +47,10 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="<?php echo $url ?>/index.html"><strong>Parking Manager</strong></a>
+              <a class="navbar-brand" href="<?php echo $url ?>/index.php"><strong>Parking Manager</strong></a>
       </nav>
       <!--/. NAV TOP  -->
-      <nav class="navbar-default navbar-side" role="navigation">
+      <nav class="navbar-default navbar-side no-print" role="navigation">
           <div class="sidebar-collapse">
               <ul class="nav" id="main-menu">
 
@@ -68,9 +70,9 @@
   <div id="page-wrapper">
     <div class="header">
                       <h1 class="page-header">
-                          Account <small>// Reports</small>
+                          Account <small>// Report</small>
                       </h1>
-          <ol class="breadcrumb">
+          <ol class="breadcrumb no-print">
           <li><a href="#">Home</a></li>
           <li class="active">Account Report</li>
           </ol>

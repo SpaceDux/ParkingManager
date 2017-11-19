@@ -33,7 +33,7 @@
 			                    <span class="icon-bar"></span>
 			                    <span class="icon-bar"></span>
 			                </button>
-			                <a class="navbar-brand" href="index.html"><strong>Parking Manager</strong></a>
+			                <a class="navbar-brand" href="index.php"><strong>Parking Manager</strong></a>
 			        </nav>
                 <!--/. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -43,7 +43,6 @@
                     <li>
                         <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
-<<<<<<< HEAD
 										<li class="">
                         <a href="#"><i class="fa fa-sitemap"></i> Vehicle Tools<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
@@ -51,16 +50,8 @@
                                 <a href="<?php echo $url ?>/queryreg.php">Vehicle Search</a>
                             </li>
                         </ul>
-=======
                     <li>
                         <a href="<?php echo $url ?>/index.php"><i class="fa fa-truck"></i> Vehicle Index</a>
-                    </li>
-                    <li>
-                        <a href="<?php echo $url ?>/index.php"><i class="fa fa-flag-o"></i> Account Reports</a>
-<<<<<<< HEAD
->>>>>>> parent of 64e7d58... ACCOUNT REPORTS
-=======
->>>>>>> parent of 64e7d58... ACCOUNT REPORTS
                     </li>
 										<li class="">
 												<a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>
@@ -472,11 +463,7 @@ function saveData(){
   var paid = $('#paid').val();
   $.ajax({
   //remember to update this!
-<<<<<<< HEAD
   url: "<?php echo $url ?>/core/processor.php?p=add",
-=======
-  url: "http://localhost:8080<?php echo $url ?>core/processor.php?p=add",
->>>>>>> parent of 64e7d58... ACCOUNT REPORTS
   type: "POST",
   data: "company="+company+"&reg="+reg+"&trlno="+trlno+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
   })
