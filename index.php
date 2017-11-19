@@ -43,6 +43,7 @@
                     <li>
                         <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
+<<<<<<< HEAD
 										<li class="">
                         <a href="#"><i class="fa fa-sitemap"></i> Vehicle Tools<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
@@ -50,6 +51,13 @@
                                 <a href="<?php echo $url ?>/queryreg.php">Vehicle Search</a>
                             </li>
                         </ul>
+=======
+                    <li>
+                        <a href="<?php echo $url ?>/index.php"><i class="fa fa-truck"></i> Vehicle Index</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $url ?>/index.php"><i class="fa fa-flag-o"></i> Account Reports</a>
+>>>>>>> parent of 64e7d58... ACCOUNT REPORTS
                     </li>
 										<li class="">
 												<a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>
