@@ -1,5 +1,5 @@
 <?php
-  if(isset($_POST['act'])) {
+  if(isset($_POST['ti'])) {
     header('Location:'.$url.'/actreports.php?a='.$_POST['act'].'&ti='.$_POST['ti'].'&to='.$_POST['to']);
   }
 ?>
@@ -73,14 +73,11 @@
              <div class="panel-body">
                  <div class="row">
                      <div class="col-lg-6">
-                         <form method="post" action="actreports.php?a=".$_POST['act']."&ti=".$_POST['ti']."&to=".$_POST['to']."">
-                             <div class="form-group">
-                                 <label>Account</label>
-                                <select class="form-control">
-                                  <option name="act" value="NOLAN">Nolan</option>
-                                  <option name="act">Dixon</option>
-                                  <option name="act">Virginia</option>
-                                </select>
+                         <form method="post" action="reporthub.php">
+
+                            <div class="form-group">
+                                <label>Account name</label>
+                                <input type="text" class="form-control" name="act" style="text-transform: uppercase;" value="NOLAN">
                             </div>
                             <div class="form-group">
                                 <label>Report Start</label>
