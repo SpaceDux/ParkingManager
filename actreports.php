@@ -3,16 +3,21 @@
 
 	if(isset($_GET['a'])) {
 
-	$sql = "SELECT * FROM parking WHERE company = ?";
+	$sql = "SELECT * FROM parking WHERE company = ? AND timein BETWEEN ? and ?";
 
 	$stmt = $dbConn->prepare($sql);
 	$stmt->bindParam(1, $_GET['a']);
+	$stmt->bindParam(2, $_GET['ti']);
+	$stmt->bindParam(3, $_GET['to']);
 
 	$stmt->execute();
 
 	$result = $stmt->fetchAll();
 
 	}
+
+	$ti = $_GET['ti'];
+	$to = $_GET['to'];
 
 
 ?>
@@ -22,9 +27,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Parking Manager | Hub</title>
+    <title><?php echo $_GET['a']." REPORT ".$_GET['ti']." / ".$_GET['to']?></title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="assets/css/noprint.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <!-- Morris Chart Styles-->
@@ -37,7 +43,7 @@
 </head>
 <body>
   <div id="wrapper">
-      <nav class="navbar navbar-default top-navbar" role="navigation">
+      <nav class="navbar navbar-default top-navbar no-print" role="navigation">
           <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
                   <span class="sr-only">Toggle navigation</span>
@@ -45,24 +51,25 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="<?php echo $url ?>/index.html"><strong>Parking Manager</strong></a>
+              <a class="navbar-brand" href="<?php echo $url ?>/index.php"><strong>Parking Manager</strong></a>
       </nav>
       <!--/. NAV TOP  -->
-      <nav class="navbar-default navbar-side" role="navigation">
-          <div class="sidebar-collapse">
-              <ul class="nav" id="main-menu">
+			<nav class="navbar-default navbar-side no-print" role="navigation">
+					<div class="sidebar-collapse">
+							<ul class="nav" id="main-menu">
 
-                  <li>
-                      <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
-                  </li>
-                  <li>
-                      <a href="<?php echo $url ?>/vehindex.php"><i class="fa fa-truck"></i> Vehicle Index</a>
-                  </li>
-              </ul>
+									<li>
+											<a href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
+									</li>
+									<li>
+											<a href="<?php echo $url ?>/?ComingSoon"><i class="fa fa-truck"></i> Vehicle Index</a>
+									</li>
+									<li>
+											<a class="active-menu" href="<?php echo $url ?>/reporthub.php"><i class="fa fa-flag-o"></i> Account Reports</a>
+									</li>
 
-          </div>
-
-      </nav>
+					</div>
+			</nav>
       <!-- /. NAV SIDE  -->
 
   <div id="page-wrapper">
@@ -70,7 +77,7 @@
                       <h1 class="page-header">
                           Account <small>// Reports</small>
                       </h1>
-          <ol class="breadcrumb">
+          <ol class="breadcrumb no-print">
           <li><a href="#">Home</a></li>
           <li class="active">Account Report</li>
           </ol>
@@ -87,9 +94,9 @@
 			 			 <thead>
                           <tr>
                               <th>Company</th>
-                              <td>Registration</td>
-                              <td>Trailer Number</td>
-                              <td>Ticket ID</td>
+                              <th>Registration</th>
+                              <th>Trailer Number</th>
+                              <th>Ticket ID</th>
                               <th>Type</th>
                               <th>Time In</th>
                               <th>Time Out</th>
