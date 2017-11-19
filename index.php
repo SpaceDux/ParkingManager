@@ -44,17 +44,7 @@
                     <li>
                         <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
-										<li class="">
-                        <a href="#"><i class="fa fa-truck"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                            <li>
-                                <a href="?soon">View Accounts</a>
-                            </li>
-                            <li>
-                                <a href="#">Second Level Link</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <li>
                         <a href="<?php echo $url ?>/?ComingSoon"><i class="fa fa-truck"></i> Vehicle Index</a>
                     </li>
                     <li>
