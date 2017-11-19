@@ -57,6 +57,9 @@
                     </li>
                     <li>
                         <a href="<?php echo $url ?>/index.php"><i class="fa fa-flag-o"></i> Account Reports</a>
+<<<<<<< HEAD
+>>>>>>> parent of 64e7d58... ACCOUNT REPORTS
+=======
 >>>>>>> parent of 64e7d58... ACCOUNT REPORTS
                     </li>
 										<li class="">
@@ -469,7 +472,11 @@ function saveData(){
   var paid = $('#paid').val();
   $.ajax({
   //remember to update this!
+<<<<<<< HEAD
   url: "<?php echo $url ?>/core/processor.php?p=add",
+=======
+  url: "http://localhost:8080<?php echo $url ?>core/processor.php?p=add",
+>>>>>>> parent of 64e7d58... ACCOUNT REPORTS
   type: "POST",
   data: "company="+company+"&reg="+reg+"&trlno="+trlno+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
   })
