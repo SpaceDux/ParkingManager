@@ -45,10 +45,10 @@
                         <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="<?php echo $url ?>/?ComingSoon"><i class="fa fa-truck"></i> Vehicle Index</a>
+                        <a href="<?php echo $url ?>/index.php"><i class="fa fa-truck"></i> Vehicle Index</a>
                     </li>
                     <li>
-                        <a href="<?php echo $url ?>/reporthub.php"><i class="fa fa-flag-o"></i> Account Reports</a>
+                        <a href="<?php echo $url ?>/index.php"><i class="fa fa-flag-o"></i> Account Reports</a>
                     </li>
 
             </div>
@@ -453,7 +453,7 @@ function saveData(){
   var paid = $('#paid').val();
   $.ajax({
   //remember to update this!
-  url: "http://localhost:8080/ParkingManager/core/processor.php?p=add",
+  url: "http://localhost:8080<?php echo $url ?>core/processor.php?p=add",
   type: "POST",
   data: "company="+company+"&reg="+reg+"&trlno="+trlno+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
   })

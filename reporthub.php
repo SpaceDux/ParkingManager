@@ -1,6 +1,4 @@
 <?php
-  require_once __DIR__.'/init.php'; //Init file
-
   if(isset($_POST['ti'])) {
     header('Location:'.$url.'/actreports.php?a='.$_POST['act'].'&ti='.$_POST['ti'].'&to='.$_POST['to']);
   }
@@ -34,25 +32,24 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="<?php echo $url ?>/index.php"><strong>Parking Manager</strong></a>
+              <a class="navbar-brand" href="<?php echo $url ?>/index.html"><strong>Parking Manager</strong></a>
       </nav>
       <!--/. NAV TOP  -->
-			<nav class="navbar-default navbar-side" role="navigation">
-					<div class="sidebar-collapse">
-							<ul class="nav" id="main-menu">
+      <nav class="navbar-default navbar-side" role="navigation">
+          <div class="sidebar-collapse">
+              <ul class="nav" id="main-menu">
 
-									<li>
-											<a href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
-									</li>
-									<li>
-											<a href="<?php echo $url ?>/?ComingSoon"><i class="fa fa-truck"></i> Vehicle Index</a>
-									</li>
-									<li>
-											<a class="active-menu" href="<?php echo $url ?>/reporthub.php"><i class="fa fa-flag-o"></i> Account Reports</a>
-									</li>
+                  <li>
+                      <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
+                  </li>
+                  <li>
+                      <a href="<?php echo $url ?>/index.php"><i class="fa fa-truck"></i> Vehicle Index</a>
+                  </li>
+              </ul>
 
-					</div>
-			</nav>
+          </div>
+
+      </nav>
       <!-- /. NAV SIDE  -->
 
   <div id="page-wrapper">
@@ -61,7 +58,7 @@
                           Dashboard <small>// account reports</small>
                       </h1>
           <ol class="breadcrumb">
-          <li><a href="<?php echo $url?>/index.php">Home</a></li>
+          <li><a href="#">Home</a></li>
           <li class="active">Reports Hub</li>
           </ol>
 
@@ -84,11 +81,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Report Start</label>
-                                <input type="text" class="form-control" name="ti" style="text-transform: uppercase;" value="<?php echo date("d-m-Y")?>">
+                                <input type="text" class="form-control" name="ti" style="text-transform: uppercase;" value="<?php echo date("d-m-Y 00:00:00")?>">
                             </div>
                             <div class="form-group">
                                 <label>Report End</label>
-                                <input type="text" class="form-control" name="to" style="text-transform: uppercase;" value="<?php echo date("d-m-Y")?>">
+                                <input type="text" class="form-control" name="to" style="text-transform: uppercase;" value="<?php echo date("d-m-Y 00:00:00")?>">
                             </div>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Generate Report"></input>
