@@ -3,18 +3,18 @@
 
 	if(isset($_GET['a'])) {
 
-	$sql = "SELECT * FROM parking WHERE company = ? AND timein BETWEEN ? and ?";
+		$sql = "SELECT * FROM parking WHERE company = ? AND timein >= ? and <= ?";
 
-	$stmt = $dbConn->prepare($sql);
-	$stmt->bindParam(1, $_GET['a']);
-	$stmt->bindParam(1, $_GET['ti']);
-	$stmt->bindParam(1, $_GET['to']);
+		$stmt = $dbConn->prepare($sql);
+		$stmt->bindParam(1, $_GET['a']);
+		$stmt->bindParam(2, $_GET['ti']);
+		$stmt->bindParam(3, $_GET['to']);
 
-	$stmt->execute();
+		$stmt->execute();
 
-	$result = $stmt->fetchAll();
+		$result = $stmt->fetchAll();
 
-	}
+		}
 
 
 ?>
@@ -24,9 +24,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Parking Manager | Hub</title>
+    <title><?php echo $_GET['a']." REPORT ".$_GET['ti']." / ".$_GET['to']?></title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="assets/css/noprint.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <!-- Morris Chart Styles-->

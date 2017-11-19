@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Parking Manager | Hub</title>
+    <title>Parking Manager | Generate a Report</title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
@@ -86,7 +86,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Report End</label>
-                                <input type="text" class="form-control" name="to" style="text-transform: uppercase;" value="<?php echo date("d-m-Y 00:00:00")?>">
+                                <input type="text" class="form-control" name="to" style="text-transform: uppercase;" value="<?php echo date("d-m-Y 23:59:59")?>">
                             </div>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Generate Report"></input>
