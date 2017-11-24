@@ -175,7 +175,14 @@
 	                                     echo "<td>CAR</td>";
                                      }
                                      ?>
-                                      <td><?php echo substr_replace($Parked['timein'],"/", 8, 9) ?></td>
+                                      <td>
+																				<?php
+																					$date = $Parked['timein'];
+																					$d = date('d', strtotime($date));
+																					$hms = date('H:i:s', strtotime($date));
+																					echo $d.'/'.$hms;
+																			  ?>
+																			</td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
@@ -247,7 +254,14 @@
 	                                     echo "<td>CAR</td>";
                                      }
                                      ?>
-                                      <td><?php echo substr_replace($Parked['timein'],"/", 2, 9) ?></td>
+                                      <td>
+																				<?php
+																					$date = $Parked['timein'];
+																					$d = date('d', strtotime($date));
+																					$hms = date('H:i:s', strtotime($date));
+																					echo $d.'/'.$hms;
+																				?>
+																			</td>
                                       <td><?php echo $Parked['tid'] ?></td>
                                       <td><?php echo $Parked['paid'] ?></td>
                                       <td>
@@ -300,7 +314,14 @@
                                   <tr>
                                       <td><?php echo $Parked['company']?></td>
                                       <td><?php echo $Parked['reg']?></td>
-                                      <td><?php echo substr_replace($Parked['timeout'],"/", 0, 8)?></td>
+                                      <td>
+																				<?php
+																					$date = $Parked['timeout'];
+																					$d = date('d', strtotime($date));
+																					$hms = date('H:i:s', strtotime($date));
+																					echo $d.'/'.$hms;
+																			  ?>
+																			</td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
