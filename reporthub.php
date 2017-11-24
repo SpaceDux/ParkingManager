@@ -38,16 +38,27 @@
       <!--/. NAV TOP  -->
       <nav class="navbar-default navbar-side" role="navigation">
           <div class="sidebar-collapse">
-              <ul class="nav" id="main-menu">
+            <ul class="nav" id="main-menu">
 
-                  <li>
-                      <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
-                  </li>
-                  <li>
-                      <a href="<?php echo $url ?>/index.php"><i class="fa fa-truck"></i> Vehicle Index</a>
-                  </li>
+                <li>
+                    <a class="" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
+                </li>
+                <li class="">
+                    <a href="#"><i class="fa fa-truck"></i> Vehicle Tools<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                        <li>
+                            <a href="<?php echo $url ?>/queryreg.php">Vehicle Search</a>
+                        </li>
+                    </ul>
+                <li class="active-menu">
+                    <a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                        <li>
+                            <a href="<?php echo $url ?>/reporthub.php"><i class="fa fa-flag-o"></i> Account Reports</a>
+                        </li>
+                    </ul>
+                </li>
               </ul>
-
           </div>
 
       </nav>
@@ -82,11 +93,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Report Start</label>
-                                <input type="text" class="form-control" name="ti" style="text-transform: uppercase;" value="<?php echo date("d-m-Y 00:00:00")?>">
+                                <input type="text" class="form-control" name="ti" style="text-transform: uppercase;" value="<?php echo date("Y-m-d 00:00:00")?>">
                             </div>
                             <div class="form-group">
                                 <label>Report End</label>
-                                <input type="text" class="form-control" name="to" style="text-transform: uppercase;" value="<?php echo date("d-m-Y 23:59:59")?>">
+                                <input type="text" class="form-control" name="to" style="text-transform: uppercase;" value="<?php echo date("Y-m-d 23:59:59")?>">
                             </div>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Generate Report"></input>

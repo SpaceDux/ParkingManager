@@ -44,15 +44,12 @@
                         <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
 										<li class="">
-                        <a href="#"><i class="fa fa-sitemap"></i> Vehicle Tools<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-truck"></i> Vehicle Tools<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
                             <li>
                                 <a href="<?php echo $url ?>/queryreg.php">Vehicle Search</a>
                             </li>
                         </ul>
-                    <li>
-                        <a href="<?php echo $url ?>/index.php"><i class="fa fa-truck"></i> Vehicle Index</a>
-                    </li>
 										<li class="">
 												<a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>
 												<ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
@@ -61,6 +58,7 @@
 														</li>
 												</ul>
 										</li>
+									</ul>
             </div>
         </nav>
         <!-- /. NAV SIDE  -->
@@ -177,7 +175,7 @@
 	                                     echo "<td>CAR</td>";
                                      }
                                      ?>
-                                      <td><?php echo substr_replace($Parked['timein'],"/", 2, 9) ?></td>
+                                      <td><?php echo substr_replace($Parked['timein'],"/", 8, 9) ?></td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
@@ -284,7 +282,7 @@
           <div class="col-md-5 col-sm-12 col-xs-12">
               <div class="panel panel-default">
                   <div class="panel-heading">
-                      Exited Vehicles
+                      Exit Vehicles
                   </div>
                   <div class="panel-body">
                       <div class="table-responsive">
@@ -302,7 +300,7 @@
                                   <tr>
                                       <td><?php echo $Parked['company']?></td>
                                       <td><?php echo $Parked['reg']?></td>
-                                      <td><?php echo substr_replace($Parked['timeout'],"/", 2, 9)?></td>
+                                      <td><?php echo substr_replace($Parked['timeout'],"/", 0, 8)?></td>
                                       <td>
                                         <!-- Split button -->
                                       <div class="btn-group pull-right">
@@ -387,7 +385,7 @@
 
               <div class="form-group">
                 <label>Time in</label>
-                <input type="text" class="form-control" id="timein" name="timein" value="<?php echo date("d-m-Y H:i:00")?>" placeholder="Time of Arrival...">
+                <input type="text" class="form-control" id="timein" name="timein" value="<?php echo date("Y-m-d H:i:s")?>" placeholder="Time of Arrival...">
               </div>
 
               <div class="form-group">

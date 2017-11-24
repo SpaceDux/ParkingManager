@@ -9,13 +9,13 @@
 	//Mysql USername
 	$dbU = "root";
 	//Mysql password
-	$dbPw = "1123";
+	$dbPw = "";
 	//Database name
 	$dbSel = "rkpm";
 
 
 	//Website Configuration
 	//Website URL
-	$url = "http://localhost/ParkingManager";
+	$url = "http://localhost:8080/ParkingManager";
 
 ?>

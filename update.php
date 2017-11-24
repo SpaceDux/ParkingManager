@@ -200,7 +200,7 @@
                      </div>
                      <div class="form-group">
                        <label>Time EXIT</label>
-                         <input type="text" class="form-control" name="timeout" placeholder="Leave blank until vehicle leaves, use format 22-09-2012 11:23:00" value="<?php echo $result['timeout']?>">
+                         <input type="text" class="form-control" name="timeout" placeholder="Leave blank until vehicle leaves, use format <?php echo date("Y-m-d H:i:s")?>" value="<?php echo $result['timeout']?>">
                        </div>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Update"></input>

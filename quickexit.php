@@ -4,7 +4,7 @@
   $id = $_GET['id'];
   $sql = "UPDATE parking SET timeout = :timeout, col = '3' WHERE id = $id";
   $stmt = $dbConn->prepare($sql);
-  $stmt->bindParam(':timeout', date("d-m-Y H:i:00"));
+  $stmt->bindParam(':timeout', date("Y-m-d H:i:00"));
 
   if ($stmt->execute()) {
     header('Location:'.$url.'/index.php');
