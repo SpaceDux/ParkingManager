@@ -32,7 +32,7 @@
 		$stmt2->bindParam(':timeout', $_POST['timeout']);
 
 		if($stmt2->execute()) {
-			header('Location:'.$url.'/update.php?id='.$id.'?ud=success');
+			header('Location:'.$url.'/update.php?id='.$id);
 			$message = "You have successfully updated this record!";
 		} else {
 			$message = "The record has not been updated!";
@@ -72,21 +72,31 @@
               <a class="navbar-brand" href="<?php echo $url ?>/index.php"><strong>Parking Manager</strong></a>
       </nav>
       <!--/. NAV TOP  -->
-      <nav class="navbar-default navbar-side" role="navigation">
-          <div class="sidebar-collapse">
-              <ul class="nav" id="main-menu">
+			<nav class="navbar-default navbar-side" role="navigation">
+					<div class="sidebar-collapse">
+							<ul class="nav" id="main-menu">
 
-                  <li>
-                      <a class="active-menu" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
-                  </li>
-                  <li>
-                      <a href="<?php echo $url ?>/index.php"><i class="fa fa-truck"></i> Vehicle Index</a>
-                  </li>
-              </ul>
-
-          </div>
-
-      </nav>
+									<li>
+											<a class="" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
+									</li>
+									<li class="active-menu">
+											<a href="#"><i class="fa fa-truck"></i> Vehicle Tools<span class="fa arrow"></span></a>
+											<ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+													<li>
+															<a href="<?php echo $url ?>/queryreg.php">Vehicle Search</a>
+													</li>
+											</ul>
+									<li class="">
+											<a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>
+											<ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+													<li>
+															<a href="<?php echo $url ?>/reporthub.php"><i class="fa fa-flag-o"></i> Account Reports</a>
+													</li>
+											</ul>
+									</li>
+								</ul>
+					</div>
+			</nav>
       <!-- /. NAV SIDE  -->
 
   <div id="page-wrapper">
