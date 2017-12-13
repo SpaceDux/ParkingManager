@@ -57,9 +57,6 @@
 										<li class="">
                         <a href="#"><i class="fa fa-truck"></i> Vehicle Tools<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                            <li>
-                                <a href="<?php echo $url ?>/queryreg.php">Vehicle Search</a>
-                            </li>
                         </ul>
 										<li class="">
 												<a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>
