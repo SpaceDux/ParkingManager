@@ -1,21 +1,19 @@
 <?php
 	require_once __DIR__.'/init.php'; //Init file
 
-	if(isset($_GET['a'])) {
+  if(isset($_POST['q'])) {
+  $q = $_POST['q'];
 
-		$sql = "SELECT * FROM parking WHERE company = ? AND timein BETWEEN ? and ?";
+  $sql = "SELECT * FROM parking WHERE reg = ? LIMIT 15";
+  $stmt = $dbConn->prepare($sql);
+  $stmt->bindParam(1, $q);
+  $stmt->execute();
 
-		$stmt = $dbConn->prepare($sql);
-		$stmt->bindParam(1, $_GET['a']);
-		$stmt->bindParam(2, $_GET['ti']);
-		$stmt->bindParam(3, $_GET['to']);
+  $result = $stmt->fetchAll();
 
-		$stmt->execute();
-
-		$result = $stmt->fetchAll();
-
-		}
-
+} else {
+  die("its working hunni");
+}
 
 ?>
 <!DOCTYPE html>
@@ -58,14 +56,14 @@
 								<li>
 										<a class="" href="<?php echo $url ?>/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
 								</li>
-								<li class="">
+								<li class="active-menu">
 										<a href="#"><i class="fa fa-truck"></i> Vehicle Tools<span class="fa arrow"></span></a>
 										<ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
 												<li>
 														<a href="<?php echo $url ?>/queryreg.php">Vehicle Search</a>
 												</li>
 										</ul>
-								<li class="active-menu">
+								<li class="">
 										<a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>
 										<ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
 												<li>
@@ -82,11 +80,11 @@
   <div id="page-wrapper">
     <div class="header">
                       <h1 class="page-header">
-                          Accounts <small>// Report</small>
+                          Vehicle Tools <small>// Query</small>
                       </h1>
           <ol class="breadcrumb no-print">
           <li><a href="#">Home</a></li>
-          <li class="active">Accounts Report</li>
+          <li class="active">Query Vehicle</li>
           </ol>
 
   </div>
@@ -95,11 +93,12 @@
      <div class="col-lg-12">
          <div class="panel panel-default">
              <div class="panel-heading">
-                 Account Report for <?php echo $_GET['a']?>
+                 Vehicle Query for <?php echo $q ?>
              </div>
 			 		<table class="table table-bordered">
 			 			 <thead>
                           <tr>
+                              <th>Company</th>
                               <th>Registration</th>
                               <th>Trailer Number</th>
                               <th>Ticket ID</th>
@@ -112,6 +111,7 @@
                       	 	<?php foreach( $result as $report ) { ?>
 					  	 <tbody>
 					  	 	<tr>
+                   <td><?php echo $report['company'] ?></td>
 						  	   <td><?php echo $report['reg'] ?></td>
 						  	   <td><?php echo $report['trlno'] ?></td>
 						  	   <td><?php echo $report['tid'] ?></td>
@@ -139,8 +139,10 @@
 									$hours = $hours + ($interval->days*24);
 									echo "<td>".$hours." Hours & ".$interval->format('%i')." Minutes</td>";
 						  	   }?>
-					  	 	</tr>
-					  	 </tbody>
+                   <td><a href="<?php echo $url ?>/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-cog"></span></a></td>
+
+					  	 	  </tr>
+               </tbody>
 					  	 	<?php } ?>
 					</table>
                  <!-- /.row (nested) -->

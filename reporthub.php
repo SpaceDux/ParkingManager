@@ -93,11 +93,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Report Start</label>
-                                <input type="text" class="form-control" name="ti" style="text-transform: uppercase;" value="<?php echo date("Y-m-d 00:00:00")?>">
+                                <input type="text" class="form-control" name="ti" style="text-transform: uppercase;" value="<?php echo date("Y-m-01 00:00:00")?>">
                             </div>
                             <div class="form-group">
                                 <label>Report End</label>
-                                <input type="text" class="form-control" name="to" style="text-transform: uppercase;" value="<?php echo date("Y-m-d 23:59:59")?>">
+                                <input type="text" class="form-control" name="to" style="text-transform: uppercase;" value="<?php echo date("Y-m-31 23:59:59")?>">
                             </div>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Generate Report"></input>

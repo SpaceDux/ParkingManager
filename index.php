@@ -34,6 +34,17 @@
 			                    <span class="icon-bar"></span>
 			                </button>
 			                <a class="navbar-brand" href="index.php"><strong>Parking Manager</strong></a>
+										</div>
+											<div class="col-sm-3 col-md-3 pull-right">
+													<form class="navbar-form" role="search" method="POST" action="queryreg.php">
+													<div class="input-group">
+															<input type="text" class="form-control" placeholder="Query a Reg" name="q">
+															<div class="input-group-btn">
+																	<button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+															</div>
+													</div>
+													</form>
+											</div>
 			        </nav>
                 <!--/. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
