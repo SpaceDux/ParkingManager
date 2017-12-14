@@ -147,7 +147,7 @@
 									$hours = $hours + ($interval->days*24);
 									echo "<td>".$hours." Hours & ".$interval->format('%i')." Minutes</td>";
 						  	   }?>
-                   <td><a href="<?php echo $url ?>/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-cog"></span></a></td>
+                   <td><a href="<?php echo $url ?>/update.php?id=<?php echo $report['id']?>" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-cog"></span></a></td>
 
 					  	 	  </tr>
                </tbody>
