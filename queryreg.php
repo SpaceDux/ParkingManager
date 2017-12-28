@@ -103,6 +103,7 @@
              <div class="panel-heading">
                  Vehicle Query for <?php echo $q ?>
              </div>
+
 			 		<table class="table table-bordered">
 			 			 <thead>
                           <tr>

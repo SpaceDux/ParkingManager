@@ -14,8 +14,7 @@
 
 		$result = $stmt->fetchAll();
 
-		}
-
+	}
 
 ?>
 <!DOCTYPE html>
