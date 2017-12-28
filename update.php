@@ -222,7 +222,8 @@
                        </div>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Update"></input>
-                        </form>
+										 </form>
+											 <a href="<?php echo $url ?>/highlight.php?id=<?php echo $result['id'] ?>&col=0"><button class="btn btn-warning">Remove Highlight</button></a>
                  </div>
                  <!-- /.row (nested) -->
              </div>

@@ -270,7 +270,7 @@
 																					echo $d.'/'.$hms;
 																				?>
 																			</td>
-                                      <td><?php echo $Parked['tid'] ?></td>
+                                      <td><?php echo substr($Parked['tid'], -6) ?></td>
                                       <td><?php echo $Parked['paid'] ?></td>
                                       <td>
                                         <!-- Split button -->
