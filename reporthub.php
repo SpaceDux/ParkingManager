@@ -57,6 +57,9 @@
                 <li class="">
                     <a href="#"><i class="fa fa-truck"></i> Vehicle Tools<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                      <li>
+                          <a href="<?php echo $url ?>/yrdchk.php" target="_blank"><i class="fa fa-flag-o"></i> Yard Check</a>
+                      </li>
                     </ul>
                 <li class="active-menu">
                     <a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>

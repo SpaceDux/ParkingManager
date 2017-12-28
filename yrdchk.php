@@ -1,19 +1,10 @@
 <?php
 	require_once __DIR__.'/init.php'; //Init file
 
-  if(isset($_POST['q'])) {
-  $q = $_POST['q'];
-
-  $sql = "SELECT * FROM parking WHERE reg = ? LIMIT 15";
-  $stmt = $dbConn->prepare($sql);
-  $stmt->bindParam(1, $q);
-  $stmt->execute();
-
-  $result = $stmt->fetchAll();
-
-} else {
-  die("its working hunni");
-}
+		$sql = "SELECT * FROM parking WHERE col != 3";
+		$stmt = $dbConn->prepare($sql);
+		$stmt->execute();
+		$result = $stmt->fetchAll();
 
 ?>
 <!DOCTYPE html>
@@ -22,7 +13,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo $_GET['a']." REPORT ".$_GET['ti']." / ".$_GET['to']?></title>
+    <title>Parking Manager | Yard Check</title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <link href="assets/css/noprint.css" rel="stylesheet" />
@@ -47,17 +38,17 @@
                   <span class="icon-bar"></span>
               </button>
               <a class="navbar-brand" href="<?php echo $url ?>/index.php"><strong>Parking Manager</strong></a>
-            </div>
-              <div class="col-sm-3 col-md-3 pull-right">
-                  <form class="navbar-form" role="search" method="POST" action="queryreg.php">
-                  <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Query a Reg" name="q">
-                      <div class="input-group-btn">
-                          <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                      </div>
-                  </div>
-                  </form>
-              </div>
+						</div>
+							<div class="col-sm-3 col-md-3 pull-right">
+									<form class="navbar-form" role="search" method="POST" action="queryreg.php">
+									<div class="input-group">
+											<input type="text" class="form-control" placeholder="Query a Reg" name="q">
+											<div class="input-group-btn">
+													<button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+											</div>
+									</div>
+									</form>
+							</div>
       </nav>
       <!--/. NAV TOP  -->
       <nav class="navbar-default navbar-side no-print" role="navigation">
@@ -91,11 +82,11 @@
   <div id="page-wrapper">
     <div class="header">
                       <h1 class="page-header">
-                          Vehicle Tools <small>// Query</small>
+                          Tools <small>// Yard Check</small>
                       </h1>
           <ol class="breadcrumb no-print">
           <li><a href="#">Home</a></li>
-          <li class="active">Query Vehicle</li>
+          <li class="active">Yard Check</li>
           </ol>
 
   </div>
@@ -104,9 +95,8 @@
      <div class="col-lg-12">
          <div class="panel panel-default">
              <div class="panel-heading">
-                 Vehicle Query for <?php echo $q ?>
+                 Yard Check
              </div>
-
 			 		<table class="table table-bordered">
 			 			 <thead>
                           <tr>
@@ -116,8 +106,6 @@
                               <th>Ticket ID</th>
                               <th>Type</th>
                               <th>Time In</th>
-                              <th>Time Out</th>
-                              <th>Duration</th>
                           </tr>
                       	 </thead>
                       	 	<?php foreach( $result as $report ) { ?>
@@ -142,19 +130,8 @@
 									 }
 									 ?>
 						  	   <td><?php echo $report['timein'] ?></td>
-						  	   <td><?php echo $report['timeout'] ?></td>
-						  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
-									$datetime1 = new DateTime($report['timein']);
-									$datetime2 = new DateTime($report['timeout']);
-									$interval = $datetime2->diff($datetime1);
-									$hours = $interval->h;
-									$hours = $hours + ($interval->days*24);
-									echo "<td>".$hours." Hours & ".$interval->format('%i')." Minutes</td>";
-						  	   }?>
-                   <td><a href="<?php echo $url ?>/update.php?id=<?php echo $report['id']?>" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-cog"></span></a></td>
-
-					  	 	  </tr>
-               </tbody>
+					  	 	</tr>
+					  	 </tbody>
 					  	 	<?php } ?>
 					</table>
                  <!-- /.row (nested) -->
