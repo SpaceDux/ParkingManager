@@ -127,12 +127,12 @@
                     <div class="col-md-3 col-sm-12 col-xs-12">
                         <div class="panel panel-primary text-center no-boder blue">
                             <div class="panel-left pull-left blue">
-                                <i class="fa fa-users fa-5x"></i>
+                                <i class="fa fa-truck fa-5x"></i>
 
                             </div>
                             <div class="panel-right">
-							<h3>72,525 </h3>
-                             <strong>What About Here?</strong>
+							<h3>200 </h3>
+                             <strong>Total trucks on Account (SOON)</strong>
 
                             </div>
                         </div>
