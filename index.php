@@ -16,7 +16,7 @@
 	    <!-- Bootstrap Styles-->
 	    <link href="assets/css/bootstrap.css" rel="stylesheet" />
 	    <!-- FontAwesome Styles-->
-	    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+			<script src="https://use.fontawesome.com/d70688b1a2.js"></script>
 	    <!-- Custom Styles-->
 	    <link href="assets/css/custom-styles.css" rel="stylesheet" />
 	    <!-- Google Fonts-->
