@@ -5,12 +5,6 @@
 	$fetchBreak = $Parked->fetchBreak();
 	$fetchPaid = $Parked->fetchPaid();
 	$fetchExit = $Parked->fetchExit();
-
-	$sql = "SELECT * FROM parking WHERE tid = ''";
-	$stmt = $dbConn->prepare($sql);
-	$stmt->execute();
-
-	$countBreak = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -120,12 +114,12 @@
                     <div class="col-md-3 col-sm-12 col-xs-12">
                         <div class="panel panel-primary text-center no-boder blue">
                             <div class="panel-left pull-left blue">
-                                <i class="fa fa fa-comments fa-5x"></i>
+                                <i class="fa fa fa-coffee fa-5x"></i>
 
                             </div>
                             <div class="panel-right">
-							 <h3><?php echo count($countBreak) ?> </h3>
-                               <strong> Total Breaks (UNPAID)</strong>
+							 <h3>123</h3>
+                               <strong> Total Breaks (UNPAID) (SOON)</strong>
 
                             </div>
                         </div>
