@@ -6,6 +6,11 @@
 	$fetchPaid = $Parked->fetchPaid();
 	$fetchExit = $Parked->fetchExit();
 
+	$sql = "SELECT * FROM parking WHERE tid = ''";
+	$stmt = $dbConn->prepare($sql);
+	$stmt->execute();
+
+	$countBreak = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -119,8 +124,8 @@
 
                             </div>
                             <div class="panel-right">
-							 <h3>122 </h3>
-                               <strong> What Else Can Go here! </strong>
+							 <h3><?php echo count($countBreak) ?> </h3>
+                               <strong> Total Breaks (UNPAID)</strong>
 
                             </div>
                         </div>
@@ -478,6 +483,7 @@
 <!-- Custom Js -->
 <script src="assets/js/custom-scripts.js"></script>
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/mousetrap/1.4.6/mousetrap.min.js"></script>
 <script>
 $('.modal').on('shown.bs.modal', function() {
 $(this).find('[autofocus]').focus();
@@ -498,6 +504,10 @@ function saveData(){
   data: "company="+company+"&reg="+reg+"&trlno="+trlno+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
   })
 }
+Mousetrap.bind('tab', function() {
+  $('#addModal').modal('show');
+});
+
 </script>
 
 
