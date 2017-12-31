@@ -19,7 +19,8 @@
 		tid = :tid,
 		col = :col,
 		paid = :paid,
-		timeout = :timeout WHERE id = $id";
+		timeout = :timeout,
+		comment = :comment WHERE id = $id";
 		$stmt2 = $dbConn->prepare($sql);
 		$stmt2->bindParam(':company', strtoupper($_POST['company']));
 		$stmt2->bindParam(':reg', strtoupper($_POST['reg']));
@@ -30,6 +31,7 @@
 		$stmt2->bindParam(':col', $_POST['column']);
 		$stmt2->bindParam(':paid', strtoupper($_POST['paid']));
 		$stmt2->bindParam(':timeout', $_POST['timeout']);
+		$stmt2->bindParam(':comment', $_POST['comment']);
 
 		if($stmt2->execute()) {
 			header('Location:'.$url.'/update.php?id='.$id);
@@ -222,7 +224,11 @@
                      <div class="form-group">
                        <label>Time EXIT</label>
                          <input type="text" class="form-control" name="timeout" placeholder="Leave blank until vehicle leaves, use format <?php echo date("Y-m-d H:i:s")?>" value="<?php echo $result['timeout']?>">
-                       </div>
+                     </div>
+										 <div class="form-group">
+											 <label>Comment</label>
+												 <input type="text" class="form-control" name="comment" placeholder="Add a comment: Took shower" value="<?php echo $result['comment']?>">
+										 </div>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Update"></input>
 										 </form>
