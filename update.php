@@ -185,6 +185,10 @@
                                    Car
                                  </label>
                                </div>
+															 <div class="form-group">
+																 <label>Comment</label>
+																	 <input type="text" class="form-control" name="comment" placeholder="Add a comment: Took shower" value="<?php echo $result['comment']?>">
+															 </div>
                      </div>
                      <!-- /.col-lg-6 (nested) -->
                      <div class="col-lg-6">
@@ -225,10 +229,7 @@
                        <label>Time EXIT</label>
                          <input type="text" class="form-control" name="timeout" placeholder="Leave blank until vehicle leaves, use format <?php echo date("Y-m-d H:i:s")?>" value="<?php echo $result['timeout']?>">
                      </div>
-										 <div class="form-group">
-											 <label>Comment</label>
-												 <input type="text" class="form-control" name="comment" placeholder="Add a comment: Took shower" value="<?php echo $result['comment']?>">
-										 </div>
+										 <br>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Update"></input>
 										 </form>

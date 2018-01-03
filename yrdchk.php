@@ -129,8 +129,13 @@
 									 }
 									 ?>
 						  	   <td><?php echo $report['timein'] ?></td>
+									 <td><div class="form-check">
+											<input type="checkbox" class="form-check-input" id="exampleCheck1">
+											</div>
+									 </td>
 					  	 	</tr>
 					  	 </tbody>
+
 					  	 	<?php } ?>
 					</table>
                  <!-- /.row (nested) -->

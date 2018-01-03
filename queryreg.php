@@ -10,9 +10,6 @@
   $stmt->execute();
 
   $result = $stmt->fetchAll();
-
-} else {
-  die("its working hunni");
 }
 
 ?>
@@ -22,7 +19,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo $_GET['a']." REPORT ".$_GET['ti']." / ".$_GET['to']?></title>
+    <title><?php echo $q ?> Query</title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <link href="assets/css/noprint.css" rel="stylesheet" />
