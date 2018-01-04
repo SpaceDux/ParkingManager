@@ -498,6 +498,16 @@ function saveData(){
   data: "company="+company+"&reg="+reg+"&trlno="+trlno+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
   })
 }
+function renewal(){
+  var id = $('#id').val();
+  var reg = $('#col').val();
+  $.ajax({
+  //remember to update this!
+  url: "<?php echo $url ?>/highlight.php",
+  type: "POST",
+  data: "id="+id+"col="+col
+  })
+}
 Mousetrap.bind('tab', function() {
   $('#addModal').modal('show');
 });

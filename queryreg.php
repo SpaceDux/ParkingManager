@@ -3,13 +3,14 @@
 
   if(isset($_POST['q'])) {
   $q = $_POST['q'];
+  $q2 = "%".$_POST['q']."%";
 
-  $sql = "SELECT * FROM parking WHERE reg = ? LIMIT 15";
+	$sql = "SELECT * FROM parking WHERE reg = ? OR tid LIKE ? LIMIT 15";
   $stmt = $dbConn->prepare($sql);
   $stmt->bindParam(1, $q);
+  $stmt->bindParam(2, $q2);
   $stmt->execute();
-
-  $result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 }
 
 ?>

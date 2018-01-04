@@ -4,11 +4,20 @@
     form,
     .no-print
     {
-        display: none !important;
+        display: inherit !important;
         height: 0;
     }
     .no-print, .no-print *{
+        display: inherit !important;
+        height: 0;
+    }
+    #no-print
+    {
         display: none !important;
+        height: 0;
+    }
+    #no-print, #no-print *{
+        display: inherit !important;
         height: 0;
     }
 }
