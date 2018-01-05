@@ -34,9 +34,9 @@
 		$stmt2->bindParam(':comment', $_POST['comment']);
 
 		if($stmt2->execute()) {
-			header('Location:'.$url.'/update.php?id='.$id.'?SAVED');
+			header('Location:'.$url.'/update.php?id='.$id);
 		} else {
-			header('Location:'.$url.'/update.php?id='.$id.'?NOT_SAVED');
+			$message = "Unable to save, please check everything is correct";
 		}
 	}
 

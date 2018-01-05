@@ -93,7 +93,7 @@
 								</div>
 
                             <div class="panel-right">
-							<h3><?php echo count($fetchBreak) + count($fetchPaid)?><small>/200</small></h3>
+							<h3><?php echo count($fetchBreak) + count($fetchPaid) + count($fetchRenewal)?><small>/200</small></h3>
                                <strong> Total Spaces Used</strong>
 
                             </div>
@@ -128,12 +128,12 @@
                     <div class="col-md-3 col-sm-12 col-xs-12">
                         <div class="panel panel-primary text-center no-boder blue">
                             <div class="panel-left pull-left blue">
-                                <i class="fa fa-truck fa-5x"></i>
+                                <i class="fa fa-clock-o fa-5x"></i>
 
                             </div>
                             <div class="panel-right">
-							<h3>200 </h3>
-                             <strong>Total trucks on Account (SOON)</strong>
+							<h3><?php echo count($fetchRenewal) ?> </h3>
+                             <strong>Total amount of marked Renewals</strong>
 
                             </div>
                         </div>
@@ -328,7 +328,7 @@
                                        <td><?php echo $Parked['reg']?></td>
                                        <td>
  																				<?php
- 																					$date = $Parked['timeout'];
+ 																					$date = $Parked['timein'];
  																					$d = date('d', strtotime($date));
  																					$hms = date('H:i:s', strtotime($date));
  																					echo $d.'/'.$hms;
@@ -336,9 +336,23 @@
  																			</td>
                                        <td>
                                          <!-- Split button -->
-                                       <div class="btn-group pull-right">
-                                         <a href="<?php echo $url ?>/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-cog"></span></a>
-                                       </div>
+																				 <div class="btn-group pull-right">
+	                                         <a href="<?php echo $url ?>/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-cog"></span></a>
+	                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                                           <span class="caret"></span>
+	                                           <span class="sr-only">Toggle Dropdown</span>
+	                                         </button>
+	                                         <ul class="dropdown-menu">
+	 																					<li><a href="<?php echo $url ?>/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
+	 																					<li role="separator" class="divider"></li>
+	                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=1">Renewal</a></li>
+	                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
+	                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
+	                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
+	 																					<li role="separator" class="divider"></li>
+	 																					<li><a href="<?php echo $url ?>/duplicate.php?id=<?php echo $Parked['id'] ?>"> Mark Duplicate</a></li>
+	                                         </ul>
+	                                       </div>
                                        </td>
                                    </tr>
                                </tbody>

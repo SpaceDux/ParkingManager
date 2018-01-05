@@ -3,7 +3,7 @@
 
 	if(isset($_GET['a'])) {
 
-		$sql = "SELECT * FROM parking WHERE company = ? AND timein BETWEEN ? and ?";
+		$sql = "SELECT * FROM parking WHERE company = ? AND col != '4' AND timein BETWEEN ? and ? ORDER by type";
 
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(1, $_GET['a']);
@@ -43,7 +43,7 @@
 	     <div class="col-lg-12">
 	         <div class="panel panel-default">
 	             <div class="panel-heading no-print">
-	                 Account Report
+	                 Account Report for <?php echo $_GET['a'] ?>
 	             </div>
 			 		<table class="table table-bordered">
 			 			 <thead>
