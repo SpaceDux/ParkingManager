@@ -5,6 +5,7 @@
 	$fetchBreak = $Parked->fetchBreak();
 	$fetchPaid = $Parked->fetchPaid();
 	$fetchExit = $Parked->fetchExit();
+	$fetchRenewal = $Parked->fetchRenewal();
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -201,14 +202,15 @@
                                           <span class="caret"></span>
                                           <span class="sr-only">Toggle Dropdown</span>
                                         </button>
-                                        <ul class="dropdown-menu">
-                                          <li><a href="<?php echo $url ?>/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
-                                          <li role="separator" class="divider"></li>
+																				<ul class="dropdown-menu">
+																					<li><a href="<?php echo $url ?>/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
+																					<li role="separator" class="divider"></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=1">Renewal</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
-
+																					<li role="separator" class="divider"></li>
+																					<li><a href="<?php echo $url ?>/duplicate.php?id=<?php echo $Parked['id'] ?>"> Mark Duplicate</a></li>
                                         </ul>
                                       </div>
                                       </td>
@@ -283,13 +285,14 @@
                                           <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                          <li><a href="<?php echo $url ?>/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
-                                          <li role="separator" class="divider"></li>
+																					<li><a href="<?php echo $url ?>/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
+																					<li role="separator" class="divider"></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=1">Renewal</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
-
+																					<li role="separator" class="divider"></li>
+																					<li><a href="<?php echo $url ?>/duplicate.php?id=<?php echo $Parked['id'] ?>"> Mark Duplicate</a></li>
                                         </ul>
                                       </div>
                                       </td>
@@ -302,6 +305,49 @@
               </div>
            </div>
 
+					 <div class="col-md-5 col-sm-12 col-xs-12">
+               <div class="panel panel-default">
+                   <div class="panel-heading">
+                       Renewal Vehicles
+                   </div>
+                   <div class="panel-body">
+                       <div class="table-responsive">
+                           <table class="table table-striped table-bordered table-hover">
+                               <thead>
+                                   <tr>
+                                       <th>Company</th>
+                                       <th>Registration</th>
+                                       <th>Time IN</th>
+                                       <th>Options</th>
+                                   </tr>
+                               </thead>
+                               <?php foreach ($fetchRenewal as $Parked) { ?>
+                               <tbody>
+                                   <tr>
+                                       <td><?php echo $Parked['company']?></td>
+                                       <td><?php echo $Parked['reg']?></td>
+                                       <td>
+ 																				<?php
+ 																					$date = $Parked['timeout'];
+ 																					$d = date('d', strtotime($date));
+ 																					$hms = date('H:i:s', strtotime($date));
+ 																					echo $d.'/'.$hms;
+ 																			  ?>
+ 																			</td>
+                                       <td>
+                                         <!-- Split button -->
+                                       <div class="btn-group pull-right">
+                                         <a href="<?php echo $url ?>/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-cog"></span></a>
+                                       </div>
+                                       </td>
+                                   </tr>
+                               </tbody>
+                               <?php } ?>
+														 </table>
+                         </div>
+                   </div>
+               </div>
+           </div>
 
           <div class="col-md-5 col-sm-12 col-xs-12">
               <div class="panel panel-default">
@@ -341,10 +387,12 @@
                                   </tr>
                               </tbody>
                               <?php } ?>
-                        </div>
+														</table>
+											  </div>
                   </div>
               </div>
           </div>
+
       </div>
     </div>
     <!-- Modal / Add vehicle -->

@@ -5,25 +5,33 @@
 			$sql = "SELECT * FROM parking WHERE col = 1 ORDER BY timein DESC";
 			$stmt = $dbConn->prepare($sql);
 			$stmt->execute();
-			
+
 			return $stmt->fetchAll();
 		}
 		function fetchPaid() {
 			global $dbConn;
-			$sql = "SELECT * FROM parking WHERE col = 2 ORDER BY timein asc";
+			$sql = "SELECT * FROM parking WHERE col = 2 AND h_light != 1 ORDER BY timein asc";
 			$stmt = $dbConn->prepare($sql);
 			$stmt->execute();
-			
+
 			return $stmt->fetchAll();
 		}
 		function fetchExit() {
 			global $dbConn;
-			$sql = "SELECT * FROM parking WHERE col = 3 ORDER BY timeout desc LIMIT 20";
+			$sql = "SELECT * FROM parking WHERE col = 3 ORDER BY timeout desc LIMIT 30";
 			$stmt = $dbConn->prepare($sql);
 			$stmt->execute();
-			
+
 			return $stmt->fetchAll();
 		}
-	}	
-	
+		function fetchRenewal() {
+			global $dbConn;
+			$sql = "SELECT * FROM parking WHERE h_light = 1 ORDER BY timein desc";
+			$stmt = $dbConn->prepare($sql);
+			$stmt->execute();
+
+			return $stmt->fetchAll();
+		}
+	}
+
 ?>

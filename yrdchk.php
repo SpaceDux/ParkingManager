@@ -68,9 +68,13 @@
 									 }
 									 ?>
 						  	   <td><?php echo $report['timein'] ?></td>
-									 <td><div class="form-check">
+									 <td>
+										 <div class="btn-group pull-right">
+											 <a href="<?php echo $url ?>/update.php?id=<?php echo $report['id']?>" type="button" class="btn btn-danger" target="_blank"> <span class="glyphicon glyphicon-cog"></span></a>
+										 </div>
+										 <div class="form-check">
 											<input type="checkbox" class="form-check-input" id="exampleCheck1">
-											</div>
+										 </div>
 									 </td>
 					  	 	</tr>
 					  	 </tbody>

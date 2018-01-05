@@ -34,10 +34,9 @@
 		$stmt2->bindParam(':comment', $_POST['comment']);
 
 		if($stmt2->execute()) {
-			header('Location:'.$url.'/update.php?id='.$id);
-			$message = "You have successfully updated this record!";
+			header('Location:'.$url.'/update.php?id='.$id.'?SAVED');
 		} else {
-			$message = "The record has not been updated!";
+			header('Location:'.$url.'/update.php?id='.$id.'?NOT_SAVED');
 		}
 	}
 
@@ -233,7 +232,7 @@
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Update"></input>
 										 </form>
-											 <a href="<?php echo $url ?>/highlight.php?id=<?php echo $result['id'] ?>&col=0"><button class="btn btn-warning">Remove Highlight</button></a>
+											 <a href="<?php echo $url ?>/highlight.php?id=<?php echo $result['id'] ?>&col=0"><button class="btn btn-warning">Renewal Processed</button></a>
 											 <a href="<?php echo $url ?>/quickexit.php?id=<?php echo $result['id'] ?>"><button class="btn btn-danger">Quick Exit</button></a>
                  </div>
                  <!-- /.row (nested) -->
