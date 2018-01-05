@@ -149,8 +149,24 @@
 									$hours = $hours + ($interval->days*24);
 									echo "<td>".$hours." Hours & ".$interval->format('%i')." Minutes</td>";
 						  	   }?>
-                   <td><a href="<?php echo $url ?>/update.php?id=<?php echo $report['id']?>" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-cog"></span></a></td>
-
+                   <td>
+										 <div class="btn-group pull-right">
+											 <a href="<?php echo $url ?>/update.php?id=<?php echo $report['id']?>" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-cog"></span></a>
+											 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												 <span class="caret"></span>
+												 <span class="sr-only">Toggle Dropdown</span>
+											 </button>
+											 <ul class="dropdown-menu">
+												<li><a href="<?php echo $url ?>/quickexit.php?id=<?php echo $report['id'] ?>">Quick Exit</a></li>
+												<li role="separator" class="divider"></li>
+												 <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $report['id'] ?>&col=1">Renewal</a></li>
+												 <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $report['id'] ?>&col=2">Mark 48hr</a></li>
+												 <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $report['id'] ?>&col=3">Mark 72hr</a></li>
+												 <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $report['id'] ?>&col=0">Remove Highlight</a></li>
+												<li role="separator" class="divider"></li>
+												<li><a href="<?php echo $url ?>/duplicate.php?id=<?php echo $report['id'] ?>"> Mark Duplicate</a></li>
+											 </ul>
+										 </div>
 					  	 	  </tr>
                </tbody>
 					  	 	<?php } ?>
