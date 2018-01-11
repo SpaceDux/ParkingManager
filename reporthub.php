@@ -120,6 +120,8 @@
          </div>
          <!-- /.panel -->
      </div>
+     <center><footer>Property of <a href="http://ryanadamwilliams.co.uk">Ryan Adam Williams</a> ~ Parking Manager &copy; 2018</footer></center>
+
      <!-- /.col-lg-12 -->
  </div>
 </div>

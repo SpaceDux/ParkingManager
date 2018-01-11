@@ -4,11 +4,15 @@
   if(isset($_POST['q'])) {
   $q = $_POST['q'];
   $q2 = "%".$_POST['q']."%";
+	$q3 = $_POST['q'];
+	$q4 = $_POST['q'];
 
-	$sql = "SELECT * FROM parking WHERE reg = ? OR tid LIKE ?";
+	$sql = "SELECT * FROM parking WHERE reg = ? OR tid LIKE ? OR company = ? OR trlno = ? ORDER by timein DESC LIMIT 50";
   $stmt = $dbConn->prepare($sql);
   $stmt->bindParam(1, $q);
   $stmt->bindParam(2, $q2);
+  $stmt->bindParam(3, $q3);
+  $stmt->bindParam(4, $q4);
   $stmt->execute();
 	$result = $stmt->fetchAll();
 }
@@ -171,8 +175,10 @@
                </tbody>
 					  	 	<?php } ?>
 					</table>
+
                  <!-- /.row (nested) -->
              </div>
+						 <center><footer>Property of <a href="http://ryanadamwilliams.co.uk">Ryan Adam Williams</a> ~ Parking Manager &copy; 2018</footer></center>
              <!-- /.panel-body -->
          </div>
          <!-- /.panel -->

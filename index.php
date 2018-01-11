@@ -408,6 +408,7 @@
           </div>
 
       </div>
+			<center><footer>Property of <a href="http://ryanadamwilliams.co.uk">Ryan Adam Williams</a> ~ Parking Manager &copy; 2018</footer></center>
     </div>
     <!-- Modal / Add vehicle -->
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">

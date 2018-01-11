@@ -1,7 +1,7 @@
 <?php
 	require_once __DIR__.'/init.php'; //Init file
 
-		$sql = "SELECT * FROM parking WHERE col != 3";
+		$sql = "SELECT * FROM parking WHERE col < 3";
 		$stmt = $dbConn->prepare($sql);
 		$stmt->execute();
 		$result = $stmt->fetchAll();

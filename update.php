@@ -47,7 +47,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Parking Manager | Hub</title>
+    <title>Parking Manager | Update Vehicle</title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
@@ -238,10 +238,21 @@
                  <!-- /.row (nested) -->
              </div>
              <!-- /.panel-body -->
+						 <center>
+							 <?php if(isset($result['timein']) && isset($result['timeout'])) {
+							$datetime1 = new DateTime($result['timein']);
+							$datetime2 = new DateTime($result['timeout']);
+							$interval = $datetime2->diff($datetime1);
+							$hours = $interval->h;
+							$hours = $hours + ($interval->days*24);
+							echo "This vehicle has been here for: <b>".$hours."</b> Hours & <b>".$interval->format('%i')."</b> Minutes";
+							 }?>
+						 </center>
          </div>
          <!-- /.panel -->
      </div>
      <!-- /.col-lg-12 -->
+		 <center><footer>Property of <a href="http://ryanadamwilliams.co.uk">Ryan Adam Williams</a> ~ Parking Manager &copy; 2018</footer></center>
  </div>
 </div>
   <!-- /. PAGE INNER  -->
