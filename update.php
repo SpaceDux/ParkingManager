@@ -228,13 +228,6 @@
                        <label>Time EXIT</label>
                          <input type="text" class="form-control" name="timeout" placeholder="Leave blank until vehicle leaves, use format <?php echo date("Y-m-d H:i:s")?>" value="<?php echo $result['timeout']?>">
                      </div>
-										 <div class="checkbox">
-											 <label>
-												 <input type="hidden" name="flag" value="0">
-												 <input type="checkbox" name="flag" value="1">
-												 Flag this Vehicle
-											 </label>
-										 </div>
 										 <br>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Update"></input>
