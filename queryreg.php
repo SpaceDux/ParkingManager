@@ -7,7 +7,7 @@
 	$q3 = $_POST['q'];
 	$q4 = $_POST['q'];
 
-	$sql = "SELECT * FROM parking WHERE reg = ? OR tid LIKE ? OR company = ? OR trlno = ? ORDER by timein DESC LIMIT 50";
+	$sql = "SELECT * FROM parking WHERE reg = ? OR tid LIKE ? OR company = ? OR trlno = ? ORDER by timein DESC";
   $stmt = $dbConn->prepare($sql);
   $stmt->bindParam(1, $q);
   $stmt->bindParam(2, $q2);
@@ -80,7 +80,7 @@
 										<a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>
 										<ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
 												<li>
-														<a href="<?php echo $url ?>/reporthub.php"><i class="fa fa-flag-o"></i> Account Reports</a>
+														<a href="<?php echo $url ?>/reporthub.php"><i class="fa fa-bar-chart"></i> Account Reports</a>
 												</li>
 										</ul>
 								</li>
@@ -112,6 +112,7 @@
 			 		<table class="table table-bordered">
 			 			 <thead>
                           <tr>
+															<th>ID</th>
                               <th>Company</th>
                               <th>Registration</th>
                               <th>Trailer Number</th>
@@ -125,6 +126,7 @@
                       	 	<?php foreach( $result as $report ) { ?>
 					  	 <tbody>
 					  	 	<tr>
+									 <td><?php echo $report['id'] ?></td>
                    <td><?php echo $report['company'] ?></td>
 						  	   <td><?php echo $report['reg'] ?></td>
 						  	   <td><?php echo $report['trlno'] ?></td>

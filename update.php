@@ -102,7 +102,7 @@
 											<a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>
 											<ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
 													<li>
-															<a href="<?php echo $url ?>/reporthub.php"><i class="fa fa-flag-o"></i> Account Reports</a>
+															<a href="<?php echo $url ?>/reporthub.php"><i class="fa fa-bar-chart"></i> Account Reports</a>
 													</li>
 											</ul>
 									</li>
@@ -228,6 +228,13 @@
                        <label>Time EXIT</label>
                          <input type="text" class="form-control" name="timeout" placeholder="Leave blank until vehicle leaves, use format <?php echo date("Y-m-d H:i:s")?>" value="<?php echo $result['timeout']?>">
                      </div>
+										 <div class="checkbox">
+											 <label>
+												 <input type="hidden" name="flag" value="0">
+												 <input type="checkbox" name="flag" value="1">
+												 Flag this Vehicle
+											 </label>
+										 </div>
 										 <br>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Update"></input>
@@ -238,6 +245,7 @@
                  <!-- /.row (nested) -->
              </div>
              <!-- /.panel-body -->
+						 <br>
 						 <center>
 							 <?php if(isset($result['timein']) && isset($result['timeout'])) {
 							$datetime1 = new DateTime($result['timein']);

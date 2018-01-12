@@ -65,7 +65,7 @@
                     <a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
                         <li>
-                            <a href="<?php echo $url ?>/reporthub.php"><i class="fa fa-flag-o"></i> Account Reports</a>
+                            <a href="<?php echo $url ?>/reporthub.php"><i class="fa fa-bar-chart"></i> Account Reports</a>
                         </li>
                     </ul>
                 </li>
