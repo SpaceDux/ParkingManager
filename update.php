@@ -262,7 +262,7 @@
 							$interval = $datetime2->diff($datetime1);
 							$hours = $interval->h;
 							$hours = $hours + ($interval->days*24);
-							echo "This vehicle has been here for: <b>".$hours."</b> Hours & <b>".$interval->format('%i')."</b> Minutes";
+							echo "This vehicle has parked here for: <b>".$hours."</b> Hours & <b>".$interval->format('%i')."</b> Minutes";
 							 }?>
 						 </center>
          </div>

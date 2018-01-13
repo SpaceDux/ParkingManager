@@ -2,8 +2,9 @@
   require_once __DIR__.'/init.php'; //require init file
 
   $id = $_GET['id'];
-  $sql = "UPDATE parking SET col = '4' WHERE id = $id";
+  $sql = "UPDATE parking SET timeout = :timeout, col = '4' WHERE id = $id";
   $stmt = $dbConn->prepare($sql);
+  $stmt->bindParam(':timeout', date("Y-m-d H:i:s"));
 
   if ($stmt->execute()) {
     header('Location:'.$url.'/index.php');
