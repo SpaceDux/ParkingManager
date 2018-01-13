@@ -20,7 +20,8 @@
 		col = :col,
 		paid = :paid,
 		timeout = :timeout,
-		comment = :comment WHERE id = $id";
+		comment = :comment,
+		h_light = :h_light WHERE id = $id";
 		$stmt2 = $dbConn->prepare($sql);
 		$stmt2->bindParam(':company', strtoupper($_POST['company']));
 		$stmt2->bindParam(':reg', strtoupper($_POST['reg']));
@@ -32,6 +33,7 @@
 		$stmt2->bindParam(':paid', strtoupper($_POST['paid']));
 		$stmt2->bindParam(':timeout', $_POST['timeout']);
 		$stmt2->bindParam(':comment', $_POST['comment']);
+		$stmt2->bindParam(':h_light', $_POST['h_light']);
 
 		if($stmt2->execute()) {
 			header('Location:'.$url.'/update.php?id='.$id);
@@ -228,6 +230,20 @@
                        <label>Time EXIT</label>
                          <input type="text" class="form-control" name="timeout" placeholder="Leave blank until vehicle leaves, use format <?php echo date("Y-m-d H:i:s")?>" value="<?php echo $result['timeout']?>">
                      </div>
+										 <div class="radio">
+											 <label>
+												 <input type="radio" class="h_light" name="h_light" value="1" <?php if($result['h_light'] == 1) echo "checked" ?>>
+												 Renewal	&nbsp;	&nbsp;
+											 </label>
+											 <label>
+												 <input type="radio" class="h_light" name="h_light" value="2" <?php if($result['h_light'] == 2) echo "checked" ?>>
+												  	48hr	&nbsp;	&nbsp;
+											 </label>
+											 <label>
+												 <input type="radio" class="h_light" name="h_light" value="3" <?php if($result['h_light'] == 3) echo "checked" ?>>
+												  	72hr	&nbsp;	&nbsp;
+											 </label>
+										 </div>
 										 <br>
                      <!-- /.col-lg-6 (nested) -->
                        <input type="submit" class="btn btn-primary" value="Update"></input>
