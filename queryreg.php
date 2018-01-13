@@ -180,7 +180,7 @@
 
                  <!-- /.row (nested) -->
              </div>
-						 <center><footer>Property of <a href="http://ryanadamwilliams.co.uk">Ryan Adam Williams</a> ~ Parking Manager &copy; 2018</footer></center>
+						 <center><footer>Property of <a href="http://ryanadamwilliams.co.uk">Ryan Adam Williams</a> ~ Parking Manager &copy; 2018 &nbsp; | &nbsp <b><?php echo $ver ?></footer></center>
              <!-- /.panel-body -->
          </div>
          <!-- /.panel -->
