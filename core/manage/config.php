@@ -15,5 +15,5 @@
 
 	$_CONFIG['site']['name'] = 'Parking Manager'; //Website name, {SITE_NAME}
 
-	$_CONFIG['site']['template'] = 'PM2018'; //Krypton Template System, Select the Template Directory
+	$_CONFIG['site']['template'] = '2017'; //Krypton Template System, Select the Template Directory
 ?>

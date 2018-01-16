@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+	    <meta charset="utf-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	    <title>Parking Manager | Hub</title>
+	    <!-- Bootstrap Styles-->
+	    <link href="{URL}/template/{TPL}/assets/css/bootstrap.css" rel="stylesheet" />
+	    <!-- FontAwesome Styles-->
+			<script src="https://use.fontawesome.com/d70688b1a2.js"></script>
+	    <!-- Custom Styles-->
+	    <link href="{URL}/template/{TPL}/assets/css/custom-styles.css" rel="stylesheet" />
+	    <!-- Google Fonts-->
+	    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+	</head>
+	<body>
+    <div id="wrapper">
+			<nav class="navbar navbar-default top-navbar" role="navigation">
+			            <div class="navbar-header">
+			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+			                    <span class="sr-only">Toggle navigation</span>
+			                    <span class="icon-bar"></span>
+			                    <span class="icon-bar"></span>
+			                    <span class="icon-bar"></span>
+			                </button>
+			                <a class="navbar-brand" href="index.php"><strong>Parking Manager</strong></a>
+										</div>
+											<div class="col-sm-3 col-md-3 pull-right">
+													<form class="navbar-form" role="search" method="POST" action="queryreg.php">
+													<div class="input-group">
+															<input type="text" class="form-control" placeholder="Query a Reg" name="q">
+															<div class="input-group-btn">
+																	<button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+															</div>
+													</div>
+													</form>
+											</div>
+			        </nav>
+                <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+
+                    <li>
+                        <a class="active-menu" href="{URL}/index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+										<li class="">
+                        <a href="#"><i class="fa fa-truck"></i> Vehicle Tools<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+													<li>
+															<a href="{URL}/yrdchk.php" target="_blank"><i class="fa fa-flag-o"></i> Yard Check</a>
+													</li>
+                        </ul>
+										<li class="">
+												<a href="#"><i class="fa fa-sitemap"></i> Account Tools<span class="fa arrow"></span></a>
+												<ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+														<li>
+																<a href="{URL}/reporthub.php"><i class="fa fa-bar-chart"></i> Account Reports</a>
+														</li>
+												</ul>
+										</li>
+									</ul>
+            </div>
+        </nav>
+        <!-- /. NAV SIDE  -->
+       <div id="page-wrapper">
+		  <div class="header">
+                        <h1 class="page-header">
+                            Dashboard <small>// main hub</small>
+                        </h1>
+						<ol class="breadcrumb">
+					  <li><a href="#">Home</a></li>
+					  <li class="active">Dashboard</li>
+					  </ol>
+		</div>
+		<!-- start page -->
+		    <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary text-center no-boder blue">
+                              <div class="panel-left pull-left blue">
+                                <i class="fa fa-road fa-5x"></i>
+								</div>
+
+                            <div class="panel-right">
+							<h3>0<small>/200</small></h3>
+                               <strong> Total Spaces Used</strong>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary text-center no-boder blue">
+                              <div class="panel-left pull-left blue">
+                                <i class="fa fa-shopping-cart fa-5x"></i>
+								</div>
+
+                            <div class="panel-right">
+							<h3>0 </h3>
+                               <strong> Total Awaiting Payment</strong>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary text-center no-boder blue">
+                            <div class="panel-left pull-left blue">
+                                <i class="fa fa fa-coffee fa-5x"></i>
+
+                            </div>
+                            <div class="panel-right">
+							 <h3>123</h3>
+                               <strong> Breaks (UNPAID)</strong>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary text-center no-boder blue">
+                            <div class="panel-left pull-left blue">
+                                <i class="fa fa-clock-o fa-5x"></i>
+
+                            </div>
+                            <div class="panel-right">
+							<h3> </h3>
+                             <strong> Renewals</strong>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           <div class="row">
+           <div class="col-md-7 col-sm-12 col-xs-12">
+
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <button class="btn btn-primary pull-right" type="button" data-toggle="modal" data-target="#addModal">Register Vehicle <i class="fa fa-plus" aria-hidden="true"></i></button>
+                      Break / Unpaid
+                  </div>
+                  <div class="panel-body">
+                      <div class="table-responsive">
+                          <table class="table table-striped table-bordered table-hover">
+                              <thead>
+                                  <tr>
+                                      <th>Company</th>
+                                      <th>Registration</th>
+                                      <th>Type</th>
+                                      <th>Time In</th>
+                                      <th>Options</th>
+                                  </tr>
+                              </thead>
+                              <?php foreach ($fetchBreak as $Parked) { ?>
+                              <tbody>
+                                  <tr <?php if ($Parked['h_light'] == 1) {
+	                                 	echo 'class="warning"'; //Renewal mark
+	                                  } else if ($Parked['h_light'] == 2) {
+		                              	echo 'class="success"'; //48hr
+	                                  } else if ($Parked['h_light'] == 3) {
+		                              	echo 'class="info"'; //72hr
+	                                  } else if ($Parked['h_light'] == 0) {
+		                              	echo ""; //no highlight
+	                                  }?>>
+                                      <td><?php echo $Parked['company'] ?></td>
+                                      <td><?php echo $Parked['reg'] ?></td>
+                                     <?php if ($Parked['type'] == 1) {
+	                                     echo "<td>C/T</td>";
+                                     } else if ($Parked['type'] == 2) {
+	                                     echo "<td>CAB</td>";
+                                     } else if ($Parked['type'] == 3) {
+	                                     echo "<td>TRL</td>";
+                                     } else if ($Parked['type'] == 4) {
+	                                     echo "<td>RIGID</td>";
+                                     } else if ($Parked['type'] == 5) {
+	                                     echo "<td>COACH</td>";
+                                     } else if ($Parked['type'] == 6) {
+	                                     echo "<td>CAR</td>";
+                                     }
+                                     ?>
+                                      <td>
+																				<?php
+																					$date = $Parked['timein'];
+																					$d = date('d', strtotime($date));
+																					$hms = date('H:i:s', strtotime($date));
+																					echo $d.'/'.$hms;
+																			  ?>
+																			</td>
+                                      <td>
+                                        <!-- Split button -->
+                                      <div class="btn-group pull-right">
+                                        <a href="{URL}/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"> Update <span class="glyphicon glyphicon-cog"></span></a>
+                                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <span class="caret"></span>
+                                          <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+																				<ul class="dropdown-menu">
+																					<li><a href="{URL}/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
+																					<li role="separator" class="divider"></li>
+                                          <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=1">Renewal</a></li>
+                                          <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
+                                          <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
+                                          <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
+																					<li role="separator" class="divider"></li>
+																					<li><a href="{URL}/duplicate.php?id=<?php echo $Parked['id'] ?>"> Mark Duplicate</a></li>
+                                        </ul>
+                                      </div>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                              <?php } ?>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      Paid
+                  </div>
+                  <div class="panel-body">
+                      <div class="table-responsive">
+                          <table class="table table-striped table-bordered table-hover">
+                              <thead>
+                                  <tr>
+                                      <th>Company</th>
+                                      <th>Registration</th>
+                                      <th>Type</th>
+                                      <th>Time In</th>
+                                      <th>Ticket ID</th>
+                                      <th>Paid</th>
+                                      <th>Options</th>
+                                  </tr>
+                              </thead>
+                              <?php foreach ($fetchPaid as $Parked) { ?>
+                              <tbody>
+                                  <tr <?php if ($Parked['h_light'] == 1) {
+	                                 	echo 'class="warning"'; //Renewal mark
+	                                  } else if ($Parked['h_light'] == 2) {
+		                              	echo 'class="success"'; //48hr
+	                                  } else if ($Parked['h_light'] == 3) {
+		                              	echo 'class="info"'; //72hr
+	                                  } else if ($Parked['h_light'] == 0) {
+		                              	echo ""; //no highlight
+	                                  }?>>
+                                      <td><?php echo $Parked['company'] ?></td>
+                                      <td><?php echo $Parked['reg'] ?></td>
+                                     <?php if ($Parked['type'] == 1) {
+	                                     echo "<td>C/T</td>";
+                                     } else if ($Parked['type'] == 2) {
+	                                     echo "<td>CAB</td>";
+                                     } else if ($Parked['type'] == 3) {
+	                                     echo "<td>TRL</td>";
+                                     } else if ($Parked['type'] == 4) {
+	                                     echo "<td>RIGID</td>";
+                                     } else if ($Parked['type'] == 5) {
+	                                     echo "<td>COACH</td>";
+                                     } else if ($Parked['type'] == 6) {
+	                                     echo "<td>CAR</td>";
+                                     }
+                                     ?>
+                                      <td>
+																				<?php
+																					$date = $Parked['timein'];
+																					$d = date('d', strtotime($date));
+																					$hms = date('H:i:s', strtotime($date));
+																					echo $d.'/'.$hms;
+																				?>
+																			</td>
+                                      <td><?php echo substr($Parked['tid'], -6) ?></td>
+                                      <td><?php echo $Parked['paid'] ?></td>
+                                      <td>
+                                        <!-- Split button -->
+                                      <div class="btn-group pull-right">
+                                        <a href="{URL}/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-cog"></span></a>
+                                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <span class="caret"></span>
+                                          <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+																					<li><a href="{URL}/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
+																					<li role="separator" class="divider"></li>
+                                          <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=1">Renewal</a></li>
+                                          <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
+                                          <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
+                                          <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
+																					<li role="separator" class="divider"></li>
+																					<li><a href="{URL}/duplicate.php?id=<?php echo $Parked['id'] ?>"> Mark Duplicate</a></li>
+                                        </ul>
+                                      </div>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                              <?php } ?>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+           </div>
+
+					 <div class="col-md-5 col-sm-12 col-xs-12">
+               <div class="panel panel-default">
+                   <div class="panel-heading">
+                       Renewal Vehicles
+                   </div>
+                   <div class="panel-body">
+                       <div class="table-responsive">
+                           <table class="table table-striped table-bordered table-hover">
+                               <thead>
+                                   <tr>
+                                       <th>Company</th>
+                                       <th>Registration</th>
+                                       <th>Time IN</th>
+                                       <th>Options</th>
+                                   </tr>
+                               </thead>
+                               <?php foreach ($fetchRenewal as $Parked) { ?>
+                               <tbody>
+                                   <tr>
+                                       <td><?php echo $Parked['company']?></td>
+                                       <td><?php echo $Parked['reg']?></td>
+                                       <td>
+ 																				<?php
+ 																					$date = $Parked['timein'];
+ 																					$d = date('d', strtotime($date));
+ 																					$hms = date('H:i:s', strtotime($date));
+ 																					echo $d.'/'.$hms;
+ 																			  ?>
+ 																			</td>
+                                       <td>
+                                         <!-- Split button -->
+																				 <div class="btn-group pull-right">
+	                                         <a href="{URL}/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-cog"></span></a>
+	                                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                                           <span class="caret"></span>
+	                                           <span class="sr-only">Toggle Dropdown</span>
+	                                         </button>
+	                                         <ul class="dropdown-menu">
+	 																					<li><a href="{URL}/quickexit.php?id=<?php echo $Parked['id'] ?>">Quick Exit</a></li>
+	 																					<li role="separator" class="divider"></li>
+	                                           <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=1">Renewal</a></li>
+	                                           <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
+	                                           <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
+	                                           <li><a href="{URL}/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
+	 																					<li role="separator" class="divider"></li>
+	 																					<li><a href="{URL}/duplicate.php?id=<?php echo $Parked['id'] ?>"> Mark Duplicate</a></li>
+	                                         </ul>
+	                                       </div>
+                                       </td>
+                                   </tr>
+                               </tbody>
+                               <?php } ?>
+														 </table>
+                         </div>
+                   </div>
+               </div>
+           </div>
+
+          <div class="col-md-5 col-sm-12 col-xs-12">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      Exit Vehicles
+                  </div>
+                  <div class="panel-body">
+                      <div class="table-responsive">
+                          <table class="table table-striped table-bordered table-hover">
+                              <thead>
+                                  <tr>
+                                      <th>Company</th>
+                                      <th>Registration</th>
+                                      <th>Time Out</th>
+                                      <th>Options</th>
+                                  </tr>
+                              </thead>
+                              <?php foreach ($fetchExit as $Parked) { ?>
+                              <tbody>
+                                  <tr>
+                                      <td><?php echo $Parked['company']?></td>
+                                      <td><?php echo $Parked['reg']?></td>
+                                      <td>
+																				<?php
+																					$date = $Parked['timeout'];
+																					$d = date('d', strtotime($date));
+																					$hms = date('H:i:s', strtotime($date));
+																					echo $d.'/'.$hms;
+																			  ?>
+																			</td>
+                                      <td>
+                                        <!-- Split button -->
+                                      <div class="btn-group pull-right">
+                                        <a href="{URL}/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-cog"></span></a>
+                                      </div>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                              <?php } ?>
+														</table>
+											  </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+			<center><footer>Property of <a href="http://ryanadamwilliams.co.uk">Ryan Adam Williams</a> ~ Parking Manager &copy; 2018 &nbsp; | &nbsp <b><?php echo $ver ?></b></footer></center>
+    </div>
+    <!-- Modal / Add vehicle -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="addModalLabel">Add vehicle to the log</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+
+              <div class="form-group">
+                <label>Company</label>
+                <input type="text" class="form-control" id="company" name="company" placeholder="Company..." style="text-transform: uppercase;" autofocus>
+              </div>
+
+              <div class="form-group">
+                <label>Registration Number</label>
+                <input type="text" class="form-control" id="reg" name="reg" placeholder="Registration Number (Trailer Number)..." style="text-transform: uppercase;">
+              </div>
+
+              <div class="form-group">
+                <label>Trailer Number</label>
+                <input type="text" class="form-control" id="trlno" name="trlno" placeholder="Trailer Number" style="text-transform: uppercase;">
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="1" checked>
+                  Cab &amp; Trailer
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="2">
+                  Cab
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="3">
+                  Trailer
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="4">
+                  Rigid
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="5">
+                  Coach
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="type" name="type" value="6">
+                  Car
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label>Time in</label>
+                <input type="text" class="form-control" id="timein" name="timein" value="<?php echo date("Y-m-d H:i:s")?>" placeholder="Time of Arrival...">
+              </div>
+
+              <div class="form-group">
+                <label>Ticket ID</label>
+                <input type="text" class="form-control" id="tid" name="tid" placeholder="Ticket ID...">
+              </div>
+
+              <div class="form-group">
+                <label>Payment Detail</label>
+                <input type="text" class="form-control" id="paid" name="paid" placeholder="FUEL £23 EXT" style="text-transform: uppercase;">
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="column" name="column" value="1" checked>
+                  Break (2hours)
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="column" name="column" value="2">
+                  Paid
+                </label>
+              </div>
+
+              <div class="radio">
+                <label>
+                  <input type="radio" class="column" name="column" value="3">
+                  Exited
+                </label>
+              </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="submit" onclick="saveData()" class="btn btn-primary">Add Vehicle</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- /. PAGE INNER  -->
+</div>
+<!-- /. PAGE WRAPPER  -->
+</div>
+<!-- /. WRAPPER  -->
+<!-- JS Scripts-->
+<!-- jQuery Js -->
+<script src="{URL}/template/{TPL}/assets/js/jquery-1.10.2.js"></script>
+<!-- Bootstrap Js -->
+<script src="{URL}/template/{TPL}/assets/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Js -->
+<script src="{URL}/template/{TPL}/assets/js/jquery.metisMenu.js"></script>
+
+<script src="{URL}/template/{TPL}/assets/js/Lightweight-Chart/jquery.chart.js"></script>
+
+<!-- Custom Js -->
+<script src="{URL}/template/{TPL}/assets/js/custom-scripts.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/mousetrap/1.4.6/mousetrap.min.js"></script>
+<script>
+$('.modal').on('shown.bs.modal', function() {
+$(this).find('[autofocus]').focus();
+});
+function saveData(){
+  var company = $('#company').val();
+  var reg = $('#reg').val();
+  var trlno = $('#trlno').val();
+  var type = $(".type:checked").val();
+  var timein = $('#timein').val();
+  var tid = $('#tid').val();
+  var column = $(".column:checked").val();
+  var paid = $('#paid').val();
+  $.ajax({
+  //remember to update this!
+  url: "{URL}/core/processor.php?p=add",
+  type: "POST",
+  data: "company="+company+"&reg="+reg+"&trlno="+trlno+"&type="+type+"&timein="+timein+"&tid="+tid+"&column="+column+"&paid="+paid
+  })
+}
+function renewal(){
+  var id = $('#id').val();
+  var reg = $('#col').val();
+  $.ajax({
+  //remember to update this!
+  url: "{URL}/highlight.php",
+  type: "POST",
+  data: "id="+id+"col="+col
+  })
+}
+Mousetrap.bind('tab', function() {
+  $('#addModal').modal('show');
+});
+
+</script>
+
+
+</html>
