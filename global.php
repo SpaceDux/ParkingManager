@@ -1,5 +1,4 @@
 <?php
-
 define('C', '/core');
 define('M', '/manage');
 

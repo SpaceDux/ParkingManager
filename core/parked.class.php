@@ -14,7 +14,7 @@
       $return = $stmt->fetchAll();
 
       foreach ($return as $data) {
-        
+
       }
     }
   }
