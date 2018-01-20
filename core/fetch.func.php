@@ -26,7 +26,7 @@
 		}
 		function fetchRenewal() {
 			global $dbConn;
-			$sql = "SELECT * FROM parking WHERE h_light = 1 AND col != '3' ORDER BY timein asc";
+			$sql = "SELECT * FROM parking WHERE h_light = 1 AND col < '3' ORDER BY timein asc";
 			$stmt = $dbConn->prepare($sql);
 			$stmt->execute();
 

@@ -5,5 +5,5 @@
 
 	require_once __DIR__.'/core/fetch.func.php'; //Fetch the parked vehicles
 
-	$ver = 'Version: 1a b5'; //Update version
+	$ver = 'Version: 1a b7'; //Update version
 ?>

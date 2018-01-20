@@ -7,7 +7,7 @@
 	$q3 = $_POST['q'];
 	$q4 = $_POST['q'];
 
-	$sql = "SELECT * FROM parking WHERE reg = ? OR tid LIKE ? OR company = ? OR trlno = ? ORDER by timein DESC";
+	$sql = "SELECT * FROM parking WHERE reg = ? OR tid LIKE ? OR company = ? OR trlno = ? ORDER by timein DESC LIMIT 50";
   $stmt = $dbConn->prepare($sql);
   $stmt->bindParam(1, $q);
   $stmt->bindParam(2, $q2);
@@ -24,7 +24,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo $q ?> Query</title>
+    <title>Parking Manager | <?php echo $q ?> Query</title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <link href="assets/css/noprint.css" rel="stylesheet" />
