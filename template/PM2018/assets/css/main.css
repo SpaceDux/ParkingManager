@@ -16,13 +16,36 @@ body {
   color: #f5f5f5;
 }
 .topNav > .UserPanel > .UserFace {
-  background:url('../img/logo.png');
   width: 50px;
   height: 50px;
-  margin-left: 10px;
+  margin-left: 15px;
+  padding-top: 3px;
 }
 .sideNav {
   height: 100%;
   width: 300px;
   background: #464849;
+  padding-bottom: 20px;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 300px;
+    background-color: #464849;
+    font-family: 'Segoe UI Light';
+}
+
+li a {
+    display: block;
+    color: #000;
+    padding: 15px 44px;
+    text-decoration: none;
+    color: #f2f2f2;
+}
+
+/* Change the link color on hover */
+li a:hover {
+    background-color: #555;
+    color: white;
 }
