@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <HTML>
   <HEAD>
     <title>{SITE_NAME} | Hub</title>

@@ -11,9 +11,9 @@
 	$_CONFIG['mysql']['db'] = 'rkpm'; //Select the database you want to connect too
 
 	//Site Configuration
-	$_CONFIG['site']['url'] = 'http://localhost/ParkingManager'; //Server URL example.com (DOES NOT END WITH /)
+	$_CONFIG['site']['url'] = 'http://localhost:8080/ParkingManager'; //Server URL example.com (DOES NOT END WITH /)
 
 	$_CONFIG['site']['name'] = 'Parking Manager'; //Website name, {SITE_NAME}
 
-	$_CONFIG['site']['template'] = '2017'; //Krypton Template System, Select the Template Directory
+	$_CONFIG['site']['template'] = 'PM2018'; //Krypton Template System, Select the Template Directory
 ?>
