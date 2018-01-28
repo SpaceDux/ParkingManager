@@ -33,7 +33,7 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="<?php echo $url ?>/index.html"><strong>Parking Manager</strong></a>
+              <a class="navbar-brand" href="<?php echo $url ?>/index.php"><strong>Parking Manager</strong></a>
             </div>
               <div class="col-sm-3 col-md-3 pull-right">
                   <form class="navbar-form" role="search" method="POST" action="queryreg.php">
