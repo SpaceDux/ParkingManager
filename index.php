@@ -133,7 +133,7 @@
                             </div>
                             <div class="panel-right">
 							<h3><?php echo count($fetchRenewal) ?> </h3>
-                             <strong>Total amount of marked Renewals</strong>
+                             <strong>Total Renewals</strong>
 
                             </div>
                         </div>
