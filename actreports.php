@@ -3,7 +3,7 @@
 
 	if(isset($_GET['a'])) {
 
-		$sql = "SELECT * FROM parking WHERE company = ? AND col != '4' AND timein BETWEEN ? and ? ORDER by timein";
+		$sql = "SELECT * FROM parking WHERE company = ? AND col != '4' AND timein BETWEEN ? and ? ORDER by type";
 
 		$stmt = $dbConn->prepare($sql);
 		$stmt->bindParam(1, $_GET['a']);
@@ -13,6 +13,7 @@
 		$stmt->execute();
 
 		$result = $stmt->fetchAll();
+
 
 	}
 
@@ -43,7 +44,7 @@
 	     <div class="col-lg-12">
 	         <div class="panel panel-default">
 	             <div class="panel-heading no-print">
-	                 Account Report for <?php echo $_GET['a'].' ~ '. $_GET['ti'].' - '.$_GET['to']  ?>
+	                 REPORT BETWEEN 0hours & 4:15hours
 	             </div>
 			 		<table class="table table-bordered">
 			 			 <thead>
@@ -57,39 +58,332 @@
                               <th>Duration</th>
                           </tr>
                       	 </thead>
-                      	 	<?php foreach( $result as $report ) { ?>
-					  	 <tbody>
-					  	 	<tr>
-						  	   <td><?php echo $report['reg'] ?></td>
-						  	   <td><?php echo $report['trlno'] ?></td>
-						  	   <td><?php echo $report['tid'] ?></td>
-									 <?php if ($report['type'] == 1) {
-										echo "<td>C/T</td>";
-									} else if ($report['type'] == 2) {
-										echo "<td>CAB</td>";
-									} else if ($report['type'] == 3) {
-										echo "<td>TRL</td>";
-									} else if ($report['type'] == 4) {
-										echo "<td>RIGID</td>";
-									} else if ($report['type'] == 5) {
-										echo "<td>COACH</td>";
-									} else if ($report['type'] == 6) {
-										echo "<td>CAR</td>";
-									 }
-									 ?>
-						  	   <td><?php echo $report['timein'] ?></td>
-						  	   <td><?php echo $report['timeout'] ?></td>
-						  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
-									$datetime1 = new DateTime($report['timein']);
-									$datetime2 = new DateTime($report['timeout']);
-									$interval = $datetime2->diff($datetime1);
-									$hours = $interval->h;
-									$hours = $hours + ($interval->days*24);
-									echo "<td>".$hours." Hours & ".$interval->format('%i')." Minutes</td>";
-						  	   }?>
-					  	 	</tr>
-					  	 </tbody>
-					  	 	<?php } ?>
+                      	 	<?php foreach( $result as $report ) {
+													$datetime1 = new DateTime($report['timein']);
+													$datetime2 = new DateTime($report['timeout']);
+													$interval = $datetime2->diff($datetime1);
+													$hours = $interval->h;
+													$hours = $hours + ($interval->days*24);
+
+													$count = count($report);
+													if($hours <= 4 AND $interval->format('%i') <= 15) {
+													?>
+											  	 <tbody>
+											  	 	<tr>
+												  	   <td><?php echo $report['reg'] ?></td>
+												  	   <td><?php echo $report['trlno'] ?></td>
+												  	   <td><?php echo $report['tid'] ?></td>
+															 <?php if ($report['type'] == 1) {
+																echo "<td>C/T</td>";
+															} else if ($report['type'] == 2) {
+																echo "<td>CAB</td>";
+															} else if ($report['type'] == 3) {
+																echo "<td>TRL</td>";
+															} else if ($report['type'] == 4) {
+																echo "<td>RIGID</td>";
+															} else if ($report['type'] == 5) {
+																echo "<td>COACH</td>";
+															} else if ($report['type'] == 6) {
+																echo "<td>CAR</td>";
+															 }
+															 ?>
+												  	   <td><?php echo $report['timein'] ?></td>
+												  	   <td><?php echo $report['timeout'] ?></td>
+												  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
+
+															echo "<td>".$hours." : ".$interval->format('%i')."</td>";
+												  	   }?>
+											  	 	</tr>
+											  	 </tbody>
+												 <?php }
+											 			 }
+													?>
+
+					</table>
+					<br>
+					<div class="panel panel-default">
+							<div class="panel-heading no-print">
+									REPORT BETWEEN 4hours & 29hours (1 DAY)
+							</div>
+			 		<table class="table table-bordered">
+			 			 <thead>
+                          <tr>
+                              <th>Registration</th>
+                              <th>Trailer Number</th>
+                              <th>Ticket ID</th>
+                              <th>Type</th>
+                              <th>Time In</th>
+                              <th>Time Out</th>
+                              <th>Duration</th>
+                          </tr>
+                      	 </thead>
+                      	 	<?php foreach( $result as $report ) {
+													$datetime1 = new DateTime($report['timein']);
+													$datetime2 = new DateTime($report['timeout']);
+													$interval = $datetime2->diff($datetime1);
+													$hours = $interval->h;
+													$hours = $hours + ($interval->days*24);
+
+													if($hours >= 4 AND $hours <= 29) {
+													?>
+											  	 <tbody>
+											  	 	<tr>
+												  	   <td><?php echo $report['reg'] ?></td>
+												  	   <td><?php echo $report['trlno'] ?></td>
+												  	   <td><?php echo $report['tid'] ?></td>
+															 <?php if ($report['type'] == 1) {
+																echo "<td>C/T</td>";
+															} else if ($report['type'] == 2) {
+																echo "<td>CAB</td>";
+															} else if ($report['type'] == 3) {
+																echo "<td>TRL</td>";
+															} else if ($report['type'] == 4) {
+																echo "<td>RIGID</td>";
+															} else if ($report['type'] == 5) {
+																echo "<td>COACH</td>";
+															} else if ($report['type'] == 6) {
+																echo "<td>CAR</td>";
+															 }
+															 ?>
+												  	   <td><?php echo $report['timein'] ?></td>
+												  	   <td><?php echo $report['timeout'] ?></td>
+												  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
+
+															echo "<td>".$hours." : ".$interval->format('%i')."</td>";
+												  	   }?>
+											  	 	</tr>
+											  	 </tbody>
+												 <?php }
+											 			 }
+													?>
+					</table>
+					<br>
+					<div class="panel panel-default">
+							<div class="panel-heading no-print">
+									REPORT BETWEEN 29hours & 52hours (2 DAY)
+							</div>
+			 		<table class="table table-bordered">
+			 			 <thead>
+                          <tr>
+                              <th>Registration</th>
+                              <th>Trailer Number</th>
+                              <th>Ticket ID</th>
+                              <th>Type</th>
+                              <th>Time In</th>
+                              <th>Time Out</th>
+                              <th>Duration</th>
+                          </tr>
+                      	 </thead>
+                      	 	<?php foreach( $result as $report ) {
+													$datetime1 = new DateTime($report['timein']);
+													$datetime2 = new DateTime($report['timeout']);
+													$interval = $datetime2->diff($datetime1);
+													$hours = $interval->h;
+													$hours = $hours + ($interval->days*24);
+
+													if($hours >= 29 AND $hours <= 52) {
+													?>
+											  	 <tbody>
+											  	 	<tr>
+												  	   <td><?php echo $report['reg'] ?></td>
+												  	   <td><?php echo $report['trlno'] ?></td>
+												  	   <td><?php echo $report['tid'] ?></td>
+															 <?php if ($report['type'] == 1) {
+																echo "<td>C/T</td>";
+															} else if ($report['type'] == 2) {
+																echo "<td>CAB</td>";
+															} else if ($report['type'] == 3) {
+																echo "<td>TRL</td>";
+															} else if ($report['type'] == 4) {
+																echo "<td>RIGID</td>";
+															} else if ($report['type'] == 5) {
+																echo "<td>COACH</td>";
+															} else if ($report['type'] == 6) {
+																echo "<td>CAR</td>";
+															 }
+															 ?>
+												  	   <td><?php echo $report['timein'] ?></td>
+												  	   <td><?php echo $report['timeout'] ?></td>
+												  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
+
+															echo "<td>".$hours." : ".$interval->format('%i')."</td>";
+												  	   }?>
+											  	 	</tr>
+											  	 </tbody>
+												 <?php }
+											 			 }
+													?>
+								</table>
+					<br>
+					<div class="panel panel-default">
+							<div class="panel-heading no-print">
+									REPORT BETWEEN 53hours & 79hours (3 DAYS)
+							</div>
+			 		<table class="table table-bordered">
+			 			 <thead>
+                          <tr>
+                              <th>Registration</th>
+                              <th>Trailer Number</th>
+                              <th>Ticket ID</th>
+                              <th>Type</th>
+                              <th>Time In</th>
+                              <th>Time Out</th>
+                              <th>Duration</th>
+                          </tr>
+                      	 </thead>
+                      	 	<?php foreach( $result as $report ) {
+													$datetime1 = new DateTime($report['timein']);
+													$datetime2 = new DateTime($report['timeout']);
+													$interval = $datetime2->diff($datetime1);
+													$hours = $interval->h;
+													$hours = $hours + ($interval->days*24);
+
+													if($hours >= 53 AND $hours <= 79) {
+													?>
+											  	 <tbody>
+											  	 	<tr>
+												  	   <td><?php echo $report['reg'] ?></td>
+												  	   <td><?php echo $report['trlno'] ?></td>
+												  	   <td><?php echo $report['tid'] ?></td>
+															 <?php if ($report['type'] == 1) {
+																echo "<td>C/T</td>";
+															} else if ($report['type'] == 2) {
+																echo "<td>CAB</td>";
+															} else if ($report['type'] == 3) {
+																echo "<td>TRL</td>";
+															} else if ($report['type'] == 4) {
+																echo "<td>RIGID</td>";
+															} else if ($report['type'] == 5) {
+																echo "<td>COACH</td>";
+															} else if ($report['type'] == 6) {
+																echo "<td>CAR</td>";
+															 }
+															 ?>
+												  	   <td><?php echo $report['timein'] ?></td>
+												  	   <td><?php echo $report['timeout'] ?></td>
+												  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
+
+															echo "<td>".$hours." : ".$interval->format('%i')."</td>";
+												  	   }?>
+											  	 	</tr>
+											  	 </tbody>
+												 <?php }
+											 			 }
+													?>
+					</table>
+					<br>
+					<div class="panel panel-default">
+							<div class="panel-heading no-print">
+									REPORT BETWEEN 79hours & 104hours (4 DAYS)
+							</div>
+			 		<table class="table table-bordered">
+			 			 <thead>
+                          <tr>
+                              <th>Registration</th>
+                              <th>Trailer Number</th>
+                              <th>Ticket ID</th>
+                              <th>Type</th>
+                              <th>Time In</th>
+                              <th>Time Out</th>
+                              <th>Duration</th>
+                          </tr>
+                      	 </thead>
+                      	 	<?php foreach( $result as $report ) {
+													$datetime1 = new DateTime($report['timein']);
+													$datetime2 = new DateTime($report['timeout']);
+													$interval = $datetime2->diff($datetime1);
+													$hours = $interval->h;
+													$hours = $hours + ($interval->days*24);
+
+													if($hours >= 79 AND $hours <= 104) {
+													?>
+											  	 <tbody>
+											  	 	<tr>
+												  	   <td><?php echo $report['reg'] ?></td>
+												  	   <td><?php echo $report['trlno'] ?></td>
+												  	   <td><?php echo $report['tid'] ?></td>
+															 <?php if ($report['type'] == 1) {
+																echo "<td>C/T</td>";
+															} else if ($report['type'] == 2) {
+																echo "<td>CAB</td>";
+															} else if ($report['type'] == 3) {
+																echo "<td>TRL</td>";
+															} else if ($report['type'] == 4) {
+																echo "<td>RIGID</td>";
+															} else if ($report['type'] == 5) {
+																echo "<td>COACH</td>";
+															} else if ($report['type'] == 6) {
+																echo "<td>CAR</td>";
+															 }
+															 ?>
+												  	   <td><?php echo $report['timein'] ?></td>
+												  	   <td><?php echo $report['timeout'] ?></td>
+												  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
+
+															echo "<td>".$hours." : ".$interval->format('%i')."</td>";
+												  	   }?>
+											  	 	</tr>
+											  	 </tbody>
+												 <?php }
+											 			 }
+													?>
+					</table>
+					<br>
+					<div class="panel panel-default">
+							<div class="panel-heading no-print">
+									REPORT BETWEEN 105hours & 129hours (5 DAYS)
+							</div>
+			 		<table class="table table-bordered">
+			 			 <thead>
+                          <tr>
+                              <th>Registration</th>
+                              <th>Trailer Number</th>
+                              <th>Ticket ID</th>
+                              <th>Type</th>
+                              <th>Time In</th>
+                              <th>Time Out</th>
+                              <th>Duration</th>
+                          </tr>
+                      	 </thead>
+                      	 	<?php foreach( $result as $report ) {
+													$datetime1 = new DateTime($report['timein']);
+													$datetime2 = new DateTime($report['timeout']);
+													$interval = $datetime2->diff($datetime1);
+													$hours = $interval->h;
+													$hours = $hours + ($interval->days*24);
+
+													if($hours >= 105 AND $hours <= 129) {
+													?>
+											  	 <tbody>
+											  	 	<tr>
+												  	   <td><?php echo $report['reg'] ?></td>
+												  	   <td><?php echo $report['trlno'] ?></td>
+												  	   <td><?php echo $report['tid'] ?></td>
+															 <?php if ($report['type'] == 1) {
+																echo "<td>C/T</td>";
+															} else if ($report['type'] == 2) {
+																echo "<td>CAB</td>";
+															} else if ($report['type'] == 3) {
+																echo "<td>TRL</td>";
+															} else if ($report['type'] == 4) {
+																echo "<td>RIGID</td>";
+															} else if ($report['type'] == 5) {
+																echo "<td>COACH</td>";
+															} else if ($report['type'] == 6) {
+																echo "<td>CAR</td>";
+															 }
+															 ?>
+												  	   <td><?php echo $report['timein'] ?></td>
+												  	   <td><?php echo $report['timeout'] ?></td>
+												  	   <?php if(isset($report['timein']) && isset($report['timeout'])) {
+
+															echo "<td>".$hours." : ".$interval->format('%i')."</td>";
+												  	   }?>
+											  	 	</tr>
+											  	 </tbody>
+												 <?php }
+											 			 }
+													?>
 					</table>
                  <!-- /.row (nested) -->
              </div>
