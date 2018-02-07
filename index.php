@@ -318,7 +318,7 @@
 							 <li>Ensure all issued ticket ID's are correct & charged to the right account via ETP.</li>
 							 <li>If a renewal has been processed, but actually the vehicle has left making the renewal a mistake, please correct it by deleting the Ticket in the ETP
 							 and removing the TID from the Parking Manager</li>
-							<li>Lastly, make a note in the diary that you've check & corrected error's on the report as Rosie will be checking this.</li>
+							<li>Lastly, make a note in the diary that you've checked & corrected error's on the account reports as Rosie will be checking this.</li>
 						 </div>
                <div class="panel panel-default">
                    <div class="panel-heading">
