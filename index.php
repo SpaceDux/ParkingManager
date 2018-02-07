@@ -159,7 +159,14 @@
                                       <th>Options</th>
                                   </tr>
                               </thead>
-                              <?php foreach ($fetchBreak as $Parked) { ?>
+                              <?php foreach ($fetchBreak as $Parked) {
+
+																$datetime1 = new DateTime($Parked['timein']);
+																$datetime2 = new DateTime($Parked['timeout']);
+																$interval = $datetime2->diff($datetime1);
+																$hours = $interval->h;
+																$hours = $hours + ($interval->days*24);
+															?>
                               <tbody>
                                   <tr <?php if ($Parked['h_light'] == 1) {
 	                                 	echo 'class="warning"'; //Renewal mark
@@ -169,7 +176,13 @@
 		                              	echo 'class="info"'; //72hr
 	                                  } else if ($Parked['h_light'] == 0) {
 		                              	echo ""; //no highlight
-	                                  }?>>
+																	};
+																	if ($hours >= 2 AND $hours < 4) {
+																			echo 'class="warning"'; //2hour chargeable
+																	} else if ($hours >= 4) {
+																			echo 'class="danger"'; //24hr
+																	}
+																		?>>
                                       <td><?php echo $Parked['company'] ?></td>
                                       <td><?php echo $Parked['reg'] ?></td>
                                      <?php if ($Parked['type'] == 1) {
@@ -335,9 +348,27 @@
                                        <th>Options</th>
                                    </tr>
                                </thead>
-                               <?php foreach ($fetchRenewal as $Parked) { ?>
+                               <?php foreach ($fetchRenewal as $Parked) {
+
+																$datetime1 = new DateTime($Parked['timein']);
+																$datetime2 = new DateTime($Parked['timeout']);
+			 													$interval = $datetime2->diff($datetime1);
+			 													$hours = $interval->h;
+			 													$hours = $hours + ($interval->days*24);
+															 ?>
                                <tbody>
-                                   <tr>
+                                   <tr <?php if ($hours >= 26 AND $hours <= 50) {//1day
+																			echo 'class="danger"';
+																		} else if ($hours >= 50 AND $hours <= 74) { //2day
+																			echo 'class="danger"';
+																		} else if ($hours >= 74 AND $hours <= 98) {//3day
+																			echo 'class="danger"';
+																		} else if ($hours >= 98 AND $hours <= 122) {//4day
+																			echo 'class="danger"';
+																		} else if ($hours >= 122 AND $hours <= 146) {//5day
+																			echo 'class="danger"';
+																		}
+																		?>>
                                        <td><?php echo $Parked['company']?></td>
                                        <td><?php echo $Parked['reg']?></td>
                                        <td>
@@ -347,8 +378,8 @@
  																					$hms = date('H:i:s', strtotime($date));
  																					echo $d.'/'.$hms;
  																			  ?>
- 																			</td>
-                                       <td>
+	 																			</td>
+	                                      <td>
                                          <!-- Split button -->
 																				 <div class="btn-group pull-right">
 	                                         <a href="<?php echo $url ?>/update.php?id=<?php echo $Parked['id']?>" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-cog"></span></a>
