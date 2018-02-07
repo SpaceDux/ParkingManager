@@ -110,6 +110,14 @@
 													</li>
 											</ul>
 									</li>
+									<li class="">
+										<a href="#"><i class="fa fa-cog"></i> PM Tools<span class="fa arrow"></span></a>
+										<ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+											<li>
+												<a href="<?php echo $url ?>/viewnotice.php"><i class="fa fa-bar-chart"></i> Notices</a>
+											</li>
+										</ul>
+									</li>
 								</ul>
 					</div>
 			</nav>

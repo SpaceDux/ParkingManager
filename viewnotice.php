@@ -1,6 +1,21 @@
 <?php
 	require_once __DIR__.'/init.php'; //require the init file
 
+	$stmt = $dbConn->prepare("SELECT * FROM notices WHERE active = 1 ORDER BY id DESC");
+	$stmt->execute();
+	$result = $stmt->fetchAll();
+
+	if(isset($_POST['short_title']) && isset($_POST['body']) && isset($_POST['type'])) {
+		$stmt2 = $dbConn->prepare("INSERT into notices VALUES ('', ?, ?, '1', ?)");
+		$stmt2->bindParam(1, strtoupper($_POST['short_title']));
+		$stmt2->bindParam(2, $_POST['body']);
+		$stmt2->bindParam(3, $_POST['type']);
+
+		$stmt2->execute();
+	} else {
+		//do nothing
+	}
+
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -8,7 +23,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Parking Manager | Update Vehicle</title>
+    <title>Parking Manager | Notices</title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FontAwesome Styles-->
@@ -87,7 +102,7 @@
                       </h1>
           <ol class="breadcrumb">
           <li><a href="#">Home</a></li>
-          <li class="active">Manager Notices</li>
+          <li class="active">Manage Notices</li>
           </ol>
 
   </div>
@@ -96,14 +111,65 @@
      <div class="col-lg-12">
          <div class="panel panel-default">
              <div class="panel-heading">
-                 Manage Parking Managers notices
+                 All Notices
              </div>
-             <div class="panel-body">
-                 <div class="row">
-                     <div class="col-lg-6">
-         </div>
+           <div class="panel-body">
+                   <div class="col-lg-6">
+										<?php foreach ($result as $notice) { ?>
+											<div class="alert <?php echo $notice['type']?>" role="alert">
+												<b><?php echo $notice['short_title']?></b> <?php echo $notice['body']?>
+											<button type="button" class="close" aria-label="De-Activate"><a href="<?php echo $url?>/noticeremove.php?id=<?php echo $notice['id']?>"><span aria-hidden="true">&times;</span></a></button>
+											</div>
+										<?php } ?>
          <!-- /.panel -->
+
      </div>
+		 <div class="panel-body">
+				 <div class="row">
+						 <div class="col-lg-6">
+								 <form method="post" action="viewnotice.php">
+										 <div class="form-group">
+												 <label>Short Title</label>
+												 <input type="text" class="form-control" name="short_title" style="text-transform: uppercase;" placeholder="Heads up! ">
+										 </div>
+										 <div class="form-group">
+												 <label>Body</label>
+												 <input type="text" class="form-control" name="body" placeholder=" SNAP have reported multiple issues regarding...">
+										 </div>
+										 <label>Type of Notice</label>
+										 <div class="radio">
+											 <label>
+												 <input type="radio" class="type" name="type" value="alert-info" checked>
+												 Blue (Info)
+											 </label>
+										 </div>
+										 <div class="radio">
+											 <label>
+												 <input type="radio" class="type" name="type" value="alert-danger">
+												 Red (Danger)
+											 </label>
+										 </div>
+										 <div class="radio">
+											 <label>
+												 <input type="radio" class="type" name="type" value="alert-warning">
+												 Yellow/Orange (Warning)
+											 </label>
+										 </div>
+										 <div class="radio">
+											 <label>
+												 <input type="radio" class="type" name="type" value="alert-success">
+												 Green (Success)
+											 </label>
+										 </div>
+										 <br>
+
+										  <input type="submit" class="btn btn-primary" value="Add Notice"></input>
+										</form>
+								</div>
+								</div>
+								</div>
+								</div>
+								</div>
      <!-- /.col-lg-12 -->
 		 <center><footer>Property of <a href="http://ryanadamwilliams.co.uk">Ryan Adam Williams</a> ~ Parking Manager &copy; 2018&nbsp; | &nbsp <b><?php echo $ver ?></footer></center>
  </div>

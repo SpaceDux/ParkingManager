@@ -6,6 +6,11 @@
 	$fetchPaid = $Parked->fetchPaid();
 	$fetchExit = $Parked->fetchExit();
 	$fetchRenewal = $Parked->fetchRenewal();
+
+
+	$stmt = $dbConn->prepare("SELECT * FROM notices WHERE active = 1 ORDER BY id DESC");
+	$stmt->execute();
+	$result = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -68,6 +73,14 @@
 																<a href="<?php echo $url ?>/reporthub.php"><i class="fa fa-bar-chart"></i> Account Reports</a>
 														</li>
 												</ul>
+										</li>
+										<li class="">
+											<a href="#"><i class="fa fa-cog"></i> PM Tools<span class="fa arrow"></span></a>
+											<ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+												<li>
+													<a href="<?php echo $url ?>/viewnotice.php"><i class="fa fa-bar-chart"></i> Notices</a>
+												</li>
+											</ul>
 										</li>
 									</ul>
             </div>
@@ -141,7 +154,11 @@
                 </div>
            <div class="row">
            <div class="col-md-7 col-sm-12 col-xs-12">
-
+						 <?php foreach ($result as $notice) { ?>
+							 <div class="alert <?php echo $notice['type']?>" role="alert">
+								 <b><?php echo $notice['short_title']?></b> <?php echo $notice['body']?>
+							 </div>
+						 <?php } ?>
               <div class="panel panel-default">
                   <div class="panel-heading">
                     <button class="btn btn-primary pull-right" type="button" data-toggle="modal" data-target="#addModal">Register Vehicle <i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -328,7 +345,7 @@
 							 <b>NOLAN</b> account report, we must do the following every shift; <br>
 							 <br>
 							 <li>Check all the vehicles on NOLAN's report actually belong to NOLAN</li>
-							 <li>Ensure all issued ticket ID's are correct & charged to the right account via ETP.</li>
+							 <li>Ensure all issued ticket ID's are correct & charged to the correct account via the ETP.</li>
 							 <li>If a renewal has been processed, but actually the vehicle has left making the renewal a mistake, please correct it by deleting the Ticket in the ETP
 							 and removing the TID from the Parking Manager</li>
 							<li>Lastly, make a note in the diary that you've checked & corrected error's on the account reports as Rosie will be checking this.</li>
