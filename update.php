@@ -107,6 +107,7 @@
 											<ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
 													<li>
 															<a href="<?php echo $url ?>/reporthub.php"><i class="fa fa-bar-chart"></i> Account Reports</a>
+															<a href="<?php echo $url ?>/account_list.php"><i class="fa fa-list-alt"></i> Account List</a>
 													</li>
 											</ul>
 									</li>
