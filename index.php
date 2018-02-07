@@ -374,17 +374,17 @@
 			 													$hours = $hours + ($interval->days*24);
 															 ?>
                                <tbody>
-                                   <tr <?php if ($hours >= 26 AND $hours <= 50) {//1day
-																			echo 'class="danger"';
-																		} else if ($hours >= 50 AND $hours <= 74) { //2day
-																			echo 'class="danger"';
-																		} else if ($hours >= 74 AND $hours <= 98) {//3day
-																			echo 'class="danger"';
-																		} else if ($hours >= 98 AND $hours <= 122) {//4day
-																			echo 'class="danger"';
-																		} else if ($hours >= 122 AND $hours <= 146) {//5day
-																			echo 'class="danger"';
-																		}
+                                   <tr <?php # if ($hours >= 26 AND $hours <= 50) {//1day
+																			#echo 'class="danger"';
+																		#} else if ($hours >= 50 AND $hours <= 74) { //2day
+																			#echo 'class="danger"';
+																		#} else if ($hours >= 74 AND $hours <= 98) {//3day
+																			#echo 'class="danger"';
+																		#} else if ($hours >= 98 AND $hours <= 122) {//4day
+																		#	echo 'class="danger"';
+																		#} else if ($hours >= 122 AND $hours <= 146) {//5day
+																			#echo 'class="danger"';
+																		#}
 																		?>>
                                        <td><?php echo $Parked['company']?></td>
                                        <td><?php echo $Parked['reg']?></td>

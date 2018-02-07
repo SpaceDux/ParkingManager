@@ -11,7 +11,11 @@
 		$stmt2->bindParam(2, $_POST['body']);
 		$stmt2->bindParam(3, $_POST['type']);
 
-		$stmt2->execute();
+		if ($stmt2->execute() == true) {
+			header('Location: '.$url.'/viewnotice.php');
+		} else {
+			die("didn't work, alert Ryan ASAP!");
+		}
 	} else {
 		//do nothing
 	}
