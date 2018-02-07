@@ -11,7 +11,7 @@ if ($page=='add') {
   $paid = $_POST['paid'];
   $column = $_POST['column'];
   //sql time
-  $stmt = $dbConn->prepare("INSERT into parking VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', '0', '0', '')");
+  $stmt = $dbConn->prepare("INSERT into parking VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', '0', '0', '', '')");
   $stmt->bindParam(1, strtoupper($company));
   $stmt->bindParam(2, strtoupper($reg));
   $stmt->bindParam(3, strtoupper($trlno));

@@ -65,6 +65,8 @@
 										echo "<td>COACH</td>";
 									} else if ($report['type'] == 6) {
 										echo "<td>CAR</td>";
+									} else if ($report['type'] == 0) {
+										echo "<td>N/A</td>";
 									 }
 									 ?>
 						  	   <td><?php echo $report['timein'] ?></td>

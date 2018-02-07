@@ -21,6 +21,7 @@
 		paid = :paid,
 		timeout = :timeout,
 		comment = :comment,
+		tt = :tt,
 		h_light = :h_light WHERE id = $id";
 		$stmt2 = $dbConn->prepare($sql);
 		$stmt2->bindParam(':company', strtoupper($_POST['company']));
@@ -33,6 +34,7 @@
 		$stmt2->bindParam(':paid', strtoupper($_POST['paid']));
 		$stmt2->bindParam(':timeout', $_POST['timeout']);
 		$stmt2->bindParam(':comment', $_POST['comment']);
+		$stmt2->bindParam(':tt', $_POST['tt']);
 		$stmt2->bindParam(':h_light', $_POST['h_light']);
 
 		if($stmt2->execute()) {
@@ -150,6 +152,12 @@
                                </div>
                                <div class="radio">
                                  <label>
+                                   <input type="radio" class="type" name="type" value="1" <?php if($result['type'] == 0) echo "checked" ?>>
+                                   UNKNOWN
+                                 </label>
+                               </div>
+                               <div class="radio">
+                                 <label>
                                    <input type="radio" class="type" name="type" value="1" <?php if($result['type'] == 1) echo "checked" ?>>
                                    Cab &amp; Trailer
                                  </label>
@@ -197,10 +205,18 @@
                            <label>Time IN</label>
                            <input type="text" class="form-control" name="timein" value="<?php echo $result['timein']?>">
                          </div>
-                     <div class="form-group">
-                         <label>Ticket ID</label>
-                         <input type="text" class="form-control" name="tid" value="<?php echo $result['tid']?>">
-                       </div>
+											<div class="col-lg-10" style="padding-left: 0; margin-left: 0;">
+	                     <div class="form-group">
+	                         <label>Ticket ID</label>
+	                         <input type="text" class="form-control" name="tid" value="<?php echo $result['tid']?>">
+											 </div>
+											</div>
+											<div class="col-lg-2">
+	                     <div class="form-group">
+	                         <label>Ticket Type</label>
+	                         <input type="text" class="form-control" name="tt" value="<?php echo $result['tt']?>">
+											 </div>
+											</div>
                    <div class="form-group">
                      <label>Payment Details</label>
                        <input type="text" class="form-control" name="paid" style="text-transform: uppercase;" value="<?php echo $result['paid']?>">

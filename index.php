@@ -184,6 +184,8 @@
 	                                     echo "<td>COACH</td>";
                                      } else if ($Parked['type'] == 6) {
 	                                     echo "<td>CAR</td>";
+                                     } else if ($Parked['type'] == 0) {
+	                                     echo "<td>N/A</td>";
                                      }
                                      ?>
                                       <td>
@@ -264,6 +266,8 @@
 	                                     echo "<td>COACH</td>";
                                      } else if ($Parked['type'] == 6) {
 	                                     echo "<td>CAR</td>";
+                                     } else if ($Parked['type'] == 0) {
+	                                     echo "<td>N/A</td>";
                                      }
                                      ?>
                                       <td>
@@ -306,6 +310,16 @@
            </div>
 
 					 <div class="col-md-5 col-sm-12 col-xs-12">
+						 <div class="alert alert-info" role="alert">
+							 <b>IMPORTANT!: </b>Due to errors with the
+							 <b>NOLAN</b> account report, we must do the following every shift; <br>
+							 <br>
+							 <li>Check all the vehicles on NOLAN's report actually belong to NOLAN</li>
+							 <li>Ensure all issued ticket ID's are correct & charged to the right account via ETP.</li>
+							 <li>If a renewal has been processed, but actually the vehicle has left making the renewal a mistake, please correct it by deleting the Ticket in the ETP
+							 and removing the TID from the Parking Manager</li>
+							<li>Lastly, make a note in the diary that you've check & corrected error's on the report as Rosie will be checking this.</li>
+						 </div>
                <div class="panel panel-default">
                    <div class="panel-heading">
                        Renewal Vehicles
@@ -434,6 +448,13 @@
                 <label>Trailer Number</label>
                 <input type="text" class="form-control" id="trlno" name="trlno" placeholder="Trailer Number" style="text-transform: uppercase;">
               </div>
+
+							<div class="radio">
+								<label>
+									<input type="radio" class="type" name="type" value="0" checked>
+									UNKNOWN
+								</label>
+							</div>
 
               <div class="radio">
                 <label>
