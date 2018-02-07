@@ -7,7 +7,7 @@
 	$q3 = $_POST['q'];
 	$q4 = $_POST['q'];
 
-	$sql = "SELECT * FROM parking WHERE reg = ? OR tid LIKE ? OR company = ? OR trlno = ? ORDER by timein DESC LIMIT 100";
+	$sql = "SELECT * FROM parking WHERE reg = ? OR tid LIKE ? OR company = ? OR trlno = ? ORDER by timein DESC LIMIT 150";
   $stmt = $dbConn->prepare($sql);
   $stmt->bindParam(1, $q);
   $stmt->bindParam(2, $q2);

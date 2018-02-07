@@ -285,6 +285,36 @@
                          </ul>
                        </div>
                      </div>
+                     <div class="col-lg-6">
+                       <div class="panel panel-primary">
+                         <div class="panel-heading">
+                             D G MCARDLE
+                         </div>
+                         <p style="padding: 10px;">D G MCARDLE Transport</p>
+                         <ul class="list-group">
+                           <li class="list-group-item">Email: </li>
+                           <li class="list-group-item">Telephone: </li>
+                           <li class="list-group-item">Tools:
+                             <a href="<?php echo $url?>/fleets.php?a=MCARDLE"><button type="button" class="btn btn-primary">Fleet List</button></a>
+                           </li>
+                         </ul>
+                       </div>
+                     </div>
+                     <div class="col-lg-6">
+                       <div class="panel panel-primary">
+                         <div class="panel-heading">
+                             NORTH WEST CARRIERS
+                         </div>
+                         <p style="padding: 10px;">NWC</p>
+                         <ul class="list-group">
+                           <li class="list-group-item">Email: </li>
+                           <li class="list-group-item">Telephone: </li>
+                           <li class="list-group-item">Tools:
+                             <a href="<?php echo $url?>/fleets.php?a=MCARDLE"><button type="button" class="btn btn-primary">Fleet List</button></a>
+                           </li>
+                         </ul>
+                       </div>
+                     </div>
              </div>
          </div>
          <!-- /.panel -->
