@@ -52,6 +52,7 @@ input[type="search"] {
   font-family: 'SegoeUI Light';
   font-size: 17px;
   border: none;
+  text-transform: uppercase;
 }
 .mainNav {
   height: 70px;
