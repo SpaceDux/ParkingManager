@@ -242,8 +242,6 @@
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
-																					<li role="separator" class="divider"></li>
-																					<li><a href="<?php echo $url ?>/duplicate.php?id=<?php echo $Parked['id'] ?>"> Mark Duplicate</a></li>
                                         </ul>
                                       </div>
                                       </td>
@@ -326,8 +324,6 @@
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
-																					<li role="separator" class="divider"></li>
-																					<li><a href="<?php echo $url ?>/duplicate.php?id=<?php echo $Parked['id'] ?>"> Mark Duplicate</a></li>
                                         </ul>
                                       </div>
                                       </td>
@@ -412,8 +408,6 @@
 	                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=2">Mark 48hr</a></li>
 	                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=3">Mark 72hr</a></li>
 	                                           <li><a href="<?php echo $url ?>/highlight.php?id=<?php echo $Parked['id'] ?>&col=0">Remove Highlight</a></li>
-	 																					<li role="separator" class="divider"></li>
-	 																					<li><a href="<?php echo $url ?>/duplicate.php?id=<?php echo $Parked['id'] ?>"> Mark Duplicate</a></li>
 	                                         </ul>
 	                                       </div>
                                        </td>

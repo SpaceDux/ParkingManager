@@ -65,11 +65,11 @@
 													$hours = $interval->h;
 													$hours = $hours + ($interval->days*24);
 
-													$count = count($report);
-													if($hours <= 4 AND $interval->format('%i') <= 15) {
+													if($hours <= 3 AND $interval->format('%i') <= 60) {
 													?>
 											  	 <tbody>
 											  	 	<tr>
+																<td><?php echo $counter ?></td>
 												  	   <td><?php echo $report['reg'] ?></td>
 												  	   <td><?php echo $report['trlno'] ?></td>
 												  	   <td><?php echo $report['tid'] ?></td>
@@ -98,7 +98,6 @@
 												 <?php }
 											 			 }
 													?>
-
 					</table>
 					<br>
 					<div class="panel panel-default">
@@ -156,7 +155,7 @@
 											  	 	</tr>
 											  	 </tbody>
 												 <?php }
-											 			 }
+											 			}
 													?>
 					</table>
 					<br>

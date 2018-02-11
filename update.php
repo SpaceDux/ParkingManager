@@ -141,6 +141,9 @@
          <div class="panel panel-default">
              <div class="panel-heading">
                  Updating Record for <?php echo $result['reg'] ?>
+								 <div class="pull-right">
+									 <a href="<?php echo $url ?>/duplicate.php?id=<?php echo $result['id'] ?>"><button class="btn btn-danger"><i class="fa fa-trash"></i> Duplicate</button></a>
+								 </div>
              </div>
              <div class="panel-body">
                  <div class="row">
@@ -214,13 +217,13 @@
                            <label>Time IN</label>
                            <input type="text" class="form-control" name="timein" value="<?php echo $result['timein']?>">
                          </div>
-											<div class="col-lg-10" style="padding-left: 0; margin-left: 0;">
+											<div class="col-lg-9" style="padding-left: 0; margin-left: 0;">
 	                     <div class="form-group">
 	                         <label>Ticket ID</label>
 	                         <input type="text" class="form-control" name="tid" value="<?php echo $result['tid']?>">
 											 </div>
 											</div>
-											<div class="col-lg-2">
+											<div class="col-lg-3">
 	                     <div class="form-group">
 	                         <label>Ticket Type</label>
 	                         <input type="text" class="form-control" name="tt" value="<?php echo $result['tt']?>">
