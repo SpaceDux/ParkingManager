@@ -69,7 +69,6 @@
 													?>
 											  	 <tbody>
 											  	 	<tr>
-																<td><?php echo $counter ?></td>
 												  	   <td><?php echo $report['reg'] ?></td>
 												  	   <td><?php echo $report['trlno'] ?></td>
 												  	   <td><?php echo $report['tid'] ?></td>
