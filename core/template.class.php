@@ -1,5 +1,5 @@
 <?php
-	namespace Krypton;
+	namespace Fenrir;
 
 	class Template
 	{
@@ -42,7 +42,7 @@
 			}
 		}
 		//Add Template Pieces (Basically import raw PHP // I'm confident there is a bettter way but for now #YOLO)
-		
+
 		//Combines everything and echo's the template
 		function Show()
 		{

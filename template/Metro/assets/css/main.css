@@ -1,0 +1,78 @@
+body {
+  padding: 0;
+  margin: 0;
+  background: #efefef;
+  overflow-x: hidden;
+}
+@font-face {
+  font-family: 'SegoeUI Light';
+  src:url('../fonts/segoeuil.ttf');
+}
+@font-face {
+  font-family: 'SegoeUI';
+  src:url('../fonts/segoeui.ttf');
+}
+l {
+  font-family: 'SegoeUI Light';
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.topNavigator {
+  height: 50px;
+  width: 100%;
+  background: #4b4b4b;
+  position: fixed;
+}
+.topNavigator > .brand {
+  height: 50px;
+  width: 300px;
+  background: #424242;
+  text-align: center;
+  line-height: 45px;
+  font-size: 30px;
+  font-family: 'SegoeUI';
+  color: #e6e6e6;
+  display: inline-block;
+  position: absolute;
+}
+.topNavigator > .buttonHolder {
+  width: auto;
+  height: 50px;
+  display: inline-block;
+  float: right;
+}
+.topNavigator > .buttonHolder > a {
+  width: auto;
+  height: 50px;
+  padding: 0 9px 0 9px;
+  line-height: 45px;
+  display: inline-block;
+  font-family: 'SegoeUI Light';
+  border-left: 1px solid #424242;
+  color: #e6e6e6;
+  font-size: 20px;
+}
+.topNavigator > .buttonHolder > a:hover {
+  background: #424242;
+}
+.sideNavigator {
+  width: 300px;
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  background: #4b4b4b;
+  z-index: -1;
+}
+.sideNavigator > .content {
+  margin-top: 50px;
+  width: 300px;
+  height: auto;
+  z-index: 1;
+}
+.wrapper {
+  margin-left: 300px;
+  margin-top: 60px;
+  position: absolute;
+}

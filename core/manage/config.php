@@ -15,5 +15,5 @@
 
 	$_CONFIG['site']['name'] = 'Parking Manager'; //Website name, {SITE_NAME}
 
-	$_CONFIG['site']['template'] = 'PM2018'; //Fenrir Template System, Select the Template Directory
+	$_CONFIG['site']['template'] = 'Metro'; //Fenrir Template System, Select the Template Directory
 ?>
