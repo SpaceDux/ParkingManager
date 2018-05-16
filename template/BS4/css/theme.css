@@ -1,0 +1,326 @@
+@font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 400;
+  src:url("../webfonts/Tajawal-Regular.ttf");
+}
+@font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 300;
+  src:url("../webfonts/Tajawal-Light.ttf");
+}
+@font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 700;
+  src:url("../webfonts/Tajawal-Bold.ttf");
+}
+body, html {
+  background-color: #efefef;
+}
+/* Scroll Bar */
+::-webkit-scrollbar {
+    width: 5px;
+}
+::-webkit-scrollbar-track {
+    background: #36393d;
+}
+::-webkit-scrollbar-thumb {
+    background: #292929;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #292929;
+}
+/* Work: Navigation */
+/* Top Nav */
+nav.topBar {
+  background: #fff;
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  z-index: 1;
+  border-bottom: 0.5px solid #efefef;
+}
+nav.topBar > .brand {
+  height: 50px;
+  width: 220px;
+  text-align: center;
+  color: white;
+  font-size: 27px;
+  line-height: 50px;
+  box-sizing: border-box;
+  background: #414447;
+  box-shadow: inset 0px 0px 2px 0px #000;
+  font-family: 'Tajawal', sans-serif;
+  position: absolute;
+}
+nav.topBar > ul {
+  list-style: none;
+  display: inline-block;
+  padding-left: 224px;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+nav.topBar > ul > a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+nav.topBar > ul > a > li,
+nav.topBar > ul > li {
+  height: 100%;
+  width: auto;
+  line-height: 50px;
+  font-family: 'Tajawal', sans-serif;
+  padding: 0px 10px;
+  font-size: 20px;
+  color: #525252;
+  display: inline-block;
+  border-right: 0.1px solid #ececec;
+  margin-left: -4px;
+  cursor: pointer;
+}
+nav.topBar > ul > a > li:hover,
+nav.topBar > ul > li:hover {
+  background: #fafafa;
+}
+/* Side Nav  */
+nav#sideBar {
+  width: 220px;
+  height: 100vh;
+  background: #36393d;
+  z-index: 0;
+  position: fixed;
+  box-shadow: inset 0px 0px 2px 0px #29292996;
+  font-family: 'Tajawal', sans-serif;
+  transition: 0.5 ease-in-out;
+}
+nav#sideBar > .userBox {
+  height: 70px;
+  width: 100%;
+  margin-top: 50px;
+  z-index: 2;
+  background: #2b2d31;
+}
+nav#sideBar > .userBox >.userInfo {
+  width: 185px;
+  height: 70px;
+  padding-left: 20px;
+  box-sizing: border-box;
+  position: absolute;
+  overflow: hidden;
+  display: block;
+}
+nav#sideBar > .userBox >.userInfo > .userName {
+  padding-top: 2px;
+  font-size: 20px;
+  color: #f9f9f9;
+  text-transform: uppercase;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 300;
+  display: block;
+
+}
+nav#sideBar > .userBox >.userInfo > .userName > b {
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 700;
+}
+nav#sideBar > .userBox >.userInfo > .userLocation {
+  font-size: 12px;
+  color: #f9f9f9;
+  display: block;
+}
+nav#sideBar > .userBox >.userInfo > .pmVer {
+  font-size: 10px;
+  color: #f9f9f9;
+  display: block;
+
+}
+nav#sideBar > .userBox > .buttons {
+  float: right;
+  width: 35px;
+  background: #23262b;
+  height: 70px;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-align: center;
+}
+nav#sideBar > .userBox > .buttons > a {
+  color: inherit;
+  text-decoration: none;
+  height: 35px;
+  width: 35px;
+  line-height: 35px;
+  color: #fff;
+}
+nav#sideBar > .userBox > .buttons > a:hover {
+  color: #a4a4a4;
+}
+nav#sideBar > ul {
+  display: block;
+  height: auto;
+  width: 100%;
+  padding: 0;
+}
+nav#sideBar > ul > a {
+  text-decoration: none;
+  color: inherit;
+}
+nav#sideBar > ul > a > li,
+nav#sideBar > ul > li {
+  list-style: none;
+  padding: 10px 0px 10px 20px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 20px;
+  margin-bottom: 2px;
+  color: #f9f9f9;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 300;
+}
+nav#sideBar > ul > a > li:hover,
+nav#sideBar > ul > li:hover {
+  background: #2b2d31;
+  transition: 0.3s;
+}
+nav#sideBar > ul > li > ul {
+  display: none;
+  height: auto;
+  width: 100%;
+  padding: 0;
+}
+nav#sideBar > ul > li:hover > ul,
+nav#sideBar > ul > li:active > ul {
+  display: block;
+}
+nav#sideBar > ul > li > ul > a {
+  text-decoration: none;
+  color: inherit;
+}
+nav#sideBar > ul > li > ul > a > li,
+nav#sideBar > ul > li > ul > li {
+  list-style: none;
+  padding: 6px 0px 6px 10px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 18px;
+  margin-bottom: 2px;
+  color: #f9f9f9;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 300;
+}
+nav#sideBar > ul > li > ul > a > li:hover,
+nav#sideBar >  ul > li > ul > li:hover {
+  color: #a4a4a4;
+  transition: 0.3s;
+}
+nav#sideBar > ul > li > i,
+nav#sideBar > ul > a > li > i {
+  color: #efefef;
+  font-size: 15px;
+  padding-right: 7px;
+
+
+}
+nav#sideBar > ul > li > .active,
+nav#sideBa .active {
+  background: #2b2d31;
+}
+/* Work: Wrapper */
+#wrapper {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  position: absolute;
+  z-index: -1;
+  box-sizing: border-box;
+}
+.darkHead {
+  width: 100%;
+  height: auto;
+  position: relative;
+  background:url("../img/debut_dark.png");
+  padding-top: 65px;
+  box-sizing: border-box;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.darkHead b {
+  font-weight: 700;
+  font-family: 'Tajawal', sans-serif;
+}
+.darkHead .statBox {
+  width: 100%;
+  height: 80px;
+  display: block;
+  background: #4747473d;
+  margin-bottom: 19px;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.darkHead .statBox-LG {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #4747473d;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.darkHead .statText {
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 300;
+    color: #fff;
+    line-height: 20px;
+    text-align: center;
+    display: block;
+    margin-left: 50px;
+}
+.darkHead .Stat {
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 300;
+  color: #fff;
+  line-height: 50px;
+  text-align: center;
+  font-size: 26px;
+  box-sizing: border-box;
+  display: block;
+  margin-left: 50px;
+}
+.darkHead .statIcon {
+  width: 50px;
+  height: 80px;
+  background: #4444447a;
+  position: absolute;
+  border-radius: 4px 0px 0px 4px;
+  font-size: 28px;
+  text-align: center;
+  line-height: 80px;
+  color: #dadada;
+}
+.content {
+  padding: 5px 5px;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 0 20px -2px rgba(206, 206, 206, 0.5);
+  background: #fff;
+  margin-top: 20px;
+  border-radius: 2px;
+  overflow-x: hidden;
+}
+.title {
+  font-family: 'Tajawal';
+  font-size: 20px;
+  font-weight: 300;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+table {
+  font-family: 'Tajawal';
+  font-size: 17px;
+}
+td {
+  line-height: 40px;
+}

@@ -20,7 +20,7 @@
 				}
 				else
 				{
-					echo "Krypton Template System Error: File not found! PATH = ".$_path;
+					echo "Fenrir Template System Error: File not found! PATH = ".$_path;
 				}
 			}
 
@@ -32,6 +32,7 @@
 			$this->Assign('url', $_CONFIG['site']['url']); //{URL} Site URL
 			$this->Assign('tpl', $_CONFIG['site']['template']); //{TPL} Skin Name
 			$this->Assign('site_name', $_CONFIG['site']['name']); //{SITE_NAME} Site Name
+			$this->Assign('pm_ver', $_CONFIG['PM']['ver']); //{PM_VER} PM Version
 		}
 		//This function takes the set params and turns them into an actual function
 		function Assign($_searchString, $_replaceString)
@@ -41,8 +42,6 @@
 				$this->assignedValues[strtoupper($_searchString)] = $_replaceString;
 			}
 		}
-		//Add Template Pieces (Basically import raw PHP // I'm confident there is a bettter way but for now #YOLO)
-
 		//Combines everything and echo's the template
 		function Show()
 		{
