@@ -225,7 +225,7 @@ nav#sideBar > ul > a > li > i {
 
 }
 nav#sideBar > ul > li > .active,
-nav#sideBa .active {
+nav#sideBar .active {
   background: #2b2d31;
 }
 /* Work: Wrapper */
@@ -236,6 +236,7 @@ nav#sideBa .active {
   position: absolute;
   z-index: -1;
   box-sizing: border-box;
+  padding-bottom: 20px;
 }
 .darkHead {
   width: 100%;
@@ -319,8 +320,38 @@ nav#sideBa .active {
 }
 table {
   font-family: 'Tajawal';
-  font-size: 17px;
+  font-size: 16px;
 }
-td {
-  line-height: 40px;
+.table td {
+  padding: 0;
+}
+.whereami {
+  height: 45px;
+  width: 100%;
+  margin-top: 50px;
+  background:url("../img/debut_dark.png");
+}
+.whereami .page {
+  line-height: 45px;
+  font-size: 20px;
+  padding-left: 100px;
+  color: #dadada;
+  font-family: 'Tajawal';
+}
+.whereami a {
+  color: #dadada;
+  text-decoration: none;
+}
+.whereami a:hover,
+.whereami a:focus {
+  color: #dadada;
+  text-decoration: none;
+}
+.whereami small {
+  color: #fff;
+}
+.updateContent {
+  width: 100%;
+  background: #fff;
+  padding: 10px;
 }

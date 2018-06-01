@@ -1,35 +1,18 @@
 <?php
-define('C', '/core');
-define('M', '/manage');
+  //This is the file that pulls it
+  //all together!
 
+  require __DIR__.'/core/manage/config.php';
+  require __DIR__.'/core/manage/dbcon.php';
+  require __DIR__.'/core/parking.func.php';
 
-//Required Files
+  $parking = new Parking;
 
-	//Config
-	require_once __DIR__ . C . M . '/config.php';
+  $GetBreaks = $parking->fetchBreak();
+  $GetPaid = $parking->fetchPaid();
+  $GetRenewals = $parking->fetchRenewals();
+  $GetExits = $parking->fetchExits();
 
-	//Class Files
-	require_once __DIR__ . C . '/template.class.php';
-	require_once __DIR__ . C . '/mysql.class.php';
+  $ver = "2.0.1";
 
-	//Template System Information
-	$tplDes = $_CONFIG['site']['template'];
-	$tplPg = $_GET['page'];
-	define ('TEMPLATE_PATH', 'template/'.$tplDes);
-	define ('TEMPLATE_PAGE', '/'.$tplPg.'.php');
-	//Raw Addons
-	define('RAW_PATH', 'template/'.$tplDes);
-	//Begin Activating the Engine
-	use Fenrir as Fen;
-
-	$template = new Fen\Template(TEMPLATE_PATH.TEMPLATE_PAGE);
-
-	$mysql = new Fen\MySQL();
-
-	//Other Activating
-	session_start();
-	
-	$mysql->Connect();
-	
-	
 ?>

@@ -1,4 +1,4 @@
-RewriteEngine on
+RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^([^/\.]+)/?$ index.php?page=$1 [L]
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+RewriteRule ^update/([0-9a-zA-Z]+) update.php?id=$1 [L,QSA]
