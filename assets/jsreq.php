@@ -18,71 +18,6 @@
     }
   }
 </script>
-<!-- Chart JS -->
-<script type="text/javascript">
-var ctx = document.getElementById("lastChart").getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-        datasets: [{
-            label: 'This week',
-            data: [200, 222, 100, 244, 66, 87, 110],
-            borderWidth: [0],
-            backgroundColor: [
-                'rgba(255, 255, 255, 0.6)',
-                'rgba(255, 255, 255, 0.6)',
-                'rgba(255, 255, 255, 0.6)',
-                'rgba(255, 255, 255, 0.6)',
-                'rgba(255, 255, 255, 0.6)',
-                'rgba(255, 255, 255, 0.6)',
-                'rgba(255, 255, 255, 0.6)'
-            ],
-            borderColor: [
-                'rgba(255, 255, 255, 1)',
-                'rgba(255, 255, 255, 1)',
-                'rgba(255, 255, 255, 1)',
-                'rgba(255, 255, 255, 1)',
-                'rgba(255, 255, 255, 1)',
-                'rgba(255, 255, 255, 1)',
-                'rgba(255, 255, 255, 1)'
-            ],
-        },
-        {
-          label: 'Last week',
-          data: [123, 199, 97, 222, 88, 55, 32],
-          borderWidth: [0],
-          backgroundColor: [
-              'rgba(104,104,104, 0.6)',
-              'rgba(104,104,104, 0.6)',
-              'rgba(104,104,104, 0.6)',
-              'rgba(104,104,104, 0.6)',
-              'rgba(104,104,104, 0.6)',
-              'rgba(104,104,104, 0.6)',
-              'rgba(104,104,104, 0.6)'
-          ],
-          borderColor: [
-              'rgba(104,104,104, 1)',
-              'rgba(104,104,104, 1)',
-              'rgba(104,104,104, 1)',
-              'rgba(104,104,104, 1)',
-              'rgba(104,104,104, 1)',
-              'rgba(104,104,104, 1)',
-              'rgba(104,104,104, 1)'
-          ]
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
-</script>
 <!-- Focus on Modal -->
 <script type="text/javascript">
 $('.modal').on('shown.bs.modal', function() {
@@ -165,6 +100,15 @@ function markRenewal(str) {
  var veh_id = str;
  $.ajax({
   url: "<?php echo $url ?>/core/ajax.func.php?p=markRenewal",
+  type: "POST",
+  data: "veh_id="+veh_id
+ })
+ $('#tables').load(' #tables');
+}
+function unmarkRenewal(str) {
+ var veh_id = str;
+ $.ajax({
+  url: "<?php echo $url ?>/core/ajax.func.php?p=unmarkRenewal",
   type: "POST",
   data: "veh_id="+veh_id
  })

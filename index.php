@@ -15,9 +15,11 @@
   <body>
     <!-- Top Navbar -->
     <nav class="topBar">
+      <a href="<?php echo $url?>/index">
       <div class="brand">
         Parking<b>Manager</b>
       </div>
+      </a>
       <ul>
         <a onClick="menuHide()"><li><i class="fas fa-align-justify"></i></li></a>
         <li data-toggle="modal" data-target="#searchModal"><i class="fa fa-search"></i></li>
@@ -197,14 +199,19 @@
                   <td>
                     <div class="btn-group" role="group" aria-label="Button Group">
                       <a href="<?php echo $url?>/update/<?php echo $row['id']?>" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></a>
-                      <button type="button" class="btn btn-danger btn-sm payBtn" data-id="<?php echo $row['id']?>" data-toggle="modal" data-target="#addPaymentModal"><i class="fas fa-pound-sign"></i></i></button>
+                      <button type="button" class="btn btn-danger btn-sm payBtn2" data-id="<?php echo $row['id']?>" data-toggle="modal" data-target="#addPaymentModalRenew"><i class="fas fa-clock"></i></i></button>
 
                       <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                         <div class="dropdown-menu">
                           <a style="cursor: pointer" class="dropdown-item" onClick="quickExit(<?php echo $row['id']?>)">Exit Vehicle</a>
                           <div class="dropdown-divider"></div>
-                          <a style="cursor: pointer" class="dropdown-item" onClick="markRenewal(<?php echo $row['id']?>)">Mark Renewal</a>
+                          <?php if($row['h_light'] < 1) {?>
+                            <a style="cursor: pointer" class="dropdown-item" onClick="markRenewal(<?php echo $row['id']?>)">Mark Renewal</a>
+                          <?php } else {?>
+                            <a style="cursor: pointer" class="dropdown-item" onClick="unmarkRenewal(<?php echo $row['id']?>)">Un-mark Renewal</a>
+                          <?php }?>
+
                           <?php if($row['flag'] < 1) {?>
                             <a style="cursor: pointer" class="dropdown-item" onClick="setFlag(<?php echo $row['id']?>)">Flag Vehicle</a>
                           <?php } else {?>
@@ -294,7 +301,7 @@
                   </td>
                   <td>
                     <div class="btn-group" role="group" aria-label="Button Group">
-                      <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></button>
+                      <a href="<?php echo $url?>/update/<?php echo $row['id']?>" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></a>
 
                       <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -370,15 +377,20 @@
                     </td>
                     <td>
                       <div class="btn-group" role="group" aria-label="Button Group">
-                        <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></button>
-                        <button type="button" class="btn btn-danger btn-sm payBtn2" data-id="<?php echo $row['id']?>" data-toggle="modal" data-target="#addPaymentModalRenew"><i class="far fa-clock"></i></i></button>
+                        <a href="<?php echo $url?>/update/<?php echo $row['id']?>" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></a>
+                        <button type="button" class="btn btn-danger btn-sm payBtn2" data-id="<?php echo $row['id']?>" data-toggle="modal" data-target="#addPaymentModalRenew"><i class="fas fa-clock"></i></i></button>
 
                         <div class="btn-group" role="group">
                           <button id="btnGroupDrop1" type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                           <div class="dropdown-menu">
                             <a style="cursor: pointer" class="dropdown-item" onClick="quickExit(<?php echo $row['id']?>)">Exit Vehicle</a>
                             <div class="dropdown-divider"></div>
-                            <a style="cursor: pointer" class="dropdown-item" onClick="markRenewal(<?php echo $row['id']?>)">Mark Renewal</a>
+                            <?php if($row['h_light'] < 1) {?>
+                              <a style="cursor: pointer" class="dropdown-item" onClick="markRenewal(<?php echo $row['id']?>)">Mark Renewal</a>
+                            <?php } else {?>
+                              <a style="cursor: pointer" class="dropdown-item" onClick="unmarkRenewal(<?php echo $row['id']?>)">Un-mark Renewal</a>
+                            <?php }?>
+
                             <?php if($row['flag'] < 1) {?>
                               <a style="cursor: pointer" class="dropdown-item" onClick="setFlag(<?php echo $row['id']?>)">Flag Vehicle</a>
                             <?php } else {?>
@@ -445,7 +457,7 @@
                     </td>
                     <td>
                       <div class="btn-group" role="group" aria-label="Button Group">
-                        <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></button>
+                        <a href="<?php echo $url?>/update/<?php echo $row['id']?>" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></a>
                       </div>
                     </td>
                 </tr>
@@ -456,6 +468,9 @@
         </div>
       </div>
       </div>
+      <footer>
+
+      </footer>
     </div>
     <!-- Add Vehicle Modal -->
     <div class="modal fade" id="addVehicleModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleModal" aria-hidden="true">
@@ -650,6 +665,71 @@
     <script type="text/javascript">
     Mousetrap.bind('tab', function() {
       $('#addVehicleModal').modal('show');
+    });
+    </script>
+    <!-- Chart JS -->
+    <script type="text/javascript">
+    var ctx = document.getElementById("lastChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            datasets: [{
+                label: 'This week',
+                data: [200, 222, 100, 244, 66, 87, 110],
+                borderWidth: [0],
+                backgroundColor: [
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)'
+                ],
+            },
+            {
+              label: 'Last week',
+              data: [123, 199, 97, 222, 88, 55, 32],
+              borderWidth: [0],
+              backgroundColor: [
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)'
+              ],
+              borderColor: [
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)'
+              ]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
     });
     </script>
   </body>

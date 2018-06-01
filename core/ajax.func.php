@@ -55,6 +55,7 @@
     $tid = $_POST['tid'];
     $tot = $_POST['tot'];
 
+    if(isset($veh_id) && $veh_id > 1) {
     $sql = "INSERT INTO payments VALUES ('', ?, ?, ?, ?)";
     $stmt = $dbConn->prepare($sql);
     $stmt->bindParam(1, $veh_id);
@@ -62,6 +63,7 @@
     $stmt->bindParam(3, $tot);
     $stmt->bindParam(4, date("Y-m-d H:i:s"));
     $stmt->execute();
+  } else {};
 
     $upd = $dbConn->prepare("UPDATE parking SET h_light = '0' WHERE id = ?");
     $upd->bindParam(1, $veh_id);
@@ -77,6 +79,12 @@
     $veh_id = $_POST['veh_id'];
 
     $stmt = $dbConn->prepare("UPDATE parking SET h_light = '1' WHERE id = :id");
+    $stmt->bindParam(':id', $veh_id);
+    $stmt->execute();
+  } if ($page == 'unmarkRenewal') {
+    $veh_id = $_POST['veh_id'];
+
+    $stmt = $dbConn->prepare("UPDATE parking SET h_light = '0' WHERE id = :id");
     $stmt->bindParam(':id', $veh_id);
     $stmt->execute();
   } if ($page == 'setFlag') {

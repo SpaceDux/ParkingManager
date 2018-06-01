@@ -4,25 +4,30 @@
   $id = $_GET['id'];
   $row = $parking->fetchVehicle($id);
 
+  $parking->updateVehicle($id);
+  $payments = $parking->getPayments($id);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>PM: Update | REG</title>
+    <title>Parking Manager: Update | <?php echo $row['reg']?></title>
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="/PM18/assets/css/theme.css">
-    <link rel="stylesheet" href="/PM18/assets/css/bootstrap.css">
-    <link rel="stylesheet" href="/PM18/assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="<?php echo $url ?>/assets/css/theme.css">
+    <link rel="stylesheet" href="<?php echo $url ?>/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo $url ?>/assets/css/fontawesome-all.min.css">
   </head>
   <body>
     <!-- Top Navbar -->
     <!-- Top Navbar -->
     <nav class="topBar">
+      <a href="<?php echo $url?>/index">
       <div class="brand">
         Parking<b>Manager</b>
       </div>
+      </a>
       <ul>
         <a onClick="menuHide()"><li><i class="fas fa-align-justify"></i></li></a>
         <li data-toggle="modal" data-target="#searchModal"><i class="fa fa-search"></i></li>
@@ -74,11 +79,24 @@
       <div class="whereami">
         <div class="page">
           <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> Update <small>\\\</small> <b><?php echo $row['reg']?></b>
+          <div class="float-right">
+            <?php
+              if(isset($row['timein']) && isset($row['timeout'])) {
+                $d1 = new DateTime($row['timein']);
+                $d2 = new DateTime($row['timeout']);
+                $int = $d2->diff($d1);
+                $h = $int->h;
+                $h = $h + ($int->days*24);
+                echo "Parked for <b>".$h."</b> hours and <b>".$int->format('%i')."</b> minutes";
+              }
+             ?>
+          </div>
         </div>
       </div>
       <div class="updateContent">
+        <div id="tables">
         <div class="container">
-          <form>
+          <form method="post" id="update">
           <div class="row">
             <div class="col">
               <?php if($row['flag'] == 1) {
@@ -93,6 +111,10 @@
               <div class="form-group">
                 <label for="upd_reg">Registration</label>
                 <input type="text" class="form-control" name="upd_reg" id="upd_reg" placeholder="Vehicle Registration" value="<?php echo $row['reg']?>">
+              </div>
+              <div class="form-group">
+                <label for="upd_trl">Trailer Number</label>
+                <input type="text" class="form-control" name="upd_trl" id="upd_trl" placeholder="Trail Number" value="<?php echo $row['trlno']?>">
               </div>
               <div class="form-group">
               <label>Type of Vehicle</label>
@@ -145,10 +167,6 @@
                   </label>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="upd_comment">Comment / Notes</label>
-                <textarea class="form-control" name="upd_comment" id="upd_comment" rows="3" value="<?php echo $row['comment']?>"></textarea>
-              </div>
             </div>
             <div class="col">
               <table class="table table-striped table-dark text-center">
@@ -156,13 +174,44 @@
                   <tr>
                     <th scope="col">Ticket ID</th>
                     <th scope="col">Type of Ticket</th>
-                    <th scope="col"><i class="fa fa-cog"></i> <button type="button" tabindex="-1" class="btn btn-danger btn-sm float-right"><i class="fas fa-pound-sign"></i> New Payment</button></th>
+                    <th scope="col">Service Date</th>
+                    <th scope="col">
+                      <div class="btn-group" role="group" aria-label="Button Group">
+                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm"><i class="far fa-clock"></i></button>
+                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm"><i class="fas fa-pound-sign"></i></i></button>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
+                  <?php foreach ($payments as $pay) {?>
                   <tr>
-                    <td>109888</td>
-                    <td>24HR</td>
+                    <td><?php echo $pay['ticket_id']?></td>
+                    <td>
+                      <?php
+                      if($pay['tot'] == 1) {
+                        echo ' <span class="badge badge-dark">C/O</span>';
+                      } else if ($pay['tot'] == 2) {
+                        echo ' <span class="badge badge-dark">1 HR</span>';
+                      } else if ($pay['tot'] == 3) {
+                        echo ' <span class="badge badge-dark">2 HR</span>';
+                      } else if ($pay['tot'] == 4) {
+                        echo ' <span class="badge badge-primary">24 HR</span>';
+                      } else if ($pay['tot'] == 5) {
+                        echo ' <span class="badge badge-success">48 HR</span>';
+                      } else if ($pay['tot'] == 6) {
+                        echo ' <span class="badge badge-info">72 HR</span>';
+                      }
+                    ?>
+                    </td>
+                    <td>
+                      <?php
+                        $date = $pay['service_date'];
+                        $d = date('d', strtotime($date));
+                        $hms = date('H:i', strtotime($date));
+                        echo $d.'/'.$hms;
+                      ?>
+                    </td>
                     <td>
                       <div class="btn-group" role="group" aria-label="Button Group">
                         <button type="button" tabindex="-1" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></button>
@@ -170,16 +219,7 @@
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    <td>109888</td>
-                    <td>24HR</td>
-                    <td>
-                      <div class="btn-group" role="group" aria-label="Button Group">
-                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></button>
-                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></i></button>
-                      </div>
-                    </td>
-                  </tr>
+                  <?php }?>
                 </tbody>
               </table>
               <div class="form-group">
@@ -208,11 +248,40 @@
                 <label for="upd_timeout">Time OUT</label>
                 <input type="text" class="form-control" id="upd_timeout" name="upd_timeout" placeholder="Time OUT: Y-m-d H:m" value="<?php echo $row['timeout']?>">
               </div>
+              <div class="form-group">
+                <label for="upd_comment">Comment / Notes</label>
+                <textarea type="text" id="upd_comment" class="form-control" name="upd_comment" rows="3" cols="1" form="update"><?php echo $row['comment']?></textarea>
+              </div>
+              <div class="btn-group float-right" role="group" aria-label="Button Group">
+                <button type="submit" class="btn btn-dark"><i class="fa fa-save"></i> Save Data</button>
+                <div class="btn-group" role="group">
+                  <button id="btnGroupDrop1" type="button" class="btn btn-dark btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                  <div class="dropdown-menu">
+                    <a style="cursor: pointer" class="dropdown-item" onClick="quickExit(<?php echo $row['id']?>)">Exit Vehicle</a>
+                    <div class="dropdown-divider"></div>
+                    <?php if($row['h_light'] < 1) {?>
+                      <a style="cursor: pointer" class="dropdown-item" onClick="markRenewal(<?php echo $row['id']?>)">Mark Renewal</a>
+                    <?php } else {?>
+                      <a style="cursor: pointer" class="dropdown-item" onClick="unmarkRenewal(<?php echo $row['id']?>)">Un-mark Renewal</a>
+                    <?php }?>
+
+                    <?php if($row['flag'] < 1) {?>
+                      <a style="cursor: pointer" class="dropdown-item" onClick="setFlag(<?php echo $row['id']?>)">Flag Vehicle</a>
+                    <?php } else {?>
+                      <a style="cursor: pointer" class="dropdown-item" onClick="unsetFlag(<?php echo $row['id']?>)">Un-Flag Vehicle</a>
+                    <?php }?>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           </form>
+          </div>
         </div>
       </div>
+      <footer>
+
+      </footer>
     </div>
     <!-- Add Vehicle Modal -->
     <div class="modal fade" id="addVehicleModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleModal" aria-hidden="true">
