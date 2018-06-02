@@ -104,6 +104,11 @@
               } else {
                 //nothing
               }?>
+              <?php if($row['col'] == 4) {
+                echo '<div class="alert alert-danger" role="alert"><i class="fa fa-times"></i> This vehicle appears to be <b>deleted</b></div>';
+              } else {
+                //nothing
+              }?>
               <div class="form-group">
                 <label for="upd_company">Company Name</label>
                 <input type="text" class="form-control" name="upd_company" id="upd_company" placeholder="Company..." value="<?php echo $row['company']?>">
@@ -177,8 +182,8 @@
                     <th scope="col">Service Date</th>
                     <th scope="col">
                       <div class="btn-group" role="group" aria-label="Button Group">
-                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm"><i class="far fa-clock"></i></button>
-                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm"><i class="fas fa-pound-sign"></i></i></button>
+                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm payBtn" data-id="<?php echo $row['id']?>" data-toggle="modal" data-target="#addPaymentModal"><i class="fas fa-pound-sign"></i></i></button>
+                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm payBtn2" data-id="<?php echo $row['id']?>" data-toggle="modal" data-target="#addPaymentModalRenew"><i class="far fa-clock"></i></i></button>
                       </div>
                     </th>
                   </tr>
@@ -270,6 +275,8 @@
                     <?php } else {?>
                       <a style="cursor: pointer" class="dropdown-item" onClick="unsetFlag(<?php echo $row['id']?>)">Un-Flag Vehicle</a>
                     <?php }?>
+                    <div class="dropdown-divider"></div>
+                    <a style="cursor: pointer" class="dropdown-item" onClick="delVeh(<?php echo $row['id']?>)">Delete Vehicle</a>
                   </div>
                 </div>
               </div>
@@ -280,7 +287,7 @@
         </div>
       </div>
       <footer>
-
+        ParkingManager (PM) &copy; 2018/2019 | Designed, developed & maintained by <a href="https://ryanadamwilliams.co.uk">Ryan. W</a>
       </footer>
     </div>
     <!-- Add Vehicle Modal -->
@@ -428,6 +435,43 @@
         </div>
       </div>
     </div>
+    <!-- Add Renewal Payment Modal -->
+    <div class="modal fade" id="addPaymentModalRenew" tabindex="-1" role="dialog" aria-labelledby="addPaymentModalRenew" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPaymentModalRenew">Add Renewal Payment</h5>
+            <button type="button" tabindex="-1" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="addPaymentFormRenew">
+              <div class="form-group">
+                <label for="tid">Ticket ID</label>
+                <input type="hidden" name="veh_id2" id="veh_id2" class="form-control" value="">
+                <input type="text" name="tid2" id="tid2" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Ticket ID.. 198833" autofocus>
+              </div>
+              <div class="form-group">
+                <label>Type of Ticket</label>
+                <select class="form-control" name="tot2" id="tot2">
+                  <option value="1">Change Over</option>
+                  <option value="2">1 Hour</option>
+                  <option value="3">2 Hours</option>
+                  <option value="4">24 Hours</option>
+                  <option value="5">48 Hours</option>
+                  <option value="6">72 Hours</option>
+                </select>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" onClick="addPaymentsRenew()" class="btn btn-primary">Save Payment</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <!-- javascript Files -->
     <script src="<?php echo $url?>/assets/js/jquery.min.js"></script>
     <script src="<?php echo $url?>/assets/js/popper.min.js"></script>

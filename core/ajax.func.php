@@ -99,6 +99,12 @@
   $stmt = $dbConn->prepare("UPDATE parking SET flag = '0' WHERE id = :id");
   $stmt->bindParam(':id', $veh_id);
   $stmt->execute();
+} if ($page == 'delVeh') {
+  $veh_id = $_POST['veh_id'];
+
+  $stmt = $dbConn->prepare("UPDATE parking SET col = '4' WHERE id = :id");
+  $stmt->bindParam(':id', $veh_id);
+  $stmt->execute();
 }
 
 ?>

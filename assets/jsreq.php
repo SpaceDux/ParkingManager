@@ -132,4 +132,13 @@ function unsetFlag(str) {
  })
  $('#tables').load(' #tables');
 }
+function delVeh(str) {
+ var veh_id = str;
+ $.ajax({
+  url: "<?php echo $url ?>/core/ajax.func.php?p=delVeh",
+  type: "POST",
+  data: "veh_id="+veh_id
+ })
+ $('#tables').load(' #tables');
+}
 </script>
