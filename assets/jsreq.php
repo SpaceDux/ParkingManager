@@ -141,4 +141,13 @@ function delVeh(str) {
  })
  $('#tables').load(' #tables');
 }
+function deletePayment(str) {
+ var veh_id = str;
+ $.ajax({
+  url: "<?php echo $url ?>/core/ajax.func.php?p=deletePayment",
+  type: "POST",
+  data: "veh_id="+veh_id
+ })
+ $('#tables').load(' #tables');
+}
 </script>

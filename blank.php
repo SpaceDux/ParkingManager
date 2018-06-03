@@ -1,5 +1,5 @@
 <?php
-  require __DIR__.'/core/global.php';
+  require __DIR__.'/global.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,8 +66,6 @@
     </nav>
     <!-- Wrapper / Main content -->
     <div id="wrapper">
-
-      <h1> Well.... </h1>
 
     </div>
     <!-- Add Vehicle Modal -->

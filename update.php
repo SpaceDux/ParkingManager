@@ -105,7 +105,7 @@
                 //nothing
               }?>
               <?php if($row['col'] == 4) {
-                echo '<div class="alert alert-danger" role="alert"><i class="fa fa-times"></i> This vehicle appears to be <b>deleted</b></div>';
+                echo '<div class="alert alert-danger" role="alert"><i class="fa fa-times"></i> This vehicle has been <b>deleted</b></div>';
               } else {
                 //nothing
               }?>
@@ -219,8 +219,8 @@
                     </td>
                     <td>
                       <div class="btn-group" role="group" aria-label="Button Group">
-                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></button>
-                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></i></button>
+                        <button type="button" id="edit" tabindex="-1" class="btn btn-danger btn-sm" data-id="<?php echo $pay['id']?>"><i class="fas fa-cog"></i></button>
+                        <button type="button" tabindex="-1" onClick="deletePayment(<?php echo $pay['id']?>)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></i></button>
                       </div>
                     </td>
                   </tr>
@@ -287,7 +287,7 @@
         </div>
       </div>
       <footer>
-        ParkingManager (PM) &copy; 2018/2019 | Designed, developed & maintained by <a href="https://ryanadamwilliams.co.uk">Ryan. W</a>
+        ParkingManager (PM) &copy; 2018/2019 | Designed, developed & maintained by <a href="https://ryanadamwilliams.co.uk"><b>Ryan. W</b></a>
       </footer>
     </div>
     <!-- Add Vehicle Modal -->
@@ -471,6 +471,42 @@
         </div>
       </div>
     </div>
+    <!-- Add Renewal Payment Modal -->
+    <div class="modal fade" id="updPaymentModal" tabindex="-1" role="dialog" aria-labelledby="updPaymentModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updPaymentModal">Update Payment</h5>
+            <button type="button" tabindex="-1" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="updPaymentModal">
+              <div class="form-group">
+                <label for="tid">Ticket ID</label>
+                <input type="hidden" name="upd_id" id="upd_id" class="form-control" value="">
+                <input type="text" name="upd_tid" id="upd_tid" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Ticket ID.. 198833" autofocus>
+              </div>
+              <div class="form-group">
+                <label>Type of Ticket</label>
+                <select class="form-control" name="upd_tot" id="upd_tot">
+                  <option value="1">Change Over</option>
+                  <option value="2">1 Hour</option>
+                  <option value="3">2 Hours</option>
+                  <option value="4">24 Hours</option>
+                  <option value="5">48 Hours</option>
+                  <option value="6">72 Hours</option>
+                </select>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" onClick="updPayment()" class="btn btn-primary">Save Payment</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <!-- javascript Files -->
     <script src="<?php echo $url?>/assets/js/jquery.min.js"></script>
@@ -478,5 +514,36 @@
     <script src="<?php echo $url?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo $url?>/assets/js/mousetrap.min.js"></script>
     <?php require(__DIR__.'/assets/jsreq.php')?>
+    <script>
+    //Update Payment modal ajax func
+    $( document ).ready(function(){
+
+      $( document ).on('click', '#edit', function(){
+        var pay_id = $(this).data('id');
+        $.ajax({
+          url:"<?php echo $url?>/core/ajax.func.php?p=updPaymentGet",
+          method:"POST",
+          data:{pay_id:pay_id},
+          dataType: "json",
+          success:function(data){
+            $('#upd_id').val(data.id);
+            $('#upd_tid').val(data.ticket_id);
+            $('#upd_tot').val(data.tot);
+            $('#updPaymentModal').modal('show');
+          }
+        });
+      });
+     });
+     function updPayment() {
+      var id = $('#upd_id').val();
+      var tid = $('#upd_tid').val();
+      var tot = $('#upd_tot').val();
+      $.ajax({
+       url: "<?php echo $url ?>/core/ajax.func.php?p=updPayment",
+       type: "POST",
+       data: "id="+id+"&tid="+tid+"&tot="+tot
+      })
+    }
+    </script>
   </body>
 </html>

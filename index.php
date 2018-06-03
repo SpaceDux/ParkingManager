@@ -469,7 +469,7 @@
       </div>
       </div>
       <footer>
-
+        ParkingManager (PM) &copy; 2018/2019 | Designed, developed & maintained by <a href="https://ryanadamwilliams.co.uk"><b>Ryan. W</b></a>
       </footer>
     </div>
     <!-- Add Vehicle Modal -->

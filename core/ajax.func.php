@@ -105,6 +105,31 @@
   $stmt = $dbConn->prepare("UPDATE parking SET col = '4' WHERE id = :id");
   $stmt->bindParam(':id', $veh_id);
   $stmt->execute();
+} if ($page == 'deletePayment') {
+  $veh_id = $_POST['veh_id'];
+
+  $stmt = $dbConn->prepare("DELETE FROM payments WHERE id = :id");
+  $stmt->bindParam(':id', $veh_id);
+  $stmt->execute();
+} if ($page == 'updPaymentGet') {
+  $pay_id = $_POST['pay_id'];
+
+  $stmt = $dbConn->prepare("SELECT * FROM payments WHERE id = :id");
+  $stmt->bindParam(':id', $pay_id);
+  $stmt->execute();
+
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  echo json_encode($row);
+} if ($page == 'updPayment') {
+  $pay_id = $_POST['id'];
+  $tid = $_POST['tid'];
+  $tot = $_POST['tot'];
+
+  $stmt = $dbConn->prepare("UPDATE payments SET ticket_id = :tid, tot = :tot WHERE id = :id");
+  $stmt->bindParam(':id', $pay_id);
+  $stmt->bindParam(':tid', $tid);
+  $stmt->bindParam(':tot', $tot);
+  $stmt->execute();
 }
 
 ?>
