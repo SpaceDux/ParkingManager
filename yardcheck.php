@@ -1,12 +1,14 @@
 <?php
   require __DIR__.'/global.php';
+  $vehicles = $parking->fetchYard();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Parking Manager: Report</title>
+    <title>Parking Manager: Yard Check</title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="<?php echo $url ?>/assets/css/theme.css">
     <link rel="stylesheet" href="<?php echo $url ?>/assets/css/bootstrap.css">
@@ -48,12 +50,12 @@
       </div>
       <ul>
         <a href="<?php echo $url ?>/index"><li><i class="fa fa-tachometer-alt"></i> Dashboard</li></a>
-        <li><i class="fa fa-truck-moving"></i> Vehicle Tools
+        <li class="active"><i class="fa fa-truck-moving"></i> Vehicle Tools
           <ul>
             <a href="<?php echo $url?>/yardcheck" target="_blank"><li>Yard Check</li></a>
           </ul>
         </li>
-        <li class="active"><i class="fa fa-book"></i> Account Tools
+        <li><i class="fa fa-book"></i> Account Tools
           <ul>
             <a href="<?php echo $url?>/reports"><li>Account Reports</li></a>
           </ul>
@@ -70,35 +72,88 @@
     <div id="wrapper">
       <div class="whereami">
         <div class="page">
-          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> <b>Reports</b>
+          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> Vehicle Tools <small>\\\</small> <b>Yard Check</b>
         </div>
       </div>
-      <div class="updateContent" style="height: 100vh">
-        <div class="row">
-          <div class="col">
-            <form method="post" action="report">
-              <div class="form-group">
-                <label for="acc_name">Account Name</label>
-                <input type="text" class="form-control" name="acc_name" id="acc_name" placeholder="Account Name..." value="NOLAN" autofocus>
-              </div>
-              <div class="form-group">
-                <label for="acc_sDate">Report Starting Date</label>
-                <input type="text" class="form-control" name="acc_sDate" id="acc_sDate" placeholder="Date from..." value="<?php echo date("Y-m-01 00:00:00")?>">
-              </div>
-              <div class="form-group">
-                <label for="acc_eDate">Report End Date</label>
-                <input type="text" class="form-control" name="acc_eDate" id="acc_eDate" placeholder="Date ending..." value="<?php echo date("Y-m-31 23:59:59")?>">
-              </div>
-              <button type="submit" target="_blank" class="btn btn-primary float-right"> Generate Report</button>
-            </div>
-          <form>
-          <div class="col">
+      <div class="updateContent">
+        <table class="table table-dark table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Company</th>
+              <th scope="col">Registration</th>
+              <th scope="col">Type</th>
+              <th scope="col">Time of Arrival</th>
+              <th scope="col">Ticket I.D</th>
+              <th scope="col">Stay Length</th>
+              <th scope="col">Check</th>
+              <th scope="col"><i class="fa fa-cog"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach($vehicles as $row) {
+              $d1 = new DateTime($row['timein']);
+              $d2 = new DateTime($row['timeout']);
+              $int = $d2->diff($d1);
+              $h = $int->h;
+              $h = $h + ($int->days*24);
+              ?>
+            <tr>
+              <td><?php echo $row['company']?></td>
+              <td><?php echo $row['reg']?></td>
+              <?php if ($row['type'] == 1) {
+                     echo "<td>C/T</td>";
+                   } else if ($row['type'] == 2) {
+                     echo "<td>CAB</td>";
+                   } else if ($row['type'] == 3) {
+                     echo "<td>TRL</td>";
+                   } else if ($row['type'] == 4) {
+                     echo "<td>RIGID</td>";
+                   } else if ($row['type'] == 5) {
+                     echo "<td>COACH</td>";
+                   } else if ($row['type'] == 6) {
+                     echo "<td>CAR</td>";
+                   } else if ($row['type'] == 7) {
+                     echo "<td>M/H</td>";
+                   } else if ($row['type'] == 0) {
+                     echo "<td>N/A</td>";
+                   }
+              ?>
+              <td><?php echo $row['timein']?></td>
+              <td>
+                <?php
+                  $row_id = $row['id'];
+                  $payments = $account->getTickets($row_id);
+                  foreach($payments as $pay) {
+                  echo $pay['ticket_id'];
 
-          </div>
-        </div>
+                  if($pay['tot'] == 1) {
+                    echo ' <span class="badge badge-dark">C/O</span>, ';
+                  } else if ($pay['tot'] == 2) {
+                    echo ' <span class="badge badge-dark">1 HR</span>, ';
+                  } else if ($pay['tot'] == 3) {
+                    echo ' <span class="badge badge-dark">2 HR</span>, ';
+                  } else if ($pay['tot'] == 4) {
+                    echo ' <span class="badge badge-primary">24 HR</span>, ';
+                  } else if ($pay['tot'] == 5) {
+                    echo ' <span class="badge badge-success">48 HR</span>, ';
+                  } else if ($pay['tot'] == 6) {
+                    echo ' <span class="badge badge-info">72 HR</span>, ';
+                  }
+                }
+                ?>
+              </td>
+              <td><?php echo $h.':'.$int->format('%i');?></td>
+              <td>
+                <input type="checkbox" style="transform: scale(2.5) !important;">
+              </td>
+              <td><a class="btn btn-primary" href="<?php echo $url?>/update/<?php echo $row['id']?>" target="_blank"><i class="fa fa-cog"></i></a></td>
+            </tr>
+          <?php } ?>
+          </tbody>
+        </table>
       </div>
-      <footer style="position: fixed">
-        ParkingManager (PM) &copy; 2018/2019 | Designed, developed & owned by <a href="https://ryanadamwilliams.co.uk"><b>Ryan. W</b></a>
+      <footer>
+        ParkingManager (PM) &copy; 2018/2019 | Designed, developed & maintained by <a href="https://ryanadamwilliams.co.uk"><b>Ryan. W</b></a>
       </footer>
     </div>
     <!-- Add Vehicle Modal -->
@@ -216,5 +271,10 @@
     <script src="<?php echo $url?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo $url?>/assets/js/mousetrap.min.js"></script>
     <?php require(__DIR__.'/assets/jsreq.php')?>
+    <script>
+      window.onbeforeunload = function () {
+        return false;
+      }
+    </script>
   </body>
 </html>

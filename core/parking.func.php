@@ -39,6 +39,15 @@
 
       return $stmt->fetchAll();
     }
+    //Fetch Yard (YRD CHK)
+    function fetchYard() {
+      global $dbConn;
+      $sql = "SELECT * FROM parking WHERE col < 3";
+      $stmt = $dbConn->prepare($sql);
+      $stmt->execute();
+
+      return $stmt->fetchAll();
+    }
     //Fetch Payments
     function fetchPayments($row_id) {
       global $dbConn;

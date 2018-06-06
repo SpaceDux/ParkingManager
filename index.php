@@ -49,8 +49,7 @@
         <a href="<?php echo $url ?>/index"><li class="active"><i class="fa fa-tachometer-alt"></i> Dashboard</li></a>
         <li><i class="fa fa-truck-moving"></i> Vehicle Tools
           <ul>
-            <a href="#"><li>Yard Check</li></a>
-            <a href="#"><li>Fleets</li></a>
+            <a href="<?php echo $url?>/yardcheck" target="_blank"><li>Yard Check</li></a>
           </ul>
         </li>
         <li><i class="fa fa-book"></i> Account Tools

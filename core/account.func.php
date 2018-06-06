@@ -4,7 +4,7 @@
   class Account {
     function getVehicles($acc, $sDate, $eDate) {
       global $dbConn;
-      $sql = "SELECT * FROM parking WHERE company = ? AND col < 4 AND timein BETWEEN ? AND ?";
+      $sql = "SELECT * FROM parking WHERE company = ? AND col < 4 AND timein BETWEEN ? AND ? ORDER BY type ASC";
       $stmt = $dbConn->prepare($sql);
       $stmt->bindParam(1, $acc);
       $stmt->bindParam(2, $sDate);
