@@ -63,7 +63,7 @@
         </li>
         <li><i class="fa fa-book"></i> Account Tools
           <ul>
-            <a href="#"><li>Account Reports</li></a>
+            <a href="<?php echo $url?>/reports"><li>Account Reports</li></a>
           </ul>
         </li>
         <li><i class="fa fa-cogs"></i> P<b>M</b> Tools

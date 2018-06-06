@@ -40,11 +40,11 @@
         </div>
         <div class="buttons">
           <a href="#settings"><i class="fa fa-cog"></i></a>
-          <a href="{URL}/logout"><i class="fa fa-sign-out-alt"></i></a>
+          <a href="<?php echo $url?>/logout"><i class="fa fa-sign-out-alt"></i></a>
         </div>
       </div>
       <ul>
-        <a href="{URL}/index"><li class="active"><i class="fa fa-tachometer-alt"></i> Dashboard</li></a>
+        <a href="<?php echo $url?>/index"><li class="active"><i class="fa fa-tachometer-alt"></i> Dashboard</li></a>
         <li><i class="fa fa-truck-moving"></i> Vehicle Tools
           <ul>
             <a href="#"><li>Yard Check</li></a>
@@ -53,7 +53,7 @@
         </li>
         <li><i class="fa fa-book"></i> Account Tools
           <ul>
-            <a href="#"><li>Account Reports</li></a>
+            <a href="<?php echo $url?>/reports"><li><?php echo $url?></li></a>
           </ul>
         </li>
         <li><i class="fa fa-cogs"></i> P<b>M</b> Tools
@@ -319,7 +319,7 @@
         var timein = $('#addTimein');
 
         $.ajax({
-          url:"{URL}/core/vehicle.class.php?add",
+          url:"<?php echo $url?>/core/vehicle.class.php?add",
           method:"post",
           data:$('#addVehicle').serilize(),
           success:function(data) {

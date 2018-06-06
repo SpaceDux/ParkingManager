@@ -47,16 +47,16 @@
         </div>
       </div>
       <ul>
-        <a href="<?php echo $url ?>/index"><li class="active"><i class="fa fa-tachometer-alt"></i> Dashboard</li></a>
+        <a href="<?php echo $url ?>/index"><li><i class="fa fa-tachometer-alt"></i> Dashboard</li></a>
         <li><i class="fa fa-truck-moving"></i> Vehicle Tools
           <ul>
             <a href="#"><li>Yard Check</li></a>
             <a href="#"><li>Fleets</li></a>
           </ul>
         </li>
-        <li><i class="fa fa-book"></i> Account Tools
+        <li class="active"><i class="fa fa-book"></i> Account Tools
           <ul>
-            <a href="#"><li>Account Reports</li></a>
+            <a href="<?php echo $url?>/reports"><li>Account Reports</li></a>
           </ul>
         </li>
         <li><i class="fa fa-cogs"></i> P<b>M</b> Tools
@@ -71,35 +71,35 @@
     <div id="wrapper">
       <div class="whereami">
         <div class="page">
-          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> Reports</b>
+          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> <b>Reports</b>
         </div>
       </div>
       <div class="updateContent" style="height: 100vh">
         <div class="row">
           <div class="col">
-            <form>
+            <form method="post" action="report">
               <div class="form-group">
-                <label for="upd_company">Account Name</label>
+                <label for="acc_name">Account Name</label>
                 <input type="text" class="form-control" name="acc_name" id="acc_name" placeholder="Account Name..." value="NOLAN" autofocus>
               </div>
               <div class="form-group">
-                <label for="upd_reg">Report Starting Date</label>
+                <label for="acc_sDate">Report Starting Date</label>
                 <input type="text" class="form-control" name="acc_sDate" id="acc_sDate" placeholder="Date from..." value="<?php echo date("Y-m-01 00:00:00")?>">
               </div>
               <div class="form-group">
-                <label for="upd_trl">Report End Date</label>
+                <label for="acc_eDate">Report End Date</label>
                 <input type="text" class="form-control" name="acc_eDate" id="acc_eDate" placeholder="Date ending..." value="<?php echo date("Y-m-31 23:59:59")?>">
               </div>
               <button type="submit" class="btn btn-primary float-right"> Generate Report</button>
             </div>
           <form>
           <div class="col">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
           </div>
         </div>
       </div>
       <footer style="position: fixed">
-        ParkingManager (PM) &copy; 2018/2019 | Designed, developed & maintained by <a href="https://ryanadamwilliams.co.uk"><b>Ryan. W</b></a>
+        ParkingManager (PM) &copy; 2018/2019 | Designed, developed & owned by <a href="https://ryanadamwilliams.co.uk"><b>Ryan. W</b></a>
       </footer>
     </div>
     <!-- Add Vehicle Modal -->

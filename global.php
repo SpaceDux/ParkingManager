@@ -5,14 +5,16 @@
   require __DIR__.'/core/manage/config.php';
   require __DIR__.'/core/manage/dbcon.php';
   require __DIR__.'/core/parking.func.php';
+  require __DIR__.'/core/account.func.php';
 
   $parking = new Parking;
+  $account = new Account;
 
   $GetBreaks = $parking->fetchBreak();
   $GetPaid = $parking->fetchPaid();
   $GetRenewals = $parking->fetchRenewals();
   $GetExits = $parking->fetchExits();
 
-  $ver = "2.0.1";
+  $ver = "2.0.2";
 
 ?>
