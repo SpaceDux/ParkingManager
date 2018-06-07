@@ -130,6 +130,11 @@
   $stmt->bindParam(':tid', $tid);
   $stmt->bindParam(':tot', $tot);
   $stmt->execute();
-}
+} if ($page == 'delNotice') {
+  $nid = $_POST['notice_id'];
 
+  $stmt = $dbConn->prepare("UPDATE notices SET active = '0' WHERE id = :id");
+  $stmt->bindParam(':id', $nid);
+  $stmt->execute();
+}
 ?>

@@ -6,9 +6,11 @@
   require __DIR__.'/core/manage/dbcon.php';
   require __DIR__.'/core/parking.func.php';
   require __DIR__.'/core/account.func.php';
+  require __DIR__.'/core/pm.func.php';
 
   $parking = new Parking;
   $account = new Account;
+  $pm = new ParkingManager;
 
   $GetBreaks = $parking->fetchBreak();
   $GetPaid = $parking->fetchPaid();

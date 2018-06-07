@@ -1,14 +1,25 @@
 <?php
   require __DIR__.'/global.php';
-  $vehicles = $parking->fetchYard();
+  $notices = $pm->fetchNotices();
 
+  if(isset($_POST['add_notice_body'])) {
+    $short = $_POST['add_notice_short'];
+    $body = $_POST['add_notice_body'];
+    $type = $_POST['add_notice_type'];
+
+    $pm->newNotice($short, $body, $type);
+
+    unset($_POST['add_notice_short']);
+    unset($_POST['add_notice_body']);
+    unset($_POST['add_notice_type']);
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Parking Manager: Yard Check</title>
+    <title>Parking Manager: Notices</title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="<?php echo $url ?>/assets/css/theme.css">
     <link rel="stylesheet" href="<?php echo $url ?>/assets/css/bootstrap.css">
@@ -50,7 +61,7 @@
       </div>
       <ul>
         <a href="<?php echo $url ?>/index"><li><i class="fa fa-tachometer-alt"></i> Dashboard</li></a>
-        <li class="active"><i class="fa fa-truck-moving"></i> Vehicle Tools
+        <li><i class="fa fa-truck-moving"></i> Vehicle Tools
           <ul>
             <a href="<?php echo $url?>/yardcheck" target="_blank"><li>Yard Check</li></a>
           </ul>
@@ -60,7 +71,7 @@
             <a href="<?php echo $url?>/reports"><li>Account Reports</li></a>
           </ul>
         </li>
-        <li><i class="fa fa-cogs"></i> P<b>M</b> Tools
+        <li class="active"><i class="fa fa-cogs"></i> P<b>M</b> Tools
           <ul>
             <a href="<?php echo $url?>/notices"><li>Notices</li></a>
             <a href="#"><li>Users</li></a>
@@ -72,87 +83,53 @@
     <div id="wrapper">
       <div class="whereami">
         <div class="page">
-          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> Vehicle Tools <small>\\\</small> <b>Yard Check</b>
+          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> PM Tools<small>\\\</small> <b>Notices</b>
         </div>
       </div>
       <div class="updateContent">
-        <table class="table table-dark table-striped">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Company</th>
-              <th scope="col">Registration</th>
-              <th scope="col">Type</th>
-              <th scope="col">Time of Arrival</th>
-              <th scope="col">Ticket I.D</th>
-              <th scope="col">Stay Length</th>
-              <th scope="col">Check</th>
-              <th scope="col"><i class="fa fa-cog"></i></th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach($vehicles as $row) {
-              $d1 = new DateTime($row['timein']);
-              $d2 = new DateTime($row['timeout']);
-              $int = $d2->diff($d1);
-              $h = $int->h;
-              $h = $h + ($int->days*24);
-              ?>
-            <tr>
-              <td><?php echo $row['company']?></td>
-              <td><?php echo $row['reg']?></td>
-              <?php if ($row['type'] == 1) {
-                     echo "<td>C/T</td>";
-                   } else if ($row['type'] == 2) {
-                     echo "<td>CAB</td>";
-                   } else if ($row['type'] == 3) {
-                     echo "<td>TRL</td>";
-                   } else if ($row['type'] == 4) {
-                     echo "<td>RIGID</td>";
-                   } else if ($row['type'] == 5) {
-                     echo "<td>COACH</td>";
-                   } else if ($row['type'] == 6) {
-                     echo "<td>CAR</td>";
-                   } else if ($row['type'] == 7) {
-                     echo "<td>M/H</td>";
-                   } else if ($row['type'] == 0) {
-                     echo "<td>N/A</td>";
-                   }
-              ?>
-              <td><?php echo $row['timein']?></td>
-              <td>
-                <?php
-                  $row_id = $row['id'];
-                  $payments = $account->getTickets($row_id);
-                  foreach($payments as $pay) {
-                  echo $pay['ticket_id'];
-
-                  if($pay['tot'] == 1) {
-                    echo ' <span class="badge badge-dark">C/O</span>, ';
-                  } else if ($pay['tot'] == 2) {
-                    echo ' <span class="badge badge-dark">1 HR</span>, ';
-                  } else if ($pay['tot'] == 3) {
-                    echo ' <span class="badge badge-dark">2 HR</span>, ';
-                  } else if ($pay['tot'] == 4) {
-                    echo ' <span class="badge badge-primary">24 HR</span>, ';
-                  } else if ($pay['tot'] == 5) {
-                    echo ' <span class="badge badge-success">48 HR</span>, ';
-                  } else if ($pay['tot'] == 6) {
-                    echo ' <span class="badge badge-info">72 HR</span>, ';
-                  }
-                }
-                ?>
-              </td>
-              <td><?php echo $h.':'.$int->format('%i');?></td>
-              <td>
-                <input type="checkbox" style="transform: scale(2.5) !important;">
-              </td>
-              <td><a class="btn btn-primary" href="<?php echo $url?>/update/<?php echo $row['id']?>" target="_blank"><i class="fa fa-cog"></i></a></td>
-            </tr>
-          <?php } ?>
-          </tbody>
-        </table>
+        <div class="container">
+          <div class="row" id="tables">
+            <div class="col">
+              <?php foreach ($notices as $row) {?>
+              <div class="alert <?php echo $row['type']?>" role="alert">
+                <b><?php echo $row['short_title']?></b> <?php echo $row['body']?>
+                <button type="button" class="close" onClick="delNotice(<?php echo $row['id']?>)">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <?php }?>
+            </div>
+            <div class="col">
+              <form method="post" id="add_notice">
+                <div class="form-group">
+                  <label for="add_notice_short">Short Title</label>
+                  <input type="text" class="form-control" name="add_notice_short" id="add_notice_short" placeholder="HEADS UP:..." autofocus>
+                </div>
+                <div class="form-group">
+                  <label for="add_notice_body">Body</label>
+                  <textarea type="text" id="add_notice_body" class="form-control" name="add_notice_body" rows="3" cols="1" form="add_notice" placeholder="The driver of this vehicle has been...."></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Alert Colour</label>
+                  <select class="custom-select" name="add_notice_type">
+                    <option value="alert-info"> Blue </option>
+                    <option value="alert-primary"> Darker Blue </option>
+                    <option value="alert-warning"> Yellow </option>
+                    <option value="alert-warning"> Red </option>
+                    <option value="alert-success"> Green </option>
+                    <option value="alert-dark"> Black </option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="add_notice_body"></label>
+                  <button type="submit" class="btn btn-success float-right">Add Notice</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-      <footer>
+      <footer style="position: fixed; bottom: 0;">
         ParkingManager (PM) &copy; 2018/2019 | Designed, developed & maintained by <a href="https://ryanadamwilliams.co.uk"><b>Ryan. W</b></a>
       </footer>
     </div>
@@ -272,9 +249,16 @@
     <script src="<?php echo $url?>/assets/js/mousetrap.min.js"></script>
     <?php require(__DIR__.'/assets/jsreq.php')?>
     <script>
-      window.onbeforeunload = function () {
-        return false;
-      }
+    function delNotice(str) {
+       var notice_id = str;
+       $.ajax({
+        url: "<?php echo $url ?>/core/ajax.func.php?p=delNotice",
+        type: "POST",
+        data: "notice_id="+notice_id
+       })
+       $('#tables').load(' #tables');
+    }
     </script>
+
   </body>
 </html>

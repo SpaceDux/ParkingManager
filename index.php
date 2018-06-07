@@ -59,7 +59,7 @@
         </li>
         <li><i class="fa fa-cogs"></i> P<b>M</b> Tools
           <ul>
-            <a href="#"><li>Notices</li></a>
+            <a href="<?php echo $url?>/notices"><li>Notices</li></a>
             <a href="#"><li>Users</li></a>
           </ul>
         </li>

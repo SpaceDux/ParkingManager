@@ -1,6 +1,4 @@
 <?php
-  require(__DIR__.'/manage/config.php');
-
   class Account {
     function getVehicles($acc, $sDate, $eDate) {
       global $dbConn;
