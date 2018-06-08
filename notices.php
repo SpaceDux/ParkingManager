@@ -222,6 +222,7 @@
       </div>
     </div>
     <!-- Search DB Modal -->
+    <!-- Search DB Modal -->
     <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -232,12 +233,24 @@
             </button>
           </div>
           <div class="modal-body">
-            <form class="" action="" method="post">
-              <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Query the database..." autofocus>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="row">
+              <div class="col">
+                <label>Search Vehicle Details</label>
+                <input type="text" id="searchData" class="form-control" placeholder="Search Registration, company, trailer number..." autofocus>
+              </div>
+              <div class="col">
+                <label>Search Payment Details</label>
+                <input type="text" id="searchPay" class="form-control" placeholder="Search Ticket ID">
+              </div>
+            </div>
+            <div class="modal-body">
+              <div id="return">
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
           </div>
         </div>
       </div>

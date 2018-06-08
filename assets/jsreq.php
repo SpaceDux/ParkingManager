@@ -150,4 +150,41 @@ function deletePayment(str) {
  })
  $('#tables').load(' #tables');
 }
+//Search Modal
+$(document).ready(function(){
+    $('#searchData').keyup(function(){
+      var searchStr = $(this).val();
+      if(searchStr == '') {
+        $('#return').empty();
+      } else {
+        $('#return').html('');
+        $.ajax({
+         url: "<?php echo $url ?>/core/ajax.func.php?p=searchData",
+         type: "POST",
+         data: {search:searchStr},
+         dataType: "text",
+         success:function(data) {
+           $('#return').html(data);
+         }
+       })
+     }
+    });
+    $('#searchPay').keyup(function(){
+      var searchStr = $(this).val();
+      if(searchStr == '') {
+        $('#return').empty();
+      } else {
+        $('#return').html('');
+        $.ajax({
+         url: "<?php echo $url ?>/core/ajax.func.php?p=searchPay",
+         type: "POST",
+         data: {search:searchStr},
+         dataType: "text",
+         success:function(data) {
+           $('#return').html(data);
+         }
+       })
+     }
+    })
+  });
 </script>

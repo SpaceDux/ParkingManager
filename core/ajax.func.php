@@ -136,5 +136,81 @@
   $stmt = $dbConn->prepare("UPDATE notices SET active = '0' WHERE id = :id");
   $stmt->bindParam(':id', $nid);
   $stmt->execute();
+} if ($page == 'searchData') {
+  $searchStr = '%'.$_POST['search'].'%';
+  $return = '';
+
+  $stmt = $dbConn->prepare("SELECT * FROM parking WHERE company LIKE ? OR reg LIKE ? OR trlno LIKE ? ORDER BY id DESC LIMIT 40");
+  $stmt->bindParam(1, $searchStr);
+  $stmt->bindParam(2, $searchStr);
+  $stmt->bindParam(3, $searchStr);
+  $stmt->execute();
+  $result = $stmt->fetchAll();
+  if($stmt->rowCount() > 0) {
+      $return .= '
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Company</th>
+            <th scope="col">Reg</th>
+            <th scope="col">Trailer</th>
+            <th scope="col">Time IN</th>
+            <th scope="col">Time OUT</th>
+            <th scope="col"><i class="fa fa-cog"></i></th>
+          </tr>
+        </thead>
+      ';
+        $return .= '<tbody>';
+            foreach($result as $row) {
+              $return .= '
+            <tr>
+              <td>'.$row['company'].'</td>
+              <td>'.$row['reg'].'</td>
+              <td>'.$row['trlno'].'</td>
+              <td>'.$row['timein'].'</td>
+              <td>'.$row['timeout'].'</td>
+              <td><a class="btn btn-danger" href="'.$url.'/update/'.$row['id'].'"><i class="fa fa-cog"></i></a></td>
+            </tr>
+          ';
+        }
+        $return .= '</tbody></table>';
+      echo $return;
+  } else {
+    echo "No data found";
+  }
+} if ($page == 'searchPay') {
+  $searchStr = '%'.$_POST['search'].'%';
+  $return = '';
+
+  $stmt = $dbConn->prepare("SELECT * FROM payments WHERE ticket_id LIKE ? LIMIT 40");
+  $stmt->bindParam(1, $searchStr);
+  $stmt->execute();
+  $result = $stmt->fetchAll();
+  if($stmt->rowCount() > 0) {
+      $return .= '
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Ticket ID</th>
+            <th scope="col">Service Date</th>
+            <th scope="col"><i class="fa fa-cog"></i></th>
+          </tr>
+        </thead>
+      ';
+        $return .= '<tbody>';
+            foreach($result as $row) {
+              $return .= '
+            <tr>
+              <td>'.$row['ticket_id'].'</td>
+              <td>'.$row['service_date'].'</td>
+              <td><a class="btn btn-danger" href="'.$url.'/update/'.$row['veh_id'].'"><i class="fa fa-cog"></i></a></td>
+            </tr>
+          ';
+        }
+        $return .= '</tbody></table>';
+      echo $return;
+  } else {
+    echo "No data found";
+  }
 }
 ?>
