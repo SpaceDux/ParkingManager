@@ -1,5 +1,6 @@
 <?php
   require __DIR__.'/global.php';
+  $notices = $pm->fetchNotices();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,6 +130,11 @@
       <div id="tables">
       <div class="row">
         <div class="col-md-7">
+          <?php foreach ($notices as $row) {?>
+          <div style="margin-top: 10px;" class="alert <?php echo $row['type']?>" role="alert">
+            <b><?php echo $row['short_title']?></b> <?php echo $row['body']?>
+          </div>
+          <?php }?>
           <!-- Break Table -->
           <div class="content">
             <div class="title">

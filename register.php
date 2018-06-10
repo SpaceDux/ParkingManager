@@ -1,25 +1,23 @@
 <?php
   require __DIR__.'/global.php';
-  $notices = $pm->fetchNotices();
 
-  if(isset($_POST['add_notice_body'])) {
-    $short = $_POST['add_notice_short'];
-    $body = $_POST['add_notice_body'];
-    $type = $_POST['add_notice_type'];
+  if(isset($_POST['reg_firstName'])){
+    $first = $_POST['reg_firstName'];
+    $second = $_POST['reg_secondName'];
+    $email = $_POST['reg_email'];
+    $password = $_POST['reg_password'];
+    $rank = $_POST['reg_rank'];
 
-    $pm->newNotice($short, $body, $type);
-
-    unset($_POST['add_notice_short']);
-    unset($_POST['add_notice_body']);
-    unset($_POST['add_notice_type']);
+    $pm->regUser($first, $second, $email, $password, $rank);
   }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Parking Manager: Notices</title>
+    <title>Parking Manager: Register</title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="<?php echo $url ?>/assets/css/theme.css">
     <link rel="stylesheet" href="<?php echo $url ?>/assets/css/bootstrap.css">
@@ -83,45 +81,63 @@
     <div id="wrapper">
       <div class="whereami">
         <div class="page">
-          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> PM Tools<small>\\\</small> <b>Notices</b>
+          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> PM Tools<small>\\\</small> <b>New User</b>
         </div>
       </div>
       <div class="updateContent" id="tables">
         <div class="container">
           <div class="row">
             <div class="col">
-              <?php foreach ($notices as $row) {?>
-              <div class="alert <?php echo $row['type']?>" role="alert">
-                <b><?php echo $row['short_title']?></b> <?php echo $row['body']?>
-                <button type="button" class="close" onClick="delNotice(<?php echo $row['id']?>)">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <?php }?>
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">First name</th>
+                    <th scope="col">Last name</th>
+                    <th scope="col">Email Adress</th>
+                    <th scope="col"><i class="fa fa-cog"></i></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($pm->fetchUsers() as $row) {?>
+                  <tr>
+                    <td><?php echo $row['first_name']?></td>
+                    <td><?php echo $row['second_name']?></td>
+                    <td><?php echo $row['email']?></td>
+                    <td>
+                      <button class="btn btn-sm btn-danger"><i class="fa fa-cog"></i></button>
+                    </td>
+                  </tr>
+                  <?php }?>
+                </tbody>
+              </table>
             </div>
             <div class="col">
-              <form method="post" id="add_notice">
+              <form method="post" id="reg_user">
                 <div class="form-group">
-                  <label for="add_notice_short">Short Title</label>
-                  <input type="text" class="form-control" name="add_notice_short" id="add_notice_short" placeholder="HEADS UP:..." autofocus>
+                  <label for="reg_firstName">First Name</label>
+                  <input type="text" class="form-control" name="reg_firstName" id="reg_firstName" placeholder="First Name" autofocus>
                 </div>
                 <div class="form-group">
-                  <label for="add_notice_body">Body</label>
-                  <textarea type="text" id="add_notice_body" class="form-control" name="add_notice_body" rows="3" cols="1" form="add_notice" placeholder="The driver of this vehicle has been...."></textarea>
+                  <label for="reg_secondName">Second Name</label>
+                  <input type="text" class="form-control" name="reg_secondName" id="reg_secondName" placeholder="Second Name" autofocus>
                 </div>
                 <div class="form-group">
-                  <label>Alert Colour</label>
-                  <select class="custom-select" name="add_notice_type">
-                    <option value="alert-info"> Blue </option>
-                    <option value="alert-primary"> Darker Blue </option>
-                    <option value="alert-warning"> Yellow </option>
-                    <option value="alert-warning"> Red </option>
-                    <option value="alert-success"> Green </option>
-                    <option value="alert-dark"> Black </option>
+                  <label for="reg_email">Email Address</label>
+                  <input type="email" class="form-control" name="reg_email" id="reg_email" placeholder="Email Address" autofocus>
+                </div>
+                <div class="form-group">
+                  <label for="reg_password">Password</label>
+                  <input type="password" class="form-control" name="reg_password" id="reg_password" placeholder="Password" autofocus>
+                </div>
+                <div class="form-group">
+                  <label>Rank</label>
+                  <select class="custom-select" name="reg_rank">
+                    <option value="1" >Cafe Staff</option>
+                    <option value="2">Security Staff</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="add_notice_body"></label>
+                  <label></label>
                   <button type="submit" class="btn btn-success float-right">Add Notice</button>
                 </div>
               </form>
