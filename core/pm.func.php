@@ -35,6 +35,15 @@
 
       return $stmt->fetchAll();
     }
+    function Login($first, $pass) {
+      $first = $_POST['log_firstName'];
+      $pass = $_POST['log_password'];
+      global $dbConn;
+      $stmt = $dbConn->prepare("SELECT * FROM users WHERE first_name = ?");
+      $stmt->bindParam(1, $first);
+      $stmt->execute();
+      $return = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
   }
 
 ?>

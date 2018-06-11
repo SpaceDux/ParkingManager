@@ -39,7 +39,7 @@
       <div class="userBox">
         <div class="userInfo">
           <div class="userName">
-            Ryan <b>W</b>.
+            Road <b>K</b>.
           </div>
           <div class="userLocation">
             RK: Holyhead | Security
@@ -50,7 +50,7 @@
         </div>
         <div class="buttons">
           <a href="#settings"><i class="fa fa-cog"></i></a>
-          <a href="/logout"><i class="fa fa-sign-out-alt"></i></a>
+          <a href="#logout"><i class="fa fa-sign-out-alt"></i></a>
         </div>
       </div>
       <ul>
