@@ -44,6 +44,14 @@
       $stmt->execute();
       $return = $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    function charts($day) {
+      $stmt = $dbConn->prepare("SELECT * FROM parking WHERE timein = ?");
+      $stmt->bindParam(1, $day);
+      $stmt->execute();
+
+      $result = $stmt->fetchAll();
+      
+    }
   }
 
 ?>

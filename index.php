@@ -674,9 +674,7 @@
     <script src="<?php echo $url?>/assets/js/jquery.min.js"></script>
     <script src="<?php echo $url?>/assets/js/popper.min.js"></script>
     <script src="<?php echo $url?>/assets/js/bootstrap.min.js"></script>
-    <script src="<?php echo $url?>/assets/js/Chart.bundle.min.js"></script>
     <script src="<?php echo $url?>/assets/js/mousetrap.min.js"></script>
-    <script src="<?php echo $url?>/assets/js/Chart.bundle.min.js"></script>
     <script src="<?php echo $url?>/assets/js/Chart.bundle.min.js"></script>
     <?php require(__DIR__.'/assets/jsreq.php')?>
     <script type="text/javascript">
@@ -693,7 +691,7 @@
             labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
             datasets: [{
                 label: 'This week',
-                data: [200, 222, 100, 244, 66, 87, 110],
+                data: [99, 222, 100, 244, 66, 87, 110],
                 borderWidth: [0],
                 backgroundColor: [
                     'rgba(255, 255, 255, 0.6)',
