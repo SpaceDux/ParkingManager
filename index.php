@@ -203,9 +203,7 @@
                   </td>
                   <td>
                     <div class="btn-group" role="group" aria-label="Button Group">
-                      <a href="<?php echo $url?>/update/<?php echo $row['id']?>" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></a>
-                      <button type="button" class="btn btn-danger btn-sm payBtn" data-id="<?php echo $row['id']?>" data-toggle="modal" data-target="#addPaymentModal"><i class="fas fa-pound-sign"></i></i></button>
-
+                      <a href="<?php echo $url?>/update/<?php echo $row['id']?>" class="btn btn-danger btn-sm">Update <i class="fas fa-cog"></i></a>
                       <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                         <div class="dropdown-menu">
@@ -383,8 +381,6 @@
                     <td>
                       <div class="btn-group" role="group" aria-label="Button Group">
                         <a href="<?php echo $url?>/update/<?php echo $row['id']?>" class="btn btn-danger btn-sm"><i class="fas fa-cog"></i></a>
-                        <button type="button" class="btn btn-danger btn-sm payBtn2" data-id="<?php echo $row['id']?>" data-toggle="modal" data-target="#addPaymentModalRenew"><i class="fas fa-clock"></i></i></button>
-
                         <div class="btn-group" role="group">
                           <button id="btnGroupDrop1" type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                           <div class="dropdown-menu">
