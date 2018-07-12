@@ -115,7 +115,7 @@
                     <option value="alert-info"> Blue </option>
                     <option value="alert-primary"> Darker Blue </option>
                     <option value="alert-warning"> Yellow </option>
-                    <option value="alert-warning"> Red </option>
+                    <option value="alert-danger"> Red </option>
                     <option value="alert-success"> Green </option>
                     <option value="alert-dark"> Black </option>
                   </select>

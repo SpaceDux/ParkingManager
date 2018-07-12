@@ -27,6 +27,7 @@
           <thead class="thead-light">
             <tr>
               <th scope="col">Registration</th>
+              <th scope="col">Trailer Number</th>
               <th scope="col">Type</th>
               <th scope="col">Time of Arrival</th>
               <th scope="col">Time of Exit</th>
@@ -46,6 +47,7 @@
               ?>
             <tr>
               <td><?php echo $row['reg']?></td>
+              <td><?php echo $row['trlno']?></td>
               <?php if ($row['type'] == 1) {
                      echo "<td>C/T</td>";
                    } else if ($row['type'] == 2) {
@@ -101,6 +103,7 @@
           <thead class="thead-light">
             <tr>
               <th scope="col">Registration</th>
+              <th scope="col">Trailer Number</th>
               <th scope="col">Type</th>
               <th scope="col">Time of Arrival</th>
               <th scope="col">Time of Exit</th>
@@ -120,6 +123,7 @@
               ?>
             <tr>
               <td><?php echo $row['reg']?></td>
+              <td><?php echo $row['trlno']?></td>
               <?php if ($row['type'] == 1) {
                      echo "<td>C/T</td>";
                    } else if ($row['type'] == 2) {
@@ -171,10 +175,11 @@
           </tbody>
         </table>
         <table class="table table-striped">
-          <div class="title" style="text-align: center;">Between 29 & 51 hours (2 Days)</div>
+          <div class="title" style="text-align: center;">Between 29 & 52 hours (2 Days)</div>
           <thead class="thead-light">
             <tr>
               <th scope="col">Registration</th>
+              <th scope="col">Trailer Number</th>
               <th scope="col">Type</th>
               <th scope="col">Time of Arrival</th>
               <th scope="col">Time of Exit</th>
@@ -190,10 +195,11 @@
               $h = $int->h;
               $h = $h + ($int->days*24);
 
-              if($h >= 29 AND $h <= 51) {
+              if($h >= 29 AND $h <= 52) {
               ?>
             <tr>
               <td><?php echo $row['reg']?></td>
+              <td><?php echo $row['trlno']?></td>
               <?php if ($row['type'] == 1) {
                      echo "<td>C/T</td>";
                    } else if ($row['type'] == 2) {
@@ -245,10 +251,11 @@
           </tbody>
         </table>
         <table class="table table-striped">
-          <div class="title" style="text-align: center;">Between 51 & 78 hours (3 Days)</div>
+          <div class="title" style="text-align: center;">Between 53 & 79 hours (3 Days)</div>
           <thead class="thead-light">
             <tr>
               <th scope="col">Registration</th>
+              <th scope="col">Trailer Number</th>
               <th scope="col">Type</th>
               <th scope="col">Time of Arrival</th>
               <th scope="col">Time of Exit</th>
@@ -264,10 +271,11 @@
               $h = $int->h;
               $h = $h + ($int->days*24);
 
-              if($h >= 51 AND $h <= 78) {
+              if($h >= 53 AND $h <= 79) {
               ?>
             <tr>
               <td><?php echo $row['reg']?></td>
+              <td><?php echo $row['trlno']?></td>
               <?php if ($row['type'] == 1) {
                      echo "<td>C/T</td>";
                    } else if ($row['type'] == 2) {
@@ -319,10 +327,11 @@
           </tbody>
         </table>
         <table class="table table-striped">
-          <div class="title" style="text-align: center;">Between 79 & 103 hours (4 Days)</div>
+          <div class="title" style="text-align: center;">Between 80 & 104 hours (4 Days)</div>
           <thead class="thead-light">
             <tr>
               <th scope="col">Registration</th>
+              <th scope="col">Trailer Number</th>
               <th scope="col">Type</th>
               <th scope="col">Time of Arrival</th>
               <th scope="col">Time of Exit</th>
@@ -338,10 +347,11 @@
               $h = $int->h;
               $h = $h + ($int->days*24);
 
-              if($h >= 79 AND $h <= 103) {
+              if($h >= 80 AND $h <= 104) {
               ?>
             <tr>
               <td><?php echo $row['reg']?></td>
+              <td><?php echo $row['trlno']?></td>
               <?php if ($row['type'] == 1) {
                      echo "<td>C/T</td>";
                    } else if ($row['type'] == 2) {
@@ -393,10 +403,11 @@
           </tbody>
         </table>
         <table class="table table-striped">
-          <div class="title" style="text-align: center;">Between 103 & 128 hours (5 Days)</div>
+          <div class="title" style="text-align: center;">Between 105 & 129 hours (5 Days)</div>
           <thead class="thead-light">
             <tr>
               <th scope="col">Registration</th>
+              <th scope="col">Trailer Number</th>
               <th scope="col">Type</th>
               <th scope="col">Time of Arrival</th>
               <th scope="col">Time of Exit</th>
@@ -412,10 +423,11 @@
               $h = $int->h;
               $h = $h + ($int->days*24);
 
-              if($h >= 104 AND $h <= 128) {
+              if($h >= 105 AND $h <= 129) {
               ?>
             <tr>
               <td><?php echo $row['reg']?></td>
+              <td><?php echo $row['trlno']?></td>
               <?php if ($row['type'] == 1) {
                      echo "<td>C/T</td>";
                    } else if ($row['type'] == 2) {
@@ -471,6 +483,7 @@
           <thead class="thead-light">
             <tr>
               <th scope="col">Registration</th>
+              <th scope="col">Trailer Number</th>
               <th scope="col">Type</th>
               <th scope="col">Time of Arrival</th>
               <th scope="col">Time of Exit</th>
@@ -490,6 +503,7 @@
               ?>
             <tr>
               <td><?php echo $row['reg']?></td>
+              <td><?php echo $row['trlno']?></td>
               <?php if ($row['type'] == 1) {
                      echo "<td>C/T</td>";
                    } else if ($row['type'] == 2) {
