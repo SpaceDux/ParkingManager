@@ -186,5 +186,8 @@ $(document).ready(function(){
        })
      }
     })
+    $('#gateFunctions').click(function(){
+      event.preventDefault();
+   });
   });
 </script>

@@ -123,50 +123,50 @@
               <div class="form-group">
               <label>Type of Vehicle</label>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="0" <?php if($row['type'] == 0) {echo "checked";} ?>>
                   <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="0" <?php if($row['type'] == 0) {echo "checked";} ?>>
                     N/A
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="1" <?php if($row['type'] == 1) {echo "checked";} ?>>
                   <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="1" <?php if($row['type'] == 1) {echo "checked";} ?>>
                     Cab &amp; Trailer
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="2" <?php if($row['type'] == 2) {echo "checked";} ?>>
                   <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="2" <?php if($row['type'] == 2) {echo "checked";} ?>>
                     Cab
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="3" <?php if($row['type'] == 3) {echo "checked";} ?>>
                   <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="3" <?php if($row['type'] == 3) {echo "checked";} ?>>
                     Trailer
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="4" <?php if($row['type'] == 4) {echo "checked";} ?>>
                   <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="4" <?php if($row['type'] == 4) {echo "checked";} ?>>
                     Rigid
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="5" <?php if($row['type'] == 5) {echo "checked";} ?>>
                   <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="5" <?php if($row['type'] == 5) {echo "checked";} ?>>
                     Coach
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="6" <?php if($row['type'] == 6) {echo "checked";} ?>>
                   <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="6" <?php if($row['type'] == 6) {echo "checked";} ?>>
                     Car
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="7" <?php if($row['type'] == 7) {echo "checked";} ?>>
                   <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="upd_type" id="upd_type" value="7" <?php if($row['type'] == 7) {echo "checked";} ?>>
                     Motor Home
                   </label>
                 </div>
@@ -231,20 +231,20 @@
                 <input type="text" class="form-control" id="upd_timein" name="upd_timein" placeholder="Time IN: Y-m-d H:m" value="<?php echo $row['timein']?>">
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="upd_col" id="upd_col" value="1" <?php if($row['col'] == 1) {echo "checked";} ?>>
                 <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="upd_col" id="upd_col" value="1" <?php if($row['col'] == 1) {echo "checked";} ?>>
                   Break
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="upd_col" id="upd_col" value="2" <?php if($row['col'] == 2) {echo "checked";} ?>>
                 <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="upd_col" id="upd_col" value="2" <?php if($row['col'] == 2) {echo "checked";} ?>>
                   Paid
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="upd_col" id="upd_col" value="3" <?php if($row['col'] == 3) {echo "checked";} ?>>
                 <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="upd_col" id="upd_col" value="3" <?php if($row['col'] == 3) {echo "checked";} ?>>
                   Exit
                 </label>
               </div>
@@ -317,50 +317,50 @@
               <div class="form-group">
                 <label>Type of Vehicle</label>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="0">
-                  <label class="form-check-label" for="addType">
                     N/A
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="1" checked>
-                  <label class="form-check-label" for="addType">
                     Cab &amp; Trailer
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="2">
-                  <label class="form-check-label" for="addType">
                     Cab
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="3">
-                  <label class="form-check-label" for="addType">
                     Trailer
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="4">
-                  <label class="form-check-label" for="addType">
                     Rigid
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="5">
-                  <label class="form-check-label" for="addType">
                     Coach
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" id="addType" name="addType" value="6">
-                  <label class="form-check-label" for="addType">
                     Car
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" id="addType" name="addType" value="7">
-                  <label class="form-check-label" for="addType">
                     Motor Home
                   </label>
                 </div>

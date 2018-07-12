@@ -1,3 +1,11 @@
+li a {
+  color: inherit;
+  text-decoration: none;
+}
+li a:hover {
+  color: inherit;
+  text-decoration: none;
+}
 @font-face {
   font-family: 'Tajawal';
   font-style: normal;

@@ -501,50 +501,50 @@
               <div class="form-group">
                 <label>Type of Vehicle</label>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="0">
-                  <label class="form-check-label" for="addType">
                     N/A
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="1" checked>
-                  <label class="form-check-label" for="addType">
                     Cab &amp; Trailer
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="2">
-                  <label class="form-check-label" for="addType">
                     Cab
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="3">
-                  <label class="form-check-label" for="addType">
                     Trailer
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="4">
-                  <label class="form-check-label" for="addType">
                     Rigid
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="addType" id="addType" value="5">
-                  <label class="form-check-label" for="addType">
                     Coach
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" id="addType" name="addType" value="6">
-                  <label class="form-check-label" for="addType">
                     Car
                   </label>
                 </div>
                 <div class="form-check">
+                  <label class="form-check-label">
                   <input class="form-check-input" type="radio" id="addType" name="addType" value="7">
-                  <label class="form-check-label" for="addType">
                     Motor Home
                   </label>
                 </div>
