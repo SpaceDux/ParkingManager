@@ -680,6 +680,66 @@
     </script>
     <!-- Chart JS -->
     <script type="text/javascript">
+    <?php
+    //This week
+      //Monday
+      $unixMonday = strtotime("monday this week");
+      $monday = date("Y-m-d 00:00:00", $unixMonday);
+      $monday2 = date("Y-m-d 23:59:59", $unixMonday);
+      //Tuesday
+      $unixTuesday = strtotime("tuesday this week");
+      $tuesday = date("Y-m-d 00:00:00", $unixTuesday);
+      $tuesday2 = date("Y-m-d 23:59:59", $unixTuesday);
+      //Wednesday
+      $unixWednesday = strtotime("wednesday this week");
+      $wednesday = date("Y-m-d 00:00:00", $unixWednesday);
+      $wednesday2 = date("Y-m-d 23:59:59", $unixWednesday);
+      //Thursday
+      $unixThursday = strtotime("thursday this week");
+      $thursday = date("Y-m-d 00:00:00", $unixThursday);
+      $thursday2 = date("Y-m-d 23:59:59", $unixThursday);
+      //Friday
+      $unixFriday = strtotime("friday this week");
+      $friday = date("Y-m-d 00:00:00", $unixFriday);
+      $friday2 = date("Y-m-d 23:59:59", $unixFriday);
+      //Saturday
+      $unixSaturday = strtotime("saturday this week");
+      $saturday = date("Y-m-d 00:00:00", $unixSaturday);
+      $saturday2 = date("Y-m-d 23:59:59", $unixSaturday);
+      //Sunday
+      $unixSunday = strtotime("sunday this week");
+      $sunday = date("Y-m-d 00:00:00", $unixSunday);
+      $sunday2 = date("Y-m-d 23:59:59", $unixSunday);
+    //Last week
+      //Monday
+      $LunixMonday = strtotime("monday last week");
+      $Lmonday = date("Y-m-d 00:00:00", $LunixMonday);
+      $Lmonday2 = date("Y-m-d 23:59:59", $LunixMonday);
+      //Tuesday
+      $LunixTuesday = strtotime("tuesday last week");
+      $Ltuesday = date("Y-m-d 00:00:00", $LunixTuesday);
+      $Ltuesday2 = date("Y-m-d 23:59:59", $LunixTuesday);
+      //Wednesday
+      $LunixWednesday = strtotime("wednesday last week");
+      $Lwednesday = date("Y-m-d 00:00:00", $LunixWednesday);
+      $Lwednesday2 = date("Y-m-d 23:59:59", $LunixWednesday);
+      //Thursday
+      $LunixThursday = strtotime("thursday last week");
+      $Lthursday = date("Y-m-d 00:00:00", $LunixThursday);
+      $Lthursday2 = date("Y-m-d 23:59:59", $LunixThursday);
+      //Friday
+      $LunixFriday = strtotime("friday last week");
+      $Lfriday = date("Y-m-d 00:00:00", $LunixFriday);
+      $Lfriday2 = date("Y-m-d 23:59:59", $LunixFriday);
+      //Saturday
+      $LunixSaturday = strtotime("saturday last week");
+      $Lsaturday = date("Y-m-d 00:00:00", $LunixSaturday);
+      $Lsaturday2 = date("Y-m-d 23:59:59", $LunixSaturday);
+      //Sunday
+      $LunixSunday = strtotime("sunday last week");
+      $Lsunday = date("Y-m-d 00:00:00", $LunixSunday);
+      $Lsunday2 = date("Y-m-d 23:59:59", $LunixSunday);
+    ?>
     var ctx = document.getElementById("lastChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
@@ -687,7 +747,13 @@
             labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
             datasets: [{
                 label: 'This week',
-                data: [99, 222, 100, 244, 66, 87, 110],
+                data: [<?php echo $parking->graphDisplay($monday, $monday2)?>,
+                <?php echo $parking->graphDisplay($tuesday, $tuesday2)?>,
+                <?php echo $parking->graphDisplay($wednesday, $wednesday2)?>,
+                <?php echo $parking->graphDisplay($thursday, $thursday2)?>,
+                <?php echo $parking->graphDisplay($friday, $friday2)?>,
+                <?php echo $parking->graphDisplay($saturday, $saturday2)?>,
+                <?php echo $parking->graphDisplay($sunday, $sunday2)?>],
                 borderWidth: [0],
                 backgroundColor: [
                     'rgba(255, 255, 255, 0.6)',
@@ -710,7 +776,13 @@
             },
             {
               label: 'Last week',
-              data: [123, 199, 97, 222, 88, 55, 32],
+              data: [<?php echo $parking->graphDisplay($Lmonday, $Lmonday2)?>,
+              <?php echo $parking->graphDisplay($Ltuesday, $Ltuesday2)?>,
+              <?php echo $parking->graphDisplay($Lwednesday, $Lwednesday2)?>,
+              <?php echo $parking->graphDisplay($Lthursday, $Lthursday2)?>,
+              <?php echo $parking->graphDisplay($Lfriday, $Lfriday2)?>,
+              <?php echo $parking->graphDisplay($Lsaturday, $Lsaturday2)?>,
+              <?php echo $parking->graphDisplay($Lsunday, $Lsunday2)?>],
               borderWidth: [0],
               backgroundColor: [
                   'rgba(104,104,104, 0.6)',

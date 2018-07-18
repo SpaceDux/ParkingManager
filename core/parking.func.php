@@ -119,5 +119,14 @@
         echo "<red>Time Construction error, please correct</red>";
       }
     }
+    function graphDisplay($key, $key2) {
+      global $dbConn;
+      $sql = "SELECT * FROM payments WHERE service_date BETWEEN ? AND ?";
+      $stmt = $dbConn->prepare($sql);
+      $stmt->bindParam(1, $key);
+      $stmt->bindParam(2, $key2);
+      $stmt->execute();
+      return $stmt->rowCount();
+    }
   }
 ?>
