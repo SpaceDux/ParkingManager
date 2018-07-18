@@ -80,14 +80,7 @@
           <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> Update <small>\\\</small> <b><?php echo $row['reg']?></b>
           <div class="float-right">
             <?php
-              if(isset($row['timein']) && isset($row['timeout'])) {
-                $d1 = new DateTime($row['timein']);
-                $d2 = new DateTime($row['timeout']);
-                $int = $d2->diff($d1);
-                $h = $int->h;
-                $h = $h + ($int->days*24);
-                echo "Parked for <b>".$h."</b> hours and <b>".$int->format('%i')."</b> minutes";
-              }
+              $parking->updateTimeCalc($row['timein'], $row['timeout'])
              ?>
           </div>
         </div>
