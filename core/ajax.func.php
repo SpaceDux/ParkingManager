@@ -154,6 +154,7 @@
             <th scope="col">Company</th>
             <th scope="col">Reg</th>
             <th scope="col">Trailer</th>
+            <th scope="col">Type</th>
             <th scope="col">Time IN</th>
             <th scope="col">Time OUT</th>
             <th scope="col"><i class="fa fa-cog"></i></th>
@@ -162,11 +163,29 @@
       ';
         $return .= '<tbody>';
             foreach($result as $row) {
+              if ($row['type'] == 1) {
+               $type = "C/T";
+             } else if ($row['type'] == 2) {
+               $type = "CAB";;
+             } else if ($row['type'] == 3) {
+               $type = "TRL";
+             } else if ($row['type'] == 4) {
+               $type = "RIGID";
+             } else if ($row['type'] == 5) {
+               $type = "COACH";
+             } else if ($row['type'] == 6) {
+               $type = "CAR";
+             } else if ($row['type'] == 7) {
+               $type = "M/H";
+             } else if ($row['type'] == 0) {
+               $type = "N/A";
+             }
               $return .= '
             <tr>
               <td>'.$row['company'].'</td>
               <td>'.$row['reg'].'</td>
               <td>'.$row['trlno'].'</td>
+              <td>'.$type.'</td>
               <td>'.$row['timein'].'</td>
               <td>'.$row['timeout'].'</td>
               <td><a class="btn btn-danger" href="'.$url.'/update/'.$row['id'].'"><i class="fa fa-cog"></i></a></td>
