@@ -140,10 +140,12 @@
   $searchStr = '%'.$_POST['search'].'%';
   $return = '';
 
-  $stmt = $dbConn->prepare("SELECT * FROM parking WHERE company LIKE ? OR reg LIKE ? OR trlno LIKE ? ORDER BY id DESC LIMIT 40");
+  $stmt = $dbConn->prepare("SELECT * FROM parking WHERE company LIKE ? OR reg LIKE ? OR trlno LIKE ? OR timein LIKE ? OR timeout LIKE ?  ORDER BY id DESC LIMIT 100");
   $stmt->bindParam(1, $searchStr);
   $stmt->bindParam(2, $searchStr);
   $stmt->bindParam(3, $searchStr);
+  $stmt->bindParam(4, $searchStr);
+  $stmt->bindParam(5, $searchStr);
   $stmt->execute();
   $result = $stmt->fetchAll();
   if($stmt->rowCount() > 0) {

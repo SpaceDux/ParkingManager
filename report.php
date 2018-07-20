@@ -91,7 +91,7 @@
                 }
                 ?>
               </td>
-              <td><?php echo $h.':'.$int->format('%i');?></td>
+              <td><?php $account->reportTimeCalc($row['timein'], $row['timeout']); ?></td>
             </tr>
           <?php   }
                 }
@@ -167,7 +167,7 @@
                 }
                 ?>
               </td>
-              <td><?php echo $h.':'.$int->format('%i');?></td>
+              <td><?php $account->reportTimeCalc($row['timein'], $row['timeout']); ?></td>
             </tr>
           <?php   }
                 }
@@ -243,7 +243,7 @@
                 }
                 ?>
               </td>
-              <td><?php echo $h.':'.$int->format('%i');?></td>
+              <td><?php $account->reportTimeCalc($row['timein'], $row['timeout']); ?></td>
             </tr>
           <?php   }
                 }
@@ -319,7 +319,7 @@
                 }
                 ?>
               </td>
-              <td><?php echo $h.':'.$int->format('%i');?></td>
+              <td><?php $account->reportTimeCalc($row['timein'], $row['timeout']); ?></td>
             </tr>
           <?php   }
                 }
@@ -395,7 +395,7 @@
                 }
                 ?>
               </td>
-              <td><?php echo $h.':'.$int->format('%i');?></td>
+              <td><?php $account->reportTimeCalc($row['timein'], $row['timeout']); ?></td>
             </tr>
           <?php   }
                 }
@@ -471,7 +471,7 @@
                 }
                 ?>
               </td>
-              <td><?php echo $h.':'.$int->format('%i');?></td>
+              <td><?php $account->reportTimeCalc($row['timein'], $row['timeout']); ?></td>
             </tr>
           <?php   }
                 }
@@ -547,7 +547,7 @@
                 }
                 ?>
               </td>
-              <td><?php echo $h.':'.$int->format('%i');?></td>
+              <td><?php $account->reportTimeCalc($row['timein'], $row['timeout']); ?></td>
             </tr>
           <?php   }
                 }

@@ -17,6 +17,6 @@
   $GetRenewals = $parking->fetchRenewals();
   $GetExits = $parking->fetchExits();
 
-  $ver = "2.1.0";
+  $ver = "2.1.1";
 
 ?>

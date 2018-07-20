@@ -20,5 +20,19 @@
 
       return $stmt->fetchAll();
     }
+    function reportTimeCalc($time1, $time2) {
+      try {
+        if(isset($time1)) {
+          $d1 = new DateTime($time1);
+          $d2 = new DateTime($time2);
+          $int = $d2->diff($d1);
+          $h = $int->h;
+          $h = $h + ($int->days*24);
+          echo $h." : ".$int->format('%i');
+        }
+      } catch(Exception $e) {
+        echo "<red>Time Construction error, please correct</red>";
+      }
+    }
   }
 ?>
