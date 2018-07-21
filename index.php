@@ -246,8 +246,18 @@
                 </tr>
               </thead>
               <tbody>
-                <?php foreach($GetPaid as $row) { ?>
-                <tr>
+                <?php foreach($GetPaid as $row) {
+                  $row_id = $row['id'];
+                  $payments = $parking->fetchPayments($row_id);
+                ?>
+                <tr <?php if($payments['tot'] == 5) {
+                  echo 'class="table-success"';
+                } else if ($payments['tot'] == 6) {
+                  echo 'class="table-info"';
+                } else {
+                  //nothing
+                }
+                  ?>>
                   <td><?php if($row['flag'] > 0) {
                     echo '<i style="color:#6b1111; font-size:11px;" class="far fa-flag"></i>';
                   } else {
@@ -274,9 +284,6 @@
                        }?>
                   <td>
                   <?php
-                    $row_id = $row['id'];
-                    $payments = $parking->fetchPayments($row_id);
-
                     echo $payments['ticket_id'];
 
                     if($payments['tot'] == 1) {
