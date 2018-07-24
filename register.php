@@ -9,6 +9,8 @@
     $rank = $_POST['reg_rank'];
 
     $pm->regUser($first, $second, $email, $password, $rank);
+
+    unset($_POST['reg_name']);
   }
 
 ?>
@@ -81,7 +83,7 @@
     <div id="wrapper">
       <div class="whereami">
         <div class="page">
-          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> PM Tools<small>\\\</small> <b>New User</b>
+          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> PM Tools <small>\\\</small> <b>New User</b>
         </div>
       </div>
       <div class="updateContent" id="tables">
@@ -101,10 +103,13 @@
                   <?php foreach ($pm->fetchUsers() as $row) {?>
                   <tr>
                     <td><?php echo $row['first_name']?></td>
-                    <td><?php echo $row['second_name']?></td>
+                    <td><?php echo $row['last_name']?></td>
                     <td><?php echo $row['email']?></td>
                     <td>
-                      <button class="btn btn-sm btn-danger"><i class="fa fa-cog"></i></button>
+                      <div class="btn-group" role="group" aria-label="Button Group">
+                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm payBtn" data-id="<?php echo $row['id']?>" data-toggle="modal" data-target="#updateUser"><i class="fas fa-cog"></i></i></button>
+                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm payBtn2" data-id="<?php echo $row['id']?>" data-toggle="modal" data-target="#deleteUsers"><i class="fa fa-trash"></i></i></button>
+                      </div>
                     </td>
                   </tr>
                   <?php }?>
@@ -115,19 +120,19 @@
               <form method="post" id="reg_user">
                 <div class="form-group">
                   <label for="reg_firstName">First Name</label>
-                  <input type="text" class="form-control" name="reg_firstName" id="reg_firstName" placeholder="First Name" autofocus>
+                  <input type="text" class="form-control" name="reg_firstName" id="reg_firstName" placeholder="First Name" autofocus required>
                 </div>
                 <div class="form-group">
                   <label for="reg_secondName">Second Name</label>
-                  <input type="text" class="form-control" name="reg_secondName" id="reg_secondName" placeholder="Second Name" autofocus>
+                  <input type="text" class="form-control" name="reg_secondName" id="reg_secondName" placeholder="Second Name" autofocus required>
                 </div>
                 <div class="form-group">
                   <label for="reg_email">Email Address</label>
-                  <input type="email" class="form-control" name="reg_email" id="reg_email" placeholder="Email Address" autofocus>
+                  <input type="email" class="form-control" name="reg_email" id="reg_email" placeholder="Email Address" autofocus required>
                 </div>
                 <div class="form-group">
                   <label for="reg_password">Password</label>
-                  <input type="password" class="form-control" name="reg_password" id="reg_password" placeholder="Password" autofocus>
+                  <input type="password" class="form-control" name="reg_password" id="reg_password" placeholder="Password" autofocus required>
                 </div>
                 <div class="form-group">
                   <label>Rank</label>

@@ -83,7 +83,7 @@
     <div id="wrapper">
       <div class="whereami">
         <div class="page">
-          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> PM Tools<small>\\\</small> <b>Notices</b>
+          <a href="<?php echo $url ?>/index">Dashboard</a> <small>\\\</small> PM Tools <small>\\\</small> <b>Notices</b>
         </div>
       </div>
       <div class="updateContent" id="tables">
