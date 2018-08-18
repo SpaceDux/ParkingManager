@@ -23,19 +23,27 @@
   $_CONFIG['mysql']['pass'] = ''; //MySQL Server: Password
   $_CONFIG['mysql']['database'] = 'new_rkpm'; //MySQL Server: Database name
 
-  //ANPR Server Connection Details (MSSQL)
-  $_CONFIG['anpr']['ip'] = ''; //ANPR Server: IP Address
-  $_CONFIG['anpr']['user'] = ''; //ANPR Server: User
-  $_CONFIG['anpr']['pass'] = ''; //ANPR Server: Password
-  $_CONFIG['anpr']['port'] = ''; //ANPR Server: Port
-  $_CONFIG['anpr']['database'] = ''; //ANPR Server: Database name
+  //ANPR Server Connection Details (MSSQL-Holyhead)
+  $_CONFIG['anpr_holyhead']['ip'] = ''; //ANPR Server: IP Address
+  $_CONFIG['anpr_holyhead']['user'] = ''; //ANPR Server: User
+  $_CONFIG['anpr_holyhead']['pass'] = ''; //ANPR Server: Password
+  $_CONFIG['anpr_holyhead']['port'] = ''; //ANPR Server: Port
+  $_CONFIG['anpr_holyhead']['database'] = ''; //ANPR Server: Database name
 
-  $_CONFIG['anpr']['imgdir'] = ''; //ANPR Server: Image Directory
+  $_CONFIG['anpr_holyhead']['imgdir'] = ''; //ANPR Server: Image Directory
+  //ANPR Server Connection Details (MSSQL-Cannock)
+  $_CONFIG['anpr_cannock']['ip'] = ''; //ANPR Server: IP Address
+  $_CONFIG['anpr_cannock']['user'] = ''; //ANPR Server: User
+  $_CONFIG['anpr_cannock']['pass'] = ''; //ANPR Server: Password
+  $_CONFIG['anpr_cannock']['port'] = ''; //ANPR Server: Port
+  $_CONFIG['anpr_cannock']['database'] = ''; //ANPR Server: Database name
+
+  $_CONFIG['anpr_cannock']['imgdir'] = ''; //ANPR Server: Image Directory
 
   /*
     ParkingManager Configuration + Settings
   */
-  $_CONFIG['pm']['url'] = 'http://localhost/PM2'; //PM: Url (DOES NOT END WITH '/')
+  $_CONFIG['pm']['url'] = 'http://localhost/ParkingManager'; //PM: Url (DOES NOT END WITH '/')
   $_CONFIG['pm']['timezone'] = 'Europe/London'; //PM: Set Timezone
 
 

@@ -1,4 +1,5 @@
 <?php
+  session_start();
   //Define the directories
   define('C', '/core');
   define('F', '/functions');
@@ -13,6 +14,7 @@
     //Functions
   require(__DIR__ . C . F . '/mysql.func.php');
   require(__DIR__ . C . F . '/user.func.php');
+  require(__DIR__ . C . F . '/anpr.func.php');
   require(__DIR__ . C . F . '/pm.func.php');
 
   //Define CONFIG settings
@@ -29,7 +31,8 @@
 
   $pm = new PM\PM;
 
-  session_start();
+  $anpr = new PM\ANPR($_SESSION['id']);
+
 
   //Checks
   //Redirect for auth
