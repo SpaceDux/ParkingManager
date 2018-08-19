@@ -1,6 +1,6 @@
 <?php
   namespace ParkingManager;
-  class PM
+  class PM implements iPM
   {
     #Variables
     public $err;

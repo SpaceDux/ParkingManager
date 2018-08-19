@@ -41,7 +41,7 @@
       }
     }
     //Register User
-
+    
     //Logout User, kill session
     function Logout() {
       if(isset($_SESSION['id'])) {

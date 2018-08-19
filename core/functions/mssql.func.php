@@ -1,9 +1,9 @@
 <?php
   namespace ParkingManager;
-  class ANPR
+  class MSSQL
   {
     #Variables
-    public $anpr;
+    public $mssql;
     private $dbc;
 
     public function __construct($id) {

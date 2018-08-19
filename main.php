@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Parking Manager: Dashboard</title>
+    <title>Parking Manager: Main Hub</title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="<?php echo URL?>/assets/css/theme.css">
     <link rel="stylesheet" href="<?php echo URL?>/assets/css/bootstrap.css">
@@ -136,7 +136,89 @@
           </div>
         </div>
       </div>
-      <footer style="position: fixed; bottom: 0;">
+      <div class="row">
+        <div class="col-md-7">
+          <!-- ANPR Feed Table -->
+          <div class="content">
+            <div class="title">
+              Live ANPR Feed
+            </div>
+            <table class="table table-dark table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Registration</th>
+                  <th scope="col">Time IN</th>
+                  <th scope="col"><i class="fa fa-cog"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>181MH222</td>
+                  <td>18/12:22</td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Options">
+                      <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                      <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
+                      <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                      <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Paid Vehicles Table -->
+          <div class="content">
+            <div class="title">
+              Paid Vehicles
+            </div>
+            <table class="table table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Company</th>
+                  <th scope="col">Registration</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Time IN</th>
+                  <th scope="col">Ticket ID</th>
+                  <th scope="col float"><i class="fa fa-cog"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>NOLAN</td>
+                  <td>07WX1812</td>
+                  <td>CAB</td>
+                  <td>13/02:45</td>
+                  <td>19987</td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Options">
+                      <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                      <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+
+                      <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="OptionsDrop">
+                          <a class="dropdown-item" href="#">Exit Vehicle</a>
+                          <a class="dropdown-item" href="#">Mark Renewal</a>
+                          <a class="dropdown-item" href="#">Flag Vehicle</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="#">View ANPR Record</a>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-5">
+          One of three columns
+        </div>
+      </div>
+      <footer>
         ParkingManager (PM) &copy; 2018/2019 | Designed, developed by <a href="mailto:ryan@roadkingcafe.uk"><b>Ryan. W</b> with RoadKing Truckstops &copy;</a>
       </footer>
     </div>

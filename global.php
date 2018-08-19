@@ -11,11 +11,14 @@
   require(__DIR__ . C . M . '/configure.php');
     //Interfaces
   require(__DIR__ . C . I . '/user.interface.php');
+  require(__DIR__ . C . I . '/pm.interface.php');
+  require(__DIR__ . C . I . '/vehicles.interface.php');
     //Functions
   require(__DIR__ . C . F . '/mysql.func.php');
   require(__DIR__ . C . F . '/user.func.php');
-  require(__DIR__ . C . F . '/anpr.func.php');
+  require(__DIR__ . C . F . '/mssql.func.php');
   require(__DIR__ . C . F . '/pm.func.php');
+  require(__DIR__ . C . F . '/vehicles.func.php');
 
   //Define CONFIG settings
   define('URL', $_CONFIG['pm']['url']);
@@ -31,7 +34,9 @@
 
   $pm = new PM\PM;
 
-  $anpr = new PM\ANPR($_SESSION['id']);
+  if(isset($_SESSION['id'])) {
+    $mssql = new PM\MSSQL($_SESSION['id']);
+  }
 
 
   //Checks
