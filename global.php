@@ -34,6 +34,8 @@
 
   $pm = new PM\PM;
 
+  $vehicles = new PM\Vehicles;
+
   if(isset($_SESSION['id'])) {
     $mssql = new PM\MSSQL($_SESSION['id']);
   }

@@ -87,7 +87,7 @@
                 <i class="fas fa-truck"></i>
               </div>
               <div class="Stat">
-              <b>100</b><small>/200</small>
+              <b><?php echo $vehicles->vehicle_count_paid();?></b><small>/200</small>
               </div>
               <div class="statText">
                 vehicles <b>parked</b>
@@ -98,7 +98,7 @@
                 <i class="far fa-clock"></i>
               </div>
               <div class="Stat">
-              <b>12</b>
+              <b><?php echo $vehicles->vehicle_count_renewals();?></b>
               </div>
               <div class="statText">
                 renewals
@@ -136,7 +136,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row" id="tables">
         <div class="col-md-7">
           <!-- ANPR Feed Table -->
           <div class="content">
@@ -184,38 +184,50 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>NOLAN</td>
-                  <td>07WX1812</td>
-                  <td>CAB</td>
-                  <td>13/02:45</td>
-                  <td>19987</td>
-                  <td>
-                    <div class="btn-group" role="group" aria-label="Options">
-                      <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
-                      <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
-
-                      <div class="btn-group" role="group">
-                        <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="OptionsDrop">
-                          <a class="dropdown-item" href="#">Exit Vehicle</a>
-                          <a class="dropdown-item" href="#">Mark Renewal</a>
-                          <a class="dropdown-item" href="#">Flag Vehicle</a>
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="#">View ANPR Record</a>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
+                <?php $vehicles->get_paidFeed()?>
               </tbody>
             </table>
           </div>
         </div>
         <div class="col-md-5">
-          One of three columns
+          <div class="content">
+            <div class="title">
+              Marked Renewals
+            </div>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Company</th>
+                  <th scope="col">Registration</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Time IN</th>
+                  <th scope="col"><i class="fa fa-cog"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php $vehicles->get_renewalFeed() ?>
+              </tbody>
+            </table>
+          </div>
+          <div class="content">
+            <div class="title">
+              Recently Exit Vehicles
+            </div>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Company</th>
+                  <th scope="col">Registration</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Time OUT</th>
+                  <th scope="col"><i class="fa fa-cog"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php $vehicles->get_exitFeed() ?>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <footer>
