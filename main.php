@@ -1,5 +1,7 @@
 <?php
   require(__DIR__.'/global.php');
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -141,7 +143,7 @@
           <!-- ANPR Feed Table -->
           <div class="content">
             <div class="title">
-              Live ANPR Feed
+              <b style="color:red;">Live</b> ANPR Feed
             </div>
             <table class="table table-dark table-bordered table-hover">
               <thead>
@@ -153,6 +155,30 @@
               </thead>
               <tbody>
                 <tr>
+                  <td>181MH222</td>
+                  <td>18/12:22</td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Options">
+                      <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                      <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
+                      <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                      <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="table-warning">
+                  <td>181MH222</td>
+                  <td>18/12:22</td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Options">
+                      <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                      <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
+                      <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                      <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="table-danger">
                   <td>181MH222</td>
                   <td>18/12:22</td>
                   <td>
@@ -335,12 +361,16 @@
           <div class="modal-body">
             <div class="row">
               <div class="col">
-                <label>Search Vehicle Details</label>
+                <label>Search Vehicle Logs</label>
                 <input type="text" id="searchData" class="form-control" placeholder="Search Registration, company, trailer number..." autofocus>
               </div>
               <div class="col">
-                <label>Search Payment Details</label>
+                <label>Search Transactions</label>
                 <input type="text" id="searchPay" class="form-control" placeholder="Search Ticket ID">
+              </div>
+              <div class="col">
+                <label>Search ANPR database</label>
+                <input type="text" id="searchPay" class="form-control" placeholder="Search ANPR database">
               </div>
             </div>
             <div class="modal-body">
@@ -352,78 +382,6 @@
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <!-- Add Payment Modal -->
-    <div class="modal fade" id="addPaymentModal" tabindex="-1" role="dialog" aria-labelledby="addPaymentModal" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addPaymentModal">Add Payment</h5>
-            <button type="button" tabindex="-1" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="addPaymentForm">
-              <div class="form-group">
-                <label for="tid">Ticket ID</label>
-                <input type="hidden" name="veh_id" id="veh_id" class="form-control" value="">
-                <input type="text" name="tid" id="tid" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Ticket ID.. 198833" autofocus>
-              </div>
-              <div class="form-group">
-                <label>Type of Ticket</label>
-                <select class="form-control" name="tot" id="tot">
-                  <option value="1">Change Over</option>
-                  <option value="2">1 Hour</option>
-                  <option value="3">2 Hours</option>
-                  <option value="4">24 Hours</option>
-                  <option value="5">48 Hours</option>
-                  <option value="6">72 Hours</option>
-                </select>
-              </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" onClick="addPayments()" class="btn btn-primary">Save Payment</button>
-          </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <!-- Add Payment Modal Renew -->
-    <div class="modal fade" id="addPaymentModalRenew" tabindex="-1" role="dialog" aria-labelledby="addPaymentModalRenew" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addPaymentModalRenew">Add Renewal Payment</h5>
-            <button type="button" tabindex="-1" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="addPaymentFormRenew">
-              <div class="form-group">
-                <label for="tid">Ticket ID</label>
-                <input type="hidden" name="veh_id2" id="veh_id2" class="form-control" value="">
-                <input type="text" name="tid2" id="tid2" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Ticket ID.. 198833" autofocus>
-              </div>
-              <div class="form-group">
-                <label>Type of Ticket</label>
-                <select class="form-control" name="tot2" id="tot2">
-                  <option value="1">Change Over</option>
-                  <option value="2">1 Hour</option>
-                  <option value="3">2 Hours</option>
-                  <option value="4">24 Hours</option>
-                  <option value="5">48 Hours</option>
-                  <option value="6">72 Hours</option>
-                </select>
-              </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" onClick="addPaymentsRenew()" class="btn btn-primary">Save Payment</button>
-          </div>
-          </form>
         </div>
       </div>
     </div>

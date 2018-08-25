@@ -1,7 +1,7 @@
 <?php
   namespace ParkingManager;
 
-  class User implements iUser
+  class User
   {
     #Variables
     private $dbc;
@@ -67,6 +67,13 @@
           $this->dbc->dbc = null;
           header('Location: index');
         }
+      }
+    }
+    function isLogged() {
+      if(isset($_SESSION['id'])) {
+        return TRUE;
+      } else {
+        return FALSE;
       }
     }
     //Get User Details

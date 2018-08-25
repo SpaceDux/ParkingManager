@@ -4,15 +4,10 @@
   define('C', '/core');
   define('F', '/functions');
   define('M', '/manage');
-  define('I', '/interfaces');
 
   //Required Files
     //Manage
   require(__DIR__ . C . M . '/configure.php');
-    //Interfaces
-  require(__DIR__ . C . I . '/user.interface.php');
-  require(__DIR__ . C . I . '/pm.interface.php');
-  require(__DIR__ . C . I . '/vehicles.interface.php');
     //Functions
   require(__DIR__ . C . F . '/mysql.func.php');
   require(__DIR__ . C . F . '/user.func.php');
@@ -34,9 +29,8 @@
 
   $pm = new PM\PM;
 
-  $vehicles = new PM\Vehicles;
-
-  if(isset($_SESSION['id'])) {
+  if($user->isLogged() == true) {
+    $vehicles = new PM\Vehicles;
     $mssql = new PM\MSSQL($_SESSION['id']);
   }
 

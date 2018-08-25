@@ -31,6 +31,9 @@ red {
 body, html {
   background-color: #efefef;
 }
+b {
+  font-weight: 700;
+}
 /* Scroll Bar */
 ::-webkit-scrollbar {
     width: 5px;
@@ -403,6 +406,10 @@ table {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+.table-dark .table-warning,
+.table-dark .table-danger {
+  color: #000;
 }
 footer {
   height: 40px;

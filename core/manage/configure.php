@@ -17,7 +17,7 @@
     DATABASE CONNECTIONS
   */
 
-  //MySQL Connection Details
+  //MySQL Connection Details (Main Server)
   $_CONFIG['mysql']['ip'] = '127.0.0.1'; //MySQL Server: IP Address
   $_CONFIG['mysql']['user'] = 'root'; //MySQL Server: User
   $_CONFIG['mysql']['pass'] = ''; //MySQL Server: Password
@@ -39,6 +39,13 @@
   $_CONFIG['anpr_cannock']['database'] = ''; //ANPR Server: Database name
 
   $_CONFIG['anpr_cannock']['imgdir'] = ''; //ANPR Server: Image Directory
+
+  //Gate Functions
+  $_CONFIG['gate_holyhead']['in'] = ""; //Entery Barrier IP
+  $_CONFIG['gate_holyhead']['out'] = ""; //Exit Barrier IP
+  $_CONFIG['gate_cannock']['in'] = ""; //Entery Barrier IP
+  $_CONFIG['gate_cannock']['out'] = ""; //Exit Barrier IP
+
 
   /*
     ParkingManager Configuration + Settings

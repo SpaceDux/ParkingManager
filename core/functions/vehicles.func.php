@@ -1,25 +1,29 @@
 <?php
   namespace ParkingManager;
 
-  class Vehicles implements iVehicles {
+  class Vehicles
+  {
     #Variables
     private $dbc;
     private $anpr;
     private $user;
     protected $paid;
+    private $campus;
 
     public function __construct() {
       $this->dbc = new MySQL;
       //$this->anpr = new MSSQL;
       $this->user = new User;
+
+      //Set Campus.
+      $this->campus = $this->user->userInfo('campus');
     }
     public function get_anprFeed() {
       //Code for anpr table
     }
     public function get_paidFeed() {
-      $campus = $this->user->userInfo('campus');
       $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 1 AND campus = ?");
-      $query->bindParam(1, $campus);
+      $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
       foreach ($key as $result) {
@@ -59,6 +63,7 @@
               </button>
               <div class="dropdown-menu" aria-labelledby="OptionsDrop">
                 <a class="dropdown-item" href="#">Exit Vehicle</a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Mark Renewal</a>
                 <a class="dropdown-item" href="#">Flag Vehicle</a>
                 <div class="dropdown-divider"></div>
@@ -71,9 +76,8 @@
       }
     }
     public function get_renewalFeed() {
-      $campus = $this->user->userInfo('campus');
       $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 2 AND campus = ?");
-      $query->bindParam(1, $campus);
+      $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
       foreach ($key as $result) {
@@ -111,6 +115,7 @@
               </button>
               <div class="dropdown-menu" aria-labelledby="OptionsDrop">
                 <a class="dropdown-item" href="#">Exit Vehicle</a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Mark Renewal</a>
                 <a class="dropdown-item" href="#">Flag Vehicle</a>
                 <div class="dropdown-divider"></div>
@@ -123,9 +128,8 @@
       }
     }
     public function get_exitFeed() {
-      $campus = $this->user->userInfo('campus');
       $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 3 AND campus = ?");
-      $query->bindParam(1, $campus);
+      $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
       foreach ($key as $result) {
@@ -163,6 +167,7 @@
               </button>
               <div class="dropdown-menu" aria-labelledby="OptionsDrop">
                 <a class="dropdown-item" href="#">Exit Vehicle</a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Mark Renewal</a>
                 <a class="dropdown-item" href="#">Flag Vehicle</a>
                 <div class="dropdown-divider"></div>
@@ -180,16 +185,18 @@
       $query->bindParam(2, $key);
       $query->execute();
     }
-    public function vehicle_count_anor() {
+    public function vehicle_count_anpr() {
       //Code
     }
     public function vehicle_count_paid() {
-      $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column < 3");
+      $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column < 3 AND campus = ?");
+      $query->bindParam(1, $this->campus);
       $query->execute();
       return $query->rowCount();
     }
     public function vehicle_count_renewals() {
-      $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 2");
+      $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 2 AND campus = ?");
+      $query->bindParam(1, $this->campus);
       $query->execute();
       return $query->rowCount();
     }
