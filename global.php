@@ -2,18 +2,19 @@
   session_start();
   //Define the directories
   define('C', '/core');
-  define('F', '/functions');
+  define('F', '/class');
   define('M', '/manage');
 
   //Required Files
     //Manage
   require(__DIR__ . C . M . '/configure.php');
     //Functions
-  require(__DIR__ . C . F . '/mysql.func.php');
-  require(__DIR__ . C . F . '/user.func.php');
-  require(__DIR__ . C . F . '/mssql.func.php');
-  require(__DIR__ . C . F . '/pm.func.php');
-  require(__DIR__ . C . F . '/vehicles.func.php');
+  require(__DIR__ . C . F . '/mysql.class.php');
+  require(__DIR__ . C . F . '/user.class.php');
+  require(__DIR__ . C . F . '/mssql.class.php');
+  require(__DIR__ . C . F . '/pm.class.php');
+  require(__DIR__ . C . F . '/vehicles.class.php');
+  require(__DIR__ . C . F . '/payment.class.php');
 
   //Define CONFIG settings
   define('URL', $_CONFIG['pm']['url']);

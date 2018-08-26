@@ -56,6 +56,14 @@
         echo $table;
       }
     }
+
+    //Get All transactions for the logged vehicle
+    function getTransactions($key) {
+      $query = $this->myself->dbc->prepare("SELECT * FROM payments WHERE log_id = ?");
+      $query->bindParam(1, $key);
+      $query->execute();
+      $result = $query->fetchAll();
+    }
   }
 
 ?>

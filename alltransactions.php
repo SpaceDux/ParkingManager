@@ -95,7 +95,7 @@
               <th scope="col">Net</th>
               <th scope="col">Gross</th>
               <th scope="col">Account</th>
-              <th scope="col">TID</th>
+              <th scope="col">Ticket ID</th>
               <th scope="col"><i class="fa fa-cog"></i></th>
             </tr>
           </thead>
