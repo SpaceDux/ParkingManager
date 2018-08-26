@@ -15,7 +15,7 @@
   <body>
     <!-- Top Navbar -->
     <nav class="topBar">
-      <a href="<?php echo $url?>/index">
+      <a href="<?php echo URL ?>/index">
       <div class="brand">
         Parking<b>Manager</b>
       </div>
@@ -83,7 +83,7 @@
           <a href="<?php echo URL ?>/index">Parking Manager</a> <small>\\\</small> <b>All Transactions</b>
         </div>
       </div>
-      <div class="col-md-12">
+      <div class="updateContent">
         <table class="table table-dark table-bordered table-hover">
           <thead>
             <tr>
@@ -95,11 +95,12 @@
               <th scope="col">Net</th>
               <th scope="col">Gross</th>
               <th scope="col">Account</th>
+              <th scope="col">TID</th>
               <th scope="col"><i class="fa fa-cog"></i></th>
             </tr>
           </thead>
           <tbody>
-            <?php $vehicles->get_renewalFeed() ?>
+            <?php $payment->listTransactions() ?>
           </tbody>
         </table>
       </div>

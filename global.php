@@ -34,6 +34,7 @@
   if($user->isLogged() == true) {
     $vehicles = new PM\Vehicles;
     $mssql = new PM\MSSQL($_SESSION['id']);
+    $payment = new PM\Payment;
   }
 
 

@@ -26,7 +26,34 @@
       $result = $query->fetchAll();
       foreach ($result as $row) {
         $table = "<tr>";
-        $table .= "";
+        $table .= "<td>".$row['charge_type']."</td>";
+        $table .= "<td>".$row['driver']."</td>";
+        $table .= "<td>".$row['registration']."</td>";
+        $table .= "<td>".$row['service_date']."</td>";
+        $table .= "<td>".$row['service_type']."</td>";
+        $table .= "<td>".$row['service_gross']."</td>";
+        $table .= "<td>".$row['service_gross']."</td>";
+        $table .= "<td>".$row['account']."</td>";
+        $table .= "<td>".$row['id']."</td>";
+        $table .= '<td>
+          <div class="btn-group" role="group" aria-label="Options">
+            <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+
+            <div class="btn-group" role="group">
+              <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+              </button>
+              <div class="dropdown-menu" aria-labelledby="OptionsDrop">
+                <a class="dropdown-item" href="#">Delete Transaction</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Reprint Ticket</a>
+              </div>
+            </div>
+          </div>
+        </td>';
+        $table .= "</tr>";
+
+        echo $table;
       }
     }
   }
