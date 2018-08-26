@@ -361,16 +361,12 @@
           <div class="modal-body">
             <div class="row">
               <div class="col">
-                <label>Search Vehicle Logs</label>
+                <label>Search Vehicle Details</label>
                 <input type="text" id="searchData" class="form-control" placeholder="Search Registration, company, trailer number..." autofocus>
               </div>
               <div class="col">
-                <label>Search Transactions</label>
+                <label>Search Payment Details</label>
                 <input type="text" id="searchPay" class="form-control" placeholder="Search Ticket ID">
-              </div>
-              <div class="col">
-                <label>Search ANPR database</label>
-                <input type="text" id="searchPay" class="form-control" placeholder="Search ANPR database">
               </div>
             </div>
             <div class="modal-body">

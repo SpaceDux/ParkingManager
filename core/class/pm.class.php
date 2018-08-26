@@ -6,6 +6,7 @@
     public $err;
     public $runErr;
 
+    //Error Handler, used to gently display user based errors.
     function ErrorHandler() {
       if(isset($this->err)) {
         $this->runErr .= '<div class="alert alert-danger" role="alert">';
