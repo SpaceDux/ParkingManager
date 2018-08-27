@@ -16,5 +16,9 @@
         echo $this->runErr;
       }
     }
+    function openGate($key) {
+      //Open Gate, key being IP Address for the gate. Using CURL
+      
+    }
   }
 ?>

@@ -34,6 +34,7 @@
     $vehicles = new PM\Vehicles;
     $mssql = new PM\MSSQL($_SESSION['id']);
     $payment = new PM\Payment;
+    $mysql = new PM\MySQL;
   }
 
 

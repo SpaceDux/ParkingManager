@@ -1,7 +1,5 @@
 <?php
   require(__DIR__.'/global.php');
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -486,6 +484,18 @@
             }
         }
     });
+    </script>
+    <script>
+    //AJAX
+    function exit(str) {
+      var veh_id = str;
+      $.ajax({
+        url: "<?php echo URL?>/ajax.class.php?p=exit",
+        type: "POST",
+        data: "veh_id"+veh_id
+      })
+      $('#tables').load(' #tables');
+    }
     </script>
   </body>
 </html>

@@ -4,14 +4,14 @@
   class Vehicles
   {
     #Variables
-    private $dbc;
+    private $mysql;
     private $anpr;
     private $user;
     protected $paid;
     private $campus;
 
     public function __construct() {
-      $this->dbc = new MySQL;
+      $this->mysql = new MySQL;
       //$this->anpr = new MSSQL;
       $this->user = new User;
 
@@ -22,7 +22,7 @@
       //Code for anpr table
     }
     public function get_paidFeed() {
-      $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 1 AND campus = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 1 AND campus = ?");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -74,9 +74,10 @@
         </td>';
         echo $table;
       }
+      $result = null;
     }
     public function get_renewalFeed() {
-      $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 2 AND campus = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 2 AND campus = ?");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -114,7 +115,7 @@
 
               </button>
               <div class="dropdown-menu" aria-labelledby="OptionsDrop">
-                <a class="dropdown-item" href="#">Exit Vehicle</a>
+                <a class="dropdown-item" onClick="exit('.$result['id'].')">Exit Vehicle</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Mark Renewal</a>
                 <a class="dropdown-item" href="#">Flag Vehicle</a>
@@ -126,9 +127,10 @@
         </td>';
         echo $table;
       }
+      $result = null;
     }
     public function get_exitFeed() {
-      $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 3 AND campus = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 3 AND campus = ?");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -178,27 +180,61 @@
         </td>';
         echo $table;
       }
-    }
-    public function veh_exit($key) {
-      $query = $this->dbc->dbc->prepare("UPDATE veh_log SET veh_column = 3, veh_timeout = ? WHERE id = ?");
-      $query->bindParam(1, date("Y-m-d H:i:s"));
-      $query->bindParam(2, $key);
-      $query->execute();
+      $result = null;
     }
     public function vehicle_count_anpr() {
       //Code
     }
     public function vehicle_count_paid() {
-      $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column < 3 AND campus = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column < 3 AND campus = ?");
       $query->bindParam(1, $this->campus);
       $query->execute();
       return $query->rowCount();
+
+      $query = null;
     }
     public function vehicle_count_renewals() {
-      $query = $this->dbc->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 2 AND campus = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 2 AND campus = ?");
       $query->bindParam(1, $this->campus);
       $query->execute();
       return $query->rowCount();
+
+      $query = null;
+    }
+    public function yardCheck() {
+      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column < 3 AND campus = ?");
+      $query->bindParam(1, $this->campus);
+      $query->execute();
+      $result = $query->fetchAll();
+      foreach ($result as $row) {
+        $table = "<tr>";
+        $table .= "<td>".$row['veh_company']."</td>";
+        $table .= "<td>".$row['veh_registration']."</td>";
+        $table .= "<td>".$row['veh_type']."</td>";
+        $table .= "<td>".$row['veh_timein']."</td>";
+        $table .= "<td>ALL TICKETS</td>";
+        $table .= '<td><input style="height: 30px;width: 30px; line-height: 30px;" type="checkbox">
+          <div class="btn-group" role="group" aria-label="Options">
+            <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+
+            <div class="btn-group" role="group">
+              <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+              </button>
+              <div class="dropdown-menu" aria-labelledby="OptionsDrop">
+                <a class="dropdown-item" href="#">Exit Vehicle</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Mark Renewal</a>
+                <a class="dropdown-item" href="#">Flag Vehicle</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">View ANPR Record</a>
+              </div>
+            </div>
+          </div>
+        </td>';
+        echo $table;
+      }
+      $result = null;
     }
   }
  ?>
