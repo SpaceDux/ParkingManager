@@ -51,6 +51,5 @@
     <script src="<?php echo URL ?>/assets/js/jquery.min.js"></script>
     <script src="<?php echo URL ?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL ?>/assets/js/bootstrap.min.js"></script>
-    <script src="<?php echo URL ?>/assets/js/mousetrap.min.js"></script>
   </body>
 </html>

@@ -388,38 +388,8 @@
     <script src="<?php echo URL?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
+    <script src="<?php echo URL?>/assets/js/require.js"></script>
     <script src="<?php echo URL?>/assets/js/Chart.bundle.min.js"></script>
-    <!-- Menu Hide JS -->
-    <script type="text/javascript">
-      function menuHide() {
-        var sideBar = document.getElementById("sideBar");
-        var wrapper = document.getElementById("wrapper");
-        if (sideBar.style.marginLeft === "-220px") {
-            sideBar.style.marginLeft = "0px";
-            sideBar.style.transition = "0.2s ease-in-out";
-            //Wrapper
-            wrapper.style.paddingLeft = "220px";
-            wrapper.style.transition = "0.2s ease-in-out";
-        } else {
-            sideBar.style.marginLeft = "-220px";
-            sideBar.style.transition = "0.2s ease-in-out";
-            //Wrapper
-            wrapper.style.paddingLeft = "0px";
-            wrapper.style.transition = "0.2s ease-in-out";
-        }
-      }
-    </script>
-    <!-- Focus on Modal -->
-    <script type="text/javascript">
-    $('.modal').on('shown.bs.modal', function() {
-      $(this).find('[autofocus]').focus();
-    });
-    </script>
-    <script type="text/javascript">
-    Mousetrap.bind('tab', function() {
-      $('#addVehicleModal').modal('show');
-    });
-    </script>
     <!-- Chart JS -->
     <script type="text/javascript">
     var ctx = document.getElementById("lastChart").getContext('2d');
@@ -484,18 +454,6 @@
             }
         }
     });
-    </script>
-    <script>
-    //AJAX
-    function exit(str) {
-      var veh_id = str;
-      $.ajax({
-        url: "<?php echo URL?>/ajax.class.php?p=exit",
-        type: "POST",
-        data: "veh_id"+veh_id
-      })
-      $('#tables').load(' #tables');
-    }
     </script>
   </body>
 </html>

@@ -15,10 +15,10 @@
   require(__DIR__ . C . F . '/pm.class.php');
   require(__DIR__ . C . F . '/vehicles.class.php');
   require(__DIR__ . C . F . '/payment.class.php');
-
+  require(__DIR__ . C . F . '/ajax.class.php');
   //Define CONFIG settings
   define('URL', $_CONFIG['pm']['url']);
-  define('VER', "3.0.1");
+  define('VER', "3.0.2");
 
   //Set Timezone
   date_default_timezone_set($_CONFIG['pm']['timezone']);
@@ -35,8 +35,8 @@
     $mssql = new PM\MSSQL($_SESSION['id']);
     $payment = new PM\Payment;
     $mysql = new PM\MySQL;
+    $ajax = new PM\AJAX;
   }
-
 
   //Checks
   //Redirect for auth
