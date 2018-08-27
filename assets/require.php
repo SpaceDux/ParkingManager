@@ -1,3 +1,4 @@
+<script type="text/javascript">
 //Menu JS
   function menuHide() {
     var sideBar = document.getElementById("sideBar");
@@ -18,9 +19,30 @@
   }
 //AJAX for Exit
   function exit(str) {
+    event.preventDefault();
     var veh_id = str;
     $.ajax({
-      url: "<?php echo URL?>/ajax-handler.php?p=exit",
+      url: "<?php echo URL?>/ajax-handler.php?handler=exit",
+      type: "POST",
+      data: "veh_id="+veh_id
+    })
+    $('#tables').load(' #tables');
+  }
+  function markRenewal(str) {
+    event.preventDefault();
+    var veh_id = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=markRenewal",
+      type: "POST",
+      data: "veh_id="+veh_id
+    })
+    $('#tables').load(' #tables');
+  }
+  function unmarkRenewal(str) {
+    event.preventDefault();
+    var veh_id = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=unmarkRenewal",
       type: "POST",
       data: "veh_id="+veh_id
     })
@@ -34,3 +56,4 @@
   Mousetrap.bind('tab', function() {
     $('#addVehicleModal').modal('show');
   });
+</script>

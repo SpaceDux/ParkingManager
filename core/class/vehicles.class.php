@@ -62,9 +62,9 @@
 
               </button>
               <div class="dropdown-menu" aria-labelledby="OptionsDrop">
-                <a class="dropdown-item" href="#">Exit Vehicle</a>
+                <a id="exit" class="dropdown-item" onClick="exit('.$result['id'].')" href="#">Exit Vehicle</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Mark Renewal</a>
+                <a class="dropdown-item" onClick="markRenewal('.$result['id'].')" href="#">Mark Renewal</a>
                 <a class="dropdown-item" href="#">Flag Vehicle</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">View ANPR Record</a>
@@ -115,9 +115,9 @@
 
               </button>
               <div class="dropdown-menu" aria-labelledby="OptionsDrop">
-                <a class="dropdown-item" onClick="exit('.$result['id'].')">Exit Vehicle</a>
+                <a id="exit" class="dropdown-item" onClick="exit('.$result['id'].')" href="#">Exit Vehicle</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Mark Renewal</a>
+                <a class="dropdown-item" onClick="unmarkRenewal('.$result['id'].')" href="#">Un-Mark Renewal</a>
                 <a class="dropdown-item" href="#">Flag Vehicle</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">View ANPR Record</a>
@@ -162,20 +162,6 @@
         $table .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
             <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
-
-            <div class="btn-group" role="group">
-              <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-              </button>
-              <div class="dropdown-menu" aria-labelledby="OptionsDrop">
-                <a class="dropdown-item" href="#">Exit Vehicle</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Mark Renewal</a>
-                <a class="dropdown-item" href="#">Flag Vehicle</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">View ANPR Record</a>
-              </div>
-            </div>
           </div>
         </td>';
         echo $table;
@@ -235,6 +221,13 @@
         echo $table;
       }
       $result = null;
+    }
+    public function vehInfo($id, $what) {
+      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE id = ?");
+      $query->bindParam(1, $id);
+      $query->execute();
+      $result = $query->fetch(\PDO::FETCH_ASSOC);
+      return $result[$what];
     }
   }
  ?>

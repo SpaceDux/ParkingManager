@@ -136,7 +136,8 @@
           </div>
         </div>
       </div>
-      <div class="row" id="tables">
+      <div id="tables">
+      <div class="row">
         <div class="col-md-7">
           <!-- ANPR Feed Table -->
           <div class="content">
@@ -208,7 +209,7 @@
                 </tr>
               </thead>
               <tbody>
-                <?php $vehicles->get_paidFeed()?>
+                  <?php $vehicles->get_paidFeed()?>
               </tbody>
             </table>
           </div>
@@ -258,93 +259,6 @@
         ParkingManager (PM) &copy; 2018/2019 | Designed, developed by <a href="mailto:ryan@roadkingcafe.uk"><b>Ryan. W</b> with RoadKing Truckstops &copy;</a>
       </footer>
     </div>
-    <!-- Add Vehicle Modal -->
-    <div class="modal fade" id="addVehicleModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleModal" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addVehicleModalTitle">Add Vehicle</h5>
-            <button type="button" class="close" tabindex="-1"  data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="addVehicleForm">
-              <div class="form-group">
-                <label>Company</label>
-                <input type="text" class="form-control" name="addCompany" id="addCompany" placeholder="NOLAN..." style="text-transform: uppercase;" tabindex="" autofocus>
-                <small class="form-text text-muted">Please ensure all company names are correct, especially account customers</small>
-              </div>
-              <div class="form-group">
-                <label>Registration Number</label>
-                <input type="text" class="form-control" name="addRegistration" id="addRegistration" placeholder="07WX8787..." style="text-transform: uppercase;">
-              </div>
-              <div class="form-group">
-                <label>Trailer Number</label>
-                <input type="text" class="form-control" name="addTrl" id="addTrl" placeholder="MDI112..." style="text-transform: uppercase;">
-              </div>
-              <div class="form-group">
-                <label>Type of Vehicle</label>
-                <div class="form-check">
-                  <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="addType" id="addType" value="0">
-                    N/A
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="addType" id="addType" value="1" checked>
-                    Cab &amp; Trailer
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="addType" id="addType" value="2">
-                    Cab
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="addType" id="addType" value="3">
-                    Trailer
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="addType" id="addType" value="4">
-                    Rigid
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="addType" id="addType" value="5">
-                    Coach
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label class="form-check-label">
-                  <input class="form-check-input" type="radio" id="addType" name="addType" value="6">
-                    Car
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label class="form-check-label">
-                  <input class="form-check-input" type="radio" id="addType" name="addType" value="7">
-                    Motor Home
-                  </label>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Time IN</label>
-                <input type="text" class="form-control" name="addTimein" id="addTimein" value="<?php echo date("Y-m-d H:i:s")?>">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" onClick="saveData()" class="btn btn-primary">Save Vehicle</button>
-            </div>
-          </div>
-        </form>
-      </div>
     </div>
     <!-- Search DB Modal -->
     <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
@@ -388,8 +302,8 @@
     <script src="<?php echo URL?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
-    <script src="<?php echo URL?>/assets/js/require.js"></script>
     <script src="<?php echo URL?>/assets/js/Chart.bundle.min.js"></script>
+    <?php echo require(__DIR__.'/assets/require.php');?>
     <!-- Chart JS -->
     <script type="text/javascript">
     var ctx = document.getElementById("lastChart").getContext('2d');
