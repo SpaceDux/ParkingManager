@@ -140,57 +140,60 @@
       <div class="row">
         <div class="col-md-7">
           <!-- ANPR Feed Table -->
-          <div class="content">
-            <div class="title">
-              <b style="color:red;">Live</b> ANPR Feed
+            <div class="content">
+              <div class="title">
+                <b style="color:red;">Live</b> ANPR Feed
+                <div class="float-right"><button type="button" class="btn btn-primary" id="refreshANPR"><i class="fa fa-sync"></i></button></div>
+              </div>
+              <div id="anpr">
+              <table class="table table-dark table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Registration</th>
+                    <th scope="col">Time IN</th>
+                    <th scope="col"><i class="fa fa-cog"></i></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>181MH222</td>
+                    <td>18/12:22</td>
+                    <td>
+                      <div class="btn-group" role="group" aria-label="Options">
+                        <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="table-warning">
+                    <td>181MH222</td>
+                    <td>18/12:22</td>
+                    <td>
+                      <div class="btn-group" role="group" aria-label="Options">
+                        <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="table-danger">
+                    <td>181MH222</td>
+                    <td>18/12:22</td>
+                    <td>
+                      <div class="btn-group" role="group" aria-label="Options">
+                        <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <table class="table table-dark table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">Registration</th>
-                  <th scope="col">Time IN</th>
-                  <th scope="col"><i class="fa fa-cog"></i></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>181MH222</td>
-                  <td>18/12:22</td>
-                  <td>
-                    <div class="btn-group" role="group" aria-label="Options">
-                      <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
-                      <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
-                      <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
-                      <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="table-warning">
-                  <td>181MH222</td>
-                  <td>18/12:22</td>
-                  <td>
-                    <div class="btn-group" role="group" aria-label="Options">
-                      <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
-                      <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
-                      <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
-                      <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="table-danger">
-                  <td>181MH222</td>
-                  <td>18/12:22</td>
-                  <td>
-                    <div class="btn-group" role="group" aria-label="Options">
-                      <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
-                      <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
-                      <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
-                      <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
           </div>
           <!-- Paid Vehicles Table -->
           <div class="content">
