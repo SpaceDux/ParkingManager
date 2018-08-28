@@ -18,7 +18,8 @@
   require(__DIR__ . C . F . '/ajax.class.php');
   //Define CONFIG settings
   define('URL', $_CONFIG['pm']['url']);
-  define('VER', "3.0.2");
+  define('VER', "3.0.3");
+  define('Footer', 'ParkingManager (PM) &copy; 2018/2019 | Designed, developed by <a href="mailto:ryan@roadkingcafe.uk"><b>Ryan. W</b> with RoadKing Truckstops &copy;</a>');
 
   //Set Timezone
   date_default_timezone_set($_CONFIG['pm']['timezone']);
@@ -27,14 +28,11 @@
   use ParkingManager as PM;
 
   $user = new PM\User;
-
   $pm = new PM\PM;
 
   if($user->isLogged() == true) {
     $vehicles = new PM\Vehicles;
-    $mssql = new PM\MSSQL($_SESSION['id']);
     $payment = new PM\Payment;
-    $mysql = new PM\MySQL;
     $ajax = new PM\AJAX;
   }
 

@@ -39,12 +39,23 @@
     })
     $('#tables').load(' #tables');
   }
-  //Ajax un-Mark Renew Function
-  function unmarkRenewal(str) {
+  //Ajax setFlag Function
+  function setFlag(str) {
     event.preventDefault();
     var veh_id = str;
     $.ajax({
-      url: "<?php echo URL?>/ajax-handler.php?handler=unmarkRenewal",
+      url: "<?php echo URL?>/ajax-handler.php?handler=setFlag",
+      type: "POST",
+      data: "veh_id="+veh_id
+    })
+    $('#tables').load(' #tables');
+  }
+  //Ajax deleteVehicle Function
+  function deleteVehicle(str) {
+    event.preventDefault();
+    var veh_id = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=deleteVehicle",
       type: "POST",
       data: "veh_id="+veh_id
     })
@@ -58,7 +69,7 @@
   $('.modal').on('shown.bs.modal', function() {
     $(this).find('[autofocus]').focus();
   });
-//Tab Key opens + Modal
+//Tab Key opens "AddVehicleModal" Modal
   Mousetrap.bind('tab', function() {
     $('#addVehicleModal').modal('show');
   });

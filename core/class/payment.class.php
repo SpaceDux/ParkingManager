@@ -5,21 +5,16 @@
   {
     #Variables
     protected $mysql;
-    protected $mssql;
     private $user;
     private $vehicle;
     private $campus;
 
-    function __construct() {
-        //Initialize Class'
-        $this->mysql = new MySQL;
-        //$this->anpr = new MSSQL;
-        $this->user = new User;
-        $this->vehicles = new Vehicles;
-
-        $this->campus = $this->user->userInfo('campus');
-    }
     function listTransactions() {
+      //Prep Class'
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->campus = $this->user->userInfo("campus");
+      //Query
       $query = $this->mysql->dbc->prepare("SELECT * FROM payments WHERE campus = ? ORDER BY service_date DESC");
       $query->bindParam(1, $this->campus);
       $query->execute();
@@ -55,13 +50,19 @@
 
         echo $table;
       }
+      $this->mysql = null;
+      $this->user = null;
+      $this->campus = null;
     }
     //Get All transactions for the logged vehicle
     function getTransactions($key) {
-      $query = $this->myself->dbc->prepare("SELECT * FROM payments WHERE log_id = ?");
+      //Prep Class
+      $this->mysql = new MySQL;
+      $query = $this->mysql->dbc->prepare("SELECT * FROM payments WHERE log_id = ?");
       $query->bindParam(1, $key);
       $query->execute();
       $result = $query->fetchAll();
+      $this->mysql = null;
     }
   }
 

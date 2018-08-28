@@ -19,6 +19,7 @@
 
   //MySQL Connection Details (Main Server)
   $_CONFIG['mysql']['ip'] = '127.0.0.1'; //MySQL Server: IP Address
+  $_CONFIG['mysql']['port'] = '3306'; //MySQL Server: IP Address
   $_CONFIG['mysql']['user'] = 'root'; //MySQL Server: User
   $_CONFIG['mysql']['pass'] = ''; //MySQL Server: Password
   $_CONFIG['mysql']['database'] = 'new_rkpm'; //MySQL Server: Database name

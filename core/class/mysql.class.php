@@ -6,8 +6,9 @@
     public $dbc;
 
     public function __construct() {
+      global $_CONFIG;
       try {
-        $this->dbc = new \PDO("mysql:host=127.0.0.1;dbname=new_rkpm;", 'root', '');
+        $this->dbc = new \PDO('mysql:host='.$_CONFIG['mysql']['ip'].':'.$_CONFIG['mysql']['port'].';dbname='.$_CONFIG['mysql']['database'].';', $_CONFIG['mysql']['user'], $_CONFIG['mysql']['pass']);
       } catch (\PDOException $e) {
         echo "ParkingManager: MySQL Engine Error ::".$e->getMessage();
         die();

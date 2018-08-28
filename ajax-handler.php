@@ -6,7 +6,11 @@
     $ajax->exitVehicle($_POST['veh_id']);
   } else if($handler == "markRenewal") {
     $ajax->markRenewal($_POST['veh_id']);
-  } else if($handler == "unmarkRenewal") {
-    $ajax->unmarkRenewal($_POST['veh_id']);
+  } else if($handler == "setFlag") {
+    $ajax->setFlag($_POST['veh_id']);
+  } else if($handler == "searchDb_vehLogs") {
+    $ajax->searchDb_veh_logs($_POST['query']);
+  } else if($handler == "deleteVehicle") {
+    $ajax->deleteVehicle($_POST['veh_id']);
   }
 ?>

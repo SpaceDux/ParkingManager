@@ -139,6 +139,7 @@
       <div id="tables">
       <div class="row">
         <div class="col-md-7">
+          <?php $pm->displayNotice(); ?>
           <!-- ANPR Feed Table -->
             <div class="content">
               <div class="title">
@@ -259,54 +260,18 @@
         </div>
       </div>
       <footer>
-        ParkingManager (PM) &copy; 2018/2019 | Designed, developed by <a href="mailto:ryan@roadkingcafe.uk"><b>Ryan. W</b> with RoadKing Truckstops &copy;</a>
+        <?php echo Footer ?>
       </footer>
     </div>
     </div>
-    <!-- Search DB Modal -->
-    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="searchModal">Search Database Enteries</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col">
-                <label>Search Vehicle Logs</label>
-                <input type="text" id="searchData" class="form-control" placeholder="Search Registration, company, trailer number..." autofocus>
-              </div>
-              <div class="col">
-                <label>Search Transactions</label>
-                <input type="text" id="searchPay" class="form-control" placeholder="Search Ticket ID">
-              </div>
-              <div class="col">
-                <label>Search ANPR database</label>
-                <input type="text" id="searchPay" class="form-control" placeholder="Search ANPR database">
-              </div>
-            </div>
-            <div class="modal-body">
-              <div id="return">
-
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <?php require(__DIR__.'/assets/modals.php');?>
     <!-- javascript Files -->
     <script src="<?php echo URL?>/assets/js/jquery.min.js"></script>
     <script src="<?php echo URL?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/Chart.bundle.min.js"></script>
-    <?php echo require(__DIR__.'/assets/require.php');?>
+    <?php require(__DIR__.'/assets/require.php');?>
     <!-- Chart JS -->
     <script type="text/javascript">
     var ctx = document.getElementById("lastChart").getContext('2d');
