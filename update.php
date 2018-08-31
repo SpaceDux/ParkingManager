@@ -18,7 +18,6 @@
   </head>
   <body>
     <!-- Top Navbar -->
-    <!-- Top Navbar -->
     <nav class="topBar">
       <a href="<?php echo URL?>/index">
       <div class="brand">

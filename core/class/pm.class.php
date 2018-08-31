@@ -41,5 +41,26 @@
       $this->user = null;
       $this->campus = null;
     }
+    public function deleteNotices() {
+      //Have to issue a connection
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      //Get User  Campus
+      $this->campus = $this->user->userInfo("campus");
+
+      $query = $this->mysql->dbc->prepare("SELECT * FROM notices WHERE campus = ?");
+      $query->bindParam(1, $this->campus);
+      $query->execute();
+      $result = $query->fetchAll();
+      $this->mysql = null;
+      $this->user = null;
+      foreach($result as $row) {
+        echo '<div class="alert alert-'.$row['notice_type'].'" role="alert"><b>'.$row['notice_title'].'</b> '.$row['notice_body'].'<br><i style="font-size: 13px;">'.$row['notice_author'].'</i></div>';
+      }
+
+      $this->mysql = null;
+      $this->user = null;
+      $this->campus = null;
+    }
   }
 ?>

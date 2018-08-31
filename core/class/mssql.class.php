@@ -3,28 +3,40 @@
   class MSSQL
   {
     #Variables
-    public $mssql;
-    private $dbc;
+    public $dbc;
+    private $mysql;
+    private $user;
+    private $campus;
 
-    public function __construct($id) {
+    public function __construct() {
+      global $_CONFIG;
       //Establish MySQL Conn
-      $this->dbc = new MySQL;
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->campus = $this->user->userInfo("campus");
 
-      if(isset($id)) {
-        //Start query
-        $query = $this->dbc->dbc->prepare("SELECT campus FROM pm_users WHERE id = ?");
-        $query->bindParam(1, $id);
-        $query->execute();
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
-        if($result['campus'] == 1) {
-          //Run ANPR-MSSQL Connection (Holyhead)
-        } else if($result['campus'] == 2) {
-          //Run ANPR-MSSQL Connection (Holyhead)
+      if(isset($this->campus)) {
+        if($this->campus == 1) {
+          try {
+            $this->dbc = new \PDO('sqlsrv:Server='.$_CONFIG['anpr_holyhead']['ip'].';Database='.$_CONFIG['anpr_holyhead']['database'].'', $_CONFIG['anpr_holyhead']['user'], $_CONFIG['anpr_holyhead']['pass']);
+          } catch (\PDOException $e) {
+            die("MSSQL Engine Error: ".$e->getMessage());
+          }
+        } else if($this->campus == 2) {
+          //Run ANPR-MSSQL Connection (Hollies)
+          try {
+            $this->dbc = new \PDO('sqlsrv:Server='.$_CONFIG['anpr_cannock']['ip'].';Database='.$_CONFIG['anpr_cannock']['database'].'', $_CONFIG['anpr_cannock']['user'], $_CONFIG['anpr_cannock']['pass']);
+          } catch (\PDOException $e) {
+            die("MSSQL Engine Error: ".$e->getMessage());
+          }
         }
       } else {
         //Do nothing, no need to establish any connection
         //as user is not logged in.
       }
+      $this->mysql = null;
+      $this->user = null;
+      $this->campus = null;
     }
   }
 

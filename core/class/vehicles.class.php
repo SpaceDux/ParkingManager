@@ -7,9 +7,43 @@
     private $mysql;
     private $user;
     private $campus;
+    private $mssql;
 
     public function get_anprFeed() {
-      //Code for anpr table
+      global $_CONFIG;
+      if(isset($this->campus) && $this->campus == 1) {
+      $this->user = new User;
+      $this->campus = $this->user->userInfo("campus");
+        $this->mssql = new MSSQL($this->campus);
+        $query = $this->mssql->dbc->prepare("SELECT TOP 300 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
+        $query->execute();
+        $result = $query->fetchAll();
+        foreach ($result as $row) {
+          //Get The right Path now.
+          $patch = str_replace("C:\ALPR\Data", "http://192.168.3.202", $row['Patch']);
+          //Begin Table.
+          $table = '<tr>';
+          $table .= '<td>'.$row['Plate'].'</td>';
+          $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+          $table .= '<td><img src="'.$_CONFIG['pm']['url'].'/imageProxy.php?i='.urlencode($patch).'"></img></td>';
+          $table .= '<td>
+                      <div class="btn-group" role="group" aria-label="Options">
+                        <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                      </div>
+                    </td>';
+          $table .= '</tr>';
+
+          echo $table;
+        }
+        $this->mssql = null;
+      } else if (isset($this->campus) && $this->campus == 1) {
+        //nothing yet.
+      }
+      $this->campus = null;
+      $this->user = null;
     }
     public function get_paidFeed() {
       global $_CONFIG;
@@ -200,7 +234,7 @@
       $this->campus = null;
     }
     public function vehicle_count_anpr() {
-      //Code
+      // ANPR Count
     }
     public function vehicle_count_paid() {
       //Prepare Class'

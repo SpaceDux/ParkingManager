@@ -7,6 +7,7 @@
     protected $mysql;
     private $vehicle;
     private $user;
+    protected $mssql;
     //Ajax Request Exit Vehicle (SENT VIA Ajax Handler)
     public function exitVehicle($key) {
       //Prep Class
@@ -76,6 +77,10 @@
       $this->mysql = null;
       $this->vehicle = null;
     }
+    public function addVehicleANPR() {
+      $this->mssql = new MSSQL();
 
+      $query = $this->mssql->prepare("INSERT INTO ANPR_REX () VALUES() ");
+    }
   }
 ?>

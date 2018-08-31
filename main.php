@@ -111,7 +111,7 @@
                 <i class="fas fa-shopping-basket"></i>
               </div>
               <div class="Stat">
-              <b>22</b>
+                <b><?php echo $vehicles->vehicle_count_anpr();?></b>
               </div>
               <div class="statText">
                 awaiting <b>payment</b>
@@ -152,46 +152,12 @@
                   <tr>
                     <th scope="col">Registration</th>
                     <th scope="col">Time IN</th>
+                    <th scope="col">Patch</th>
                     <th scope="col"><i class="fa fa-cog"></i></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>181MH222</td>
-                    <td>18/12:22</td>
-                    <td>
-                      <div class="btn-group" role="group" aria-label="Options">
-                        <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="table-warning">
-                    <td>181MH222</td>
-                    <td>18/12:22</td>
-                    <td>
-                      <div class="btn-group" role="group" aria-label="Options">
-                        <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="table-danger">
-                    <td>181MH222</td>
-                    <td>18/12:22</td>
-                    <td>
-                      <div class="btn-group" role="group" aria-label="Options">
-                        <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                      </div>
-                    </td>
-                  </tr>
+                  <?php $vehicles->get_anprFeed()?>
                 </tbody>
               </table>
             </div>

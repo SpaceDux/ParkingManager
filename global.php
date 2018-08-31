@@ -1,4 +1,7 @@
 <?php
+  //Ryans Notes
+  //SQLSRV or ODBC Driver needed.
+
   session_start();
   //Define the directories
   define('C', '/core');
