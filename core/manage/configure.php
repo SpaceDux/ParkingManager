@@ -25,11 +25,11 @@
   $_CONFIG['mysql']['database'] = 'new_rkpm'; //MySQL Server: Database name
 
   //ANPR Server Connection Details (MSSQL-Holyhead)
-  $_CONFIG['anpr_holyhead']['ip'] = ''; //ANPR Server: IP Address
-  $_CONFIG['anpr_holyhead']['user'] = ''; //ANPR Server: User
-  $_CONFIG['anpr_holyhead']['pass'] = ''; //ANPR Server: Password
+  $_CONFIG['anpr_holyhead']['ip'] = '192.168.3.202'; //ANPR Server: IP Address
+  $_CONFIG['anpr_holyhead']['user'] = 'sa'; //ANPR Server: User
+  $_CONFIG['anpr_holyhead']['pass'] = 'arble2501'; //ANPR Server: Password
   $_CONFIG['anpr_holyhead']['port'] = ''; //ANPR Server: Port
-  $_CONFIG['anpr_holyhead']['database'] = ''; //ANPR Server: Database name
+  $_CONFIG['anpr_holyhead']['database'] = 'ANPR'; //ANPR Server: Database name
 
   $_CONFIG['anpr_holyhead']['imgdir'] = ''; //ANPR Server: Image Directory
   //ANPR Server Connection Details (MSSQL-Cannock)
@@ -51,7 +51,7 @@
   /*
     ParkingManager Configuration + Settings
   */
-  $_CONFIG['pm']['url'] = 'http://localhost/ParkingManager'; //PM: Url (DOES NOT END WITH '/')
+  $_CONFIG['pm']['url'] = 'http://192.168.3.23/ParkingManager'; //PM: Url (DOES NOT END WITH '/')
   $_CONFIG['pm']['timezone'] = 'Europe/London'; //PM: Set Timezone
   $_CONFIG['pm']['ticket_printer'] = 'PD_TICKET_PRINT'; //Name of the local printer via shared-network
 

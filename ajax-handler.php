@@ -12,5 +12,7 @@
     $ajax->searchDb_veh_logs($_POST['query']);
   } else if($handler == "deleteVehicle") {
     $ajax->deleteVehicle($_POST['veh_id']);
+  } else if($handler == "deleteNotice") {
+    $ajax->deleteNotice($_POST['notice_id']);
   }
 ?>

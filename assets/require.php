@@ -61,6 +61,28 @@
     })
     $('#tables').load(' #tables');
   }
+  //Ajax deleteNotice Function
+  function deleteNotice(str) {
+    event.preventDefault();
+    var notice_id = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=deleteNotice",
+      type: "POST",
+      data: "notice_id="+notice_id
+    })
+    $('#tables').load(' #tables');
+  }
+  //Ajax deleteNotice Function
+  function ANPR_Delete(str) {
+    event.preventDefault();
+    var anpr_id = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=ANPR_Delete",
+      type: "POST",
+      data: "anpr_id="+anpr_id
+    })
+    $('#anpr').load(' #anpr');
+  }
   //Refresh ANPR (Blue button)
   $('#refreshANPR').click(function(){
     $('#anpr').load(' #anpr');

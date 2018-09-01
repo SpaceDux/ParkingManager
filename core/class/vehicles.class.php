@@ -8,6 +8,7 @@
     private $user;
     private $campus;
     private $mssql;
+    private $anprCount;
 
     public function get_anprFeed() {
       global $_CONFIG;
@@ -19,6 +20,7 @@
         $query->execute();
         $result = $query->fetchAll();
         foreach ($result as $row) {
+          $this->anprCount = count($row);
           //Get The right Path now.
           $patch = str_replace("C:\ALPR\Data", "http://192.168.3.202", $row['Patch']);
           //Begin Table.
@@ -234,7 +236,10 @@
       $this->campus = null;
     }
     public function vehicle_count_anpr() {
-      // ANPR Count
+      $this->mssql = new MSSQL;
+      $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 300 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
+      $this->anprCount->execute();
+      return count($this->anprCount->fetchAll());
     }
     public function vehicle_count_paid() {
       //Prepare Class'
@@ -247,6 +252,7 @@
       $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column < 3 AND campus = ? AND veh_deleted < 1");
       $query->bindParam(1, $this->campus);
       $query->execute();
+
       return $query->rowCount();
 
       $this->mysql = null;

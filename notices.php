@@ -1,5 +1,13 @@
 <?php
   require(__DIR__.'/global.php');
+
+  if(isset($_POST['add_notice_short'])) {
+    $pm->newNotice($_POST['add_notice_short'], $_POST['add_notice_body'], $_POST['add_notice_type']);
+
+    unset($_POST['add_notice_short']);
+    unset($_POST['add_notice_body']);
+    unset($_POST['add_notice_type']);
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,17 +92,17 @@
         <div class="container">
           <div class="row">
             <div class="col">
-              <?php $pm->deleteNotices() ?>
+              <?php $pm->listNotices() ?>
             </div>
             <div class="col">
               <form method="post" id="add_notice">
                 <div class="form-group">
                   <label for="add_notice_short">Short Title</label>
-                  <input type="text" class="form-control" name="add_notice_short" id="add_notice_short" placeholder="HEADS UP:..." autofocus>
+                  <input type="text" class="form-control" name="add_notice_short" id="add_notice_short" placeholder="HEADS UP:..." required autofocus>
                 </div>
                 <div class="form-group">
                   <label for="add_notice_body">Body</label>
-                  <textarea type="text" id="add_notice_body" class="form-control" name="add_notice_body" rows="3" cols="1" form="add_notice" placeholder="The driver of this vehicle has been...."></textarea>
+                  <textarea type="text" id="add_notice_body" class="form-control" name="add_notice_body" rows="3" cols="1" form="add_notice" placeholder="The driver of this vehicle has been...." required></textarea>
                 </div>
                 <div class="form-group">
                   <label>Alert Colour</label>
@@ -117,7 +125,7 @@
         </div>
       </div>
       </div>
-      <footer style="position: fixed; bottom: 0;>
+      <footer>
         <?php echo Footer ?>
       </footer>
     </div>

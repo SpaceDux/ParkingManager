@@ -77,10 +77,19 @@
       $this->mysql = null;
       $this->vehicle = null;
     }
+    //Add vehicle to ANPR dB
     public function addVehicleANPR() {
       $this->mssql = new MSSQL();
 
       $query = $this->mssql->prepare("INSERT INTO ANPR_REX () VALUES() ");
+    }
+    //Delete Notice
+    public function deleteNotice($key) {
+      $this->mysql = new MySQL;
+      $query = $this->mysql->dbc->prepare("DELETE FROM notices WHERE id = ?");
+      $query->bindParam(1, $key);
+      $query->execute();
+      $this->mysql = null;
     }
   }
 ?>
