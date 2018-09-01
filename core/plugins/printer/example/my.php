@@ -1,7 +1,4 @@
 <?php
-
-chmod("my.php", 0775);
-
 /* Left margin & page width demo. */
 require __DIR__ . '/../autoload.php';
 use Mike42\Escpos\Printer;
@@ -9,7 +6,7 @@ use Mike42\Escpos\EscposImage;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
 /* Connector */
-$connector = new WindowsPrintConnector("smb://ParkingDesk/recprnt");
+$connector = new WindowsPrintConnector("smb://PARKINGDESK/citizen");
 $printer = new Printer($connector);
 //Initialize Logo
 $logo = EscposImage::load("interface/logo.png");
