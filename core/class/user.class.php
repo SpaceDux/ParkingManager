@@ -24,7 +24,6 @@
             $set->bindParam(2, $_SESSION['id']);
             $set->execute();
             header('Location: main');
-            die($_SESSION['id']);
           } else {
             $this->PM->err = 'your password does not match up with our records, please try again';
             return $this->PM->ErrorHandler();

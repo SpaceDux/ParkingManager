@@ -88,42 +88,42 @@
         </div>
       </div>
       <div id="tables">
-      <div class="updateContent">
-        <div class="container">
-          <div class="row">
-            <div class="col">
-              <?php $pm->listNotices() ?>
-            </div>
-            <div class="col">
-              <form method="post" id="add_notice">
-                <div class="form-group">
-                  <label for="add_notice_short">Short Title</label>
-                  <input type="text" class="form-control" name="add_notice_short" id="add_notice_short" placeholder="HEADS UP:..." required autofocus>
-                </div>
-                <div class="form-group">
-                  <label for="add_notice_body">Body</label>
-                  <textarea type="text" id="add_notice_body" class="form-control" name="add_notice_body" rows="3" cols="1" form="add_notice" placeholder="The driver of this vehicle has been...." required></textarea>
-                </div>
-                <div class="form-group">
-                  <label>Alert Colour</label>
-                  <select class="custom-select" name="add_notice_type">
-                    <option value="info"> Blue </option>
-                    <option value="primary"> Darker Blue </option>
-                    <option value="warning"> Yellow </option>
-                    <option value="danger"> Red </option>
-                    <option value="success"> Green </option>
-                    <option value="dark"> Black </option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="add_notice_body"></label>
-                  <button type="submit" class="btn btn-success float-right">Add Notice</button>
-                </div>
-              </form>
+        <div class="updateContent">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <?php $pm->listNotices() ?>
+              </div>
+              <div class="col">
+                <form method="post" id="add_notice">
+                  <div class="form-group">
+                    <label for="add_notice_short">Short Title</label>
+                    <input type="text" class="form-control" name="add_notice_short" id="add_notice_short" placeholder="HEADS UP:..." required autofocus>
+                  </div>
+                  <div class="form-group">
+                    <label for="add_notice_body">Body</label>
+                    <textarea type="text" id="add_notice_body" class="form-control" name="add_notice_body" rows="3" cols="1" form="add_notice" placeholder="The driver of this vehicle has been...." required></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Alert Colour</label>
+                    <select class="custom-select" name="add_notice_type">
+                      <option value="info"> Blue </option>
+                      <option value="primary"> Darker Blue </option>
+                      <option value="warning"> Yellow </option>
+                      <option value="danger"> Red </option>
+                      <option value="success"> Green </option>
+                      <option value="dark"> Black </option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="add_notice_body"></label>
+                    <button type="submit" class="btn btn-success float-right">Add Notice</button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
       <footer>
         <?php echo Footer ?>

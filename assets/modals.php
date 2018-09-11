@@ -20,7 +20,7 @@
           </div>
           <div class="col">
             <label>Search ANPR database</label>
-            <input type="text" id="searchPay" class="form-control" placeholder="Search ANPR database">
+            <input type="text" id="ANPR_Search" class="form-control" placeholder="Search ANPR database">
           </div>
         </div>
         <div class="modal-body">
@@ -31,6 +31,43 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Update Vehicle Modal -->
+<div class="modal fade" id="ANPR_UpdateModal" tabindex="-1" role="dialog" aria-labelledby="ANPR_UpdateModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ANPR_UpdateModal">ANPR Update Modal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col">
+              <label>Update ANPR Plate</label>
+              <input type="hidden" id="ANPR_Update_ID" class="form-control">
+              <input type="text" id="ANPR_Update_Plate" class="form-control" autofocus>
+            </div>
+            <div class="col">
+              <label>Update ANPR Date & Time</label>
+              <input type="text" id="ANPR_Update_Date" class="form-control">
+            </div>
+          </div>
+          <div class="modal-body">
+            <div id="return">
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="submit" onClick="ANPR_Update" class="btn btn-primary" value="Save Changes">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -47,13 +84,19 @@
       </div>
       <div class="modal-body">
         <form>
-          <div class="form-group">
-            <label for="addVehicleModalReg">Registration</label>
-            <input type="text" class="form-control" id="addVehicleModalReg" placeholder="Vehicle Registration" autofocus>
-          </div>
-          <div class="form-group">
-            <label for="addVehicleModalTimeIN">Time IN</label>
-            <input type="text" class="form-control" id="addVehicleModalTimeIN" placeholder="Vehicle Time In">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="addVehicleModalReg">Registration</label>
+                <input type="text" class="form-control" id="addVehicleModalReg" placeholder="Vehicle Registration" autofocus>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="addVehicleModalDateIN">Date IN</label>
+                <input type="text" class="form-control" id="addVehicleModalDateIN" placeholder="Vehicle Time In" value="<?php echo date("Y-m-d H:i:s")?>">
+              </div>
+            </div>
           </div>
         </form>
         <div class="modal-footer">

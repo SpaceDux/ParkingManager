@@ -77,12 +77,6 @@
       $this->mysql = null;
       $this->vehicle = null;
     }
-    //Add vehicle to ANPR dB
-    public function addVehicleANPR() {
-      $this->mssql = new MSSQL();
-
-      $query = $this->mssql->prepare("INSERT INTO ANPR_REX () VALUES() ");
-    }
     //Delete Notice
     public function deleteNotice($key) {
       $this->mysql = new MySQL;
@@ -91,5 +85,75 @@
       $query->execute();
       $this->mysql = null;
     }
+    //Search MSSQL (Unfinished)
+    public function searchMSSQL($key) {
+      $html = "";
+      $this->mssql = new MSSQL;
+      $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Plate LIKE ? OR Original_Plate LIKE ? ORDER BY Capture_Date DESC");
+      $stmt->bindParam(1, '%'.$key.'%');
+      $stmt->bindParam(2, '%'.$key.'%');
+      $stmt->execute();
+      $result = $stmt->fetchAll();
+
+      if($result->rowCount() > 0) {
+        $html .= '
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Plate</th>
+                <th scope="col">Original Plate</th>
+                <th scope="col">Capture Date</th>
+                <th scope="col">Lane Name</th>
+                <th scope="col">Expiry</th>
+              </tr>
+            </thead>
+          ';
+          $html .= "<tbody>";
+          foreach ($result as $row) {
+            $html .= "<tr>";
+            $html .= "<td>".$row['Plate']."</td>";
+            $html .= "<td>".$row['Original_Plate']."</td>";
+            $html .= "<td>".$row['Capture_Date']."</td>";
+            $html .= "<td>".$row['Lane_Name']."</td>";
+            $html .= "<td>".$row['Expiry']."</td>";
+            $html .= "</tr>";
+          }
+          $html .= "</tbody></table>";
+          echo $html;
+      } else {
+        $html = 'No Data Found';
+      }
+      $this->mssql = null;
+    }
+    //Delete ANPR (Duplicate)
+    function ANPR_Duplicate($key) {
+      $this->mssql = new MSSQL;
+      $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 11 WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $key);
+      $stmt->execute();
+
+      $this->mssql = null;
+    }
+    function ANPR_Update_Get($key) {
+      $this->mssql = new MSSQL;
+      $stmt = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $key);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+      echo json_encode($result);
+
+      $this->mssql = null;
+    }
+    function ANPR_Update($key, $plate, $time) {
+      $this->mssql = new MSSQL;
+      $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ? AND Capture_Date = ? WHERE Uniqueref = ?");
+      $stmt->bindParam(1, strtoupper($plate));
+      $stmt->bindParam(2, $time);
+      $stmt->bindParam(3, $key);
+      $stmt->execute();
+
+      $this->mssql = null;
+    }
+
   }
 ?>

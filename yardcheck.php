@@ -80,7 +80,7 @@
     <div id="wrapper">
       <div class="whereami">
         <div class="page">
-          <a href="<?php echo URL ?>/index">Parking Manager</a> <small>\\\</small> <b>All Transactions</b>
+          <a href="<?php echo URL ?>/index">Parking Manager</a> <small>\\\</small> <b>Yard Check</b>
         </div>
       </div>
       <div class="updateContent">
@@ -101,45 +101,15 @@
         </table>
       </div>
       <footer>
-        ParkingManager (PM) &copy; 2018/2019 | Designed, developed by <a href="mailto:ryan@roadkingcafe.uk"><b>Ryan. W</b> with RoadKing Truckstops &copy;</a>
+        <?php echo Footer ?>
       </footer>
     </div>
+    <?php require(__DIR__.'/assets/modals.php');?>
     <!-- javascript Files -->
     <script src="<?php echo URL ?>/assets/js/jquery.min.js"></script>
     <script src="<?php echo URL ?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL ?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL ?>/assets/js/mousetrap.min.js"></script>
-    <!-- Menu Hide JS -->
-    <script type="text/javascript">
-      function menuHide() {
-        var sideBar = document.getElementById("sideBar");
-        var wrapper = document.getElementById("wrapper");
-        if (sideBar.style.marginLeft === "-220px") {
-            sideBar.style.marginLeft = "0px";
-            sideBar.style.transition = "0.2s ease-in-out";
-            //Wrapper
-            wrapper.style.paddingLeft = "220px";
-            wrapper.style.transition = "0.2s ease-in-out";
-        } else {
-            sideBar.style.marginLeft = "-220px";
-            sideBar.style.transition = "0.2s ease-in-out";
-            //Wrapper
-            wrapper.style.paddingLeft = "0px";
-            wrapper.style.transition = "0.2s ease-in-out";
-        }
-      }
-    </script>
-    <script>
-    //AJAX
-    function exit(str) {
-      var veh_id = str;
-      $.ajax({
-        url: URL."/core/ajax.php?p=exit",
-        type: "POST",
-        data: "veh_id"+veh_id
-      })
-      $('#tables').load(' #tables');
-    }
-    </script>
+    <?php require(__DIR__.'/assets/require.php');?>
   </body>
 </html>

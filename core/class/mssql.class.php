@@ -7,10 +7,11 @@
     private $mysql;
     private $user;
     private $campus;
+    private $useANPR;
 
     public function __construct() {
       global $_CONFIG;
-      //Establish MySQL Conn
+      //Start Class files
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->campus = $this->user->userInfo("campus");

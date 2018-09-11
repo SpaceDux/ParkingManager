@@ -14,5 +14,13 @@
     $ajax->deleteVehicle($_POST['veh_id']);
   } else if($handler == "deleteNotice") {
     $ajax->deleteNotice($_POST['notice_id']);
+  } else if($handler == "ANPR_Search}") {
+    $ajax->searchMSSQL($_POST['search']);
+  } else if($handler == "ANPR_Duplicate") {
+    $ajax->ANPR_Duplicate($_POST['anpr_id']);
+  } else if($handler == "ANPR_Update_Get") {
+    $ajax->ANPR_Update_Get($_POST['anpr_id']);
+  } else if($handler == "ANPR_Update") {
+    $ajax->ANPR_Update($_POST['anpr_id'], $_POST['Plate'], $_POST['Capture_Date']);
   }
 ?>

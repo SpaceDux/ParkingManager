@@ -12,10 +12,9 @@
 
     public function get_anprFeed() {
       global $_CONFIG;
-      if(isset($this->campus) && $this->campus == 1) {
       $this->user = new User;
-      $this->campus = $this->user->userInfo("campus");
-        $this->mssql = new MSSQL($this->campus);
+      if($this->user->userInfo("anpr") == 1) {
+        $this->mssql = new MSSQL;
         $query = $this->mssql->dbc->prepare("SELECT TOP 300 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
         $query->execute();
         $result = $query->fetchAll();
@@ -24,16 +23,17 @@
           //Get The right Path now.
           $patch = str_replace("C:\ALPR\Data", "http://192.168.3.202", $row['Patch']);
           //Begin Table.
+          
           $table = '<tr>';
           $table .= '<td>'.$row['Plate'].'</td>';
           $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
           $table .= '<td><img src="'.$_CONFIG['pm']['url'].'/imageProxy.php?i='.urlencode($patch).'"></img></td>';
           $table .= '<td>
                       <div class="btn-group" role="group" aria-label="Options">
-                        <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                        <button type="button" id="ANPR_Edit" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
                         <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
                         <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                        <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
                       </div>
                     </td>';
           $table .= '</tr>';
@@ -41,7 +41,7 @@
           echo $table;
         }
         $this->mssql = null;
-      } else if (isset($this->campus) && $this->campus == 1) {
+      } else if ($this->campus == 2) {
         //nothing yet.
       }
       $this->campus = null;
@@ -236,10 +236,19 @@
       $this->campus = null;
     }
     public function vehicle_count_anpr() {
-      $this->mssql = new MSSQL;
-      $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 300 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
-      $this->anprCount->execute();
-      return count($this->anprCount->fetchAll());
+      $this->user = new User;
+      if($this->user->userInfo("anpr") == 1) {
+        $this->mssql = new MSSQL;
+        $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 300 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
+        $this->anprCount->execute();
+        return count($this->anprCount->fetchAll());
+
+        $this->mssql = null;
+        $this->anprCount = null;
+        $this->user = null;
+      } else {
+        return $this->anprCount = 0;
+      }
     }
     public function vehicle_count_paid() {
       //Prepare Class'
@@ -248,7 +257,6 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-
       $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column < 3 AND campus = ? AND veh_deleted < 1");
       $query->bindParam(1, $this->campus);
       $query->execute();
@@ -381,6 +389,19 @@
         }
       } catch (\Exception $e) {
         echo "<red>Time Construction error, please check & correct</red>";
+      }
+    }
+    public function timeCalcCount($time1, $time2) {
+      try {
+        if(isset($time1)) {
+          $d1 = new \DateTime($time1);
+          $d2 = new \DateTime($time2);
+          $int = $d2->diff($d1);
+          $h = $int->h;
+          return $h;
+        }
+      } catch (\Exception $e) {
+        //Error
       }
     }
     public function updateVehicle($key) {
