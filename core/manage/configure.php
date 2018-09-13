@@ -24,10 +24,19 @@
   $_CONFIG['mysql']['pass'] = ''; //MySQL Server: Password
   $_CONFIG['mysql']['database'] = 'new_rkpm'; //MySQL Server: Database name
 
-  //ANPR Server Connection Details (MSSQL-Holyhead)
-  $_CONFIG['anpr_holyhead']['ip'] = '192.168.3.202'; //ANPR Server: IP Address
-  $_CONFIG['anpr_holyhead']['user'] = 'sa'; //ANPR Server: User
-  $_CONFIG['anpr_holyhead']['pass'] = 'arble2501'; //ANPR Server: Password
+  //ANPR Server Connection Details (MSSQL-DEV)
+  $_CONFIG['anpr_dev']['ip'] = '127.0.0.1'; //ANPR Server: IP Address
+  $_CONFIG['anpr_dev']['user'] = 'sa'; //ANPR Server: User
+  $_CONFIG['anpr_dev']['pass'] = '1212'; //ANPR Server: Password
+  $_CONFIG['anpr_dev']['port'] = ''; //ANPR Server: Port
+  $_CONFIG['anpr_dev']['database'] = 'ANPR'; //ANPR Server: Database name
+
+  $_CONFIG['anpr_dev']['imgdir'] = ''; //ANPR Server: Image Directory
+
+  //ANPR Server Connection Details (MSSQL-Holyhead) arble2501
+  $_CONFIG['anpr_holyhead']['ip'] = '192.168.3.201'; //ANPR Server: IP Address
+  $_CONFIG['anpr_holyhead']['user'] = 'pm'; //ANPR Server: User
+  $_CONFIG['anpr_holyhead']['pass'] = '1212'; //ANPR Server: Password
   $_CONFIG['anpr_holyhead']['port'] = ''; //ANPR Server: Port
   $_CONFIG['anpr_holyhead']['database'] = 'ANPR'; //ANPR Server: Database name
 

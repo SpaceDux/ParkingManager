@@ -23,7 +23,7 @@
       <ul>
         <a onClick="menuHide()"><li><i class="fas fa-align-justify"></i></li></a>
         <li data-toggle="modal" data-target="#searchModal"><i class="fa fa-search"></i></li>
-        <li data-toggle="modal" data-target="#addVehicleModal"><i class="fa fa-plus"></i></li>
+        <li data-toggle="modal" data-target="#ANPR_AddModal"><i class="fa fa-plus"></i></li>
       </ul>
     </nav>
     <!-- Sidebar -->

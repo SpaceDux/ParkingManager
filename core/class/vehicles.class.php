@@ -11,11 +11,12 @@
     private $anprCount;
 
     public function get_anprFeed() {
+      //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
       global $_CONFIG;
       $this->user = new User;
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
-        $query = $this->mssql->dbc->prepare("SELECT TOP 300 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
+        $query = $this->mssql->dbc->prepare("SELECT TOP 300 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 0 AND Status = 0 ORDER BY Capture_Date DESC");
         $query->execute();
         $result = $query->fetchAll();
         foreach ($result as $row) {
@@ -23,7 +24,7 @@
           //Get The right Path now.
           $patch = str_replace("C:\ALPR\Data", "http://192.168.3.202", $row['Patch']);
           //Begin Table.
-          
+
           $table = '<tr>';
           $table .= '<td>'.$row['Plate'].'</td>';
           $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
@@ -41,10 +42,9 @@
           echo $table;
         }
         $this->mssql = null;
-      } else if ($this->campus == 2) {
+      } else if ($this->user->userInfo("anpr") == 0) {
         //nothing yet.
       }
-      $this->campus = null;
       $this->user = null;
     }
     public function get_paidFeed() {
@@ -239,7 +239,7 @@
       $this->user = new User;
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
-        $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 300 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
+        $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 300 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 0 AND Status = 0 ORDER BY Capture_Date DESC");
         $this->anprCount->execute();
         return count($this->anprCount->fetchAll());
 

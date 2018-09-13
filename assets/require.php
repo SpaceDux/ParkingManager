@@ -120,18 +120,32 @@
     })
   });
   //ANPR Record Update
-  function ANPR_Update() {
+  $(document).on('click', '#saveANPR', function(){
     var anpr_id = $('#ANPR_Update_ID').val();
     var Plate = $('#ANPR_Update_Plate').val();
     var Capture_Date = $('#ANPR_Update_Date').val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=ANPR_Update",
       type: "POST",
-      data: "anpr_id="+anpr_id+"Plate="+Plate+"Capture_Date="+Capture_Date
-    })
+      data: "anpr_id="+anpr_id+"&Plate="+Plate+"&Capture_Date="+Capture_Date
+    });
+    event.preventDefault();
     $('#anpr').load(' #anpr');
     $('#ANPR_UpdateModal').modal('toggle');
-  }
+  });
+  //ANPR Add Vehicle
+  $(document).on('click', '#addANPR', function(){
+    var Plate = $('#ANPR_Add_Plate').val();
+    var Capture_Date = $('#ANPR_Add_Date').val();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=ANPR_Add",
+      method: "POST",
+      data: "plate="+Plate+"&time="+Capture_Date
+    });
+    event.preventDefault();
+    $('#anpr').load(' #anpr');
+    $('#ANPR_AddModal').modal('toggle');
+  });
   //Refresh ANPR (Blue button)
   $('#refreshANPR').click(function(){
     $('#anpr').load(' #anpr');
@@ -142,6 +156,6 @@
   });
 //Tab Key opens "AddVehicleModal" Modal
   Mousetrap.bind('tab', function() {
-    $('#addVehicleModal').modal('show');
+    $('#ANPR_AddModal').modal('show');
   });
 </script>

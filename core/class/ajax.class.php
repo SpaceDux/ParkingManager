@@ -146,7 +146,7 @@
     }
     function ANPR_Update($key, $plate, $time) {
       $this->mssql = new MSSQL;
-      $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ? AND Capture_Date = ? WHERE Uniqueref = ?");
+      $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ?, Capture_Date = ? WHERE Uniqueref = ?");
       $stmt->bindParam(1, strtoupper($plate));
       $stmt->bindParam(2, $time);
       $stmt->bindParam(3, $key);
@@ -154,6 +154,22 @@
 
       $this->mssql = null;
     }
+    function ANPR_Add($plate, $time) {
+      //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID)
+      $this->mssql = new MSSQL;
+      $stmt = $this->mssql->dbc->prepare("INSERT INTO dbo.ANPR_REX (Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID)
+      VALUES ('', '0', ?, null, null, null, null, '0', 'Entry Lane 01', ?, null, 'ParkingManager', '0', null, '0', ?, null, null, ?, null)");
+      $stmt->bindParam(1, strtoupper($plate));
+      $stmt->bindParam(2, $time);
+      $stmt->bindParam(3, strtoupper($plate));
+      $stmt->bindParam(4, $time);
+      if($stmt->execute()) {
+        die("FUCK");
+      } else {
+        die("FUKSSS");
+      }
 
+      $this->mssql = null;
+    }
   }
 ?>

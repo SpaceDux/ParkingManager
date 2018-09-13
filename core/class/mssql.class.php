@@ -17,7 +17,13 @@
       $this->campus = $this->user->userInfo("campus");
 
       if(isset($this->campus)) {
-        if($this->campus == 1) {
+        if($this->campus == 0) {
+          try {
+            $this->dbc = new \PDO('sqlsrv:Server='.$_CONFIG['anpr_dev']['ip'].';Database='.$_CONFIG['anpr_dev']['database'].'', $_CONFIG['anpr_dev']['user'], $_CONFIG['anpr_dev']['pass']);
+          } catch (\PDOException $e) {
+            die("MSSQL Engine Error: ".$e->getMessage());
+          }
+        } else if($this->campus == 1) {
           try {
             $this->dbc = new \PDO('sqlsrv:Server='.$_CONFIG['anpr_holyhead']['ip'].';Database='.$_CONFIG['anpr_holyhead']['database'].'', $_CONFIG['anpr_holyhead']['user'], $_CONFIG['anpr_holyhead']['pass']);
           } catch (\PDOException $e) {

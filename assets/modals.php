@@ -46,16 +46,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="ANPR_UpdateForm">
           <div class="row">
             <div class="col">
               <label>Update ANPR Plate</label>
               <input type="hidden" id="ANPR_Update_ID" class="form-control">
-              <input type="text" id="ANPR_Update_Plate" class="form-control" autofocus>
+              <input type="text" style="text-transform: uppercase;" id="ANPR_Update_Plate" class="form-control" autofocus>
             </div>
             <div class="col">
               <label>Update ANPR Date & Time</label>
-              <input type="text" id="ANPR_Update_Date" class="form-control">
+              <input type="text" style="text-transform: uppercase;" id="ANPR_Update_Date" class="form-control">
             </div>
           </div>
           <div class="modal-body">
@@ -64,7 +64,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <input type="submit" onClick="ANPR_Update" class="btn btn-primary" value="Save Changes">
+            <input type="submit" id="saveANPR" class="btn btn-primary" value="Save Changes">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </form>
@@ -72,37 +72,38 @@
     </div>
   </div>
 </div>
-<!-- Add Vehicle to ANPR DB Modal -->
-<div class="modal fade" id="addVehicleModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleModal" aria-hidden="true">
+<!-- Add Vehicle Modal -->
+<div class="modal fade" id="ANPR_AddModal" tabindex="-1" role="dialog" aria-labelledby="ANPR_UpdateModal" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addVehicleModal">Add Vehicle to the ANPR dB</h5>
+        <h5 class="modal-title" id="ANPR_AddModal">ANPR Add Vehicle</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="ANPR_AddForm">
           <div class="row">
             <div class="col">
-              <div class="form-group">
-                <label for="addVehicleModalReg">Registration</label>
-                <input type="text" class="form-control" id="addVehicleModalReg" placeholder="Vehicle Registration" autofocus>
-              </div>
+              <label>Add ANPR Plate</label>
+              <input type="text" style="text-transform: uppercase;" id="ANPR_Add_Plate" class="form-control" autofocus>
             </div>
             <div class="col">
-              <div class="form-group">
-                <label for="addVehicleModalDateIN">Date IN</label>
-                <input type="text" class="form-control" id="addVehicleModalDateIN" placeholder="Vehicle Time In" value="<?php echo date("Y-m-d H:i:s")?>">
-              </div>
+              <label>Add ANPR Date & Time</label>
+              <input type="text" style="text-transform: uppercase;" id="ANPR_Add_Date" class="form-control" value="<?php echo date("Y-m-d H:i:s")?>">
             </div>
           </div>
+          <div class="modal-body">
+            <div id="return">
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="submit" id="addANPR" class="btn btn-primary" value="Save Changes">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
         </form>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Save <i class="fa fa-save"></i></button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
       </div>
     </div>
   </div>
