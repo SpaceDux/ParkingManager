@@ -100,7 +100,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <input type="submit" id="addANPR" class="btn btn-primary" value="Save Changes">
+            <input type="submit" onClick="saveANPR()" class="btn btn-primary" value="Save Changes">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </form>

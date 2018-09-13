@@ -23,6 +23,6 @@
   } else if($handler == "ANPR_Update") {
     $ajax->ANPR_Update($_POST['anpr_id'], $_POST['Plate'], $_POST['Capture_Date']);
   } else if($handler == "ANPR_Add") {
-    $ajax->ANPR_Add($_POST['plate'], $_POST['time']);
+    $ajax->ANPR_Add($_POST['Plate'], $_POST['Date']);
   }
 ?>

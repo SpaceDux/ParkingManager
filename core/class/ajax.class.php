@@ -157,17 +157,12 @@
     function ANPR_Add($plate, $time) {
       //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID)
       $this->mssql = new MSSQL;
-      $stmt = $this->mssql->dbc->prepare("INSERT INTO dbo.ANPR_REX (Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID)
-      VALUES ('', '0', ?, null, null, null, null, '0', 'Entry Lane 01', ?, null, 'ParkingManager', '0', null, '0', ?, null, null, ?, null)");
-      $stmt->bindParam(1, strtoupper($plate));
-      $stmt->bindParam(2, $time);
-      $stmt->bindParam(3, strtoupper($plate));
-      $stmt->bindParam(4, $time);
-      if($stmt->execute()) {
-        die("FUCK");
-      } else {
-        die("FUKSSS");
-      }
+      $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('0', :plate, null, null, null, null, '0', 'Entry Lane 01', :capDate, null, 'ParkingManager', '0', null, '0', :plate2, null, null, :capDate2, null)");
+      $stmt->bindParam(':plate', strtoupper($plate));
+      $stmt->bindParam(':capDate', $time);
+      $stmt->bindParam(':plate2', strtoupper($plate));
+      $stmt->bindParam(':capDate2', $time);
+      $stmt->execute();
 
       $this->mssql = null;
     }
