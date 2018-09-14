@@ -9,7 +9,7 @@
     private $user;
     protected $mssql;
     //Ajax Request Exit Vehicle (SENT VIA Ajax Handler)
-    public function exitVehicle($key) {
+    function exitVehicle($key) {
       //Prep Class
       $this->mysql = new MySQL;
       //Query
@@ -21,7 +21,7 @@
       $this->mysql = null;
     }
     //Ajax Request Mark Renewal
-    public function markRenewal($key) {
+    function markRenewal($key) {
       //Prep Class
       $this->mysql = new MySQL;
       $this->vehicle = new Vehicles;
@@ -40,7 +40,7 @@
       $this->vehicle = null;
     }
     //Ajax setFlag
-    public function setFlag($key) {
+    function setFlag($key) {
       //Prep Class
       $this->mysql = new MySQL;
       $this->vehicle = new Vehicles;
@@ -59,7 +59,7 @@
       $this->vehicle = null;
     }
     //Ajax deleteVehicle
-    public function deleteVehicle($key) {
+    function deleteVehicle($key) {
       //Prep class;
       $this->mysql = new MySQL;
       $this->vehicle = new Vehicles;
@@ -78,24 +78,25 @@
       $this->vehicle = null;
     }
     //Delete Notice
-    public function deleteNotice($key) {
+    function deleteNotice($key) {
       $this->mysql = new MySQL;
       $query = $this->mysql->dbc->prepare("DELETE FROM notices WHERE id = ?");
       $query->bindParam(1, $key);
       $query->execute();
       $this->mysql = null;
     }
-    //Search MSSQL (Unfinished)
-    public function searchMSSQL($key) {
-      $html = "";
+    //Search ANPR
+    function ANPR_Search($key) {
+      $string = '%'.$key.'%';
+      $html = '';
       $this->mssql = new MSSQL;
       $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Plate LIKE ? OR Original_Plate LIKE ? ORDER BY Capture_Date DESC");
-      $stmt->bindParam(1, '%'.$key.'%');
-      $stmt->bindParam(2, '%'.$key.'%');
+      $stmt->bindParam(1, $string);
+      $stmt->bindParam(2, $string);
       $stmt->execute();
       $result = $stmt->fetchAll();
 
-      if($result->rowCount() > 0) {
+      if(count($result) > 0) {
         $html .= '
           <table class="table table-bordered">
             <thead>
@@ -108,22 +109,72 @@
               </tr>
             </thead>
           ';
-          $html .= "<tbody>";
-          foreach ($result as $row) {
-            $html .= "<tr>";
-            $html .= "<td>".$row['Plate']."</td>";
-            $html .= "<td>".$row['Original_Plate']."</td>";
-            $html .= "<td>".$row['Capture_Date']."</td>";
-            $html .= "<td>".$row['Lane_Name']."</td>";
-            $html .= "<td>".$row['Expiry']."</td>";
-            $html .= "</tr>";
+          $html .= '<tbody>';
+          foreach($result as $row) {
+            $html .= '
+              <tr>
+                <td>'.$row['Plate'].'</td>
+                <td>'.$row['Original_Plate'].'</td>
+                <td>'.$row['Capture_Date'].'</td>
+                <td>'.$row['Lane_Name'].'</td>
+                <td>'.$row['Expiry'].'</td>
+              </tr>
+            ';
           }
-          $html .= "</tbody></table>";
+          $html .= '</tbody></table>';
           echo $html;
       } else {
-        $html = 'No Data Found';
+          echo 'No Data Found';
       }
       $this->mssql = null;
+    }
+    //Search PM Logs
+    function PM_Search($key) {
+      $string = '%'.$key.'%';
+      $html = '';
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->campus = $this->user->userInfo("campus");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_registration LIKE ? OR veh_trlno LIKE ? AND campus = ? ORDER BY veh_timein DESC LIMIT 200");
+      $stmt->bindParam(1, $string);
+      $stmt->bindParam(2, $string);
+      $stmt->bindParam(3, $this->campus);
+      $stmt->execute();
+      $result = $stmt->fetchAll();
+
+      if(count($result) > 0) {
+        $html .= '
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Plate</th>
+                <th scope="col">Original Plate</th>
+                <th scope="col">Capture Date</th>
+                <th scope="col">Lane Name</th>
+                <th scope="col">Expiry</th>
+              </tr>
+            </thead>
+          ';
+          $html .= '<tbody>';
+          foreach($result as $row) {
+            $html .= '
+              <tr>
+                <td>'.$row['Plate'].'</td>
+                <td>'.$row['Original_Plate'].'</td>
+                <td>'.$row['Capture_Date'].'</td>
+                <td>'.$row['Lane_Name'].'</td>
+                <td>'.$row['Expiry'].'</td>
+              </tr>
+            ';
+          }
+          $html .= '</tbody></table>';
+          echo $html;
+      } else {
+          echo 'No Data Found';
+      }
+      $this->mysql = null;
+      $this->user = null;
+      $this->campus = null;
     }
     //Delete ANPR (Duplicate)
     function ANPR_Duplicate($key) {

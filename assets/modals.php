@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="searchModal">Search Database Entries</h5>
+        <h5 class="modal-title" id="searchModalTitle">Search Database Entries</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -12,15 +12,15 @@
         <div class="row">
           <div class="col">
             <label>Search Vehicle Logs</label>
-            <input type="text" id="searchData" class="form-control" placeholder="Search Registration, company, trailer number..." autofocus>
+            <input type="text" id="PM_SearchLogs" class="form-control" placeholder="Search Registration, company, trailer number..." autofocus>
           </div>
           <div class="col">
             <label>Search Transactions</label>
-            <input type="text" id="searchPay" class="form-control" placeholder="Search Ticket ID">
+            <input type="text" id="PM_PaymentSearch" class="form-control" placeholder="Search Ticket ID, SNAP ES.ID">
           </div>
           <div class="col">
             <label>Search ANPR database</label>
-            <input type="text" id="ANPR_Search" class="form-control" placeholder="Search ANPR database">
+            <input type="text" id="ANPR_Search" class="form-control" placeholder="Search ANPR Entries">
           </div>
         </div>
         <div class="modal-body">
@@ -100,7 +100,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <input type="submit" onClick="saveANPR()" class="btn btn-primary" value="Save Changes">
+            <input type="submit" id="addANPR" class="btn btn-primary" value="Save Changes">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </form>

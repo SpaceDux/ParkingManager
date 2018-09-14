@@ -83,18 +83,19 @@
     })
     $('#anpr').load(' #anpr');
   }
-  //ANPR Search
+  //Search
   $(document).ready(function() {
+    //ANPR Search
     $('#ANPR_Search').keyup(function(){
-      var search = $(this).val();
-      if(search == '') {
+      var ANPRKey = $(this).val();
+      if(ANPRKey == '') {
         $('#return').empty();
       } else {
         $('#return').html('');
         $.ajax({
          url: "<?php echo URL?>/ajax-handler.php?handler=ANPR_Search",
          type: "POST",
-         data: {search:search},
+         data: {ANPRKey:ANPRKey},
          dataType: "text",
          success:function(data) {
            $('#return').html(data);
@@ -102,7 +103,25 @@
         })
       }
     });
-  })
+    //PM Search
+    $('#PM_SearchLogs').keyup(function(){
+      var PMKey = $(this).val();
+      if(PMKey == '') {
+        $('#return').empty();
+      } else {
+        $('#return').html('');
+        $.ajax({
+         url: "<?php echo URL?>/ajax-handler.php?handler=PM_Search",
+         type: "POST",
+         data: {PMKey:PMKey},
+         dataType: "text",
+         success:function(data) {
+           $('#return').html(data);
+         }
+        })
+      }
+    });
+  });
   //ANPR Edit Record Display
   $(document).on('click', '#ANPR_Edit', function() {
     var anpr_id = $(this).data('id');
@@ -134,18 +153,18 @@
     $('#ANPR_UpdateModal').modal('toggle');
   });
   //ANPR Add Vehicle
-  function saveANPR() {
+  $(document).on('click', '#addANPR', function() {
     var Plate = $("#ANPR_Add_Plate").val();
     var Capture_Date = $("#ANPR_Add_Date").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=ANPR_Add",
       type: "POST",
       data: "Plate="+Plate+"&Date="+Capture_Date
-    })
-    return false;
+    });
     event.preventDefault();
     $('#anpr').load(' #anpr');
-  }
+    $('#ANPR_AddModal').modal('toggle');
+  });
   //Refresh ANPR (Blue button)
   $('#refreshANPR').click(function(){
     $('#anpr').load(' #anpr');
