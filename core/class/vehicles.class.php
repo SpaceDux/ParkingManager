@@ -16,23 +16,26 @@
       $this->user = new User;
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
-        $query = $this->mssql->dbc->prepare("SELECT TOP 300 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 0 AND Status = 0 ORDER BY Capture_Date DESC");
+        $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 0 AND Status = 0 ORDER BY Capture_Date DESC");
         $query->execute();
         $result = $query->fetchAll();
         foreach ($result as $row) {
-          $this->anprCount = count($row);
           //Get The right Path now.
-          $patch = str_replace("C:\ALPR\Data", "http://192.168.3.202", $row['Patch']);
+          if($this->user->userInfo("campus") == 1) {
+            $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $row['Patch']);
+          } else if($this->user->userInfo("campus") == 2) {
+            $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
+          } else if ($this->user->userInfo("campus") == 0) {
+            //Nothing
+          }
           //Begin Table.
-
           $table = '<tr>';
           $table .= '<td>'.$row['Plate'].'</td>';
           $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
-          $table .= '<td><img src="'.$_CONFIG['pm']['url'].'/imageProxy.php?i='.urlencode($patch).'"></img></td>';
+          $table .= '<td><img src="'.$patch.'"></img></td>';
           $table .= '<td>
                       <div class="btn-group" role="group" aria-label="Options">
                         <button type="button" id="ANPR_Edit" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-camera"></i></button>
                         <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
                         <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
                       </div>
@@ -54,7 +57,7 @@
       $this->user = new User;
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
-      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 1 AND campus = ? AND veh_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column = 1 AND campus = ? AND veh_deleted < 1");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -123,7 +126,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 2 AND campus = ? AND veh_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column = 2 AND campus = ? AND veh_deleted < 1");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -190,7 +193,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 3 AND campus = ? AND veh_deleted < 1 LIMIT 30");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column = 3 AND campus = ? AND veh_deleted < 1 LIMIT 30");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -239,7 +242,7 @@
       $this->user = new User;
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
-        $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 300 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 0 AND Status = 0 ORDER BY Capture_Date DESC");
+        $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 0 AND Status = 0 ORDER BY Capture_Date DESC");
         $this->anprCount->execute();
         return count($this->anprCount->fetchAll());
 
@@ -257,7 +260,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column < 3 AND campus = ? AND veh_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column < 3 AND campus = ? AND veh_deleted < 1");
       $query->bindParam(1, $this->campus);
       $query->execute();
 
@@ -274,7 +277,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column = 2 AND campus = ? AND veh_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column = 2 AND campus = ? AND veh_deleted < 1");
       $query->bindParam(1, $this->campus);
       $query->execute();
       return $query->rowCount();
@@ -291,7 +294,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_column < 3 AND campus = ? AND veh_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column < 3 AND campus = ? AND veh_deleted < 1");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $result = $query->fetchAll();
@@ -353,7 +356,7 @@
       //Prep Class'
       $this->mysql = new MySQL;
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE id = ?");
       $query->bindParam(1, $id);
       $query->execute();
       $result = $query->fetch(\PDO::FETCH_ASSOC);
@@ -367,7 +370,7 @@
       $this->mysql = new MySQL;
       //Query
       if(isset($key)) {
-        $query = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE id = ?");
+        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE id = ?");
         $query->bindParam(1, $key);
         $query->execute();
         return $query->fetch(\PDO::FETCH_ASSOC);
@@ -410,7 +413,7 @@
       $this->mysql = new MySQL;
       //Query
       if(isset($_POST['upd_reg'])) {
-        $query = $this->mysql->dbc->prepare("UPDATE veh_log SET veh_registration = ?, veh_company = ?, veh_trlno = ?, veh_type = ?, veh_timein = ?, veh_timeout = ?, veh_column = ?, veh_comment = ? WHERE id = ?");
+        $query = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_registration = ?, veh_company = ?, veh_trlno = ?, veh_type = ?, veh_timein = ?, veh_timeout = ?, veh_column = ?, veh_comment = ? WHERE id = ?");
         $query->bindParam(1, strtoupper($_POST['upd_reg']));
         $query->bindParam(2, strtoupper($_POST['upd_company']));
         $query->bindParam(3, strtoupper($_POST['upd_trl']));

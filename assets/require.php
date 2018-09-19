@@ -83,6 +83,15 @@
     })
     $('#anpr').load(' #anpr');
   }
+  function ANPR_Barrier(str) {
+    event.preventDefault();
+    var barrier = str
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=ANPR_Barrier",
+      type: "POST",
+      data: "barrier="+barrier
+    });
+  }
   //Search
   $(document).ready(function() {
     //ANPR Search

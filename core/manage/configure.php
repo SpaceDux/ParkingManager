@@ -40,7 +40,8 @@
   $_CONFIG['anpr_holyhead']['port'] = ''; //ANPR Server: Port
   $_CONFIG['anpr_holyhead']['database'] = 'ANPR'; //ANPR Server: Database name
 
-  $_CONFIG['anpr_holyhead']['imgdir'] = ''; //ANPR Server: Image Directory
+  $_CONFIG['anpr_holyhead']['imgdir'] = 'http://192.168.3.201/'; //ANPR Server: Image Directory
+
   //ANPR Server Connection Details (MSSQL-Cannock)
   $_CONFIG['anpr_cannock']['ip'] = ''; //ANPR Server: IP Address
   $_CONFIG['anpr_cannock']['user'] = ''; //ANPR Server: User
@@ -51,17 +52,16 @@
   $_CONFIG['anpr_cannock']['imgdir'] = ''; //ANPR Server: Image Directory
 
   //Gate Functions
-  $_CONFIG['gate_holyhead']['in'] = ""; //Entery Barrier IP
-  $_CONFIG['gate_holyhead']['out'] = ""; //Exit Barrier IP
-  $_CONFIG['gate_cannock']['in'] = ""; //Entery Barrier IP
+  $_CONFIG['gate_holyhead']['in'] = "http://192.168.3.37/setParam.cgi?DOPulseStart_05=1?"; //Entery Barrier IP
+  $_CONFIG['gate_holyhead']['out'] = "http://192.168.3.37/setParam.cgi?DOPulseStart_04=1?"; //Exit Barrier IP
+  
   $_CONFIG['gate_cannock']['out'] = ""; //Exit Barrier IP
 
 
   /*
     ParkingManager Configuration + Settings
   */
-  $_CONFIG['pm']['url'] = 'http://192.168.0.147/ParkingManager'; //PM: Url (DOES NOT END WITH '/')
+  $_CONFIG['pm']['url'] = 'http://192.168.3.35/ParkingManager'; //PM: Url (DOES NOT END WITH '/')
   $_CONFIG['pm']['timezone'] = 'Europe/London'; //PM: Set Timezone
   $_CONFIG['pm']['ticket_printer'] = 'PD_TICKET_PRINT'; //Name of the local printer via shared-network
-
 ?>

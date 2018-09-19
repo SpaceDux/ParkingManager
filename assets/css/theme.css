@@ -173,6 +173,7 @@ nav#sideBar > .userBox > .buttons > a {
   width: 35px;
   line-height: 35px;
   color: #fff;
+  display: block;
 }
 nav#sideBar > .userBox > .buttons > a:hover {
   color: #a4a4a4;

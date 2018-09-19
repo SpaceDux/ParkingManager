@@ -14,7 +14,7 @@
       $this->mysql = new MySQL;
       //Query
       $date = date('Y-m-d H:i:s');
-      $stmt = $this->mysql->dbc->prepare("UPDATE veh_log SET veh_column = '3', veh_timeout = :timeout WHERE id = :id");
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_column = '3', veh_timeout = :timeout WHERE id = :id");
       $stmt->bindParam(':timeout', $date);
       $stmt->bindParam(':id', $key);
       $stmt->execute();
@@ -28,11 +28,11 @@
       //Query
       $renewalResult = $this->vehicle->vehInfo("veh_column", $key);
       if($renewalResult == 1) {
-        $stmt = $this->mysql->dbc->prepare("UPDATE veh_log SET veh_column = '2' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_column = '2' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       } else {
-        $stmt = $this->mysql->dbc->prepare("UPDATE veh_log SET veh_column = '1' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_column = '1' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       }
@@ -47,11 +47,11 @@
       //Query
       $flagResult = $this->vehicle->vehInfo("veh_flagged", $key);
       if($flagResult == 0) {
-        $stmt = $this->mysql->dbc->prepare("UPDATE veh_log SET veh_flagged = '1' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_flagged = '1' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       } else {
-        $stmt = $this->mysql->dbc->prepare("UPDATE veh_log SET veh_flagged = '0' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_flagged = '0' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       }
@@ -66,11 +66,11 @@
       //Query
       $deleteResult = $this->vehicle->vehInfo("veh_deleted", $key);
       if($deleteResult == 0) {
-        $stmt = $this->mysql->dbc->prepare("UPDATE veh_log SET veh_deleted = '1' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_deleted = '1' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       } else {
-        $stmt = $this->mysql->dbc->prepare("UPDATE veh_log SET veh_deleted = '0' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_deleted = '0' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       }
@@ -135,7 +135,7 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->campus = $this->user->userInfo("campus");
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM veh_log WHERE veh_registration LIKE ? OR veh_trlno LIKE ? AND campus = ? ORDER BY veh_timein DESC LIMIT 200");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_registration LIKE ? OR veh_trlno LIKE ? AND campus = ? ORDER BY veh_timein DESC LIMIT 200");
       $stmt->bindParam(1, $string);
       $stmt->bindParam(2, $string);
       $stmt->bindParam(3, $this->campus);
@@ -216,6 +216,37 @@
       $stmt->execute();
 
       $this->mssql = null;
+    }
+    function ANPR_Image_Get($key) {
+      $this->mssql = new MSSQL;
+      $stmt = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $key);
+      $stmt->execute();
+      $return = $stmt->fetchAll();
+
+      $html = '<img src="'.$return['Patch'].'" alt="..." class="img-thumbnail">';
+    }
+    function ToggleBarrier($key) {
+      global $_CONFIG;
+      if($key == 1) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_holyhead']['in']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
+        }
+        curl_close($ch);
+      } else if ($key == 0) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_holyhead']['out']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
+        }
+        curl_close($ch);
+      }
     }
   }
 ?>

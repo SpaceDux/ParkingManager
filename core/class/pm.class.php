@@ -30,7 +30,7 @@
       //Get User  Campus
       $this->campus = $this->user->userInfo("campus");
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM notices WHERE campus = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_notices WHERE campus = ?");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $result = $query->fetchAll();
@@ -50,7 +50,7 @@
       //Get User  Campus
       $this->campus = $this->user->userInfo("campus");
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM notices WHERE campus = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_notices WHERE campus = ?");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $result = $query->fetchAll();
@@ -71,7 +71,7 @@
         $this->campus = $this->user->userInfo("campus");
         $this->author = $this->user->userInfo("first_name");
 
-        $query = $this->mysql->dbc->prepare("INSERT INTO notices VALUES ('', ?, ?, ?, ?, ?)");
+        $query = $this->mysql->dbc->prepare("INSERT INTO pm_notices VALUES ('', ?, ?, ?, ?, ?)");
         $query->bindParam(1, $type);
         $query->bindParam(2, $title);
         $query->bindParam(3, $body);
@@ -85,6 +85,76 @@
         $this->campus = null;
         $this->author = null;
       }
+    }
+    public function PM_Nav() {
+      $this->user = new User;
+
+      //Top Bar
+      $nav ='<nav class="topBar">';
+      $nav .=  '<a href="'.URL.'/index">';
+      $nav .=  '<div class="brand">';
+      $nav .=    'Parking<b>Manager</b>';
+      $nav .=  '</div>';
+      $nav .=  '</a>';
+      $nav .=  '<ul>';
+      $nav .=    '<a onClick="menuHide()"><li><i class="fas fa-align-justify"></i></li></a>';
+      $nav .=    '<li data-toggle="modal" data-target="#searchModal"><i class="fa fa-search"></i></li>';
+      $nav .=    '<li data-toggle="modal" data-target="#ANPR_AddModal"><i class="fa fa-plus"></i></li>';
+      $nav .=    '<li onClick="ANPR_Barrier(1)" title="Toggle Entry Barrier"><i class="fa fa-arrow-right"></i></li>';
+      $nav .=    '<li onClick="ANPR_Barrier(0)" title="Toggle Exit Barrier"><i class="fa fa-arrow-left"></i></li>';
+      $nav .=  '</ul>';
+      $nav .='</nav>';
+
+      //Main Nav
+      $nav .='<nav id="sideBar" style="margin-left: -220px;">';
+        //UserBox
+      $nav .=  '<div class="userBox">';
+      $nav .=    '<div class="userInfo">';
+      $nav .=      '<div class="userName">'.$this->user->userInfo('first_name').' <b>'.substr($this->user->userInfo('last_name'), 0, 1).'</b></div>';
+      $nav .=      '<div class="userLocation">';
+      $nav .=        'RK: Holyhead | Security';
+      $nav .=      '</div>';
+      $nav .=      '<div class="pmVer">'.VER.'</div>';
+      $nav .=    '</div>';
+      $nav .=    '<div class="buttons">';
+      $nav .=      '<a href="#settings"><i class="fa fa-cog"></i></a>';
+      $nav .=      '<a href="'.URL.'/logout"><i class="fa fa-sign-out-alt"></i></a>';
+      $nav .=    '</div>';
+      $nav .=   '</div>';
+        //Options
+      $nav .=  '<ul>';
+      $nav .=    '<a href="'.URL.'/main"><li><i class="fa fa-tachometer-alt"></i> Dashboard</li></a>';
+      $nav .=    '<li><i class="fa fa-truck-moving"></i> Vehicle Tools';
+      $nav .=     ' <ul>';
+      $nav .=        '<a href="'.URL.'/yardcheck" target="_blank"><li>Yard Check</li></a>';
+      $nav .=      '</ul>';
+      $nav .=    '</li>';
+      $nav .=    '<li><i class="fa fa-pound-sign"></i> Payment Tools';
+      $nav .=     ' <ul>';
+      $nav .=        '<a href="'.URL.'/reports"><li>Transactions History</li></a>';
+      $nav .=      '</ul>';
+      $nav .=    '</li>';
+      $nav .=    '<li><i class="fa fa-book"></i> Account Tools';
+      $nav .=      '<ul>';
+      $nav .=        '<a href="'.URL.'/reports"><li>Account Reports</li></a>';
+      $nav .=        '<a href="'.URL.'/reports"><li>Account Fleets</li></a>';
+      $nav .=      '</ul>';
+      $nav .=    '</li>';
+      $nav .=    '<li><i class="fa fa-cogs"></i> P<b>M</b> Tools';
+      $nav .=      '<ul>';
+      $nav .=        '<a href="'.URL.'/notices"><li>Notices</li></a>';
+      $nav .=        '<a href="'.URL.'/users"><li>Users</li></a>';
+      $nav .=      '</ul>';
+      $nav .=    '</li>';
+      $nav .=    '<li><i class="fa fa-chart-line"></i> Admin Tools';
+      $nav .=      '<ul>';
+      $nav .=        '<a href="'.URL.'/#"><li>Something</li></a>';
+      $nav .=      '</ul>';
+      $nav .=    '</li>';
+      $nav .=  '</ul>';
+      $nav .='</nav>';
+      echo $nav;
+      $this->user = null;
     }
   }
 ?>

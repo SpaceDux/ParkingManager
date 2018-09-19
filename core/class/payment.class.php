@@ -15,7 +15,7 @@
       $this->user = new User;
       $this->campus = $this->user->userInfo("campus");
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM payments WHERE campus = ? ORDER BY service_date DESC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE campus = ? ORDER BY service_date DESC");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $result = $query->fetchAll();
@@ -58,7 +58,7 @@
     function getTransactions($key) {
       //Prep Class
       $this->mysql = new MySQL;
-      $query = $this->mysql->dbc->prepare("SELECT * FROM payments WHERE log_id = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE log_id = ?");
       $query->bindParam(1, $key);
       $query->execute();
       $result = $query->fetchAll();

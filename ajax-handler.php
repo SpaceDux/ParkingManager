@@ -26,5 +26,9 @@
     $ajax->ANPR_Add($_POST['Plate'], $_POST['Date']);
   } else if($handler == "PM_Search") {
     $ajax->PM_Search($_POST['PMKey']);
+  } else if($handler == "ANPR_Image_Get") {
+    $ajax->ANPR_Image_Get($_POST['anpr_id']);
+  } else if($handler == "ANPR_Barrier") {
+    $ajax->ToggleBarrier($_POST['barrier']);
   }
 ?>
