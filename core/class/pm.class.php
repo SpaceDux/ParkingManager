@@ -143,17 +143,23 @@
       $nav .=    '<li><i class="fa fa-cogs"></i> P<b>M</b> Tools';
       $nav .=      '<ul>';
       $nav .=        '<a href="'.URL.'/notices"><li>Notices</li></a>';
-      $nav .=        '<a href="'.URL.'/users"><li>Users</li></a>';
+      if($this->user->userInfo("rank") > 1) {
+        $nav .= '<a href="'.URL.'/users"><li>Users</li></a>';
+      }
       $nav .=      '</ul>';
       $nav .=    '</li>';
-      $nav .=    '<li><i class="fa fa-chart-line"></i> Admin Tools';
-      $nav .=      '<ul>';
-      $nav .=        '<a href="'.URL.'/#"><li>Something</li></a>';
-      $nav .=      '</ul>';
-      $nav .=    '</li>';
+      if($this->user->userInfo("rank") > 2) {
+        $nav .=    '<li><i class="fa fa-chart-line"></i> Admin Tools';
+        $nav .=      '<ul>';
+        $nav .=        '<a href="'.URL.'/services"><li>Services</li></a>';
+        $nav .=      '</ul>';
+        $nav .=    '</li>';
+      }
       $nav .=  '</ul>';
       $nav .='</nav>';
+
       echo $nav;
+
       $this->user = null;
     }
   }

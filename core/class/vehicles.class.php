@@ -26,7 +26,7 @@
           } else if($this->user->userInfo("campus") == 2) {
             $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
           } else if ($this->user->userInfo("campus") == 0) {
-            //Nothing
+            $patch = "";
           }
           //Begin Table.
           $table = '<tr>';
@@ -36,7 +36,7 @@
           $table .= '<td>
                       <div class="btn-group" role="group" aria-label="Options">
                         <button type="button" id="ANPR_Edit" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
-                        <button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                        <a href="'.URL.'/new_transaction/'.$row['Uniqueref'].'" class="btn btn-danger"><i class="fa fa-pound-sign"></i></a>
                         <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
                       </div>
                     </td>';
@@ -377,6 +377,21 @@
         $this->mysql = null;
       } else {
         //If they visit "update.php" without a vehicle ID, return to dashboard
+        header("Location: ".$_CONFIG['pm']['url']."/main");
+      }
+    }
+    public function getANPR_Record($key) {
+      global $_CONFIG;
+      //Prep Class'
+      $this->mssql = new MSSQL;
+      //Query
+      if(isset($key)) {
+        $query = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Uniqueref = ?");
+        $query->bindParam(1, $key);
+        $query->execute();
+        return $query->fetch(\PDO::FETCH_ASSOC);
+        $this->mssql = null;
+      } else {
         header("Location: ".$_CONFIG['pm']['url']."/main");
       }
     }

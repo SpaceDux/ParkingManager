@@ -21,65 +21,7 @@
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/fontawesome-all.min.css">
   </head>
   <body style="background: #fff;">
-    <!-- Top Navbar -->
-    <!-- Top Navbar -->
-    <nav class="topBar">
-      <a href="<?php echo URL?>/index">
-      <div class="brand">
-        Parking<b>Manager</b>
-      </div>
-      </a>
-      <ul>
-        <a onClick="menuHide()"><li><i class="fas fa-align-justify"></i></li></a>
-        <li data-toggle="modal" data-target="#searchModal"><i class="fa fa-search"></i></li>
-        <li data-toggle="modal" data-target="#addVehicleModal"><i class="fa fa-plus"></i></li>
-      </ul>
-    </nav>
-    <!-- Sidebar -->
-    <nav id="sideBar" style="margin-left: -220px;">
-      <div class="userBox">
-        <div class="userInfo">
-          <div class="userName">
-            <?php echo $user->userInfo('first_name')?> <b><?php echo substr($user->userInfo('last_name'), 0, 1);?>.</b>
-          </div>
-          <div class="userLocation">
-            RK: Holyhead | Security
-          </div>
-          <div class="pmVer">
-            <?php echo VER ?>
-          </div>
-        </div>
-        <div class="buttons">
-          <a href="#settings"><i class="fa fa-cog"></i></a>
-          <a href="<?php echo URL?>/logout"><i class="fa fa-sign-out-alt"></i></a>
-        </div>
-      </div>
-      <ul>
-        <a href="<?php echo URL ?>/main"><li><i class="fa fa-tachometer-alt"></i> Dashboard</li></a>
-        <li class="active"><i class="fa fa-truck-moving"></i> Vehicle Tools
-          <ul>
-            <a href="<?php echo URL?>/yardcheck" target="_blank"><li>Yard Check</li></a>
-          </ul>
-        </li>
-        <li><i class="fa fa-pound-sign"></i> Payment Tools
-          <ul>
-            <a href="<?php echo URL?>/reports"><li>Transactions History</li></a>
-          </ul>
-        </li>
-        <li><i class="fa fa-book"></i> Account Tools
-          <ul>
-            <a href="<?php echo URL?>/reports"><li>Account Reports</li></a>
-            <a href="<?php echo URL?>/reports"><li>Account Fleets</li></a>
-          </ul>
-        </li>
-        <li><i class="fa fa-cogs"></i> P<b>M</b> Tools
-          <ul>
-            <a href="<?php echo URL?>/notices"><li>Notices</li></a>
-            <a href="#"><li>Users</li></a>
-          </ul>
-        </li>
-      </ul>
-    </nav>
+    <?php $pm->PM_Nav() ?>
     <!-- Wrapper / Main content -->
     <div id="wrapper">
       <div class="whereami">

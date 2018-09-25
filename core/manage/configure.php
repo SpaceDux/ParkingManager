@@ -54,14 +54,15 @@
   //Gate Functions
   $_CONFIG['gate_holyhead']['in'] = "http://192.168.3.37/setParam.cgi?DOPulseStart_05=1?"; //Entery Barrier IP
   $_CONFIG['gate_holyhead']['out'] = "http://192.168.3.37/setParam.cgi?DOPulseStart_04=1?"; //Exit Barrier IP
-  
+
   $_CONFIG['gate_cannock']['out'] = ""; //Exit Barrier IP
 
 
   /*
     ParkingManager Configuration + Settings
   */
-  $_CONFIG['pm']['url'] = 'http://192.168.3.35/ParkingManager'; //PM: Url (DOES NOT END WITH '/')
+  $_CONFIG['pm']['url'] = 'http://localhost/ParkingManager'; //PM: Url (DOES NOT END WITH '/')
   $_CONFIG['pm']['timezone'] = 'Europe/London'; //PM: Set Timezone
-  $_CONFIG['pm']['ticket_printer'] = 'PD_TICKET_PRINT'; //Name of the local printer via shared-network
+  $_CONFIG['pm']['ticket_printer_holyhead'] = 'CITIZEN-PD-Holy'; //Name of the local printer via shared-network
+  $_CONFIG['pm']['ticket_printer_cannock'] = 'CITIZEN-PD-Holy'; //Name of the local printer via shared-network
 ?>

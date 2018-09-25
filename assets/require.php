@@ -83,6 +83,7 @@
     })
     $('#anpr').load(' #anpr');
   }
+  //Ajax ANPR Barrier controls
   function ANPR_Barrier(str) {
     event.preventDefault();
     var barrier = str
@@ -173,6 +174,27 @@
     event.preventDefault();
     $('#anpr').load(' #anpr');
     $('#ANPR_AddModal').modal('toggle');
+  });
+  //Payment Add Service
+  $(document).on('click', '#Payment_Service_Save', function() {
+    var Service_Name = $("#Service_Name").val();
+    var Service_Price_Gross = $("#Service_Price_Gross").val();
+    var Service_Price_Net = $("#Service_Price_Net").val();
+    var Service_Expiry = $("#Service_Expiry").val();
+    var Service_Cash = $("#Service_Cash:checked").val();
+    var Service_Card = $("#Service_Card:checked").val();
+    var Service_Account = $("#Service_Account:checked").val();
+    var Service_Snap = $("#Service_Snap:checked").val();
+    var Service_Fuel = $("#Service_Fuel:checked").val();
+    var Service_Campus = $("#Service_Campus:checked").val();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Add_Service",
+      type: "POST",
+      data: "Service_Name="+Service_Name+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus
+    });
+    event.preventDefault();
+    $('#tables').load(' #tables');
+    //$('#Payment_Service_AddModal').modal('toggle');
   });
   //Refresh ANPR (Blue button)
   $('#refreshANPR').click(function(){
