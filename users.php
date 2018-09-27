@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Parking Manager: Admin | Services</title>
+    <title>Parking Manager: Admin | User Management</title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/theme.css">
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/bootstrap.css">
@@ -18,7 +18,7 @@
     <div id="wrapper">
       <div class="whereami">
         <div class="page">
-          <a href="<?php echo URL ?>/index">Dashboard</a> <small>\\\</small> Admin Tools <small>\\\</small> <b>Services</b>
+          <a href="<?php echo URL ?>/index">Dashboard</a> <small>\\\</small> Admin Tools <small>\\\</small> <b>User Management</b>
         </div>
       </div>
       <div id="tables">
@@ -29,24 +29,20 @@
                 <table class="table table-hover table-bordered">
                   <thead class="thead-dark">
                     <tr>
-                      <th>Service Name</th>
-                      <th>Service Price (Gross)</th>
-                      <th>Service Price (Net)</th>
-                      <th>Service Expiry (Hours)</th>
-                      <th>Service Cash</th>
-                      <th>Service Card</th>
-                      <th>Service Account</th>
-                      <th>Service SNAP</th>
-                      <th>Service Fuel</th>
-                      <th>Service Author</th>
-                      <th>Service Created</th>
-                      <th>Service Updated</th>
-                      <th>Service Campus</th>
-                      <th><button data-toggle="modal" data-target="#Payment_Service_AddModal" type="button" class="btn btn-danger"><i class="fa fa-plus"></i></button></th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Email address</th>
+                      <th>Seckey</th>
+                      <th>Access ANPR</th>
+                      <th>Rank</th>
+                      <th>Campus</th>
+                      <th>Currently Active</th>
+                      <th>Last Processed Auth</th>
+                      <th><button data-toggle="modal" data-target="#User_Add" type="button" class="btn btn-danger"><i class="fa fa-plus"></i></button></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <?php $payment->list_services();?>
+                    <?php $user->ListUsers();?>
                   </tbody>
                 </table>
               </div>

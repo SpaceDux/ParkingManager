@@ -181,12 +181,12 @@
     var Service_Price_Gross = $("#Service_Price_Gross").val();
     var Service_Price_Net = $("#Service_Price_Net").val();
     var Service_Expiry = $("#Service_Expiry").val();
-    var Service_Cash = $("#Service_Cash:checked").val();
-    var Service_Card = $("#Service_Card:checked").val();
-    var Service_Account = $("#Service_Account:checked").val();
-    var Service_Snap = $("#Service_Snap:checked").val();
-    var Service_Fuel = $("#Service_Fuel:checked").val();
-    var Service_Campus = $("#Service_Campus:checked").val();
+    var Service_Cash = $(".Service_Cash:checked").val();
+    var Service_Card = $(".Service_Card:checked").val();
+    var Service_Account = $(".Service_Account:checked").val();
+    var Service_Snap = $(".Service_Snap:checked").val();
+    var Service_Fuel = $(".Service_Fuel:checked").val();
+    var Service_Campus = $("#Service_Campus option:selected").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Add_Service",
       type: "POST",
@@ -194,7 +194,86 @@
     });
     event.preventDefault();
     $('#tables').load(' #tables');
-    //$('#Payment_Service_AddModal').modal('toggle');
+    $('#Payment_Service_AddModal').modal('toggle');
+  });
+  //Payment Service Delete
+  function Payment_Service_Delete(str) {
+    event.preventDefault();
+    var Service = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Delete",
+      type: "POST",
+      data: "Service="+Service
+    })
+    $('#tables').load(' #tables');
+  }
+  //Payment Service Update GET
+  $(document).on('click', '#Payment_Service_Update_Modal', function() {
+    var service_id = $(this).data('id');
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Update_Get",
+      type: "POST",
+      data: {service_id:service_id},
+      dataType: "json",
+      success:function(data) {
+        $('#Service_ID_Update').val(data.id);
+        $('#Service_Name_Update').val(data.service_name);
+        $('#Service_Price_Gross_Update').val(data.service_price_gross);
+        $('#Service_Price_Net_Update').val(data.service_price_net);
+        $('#Service_Expiry_Update').val(data.service_expiry);
+        $('#Service_Cash_Update').val(data.service_cash);
+        $('#Service_Card_Update').val(data.service_card);
+        $('#Service_Account_Update').val(data.service_account);
+        $('#Service_Snap_Update').val(data.service_snap);
+        $('#Service_Fuel_Update').val(data.service_fuel);
+        $('#Service_Campus_Update').val(data.service_campus);
+        $('#Payment_Service_UpdateModal').modal('toggle');
+      }
+    })
+  });
+  //Payment Service Record Update
+  $(document).on('click', '#Payment_Service_Update', function(){
+    var Service_ID = $('#Service_ID_Update').val();
+    var Service_Name = $("#Service_Name_Update").val();
+    var Service_Price_Gross = $("#Service_Price_Gross_Update").val();
+    var Service_Price_Net = $("#Service_Price_Net_Update").val();
+    var Service_Expiry = $("#Service_Expiry_Update").val();
+    var Service_Cash = $("#Service_Cash_Update option:selected").val();
+    var Service_Card = $("#Service_Card_Update option:selected").val();
+    var Service_Account = $("#Service_Account_Update option:selected").val();
+    var Service_Snap = $("#Service_Snap_Update option:selected").val();
+    var Service_Fuel = $("#Service_Fuel_Update option:selected").val();
+    var Service_Campus = $("#Service_Campus_Update option:selected").val();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Update",
+      type: "POST",
+      data: "Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus
+    });
+    event.preventDefault();
+    $('#tables').load(' #tables');
+    $('#Payment_Service_UpdateModal').modal('toggle');
+  });
+  //Payment Service Record Update
+  $(document).on('click', '#User_Update', function(){
+    // var Service_ID = $('#Service_ID_Update').val();
+    // var Service_Name = $("#Service_Name_Update").val();
+    // var Service_Price_Gross = $("#Service_Price_Gross_Update").val();
+    // var Service_Price_Net = $("#Service_Price_Net_Update").val();
+    // var Service_Expiry = $("#Service_Expiry_Update").val();
+    // var Service_Cash = $("#Service_Cash_Update option:selected").val();
+    // var Service_Card = $("#Service_Card_Update option:selected").val();
+    // var Service_Account = $("#Service_Account_Update option:selected").val();
+    // var Service_Snap = $("#Service_Snap_Update option:selected").val();
+    // var Service_Fuel = $("#Service_Fuel_Update option:selected").val();
+    // var Service_Campus = $("#Service_Campus_Update option:selected").val();
+    // $.ajax({
+    //   url: "<?php echo URL?>/ajax-handler.php?handler=Update_User",
+    //   type: "POST",
+    //   data: ""++
+    // });
+    event.preventDefault();
+    $('#tables').load(' #tables');
+    $('#User_UpdateModal').modal('toggle');
   });
   //Refresh ANPR (Blue button)
   $('#refreshANPR').click(function(){

@@ -208,7 +208,7 @@
     function ANPR_Add($plate, $time) {
       //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID)
       $this->mssql = new MSSQL;
-      $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('0', :plate, null, null, null, null, '0', 'Entry Lane 01', :capDate, null, 'ParkingManager', '0', null, '0', :plate2, null, null, :capDate2, null)");
+      $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane 01', :capDate, null, '5858', '0', null, '0', :plate2, null, null, :capDate2, null, '')");
       $stmt->bindParam(':plate', strtoupper($plate));
       $stmt->bindParam(':capDate', $time);
       $stmt->bindParam(':plate2', strtoupper($plate));

@@ -52,7 +52,7 @@
   $_CONFIG['anpr_cannock']['imgdir'] = ''; //ANPR Server: Image Directory
 
   //Gate Functions
-  $_CONFIG['gate_holyhead']['in'] = "http://192.168.3.37/setParam.cgi?DOPulseStart_05=1?"; //Entery Barrier IP
+  $_CONFIG['gate_holyhead']['in'] = "http://192.168.3.37/setParam.cgi?DOPulseStart_05=1?"; //Entry Barrier IP
   $_CONFIG['gate_holyhead']['out'] = "http://192.168.3.37/setParam.cgi?DOPulseStart_04=1?"; //Exit Barrier IP
 
   $_CONFIG['gate_cannock']['out'] = ""; //Exit Barrier IP

@@ -16,7 +16,7 @@
       $this->user = new User;
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
-        $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 0 AND Status = 0 ORDER BY Capture_Date DESC");
+        $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
         $query->execute();
         $result = $query->fetchAll();
         foreach ($result as $row) {
@@ -242,7 +242,7 @@
       $this->user = new User;
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
-        $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 0 AND Status = 0 ORDER BY Capture_Date DESC");
+        $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
         $this->anprCount->execute();
         return count($this->anprCount->fetchAll());
 

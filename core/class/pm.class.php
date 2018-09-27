@@ -20,9 +20,6 @@
         echo $this->runErr;
       }
     }
-    public function openGate($key) {
-      //Open Gate, key being IP Address for the gate. Using CURL
-    }
     public function displayNotice() {
       //Have to issue a connection
       $this->mysql = new MySQL;
@@ -112,7 +109,7 @@
       $nav .=    '<div class="userInfo">';
       $nav .=      '<div class="userName">'.$this->user->userInfo('first_name').' <b>'.substr($this->user->userInfo('last_name'), 0, 1).'</b></div>';
       $nav .=      '<div class="userLocation">';
-      $nav .=        'RK: Holyhead | Security';
+      $nav .=        $this->PM_CampusInfo($this->user->userInfo("campus"), "campus_name");
       $nav .=      '</div>';
       $nav .=      '<div class="pmVer">'.VER.'</div>';
       $nav .=    '</div>';
@@ -161,6 +158,54 @@
       echo $nav;
 
       $this->user = null;
+    }
+    function PM_CampusSelectList() {
+      $this->mysql = new MySQL;
+
+      $list = '';
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_campus ORDER BY id ASC");
+      $query->execute();
+      $result = $query->fetchAll();
+      foreach ($result as $row) {
+        $list .= '<option value="'.$row['id'].'">'.$row['campus_name'].'</option>';
+      }
+      echo $list;
+      $this->mysql = null;
+    }
+    function PM_RankSelectList() {
+      $this->mysql = new MySQL;
+
+      $list = '';
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_ranks ORDER BY id ASC");
+      $query->execute();
+      $result = $query->fetchAll();
+      foreach ($result as $row) {
+        $list .= '<option value="'.$row['id'].'">'.$row['rank_name'].'</option>';
+      }
+      echo $list;
+      $this->mysql = null;
+    }
+    function PM_CampusInfo($id, $key) {
+      $this->mysql = new MySQL;
+
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_campus WHERE id = ?");
+      $query->bindParam(1, $id);
+      $query->execute();
+      $result = $query->fetch(\PDO::FETCH_ASSOC);
+
+      return $result[$key];
+      $this->mysql = null;
+    }
+    function PM_RankInfo($id, $key) {
+      $this->mysql = new MySQL;
+
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_ranks WHERE id = ?");
+      $query->bindParam(1, $id);
+      $query->execute();
+      $result = $query->fetch(\PDO::FETCH_ASSOC);
+
+      return $result[$key];
+      $this->mysql = null;
     }
   }
 ?>
