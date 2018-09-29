@@ -33,14 +33,14 @@
                       <th>Service Price (Gross)</th>
                       <th>Service Price (Net)</th>
                       <th>Service Expiry (Hours)</th>
+                      <th>Service Meal</th>
+                      <th>Service Shower</th>
                       <th>Service Cash</th>
                       <th>Service Card</th>
                       <th>Service Account</th>
                       <th>Service SNAP</th>
                       <th>Service Fuel</th>
-                      <th>Service Author</th>
-                      <th>Service Created</th>
-                      <th>Service Updated</th>
+                      <th>Updated By</th>
                       <th>Service Campus</th>
                       <th><button data-toggle="modal" data-target="#Payment_Service_AddModal" type="button" class="btn btn-danger"><i class="fa fa-plus"></i></button></th>
                     </tr>

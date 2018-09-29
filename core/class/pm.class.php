@@ -207,5 +207,16 @@
       return $result[$key];
       $this->mysql = null;
     }
+    public function findHour($time1, $time2) {
+      if(isset($time1)) {
+        $d1 = new \DateTime($time1);
+        $d2 = new \DateTime($time2);
+        $int = $d2->diff($d1);
+        $h = $int->h;
+        return $h;
+      } else {
+        echo "ERROR!";
+      }
+    }
   }
 ?>

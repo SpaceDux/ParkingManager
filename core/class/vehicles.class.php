@@ -409,19 +409,6 @@
         echo "<red>Time Construction error, please check & correct</red>";
       }
     }
-    public function timeCalcCount($time1, $time2) {
-      try {
-        if(isset($time1)) {
-          $d1 = new \DateTime($time1);
-          $d2 = new \DateTime($time2);
-          $int = $d2->diff($d1);
-          $h = $int->h;
-          return $h;
-        }
-      } catch (\Exception $e) {
-        //Error
-      }
-    }
     public function updateVehicle($key) {
       global $_CONFIG;
       // Prep Class'

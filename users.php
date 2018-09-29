@@ -38,7 +38,7 @@
                       <th>Campus</th>
                       <th>Currently Active</th>
                       <th>Last Processed Auth</th>
-                      <th><button data-toggle="modal" data-target="#User_Add" type="button" class="btn btn-danger"><i class="fa fa-plus"></i></button></th>
+                      <th><button data-toggle="modal" data-target="#User_New" type="button" class="btn btn-danger"><i class="fa fa-plus"></i></button></th>
                     </tr>
                   </thead>
                   <tbody>

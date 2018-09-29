@@ -236,6 +236,22 @@
                 </div>
               </div>
             </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Meal Voucher</label>
+                <select class="form-control" name="Service_mealVoucher" id="Service_mealVoucher">
+                  <option value="0">Without Meal</option>
+                  <option value="1">With Meal</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Shower Voucher</label>
+                <select class="form-control" name="Service_showerVoucher" id="Service_showerVoucher">
+                  <option value="0">Without Shower</option>
+                  <option value="1">With Shower</option>
+                </select>
+              </div>
+            </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>Choose a campus</label>
@@ -349,6 +365,24 @@
                 </select>
               </div>
             </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Meal Voucher</label>
+                <select class="form-control" name="Service_mealVoucher_Update" id="Service_mealVoucher_Update">
+                  <option value="0">Without Meal</option>
+                  <option value="1">With Meal</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Shower Voucher</label>
+                <select class="form-control" name="Service_showerVoucher_Update" id="Service_showerVoucher_Update">
+                  <option value="0">Without Shower</option>
+                  <option value="1">With Shower</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-body">
@@ -377,7 +411,8 @@
             <div class="col">
               <div class="form-group">
                 <label>First Name</label>
-                <input type="text" class="form-control" name="User_Firstname_Update" id="User_Firstname_Update" placeholder="First Name">
+                <input type="hidden" class="form-control" name="User_ID" id="User_ID">
+                <input type="text" class="form-control" name="User_Firstname_Update" id="User_Firstname_Update" placeholder="First Name" autofocus>
               </div>
             </div>
             <div class="col">
@@ -398,25 +433,11 @@
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <label>Password</label>
-                <input type="password" class="form-control" name="User_Password_Update" id="User_Password_Update" placeholder="Password">
-              </div>
-            </div>
-            <div class="col">
-              <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" class="form-control" name="User_Password2_Update" id="User_Password2_Update" placeholder="Password">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <div class="form-group">
                 <label>Choose Campus</label>
                 <select class="form-control" name="User_Campus_Update" id="User_Campus_Update">
                   <?php $pm->PM_CampusSelectList();?>
                 </select>
-                <small id="User_Campus_Update" class="form-text text-muted">Associate a campus for the user.</small>
+                <small class="form-text text-muted">Associate a campus for the user.</small>
               </div>
             </div>
             <div class="col">
@@ -426,7 +447,7 @@
                   <option value="0">No</option>
                   <option value="1">Yes</option>
                 </select>
-                <small id="User_Campus_Update" class="form-text text-muted">Use the ANPR functions in ParkingManager</small>
+                <small class="form-text text-muted">Use the ANPR functions in ParkingManager</small>
               </div>
             </div>
             <div class="col">
@@ -435,14 +456,97 @@
                 <select class="form-control" name="User_Rank_Update" id="User_Rank_Update">
                   <?php $pm->PM_RankSelectList();?>
                 </select>
-                <small id="User_Rank_Update" class="form-text text-muted">Caution when selecting a rank!</small>
+                <small class="form-text text-muted">Caution when selecting a rank!</small>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-body">
           <div class="modal-footer">
-            <input type="submit" class="btn btn-primary" id="User_Update" value="Save Changes">
+            <input type="submit" class="btn btn-primary" id="User_Save_Update" value="Save Changes">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- New User Modal -->
+<div class="modal fade" id="User_New" tabindex="-1" role="dialog" aria-labelledby="User_New" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="User_New">New User Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="User_newForm">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" class="form-control" name="User_Firstname_New" id="User_Firstname_New" placeholder="First Name" autofocus>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" class="form-control" name="User_Lastname_New" id="User_Lastname_New" placeholder="Last Name">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="text" class="form-control" name="User_Email_New" id="User_Email_New" placeholder="Email Address">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="User_Password_New" id="User_Password_New" placeholder="Password">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Choose Campus</label>
+                <select class="form-control" name="User_Campus_Update" id="User_Campus_New">
+                  <?php $pm->PM_CampusSelectList();?>
+                </select>
+                <small class="form-text text-muted">Associate a campus for the user.</small>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Enable ANPR?</label>
+                <select class="form-control" name="User_ANPR_Update" id="User_ANPR_New">
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+                <small class="form-text text-muted">Use the ANPR functions in ParkingManager</small>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Choose a Rank</label>
+                <select class="form-control" name="User_Rank_Update" id="User_Rank_New">
+                  <?php $pm->PM_RankSelectList();?>
+                </select>
+                <small class="form-text text-muted">Caution when selecting a rank!</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" id="User_Save_New" value="Save Changes">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </form>

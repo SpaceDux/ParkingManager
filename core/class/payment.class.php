@@ -68,7 +68,7 @@
     function list_services() {
       $this->mysql = new MySQL;
       $this->pm = new PM;
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services ORDER BY service_price_gross DESC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services ORDER BY service_expiry, service_price_net ASC");
       $query->execute();
       $result = $query->fetchAll();
 
@@ -78,33 +78,41 @@
         $table .= "<td>".$row['service_price_gross']."</td>";
         $table .= "<td>".$row['service_price_net']."</td>";
         $table .= "<td>".$row['service_expiry']."</td>";
-        if($row['service_cash'] == 1) {
-          $table .= "<td>Yes</td>";
+        if($row['service_mealVoucher'] == 1) {
+          $table .= '<td class="table-success">Yes</td>';
         } else {
-          $table .= "<td>No</td>";
+          $table .= '<td class="table-danger">No</td>';
+        }
+        if($row['service_showerVoucher'] == 1) {
+          $table .= '<td class="table-success">Yes</td>';
+        } else {
+          $table .= '<td class="table-danger">No</td>';
+        }
+        if($row['service_cash'] == 1) {
+          $table .= '<td class="table-success">Yes</td>';
+        } else {
+          $table .= '<td class="table-danger">No</td>';
         }
         if($row['service_card'] == 1) {
-          $table .= "<td>Yes</td>";
+          $table .= '<td class="table-success">Yes</td>';
         } else {
-          $table .= "<td>No</td>";
+          $table .= '<td class="table-danger">No</td>';
         }
         if($row['service_account'] == 1) {
-          $table .= "<td>Yes</td>";
+          $table .= '<td class="table-success">Yes</td>';
         } else {
-          $table .= "<td>No</td>";
+          $table .= '<td class="table-danger">No</td>';
         }
         if($row['service_snap'] == 1) {
-          $table .= "<td>Yes</td>";
+          $table .= '<td class="table-success">Yes</td>';
         } else {
-          $table .= "<td>No</td>";
+          $table .= '<td class="table-danger">No</td>';
         }
         if($row['service_fuel'] == 1) {
-          $table .= "<td>Yes</td>";
+          $table .= '<td class="table-success">Yes</td>';
         } else {
-          $table .= "<td>No</td>";
+          $table .= '<td class="table-danger">No</td>';
         }
-        $table .= "<td>".$row['service_author']."</td>";
-        $table .= "<td>".date("d/m/y H:i", strtotime($row['service_created']))."</td>";
         $table .= "<td>".$row['service_update_author']."</td>";
         $table .= "<td>".$this->pm->PM_CampusInfo($row['service_campus'], "campus_name")."</td>";
         $table .= '<td>
@@ -127,13 +135,13 @@
       $this->mysql = null;
       $this->pm = null;
     }
-    function Add_Service($name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus) {
+    function Add_Service($name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $date = date("Y-m-d H:i");
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       $query->bindParam(1, $name);
       $query->bindParam(2, $price_gross);
       $query->bindParam(3, $price_net);
@@ -147,6 +155,8 @@
       $query->bindParam(11, $date);
       $query->bindParam(12, $fname);
       $query->bindParam(13, $campus);
+      $query->bindParam(14, $meal_voucher);
+      $query->bindParam(15, $shower_voucher);
       $query->execute();
 
       $this->mysql = null;
@@ -172,13 +182,13 @@
 
       $this->mysql = null;
     }
-    function Payment_Service_Update($id, $name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus) {
+    function Payment_Service_Update($id, $name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher) {
       $this->mysql = new MySQL;
       $this->user = new User;
 
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ? WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ?, service_mealVoucher = ?, service_showerVoucher = ? WHERE id = ?");
       $query->bindParam(1, $name);
       $query->bindParam(2, $price_gross);
       $query->bindParam(3, $price_net);
@@ -190,7 +200,9 @@
       $query->bindParam(9, $fuel);
       $query->bindParam(10, $fname);
       $query->bindParam(11, $campus);
-      $query->bindParam(12, $id);
+      $query->bindParam(12, $meal_voucher);
+      $query->bindParam(13, $shower_voucher);
+      $query->bindParam(14, $id);
       $query->execute();
 
       $this->mysql = null;

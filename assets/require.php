@@ -93,7 +93,40 @@
       data: "barrier="+barrier
     });
   }
-  //Search
+  //Payment Service Delete
+  function Payment_Service_Delete(str) {
+    event.preventDefault();
+    var Service = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Delete",
+      type: "POST",
+      data: "Service="+Service
+    })
+    $('#tables').load(' #tables');
+  }
+  //Delete User
+  function User_Delete(str) {
+    event.preventDefault();
+    var User_ID = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=User_Delete",
+      type: "POST",
+      data: {User_ID:User_ID}
+    })
+    $('#tables').load(' #tables');
+  }
+  //Force Logout
+  function Force_Logout(str) {
+    event.preventDefault();
+    var User_ID = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Force_Logout",
+      type: "POST",
+      data: {User_ID:User_ID}
+    })
+    $('#tables').load(' #tables');
+  }
+  //Search Functions
   $(document).ready(function() {
     //ANPR Search
     $('#ANPR_Search').keyup(function(){
@@ -187,26 +220,20 @@
     var Service_Snap = $(".Service_Snap:checked").val();
     var Service_Fuel = $(".Service_Fuel:checked").val();
     var Service_Campus = $("#Service_Campus option:selected").val();
+    var Service_Meal = $("#Service_mealVoucher option:selected").val();
+    var Service_Shower = $("#Service_showerVoucher option:selected").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Add_Service",
       type: "POST",
-      data: "Service_Name="+Service_Name+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus
+      data: "Service_Name="+Service_Name+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower,
+      success:function() {
+        $('#Payment_Service_AddModal').modal('toggle');
+        $('#tables').load(' #tables');
+      }
     });
     event.preventDefault();
-    $('#tables').load(' #tables');
-    $('#Payment_Service_AddModal').modal('toggle');
+    return false;
   });
-  //Payment Service Delete
-  function Payment_Service_Delete(str) {
-    event.preventDefault();
-    var Service = str;
-    $.ajax({
-      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Delete",
-      type: "POST",
-      data: "Service="+Service
-    })
-    $('#tables').load(' #tables');
-  }
   //Payment Service Update GET
   $(document).on('click', '#Payment_Service_Update_Modal', function() {
     var service_id = $(this).data('id');
@@ -227,6 +254,8 @@
         $('#Service_Snap_Update').val(data.service_snap);
         $('#Service_Fuel_Update').val(data.service_fuel);
         $('#Service_Campus_Update').val(data.service_campus);
+        $('#Service_mealVoucher_Update').val(data.service_mealVoucher);
+        $('#Service_showerVoucher_Update').val(data.service_showerVoucher);
         $('#Payment_Service_UpdateModal').modal('toggle');
       }
     })
@@ -244,36 +273,84 @@
     var Service_Snap = $("#Service_Snap_Update option:selected").val();
     var Service_Fuel = $("#Service_Fuel_Update option:selected").val();
     var Service_Campus = $("#Service_Campus_Update option:selected").val();
+    var Service_Meal = $("#Service_mealVoucher_Update option:selected").val();
+    var Service_Shower = $("#Service_showerVoucher_Update option:selected").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Update",
       type: "POST",
-      data: "Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus
+      data: "Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower,
+      success: function(){
+        $('#tables').load(' #tables');
+        $('#Payment_Service_UpdateModal').modal('toggle');
+      }
     });
     event.preventDefault();
-    $('#tables').load(' #tables');
-    $('#Payment_Service_UpdateModal').modal('toggle');
+    return false;
   });
-  //Payment Service Record Update
+  //User Register (Add)
+  $(document).on('click', '#User_Save_New', function(){
+    var User_Firstname_New = $("#User_Firstname_New").val();
+    var User_Lastname_New = $("#User_Lastname_New").val();
+    var User_Email_New = $("#User_Email_New").val();
+    var User_Password_New = $("#User_Password_New").val();
+    var User_Campus_New = $("#User_Campus_New option:selected").val();
+    var User_ANPR_New = $("#User_ANPR_New option:selected").val();
+    var User_Rank_New = $("#User_Rank_New option:selected").val();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=User_Add",
+      type: "POST",
+      data: "User_Firstname_New="+User_Firstname_New+"&User_Lastname_New="+User_Lastname_New+"&User_Email_New="+User_Email_New+"&User_Password_New="+User_Password_New+"&User_ANPR_New="+User_ANPR_New+"&User_Rank_New="+User_Rank_New+"&User_Campus_New="+User_Campus_New,
+      success:function() {
+        event.preventDefault();
+        $('#User_New').modal('toggle');
+        //Reset form code here
+        $('#tables').load(' #tables');
+      }
+    });
+    return false;
+  })
+  //User Update GET
   $(document).on('click', '#User_Update', function(){
-    // var Service_ID = $('#Service_ID_Update').val();
-    // var Service_Name = $("#Service_Name_Update").val();
-    // var Service_Price_Gross = $("#Service_Price_Gross_Update").val();
-    // var Service_Price_Net = $("#Service_Price_Net_Update").val();
-    // var Service_Expiry = $("#Service_Expiry_Update").val();
-    // var Service_Cash = $("#Service_Cash_Update option:selected").val();
-    // var Service_Card = $("#Service_Card_Update option:selected").val();
-    // var Service_Account = $("#Service_Account_Update option:selected").val();
-    // var Service_Snap = $("#Service_Snap_Update option:selected").val();
-    // var Service_Fuel = $("#Service_Fuel_Update option:selected").val();
-    // var Service_Campus = $("#Service_Campus_Update option:selected").val();
-    // $.ajax({
-    //   url: "<?php echo URL?>/ajax-handler.php?handler=Update_User",
-    //   type: "POST",
-    //   data: ""++
-    // });
+    var User_ID = $(this).data('id');
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Update_User_Get",
+      type: "POST",
+      data: {User_ID:User_ID},
+      dataType: "json",
+      success:function(data) {
+        $("#User_ID").val(data.id);
+        $("#User_Firstname_Update").val(data.first_name);
+        $("#User_Lastname_Update").val(data.last_name);
+        $("#User_Email_Update").val(data.email);
+        $("#User_Campus_Update").val(data.campus);
+        $("#User_ANPR_Update").val(data.anpr);
+        $("#User_Rank_Update").val(data.rank);
+        $('#User_UpdateModal').modal('toggle');
+      }
+    });
+  })
+  //User Record Update
+  $(document).on('click', '#User_Save_Update', function(){
+    var User_ID = $('#User_ID').val();
+    var User_Firstname_Update = $("#User_Firstname_Update").val();
+    var User_Lastname_Update = $("#User_Lastname_Update").val();
+    var User_Email_Update = $("#User_Email_Update").val();
+    var User_Campus_Update = $("#User_Campus_Update option:selected").val();
+    var User_ANPR_Update = $("#User_ANPR_Update option:selected").val();
+    var User_Rank_Update = $("#User_Rank_Update option:selected").val();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Update_User",
+      type: "POST",
+      data: "User_ID="+User_ID+"&User_Firstname_Update="+User_Firstname_Update+"&User_Lastname_Update="+User_Lastname_Update+"&User_Email_Update="+User_Email_Update+"&User_Campus_Update="+User_Campus_Update+"&User_ANPR_Update="+User_ANPR_Update+"&User_Rank_Update="+User_Rank_Update,
+      success:function() {
+        event.preventDefault();
+        $('#User_UpdateModal').modal('toggle');
+        //Reset form code here
+        $('#tables').load(' #tables');
+      }
+    });
+    return false;
     event.preventDefault();
-    $('#tables').load(' #tables');
-    $('#User_UpdateModal').modal('toggle');
   });
   //Refresh ANPR (Blue button)
   $('#refreshANPR').click(function(){

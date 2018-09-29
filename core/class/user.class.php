@@ -36,8 +36,6 @@
         $this->PM = null;
       }
     }
-    //Register User
-
     //Logout User, kill session
     function Logout() {
       $this->mysql = new MySQL;
@@ -67,6 +65,7 @@
         }
       }
     }
+    //Check User has a valid session
     function isLogged() {
       if(isset($_SESSION['id'])) {
         return TRUE;
@@ -124,7 +123,7 @@
               </button>
               <div class="dropdown-menu" aria-labelledby="OptionsDrop">
                 <a class="dropdown-item" onClick="User_Delete('.$row['id'].')" href="#">Delete User</a>
-                <a class="dropdown-item" onClick="User_Logout('.$row['id'].')" href="#">Force Logout</a>
+                <a class="dropdown-item" onClick="Force_Logout('.$row['id'].')" href="#">Force Logout</a>
               </div>
             </div>
           </div>
