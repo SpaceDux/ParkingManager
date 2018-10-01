@@ -1,6 +1,6 @@
 <?php
   namespace ParkingManager;
-  
+
   class PM
   {
     #Variables
@@ -227,6 +227,73 @@
       } else {
         echo "ERROR!";
       }
+    }
+    //Get Vehicle type Details
+    function PM_VehicleTypes() {
+      $this->mysql = new MySQL;
+
+      $html = '';
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types ORDER BY campus ASC");
+      $query->execute();
+      $result = $query->fetchAll();
+
+      foreach($result as $row) {
+        if($row['type_allowed'] == 1) {
+          $allowed = '<td class="table-success">Yes</td>';
+        } else {
+          $allowed = '<td class="table-danger">No</td>';
+        }
+
+        $html .= '<tr>';
+        $html .= '<td>'.$row['type_name'].'</td>';
+        $html .= '<td>'.$row['type_shortName'].'</td>';
+        $html .= '<td>'.$row['type_imageURL'].'</td>';
+        $html .= $allowed;
+        $html .= '<td>'.$this->PM_CampusInfo($row['campus'], "campus_name").'</td>';
+        $html .= '<td>
+          <div class="btn-group" role="group" aria-label="Options">
+            <button type="button" class="btn btn-danger" id="Update_Vehicle_TypeBtn" data-id="'.$row['id'].'"><i class="fa fa-cog"></i></button>
+            <button type="button" class="btn btn-danger" onClick="Vehicle_Service_Delete('.$row['id'].')"><i class="fa fa-times"></i></button>
+          </div>
+        </td>';
+        $html .= '</tr>';
+      }
+      echo $html;
+      $this->mysql = null;
+    }
+    //Add Vehicle Type
+    function addVehicleType($name, $short, $url, $campus) {
+      $this->mysql = new MySQL;
+
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_vehicle_types (id, type_name, type_imageURL, type_shortName, type_allowed, campus) VALUES('', ?, ?, ?, '1', ?)");
+      $query->bindParam(1, $name);
+      $query->bindParam(2, $url);
+      $query->bindParam(3, $short);
+      $query->bindParam(4, $campus);
+      $query->execute();
+
+      $this->mysql = null;
+    }
+    //Delete Vehicle Type
+    function Vehicle_Service_Delete($key) {
+      $this->mysql = new MySQL;
+      $query = $this->mysql->dbc->prepare("DELETE FROM pm_vehicle_types WHERE id = ?");
+      $query->bindParam(1, $key);
+      $query->execute();
+
+      $this->mysql = null;
+    }
+    //Vehicle Service Update GET
+    function Vehicle_Service_Update_Get($key) {
+      $this->mysql = new MySQL;
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types WHERE id = ?");
+      $query->bindParam(1, $key);
+      $query->execute();
+      $result = $query->fetch(\PDO::FETCH_ASSOC);
+
+      echo json_encode($result);
+
+      $this->mysql = null;
     }
   }
 ?>

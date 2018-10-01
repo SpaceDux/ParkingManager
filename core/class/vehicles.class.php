@@ -90,9 +90,9 @@
           $result_type = "RIGID";
         } else if($result['veh_type'] == 5) {
           $result_type = "COACH";
-        } else if($result['veh_type'] == 7) {
+        } else if($result['veh_type'] == 6) {
           $result_type = "CAR";
-        } else if($result['veh_type'] == 8) {
+        } else if($result['veh_type'] == 7) {
           $result_type = "M/H";
         } else if($result['veh_type'] == 0) {
           $result_type = "N/A";

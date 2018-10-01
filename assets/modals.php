@@ -554,3 +554,65 @@
     </div>
   </div>
 </div>
+<!-- Update Vehicle Type -->
+<div class="modal fade" id="Update_Vehicle_TypeModal" tabindex="-1" role="dialog" aria-labelledby="Update_Vehicle_TypeModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Update_Vehicle_TypeModal">Update Vehicle Type</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="Update_Vehicle_TypeForm">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Vehicle Type Name</label>
+                <input type="hidden" id="Update_Type_ID" class="form-control" autofocus>
+                <input type="text" class="form-control" id="Update_Type_Name" placeholder="Cab & Trailer" autofocus>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Vehicle Name Short</label>
+                <input type="text" class="form-control" id="Update_Type_Short" placeholder="C/T" style="text-transform: uppercase;">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Vehicle Image URL</label>
+                <input type="text" class="form-control" id="Update_Type_ImageURL" placeholder="http://example.com/img.png">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Choose Campus</label>
+                <select class="form-control" id="Update_Type_Campus">
+                  <?php $pm->PM_CampusSelectList();?>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" id="
+
+
+
+
+
+            " value="Save Changes">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

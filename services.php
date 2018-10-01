@@ -1,6 +1,9 @@
 <?php
   require(__DIR__.'/global.php');
-  $user->redirectRank(3);
+  $user->redirectRank(2);
+  if(isset($_POST['addVehicleTypeName'])) {
+    $pm->addVehicleType($_POST['addVehicleTypeName'], $_POST['addVehicleTypeShort'], $_POST['addVehicleTypeURL'], $_POST['addVehicleTypeCampus']);
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,6 +53,50 @@
                     <?php $payment->list_services();?>
                   </tbody>
                 </table>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                <table class="table table-hover table-bordered">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Vehicle Type Name</th>
+                      <th>Vehicle Type Short</th>
+                      <th>Vehicle Image</th>
+                      <th>Vehicle Allowed</th>
+                      <th>Campus</th>
+                      <th><i class="fa fa-cog"></i></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php $pm->PM_VehicleTypes(); ?>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-md-4">
+                <form action="services.php" method="post">
+                  <div class="form-group">
+                    <label>Vehicle Type Name</label>
+                    <input type="text" class="form-control" name="addVehicleTypeName" value="" placeholder="Vehicle Type Name">
+                  </div>
+                  <div class="form-group">
+                    <label>Vehicle Type Short-name</label>
+                    <input type="text" class="form-control" name="addVehicleTypeShort" value="" placeholder="C/T" style="text-transform:uppercase;">
+                  </div>
+                  <div class="form-group">
+                    <label>Vehicle Type Image URL</label>
+                    <input type="text" class="form-control" name="addVehicleTypeURL" value="" placeholder="http://example.com/img.png">
+                  </div>
+                  <div class="form-group">
+                    <label>Assign Campus</label>
+                    <select class="form-control" name="addVehicleTypeCampus">
+                      <?php $pm->PM_CampusSelectList() ?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Add Type">
+                  </div>
+                </form>
               </div>
             </div>
           </div>

@@ -42,7 +42,7 @@
     $ajax = new PM\AJAX;
     $anpr = new PM\ANPR;
   }
-  
+
   //Checks
   //Redirect for auth
   if(!isset($_SESSION['id']) && basename($_SERVER['PHP_SELF']) != "index.php") {

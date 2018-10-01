@@ -80,7 +80,7 @@
     //Delete Notice
     function deleteNotice($key) {
       $this->mysql = new MySQL;
-      $query = $this->mysql->dbc->prepare("DELETE FROM notices WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("DELETE FROM pm_notices WHERE id = ?");
       $query->bindParam(1, $key);
       $query->execute();
       $this->mysql = null;

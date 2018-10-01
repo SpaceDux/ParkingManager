@@ -48,5 +48,9 @@
     $ajax->User_Delete($_POST['User_ID']);
   } else if($handler == "Force_Logout") {
     $ajax->adminLogout($_POST['User_ID']);
+  } else if($handler == "Vehicle_Service_Delete") {
+    $pm->Vehicle_Service_Delete($_POST['id']);
+  } else if($handler == "Vehicle_Service_Update_Get") {
+    $pm->Vehicle_Service_Update_Get($_POST['type_id']);
   }
 ?>

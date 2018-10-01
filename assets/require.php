@@ -126,6 +126,19 @@
     })
     $('#tables').load(' #tables');
   }
+  //Delete Vehicle TYPE
+  function Vehicle_Service_Delete(str) {
+    event.preventDefault();
+    var id = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Vehicle_Service_Delete",
+      type: "POST",
+      data: {id:id},
+      success: function() {
+        $('#tables').load(' #tables');
+      }
+    });
+  }
   //Search Functions
   $(document).ready(function() {
     //ANPR Search
@@ -257,6 +270,24 @@
         $('#Service_mealVoucher_Update').val(data.service_mealVoucher);
         $('#Service_showerVoucher_Update').val(data.service_showerVoucher);
         $('#Payment_Service_UpdateModal').modal('toggle');
+      }
+    })
+  });
+  //Vehicle Type Update GET
+  $(document).on('click', '#Update_Vehicle_TypeBtn', function() {
+    var type_id = $(this).data('id');
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Vehicle_Service_Update_Get",
+      type: "POST",
+      data: {type_id:type_id},
+      dataType: "json",
+      success:function(data) {
+        $('#Update_Type_ID').val(data.id);
+        $('#Update_Type_Name').val(data.type_name);
+        $('#Update_Type_Short').val(data.type_shortName);
+        $('#Update_Type_ImageURL').val(data.type_imageURL);
+        $('#Update_Type_Campus').val(data.campus);
+        $('#Update_Vehicle_TypeModal').modal('toggle');
       }
     })
   });
