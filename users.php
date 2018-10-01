@@ -1,5 +1,6 @@
 <?php
   require(__DIR__.'/global.php');
+  $user->redirectRank(2);
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -88,6 +88,7 @@
       }
       $this->mysql = null;
     }
+    //Lists all users
     function ListUsers() {
       $this->mysql = new MySQL;
       $this->pm = new PM;
@@ -135,6 +136,16 @@
 
       $this->mysql = null;
       $this->pm = null;
+    }
+    //Check auth level
+    function redirectRank($key) {
+      $rank = $this->userInfo("rank");
+      if($rank >= $key) {
+        //Do nothing
+      } else {
+        header("Location: index");
+        die("NO ACCESS GRANTED");
+      }
     }
   }
 ?>

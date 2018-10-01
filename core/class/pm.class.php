@@ -1,5 +1,6 @@
 <?php
   namespace ParkingManager;
+  
   class PM
   {
     #Variables
@@ -20,6 +21,7 @@
         echo $this->runErr;
       }
     }
+    //Display Notices for the campus
     public function displayNotice() {
       //Have to issue a connection
       $this->mysql = new MySQL;
@@ -40,6 +42,7 @@
       $this->user = null;
       $this->campus = null;
     }
+    //List all notices for the campus
     public function listNotices() {
       //Have to issue a connection
       $this->mysql = new MySQL;
@@ -61,6 +64,7 @@
       $this->user = null;
       $this->campus = null;
     }
+    //Add new notice
     public function newNotice($title, $body, $type) {
       if(isset($title)) {
         $this->mysql = new MySQL;
@@ -83,6 +87,7 @@
         $this->author = null;
       }
     }
+    //PM Navigation
     public function PM_Nav() {
       $this->user = new User;
 
@@ -159,6 +164,7 @@
 
       $this->user = null;
     }
+    //Dropdown menu for Campus
     function PM_CampusSelectList() {
       $this->mysql = new MySQL;
 
@@ -172,6 +178,7 @@
       echo $list;
       $this->mysql = null;
     }
+    //Dropdown menu for Ranks
     function PM_RankSelectList() {
       $this->mysql = new MySQL;
 
@@ -185,6 +192,7 @@
       echo $list;
       $this->mysql = null;
     }
+    //Campus Info
     function PM_CampusInfo($id, $key) {
       $this->mysql = new MySQL;
 
@@ -196,6 +204,7 @@
       return $result[$key];
       $this->mysql = null;
     }
+    //Rank Info
     function PM_RankInfo($id, $key) {
       $this->mysql = new MySQL;
 
@@ -207,7 +216,8 @@
       return $result[$key];
       $this->mysql = null;
     }
-    public function findHour($time1, $time2) {
+    //Return timecalc hour only
+    function findHour($time1, $time2) {
       if(isset($time1)) {
         $d1 = new \DateTime($time1);
         $d2 = new \DateTime($time2);

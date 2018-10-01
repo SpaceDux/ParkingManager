@@ -10,6 +10,7 @@
     private $campus;
     private $pm;
 
+    //List Transactions
     function listTransactions() {
       //Prep Class'
       $this->mysql = new MySQL;
@@ -65,6 +66,7 @@
       $result = $query->fetchAll();
       $this->mysql = null;
     }
+    //List all services
     function list_services() {
       $this->mysql = new MySQL;
       $this->pm = new PM;
@@ -135,6 +137,7 @@
       $this->mysql = null;
       $this->pm = null;
     }
+    //Add services
     function Add_Service($name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher) {
       $this->mysql = new MySQL;
       $this->user = new User;
@@ -162,6 +165,7 @@
       $this->mysql = null;
       $this->user = null;
     }
+    //Delete services
     function DeleteService($key) {
       $this->mysql = new MySQL;
 
@@ -171,6 +175,7 @@
 
       $this->mysql = null;
     }
+    //Payment service GET
     function Payment_Service_Update_Get($id) {
       $this->mysql = new MySQL;
       $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE id = ?");
@@ -182,6 +187,7 @@
 
       $this->mysql = null;
     }
+    //Payment service update
     function Payment_Service_Update($id, $name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher) {
       $this->mysql = new MySQL;
       $this->user = new User;
@@ -209,5 +215,4 @@
       $this->user = null;
     }
   }
-
 ?>

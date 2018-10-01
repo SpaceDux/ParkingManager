@@ -9,13 +9,16 @@
     private $campus;
     private $mssql;
     private $anprCount;
+    private $pm;
 
+    //ANPR Feed
     public function get_anprFeed() {
       //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
       global $_CONFIG;
       $this->user = new User;
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
+        $this->pm = new PM;
         $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
         $query->execute();
         $result = $query->fetchAll();
@@ -28,8 +31,15 @@
           } else if ($this->user->userInfo("campus") == 0) {
             $patch = "";
           }
+          $number = $this->pm->findHour($row['Capture_Date'], date("Y-m-d H:i:s"));
+          $style = "";
+          if($number > 2 && $number < 5) {
+            $style = "table-warning";
+          } else if ($number > 4) {
+            $style = "table-danger";
+          }
           //Begin Table.
-          $table = '<tr>';
+          $table = '<tr class="'.$style.'">';
           $table .= '<td>'.$row['Plate'].'</td>';
           $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
           $table .= '<td><img src="'.$patch.'"></img></td>';
@@ -45,11 +55,13 @@
           echo $table;
         }
         $this->mssql = null;
+        $this->pm = null;
       } else if ($this->user->userInfo("anpr") == 0) {
         //nothing yet.
       }
       $this->user = null;
     }
+    //Paid Feed
     public function get_paidFeed() {
       global $_CONFIG;
       //Prepare Class'
@@ -118,6 +130,7 @@
       $this->user = null;
       $this->campus = null;
     }
+    //Renewal Feed
     public function get_renewalFeed() {
       global $_CONFIG;
       //Prepare Class'
@@ -185,6 +198,7 @@
       $this->user = null;
       $this->campus = null;
     }
+    //Exit Feed
     public function get_exitFeed() {
       global $_CONFIG;
       //Prepare Class'
@@ -238,6 +252,7 @@
       $this->user = null;
       $this->campus = null;
     }
+    //Count ANPR
     public function vehicle_count_anpr() {
       $this->user = new User;
       if($this->user->userInfo("anpr") == 1) {
@@ -253,6 +268,7 @@
         return $this->anprCount = 0;
       }
     }
+    //Count Paid
     public function vehicle_count_paid() {
       //Prepare Class'
       $this->mysql = new MySQL;
@@ -270,6 +286,7 @@
       $this->user = null;
       $this->campus = null;
     }
+    //Count Renewals
     public function vehicle_count_renewals() {
       //Prepare Class'
       $this->mysql = new MySQL;
@@ -286,6 +303,7 @@
       $this->user = null;
       $this->campus = null;
     }
+    //Yard Check list
     public function yardCheck() {
       global $_CONFIG;
       //Prepare Class'
@@ -352,6 +370,7 @@
       $this->user = null;
       $this->campus = null;
     }
+    //Vehicle Info query
     public function vehInfo($what, $id) {
       //Prep Class'
       $this->mysql = new MySQL;
@@ -364,6 +383,7 @@
 
       $this->mysql = null;
     }
+    //Get Vehicle via id
     public function getVehicle($key) {
       global $_CONFIG;
       //Prep Class'
@@ -380,6 +400,7 @@
         header("Location: ".$_CONFIG['pm']['url']."/main");
       }
     }
+    //Get ANPR rec
     public function getANPR_Record($key) {
       global $_CONFIG;
       //Prep Class'
@@ -395,6 +416,7 @@
         header("Location: ".$_CONFIG['pm']['url']."/main");
       }
     }
+    //Time Calculation, displays in a msg
     public function timeCalc($time1, $time2) {
       try {
         if(isset($time1)) {
@@ -409,6 +431,7 @@
         echo "<red>Time Construction error, please check & correct</red>";
       }
     }
+    //Update vehicle record
     public function updateVehicle($key) {
       global $_CONFIG;
       // Prep Class'
@@ -435,11 +458,13 @@
       }
       $this->mysql = null;
     }
+    //check if flagged
     public function isFlagged($key) {
       if($key == 1) {
         echo '<div class="alert alert-warning" role="alert"><i class="fa fa-flag"></i> This vehicle appears to be <b>flagged</b>, please see Comment\'s / Notes</div>';
       }
     }
+    //Check if deleted
     public function isDeleted($key) {
       if($key == 1) {
         echo '<div class="alert alert-danger" role="alert"><i class="fa fa-times"></i> This vehicle has been <b>deleted</b></div>';

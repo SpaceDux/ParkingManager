@@ -191,6 +191,7 @@
 
       $this->mssql = null;
     }
+    //ANPR Get Details for update
     function ANPR_Update_Get($key) {
       $this->mssql = new MSSQL;
       $stmt = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Uniqueref = ?");
@@ -201,6 +202,7 @@
 
       $this->mssql = null;
     }
+    //ANPR Update Details
     function ANPR_Update($key, $plate, $time) {
       $this->mssql = new MSSQL;
       $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ?, Capture_Date = ? WHERE Uniqueref = ?");
@@ -211,6 +213,7 @@
 
       $this->mssql = null;
     }
+    //ANPR Add Vehicle
     function ANPR_Add($plate, $time) {
       //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID)
       $this->mssql = new MSSQL;
@@ -223,6 +226,7 @@
 
       $this->mssql = null;
     }
+    //ANPR Get Images
     function ANPR_Image_Get($key) {
       $this->mssql = new MSSQL;
       $stmt = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Uniqueref = ?");
@@ -232,6 +236,7 @@
 
       $html = '<img src="'.$return['Patch'].'" alt="..." class="img-thumbnail">';
     }
+    //Toggle Barrier
     function ToggleBarrier($key) {
       global $_CONFIG;
       if($key == 1) {
@@ -254,6 +259,7 @@
         curl_close($ch);
       }
     }
+    //Update User GET
     function Update_User_Get($key) {
       $this->mysql = new MySQL;
       $query = $this->mysql->dbc->prepare("SELECT * FROM pm_users WHERE id = ?");
@@ -264,6 +270,7 @@
       echo json_encode($result);
       $this->mysql = null;
     }
+    //Update User Details
     function Update_User($id, $first_name, $last_name, $email, $campus, $anpr, $rank) {
       $this->mysql = new MySQL;
       $query = $this->mysql->dbc->prepare("UPDATE pm_users SET first_name = ?, last_name = ?, email = ?, campus = ?, anpr = ?, rank = ? WHERE id = ?");
@@ -278,6 +285,7 @@
 
       $this->mysql = null;
     }
+    //Register User
     function Register_User($first_name, $last_name, $email, $password, $campus, $anpr, $rank) {
       $this->mysql = new MySQL;
       if(isset($password)) {
@@ -296,6 +304,7 @@
         }
       $this->mysql = null;
     }
+    //User delete
     function User_Delete($id) {
       $this->mysql = new MySQL;
       $query = $this->mysql->dbc->prepare("DELETE FROM pm_users WHERE id = ?");
@@ -304,6 +313,7 @@
 
       $this->mysql = null;
     }
+    //Force Logout
     function adminLogout($id) {
       $this->mysql = new MySQL;
       $query = $this->mysql->dbc->prepare("UPDATE pm_users SET active = 0 WHERE id = ?");
