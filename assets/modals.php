@@ -602,13 +602,7 @@
         </div>
         <div class="modal-body">
           <div class="modal-footer">
-            <input type="submit" class="btn btn-primary" id="
-
-
-
-
-
-            " value="Save Changes">
+            <input type="submit" class="btn btn-primary" id="Update_Type_Save" value="Save Changes">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </form>

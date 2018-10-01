@@ -238,17 +238,10 @@
       $result = $query->fetchAll();
 
       foreach($result as $row) {
-        if($row['type_allowed'] == 1) {
-          $allowed = '<td class="table-success">Yes</td>';
-        } else {
-          $allowed = '<td class="table-danger">No</td>';
-        }
-
         $html .= '<tr>';
         $html .= '<td>'.$row['type_name'].'</td>';
         $html .= '<td>'.$row['type_shortName'].'</td>';
         $html .= '<td>'.$row['type_imageURL'].'</td>';
-        $html .= $allowed;
         $html .= '<td>'.$this->PM_CampusInfo($row['campus'], "campus_name").'</td>';
         $html .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
@@ -264,7 +257,7 @@
     //Add Vehicle Type
     function addVehicleType($name, $short, $url, $campus) {
       $this->mysql = new MySQL;
-
+      $short = strtoupper($short);
       $query = $this->mysql->dbc->prepare("INSERT INTO pm_vehicle_types (id, type_name, type_imageURL, type_shortName, type_allowed, campus) VALUES('', ?, ?, ?, '1', ?)");
       $query->bindParam(1, $name);
       $query->bindParam(2, $url);
@@ -292,6 +285,21 @@
       $result = $query->fetch(\PDO::FETCH_ASSOC);
 
       echo json_encode($result);
+
+      $this->mysql = null;
+    }
+    //Vehicle Service Update
+    function Vehicle_Service_Update($id, $name, $short, $url, $campus) {
+      $this->mysql = new MySQL;
+      $short = strtoupper($short);
+
+      $query = $this->mysql->dbc->prepare("UPDATE pm_vehicle_types SET type_name = ?, type_imageURL = ?, type_shortName = ?, campus = ? WHERE id = ?");
+      $query->bindParam(1, $name);
+      $query->bindParam(2, $url);
+      $query->bindParam(3, $short);
+      $query->bindParam(4, $campus);
+      $query->bindParam(5, $id);
+      $query->execute();
 
       $this->mysql = null;
     }

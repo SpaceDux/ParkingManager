@@ -383,6 +383,25 @@
     return false;
     event.preventDefault();
   });
+  //Vehicle Type update record
+  $(document).on('click', '#Update_Type_Save', function(){
+    var id = $('#Update_Type_ID').val();
+    var name = $('#Update_Type_Name').val();
+    var short = $('#Update_Type_Short').val();
+    var url = $('#Update_Type_ImageURL').val();
+    var campus = $('#Update_Type_Campus').val();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Vehicle_Service_Update_Data",
+      type: "POST",
+      data: "id="+id+"&name="+name+"&short="+short+"&url="+url+"&campus="+campus,
+      success:function(){
+        $('#tables').load(' #tables');
+        $('#Update_Vehicle_TypeModal').modal('toggle');
+      }
+    })
+    event.preventDefault();
+    return false;
+  });
   //Refresh ANPR (Blue button)
   $('#refreshANPR').click(function(){
     $('#anpr').load(' #anpr');

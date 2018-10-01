@@ -63,7 +63,6 @@
                       <th>Vehicle Type Name</th>
                       <th>Vehicle Type Short</th>
                       <th>Vehicle Image</th>
-                      <th>Vehicle Allowed</th>
                       <th>Campus</th>
                       <th><i class="fa fa-cog"></i></th>
                     </tr>
