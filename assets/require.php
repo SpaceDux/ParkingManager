@@ -242,6 +242,7 @@
       success:function() {
         $('#Payment_Service_AddModal').modal('toggle');
         $('#tables').load(' #tables');
+        $('#Payment_Service_AddForm')[0].reset();
       }
     });
     event.preventDefault();
@@ -269,9 +270,40 @@
         $('#Service_Campus_Update').val(data.service_campus);
         $('#Service_mealVoucher_Update').val(data.service_mealVoucher);
         $('#Service_showerVoucher_Update').val(data.service_showerVoucher);
+        $('#Service_Vehicles_Update_Hidden').val(data.service_vehicles);
         $('#Payment_Service_UpdateModal').modal('toggle');
       }
     })
+  });
+  //Payment Service Record Update
+  $(document).on('click', '#Payment_Service_Update', function(){
+    $('#Service_Vehicles_Update_Hidden').val($('#Service_Vehicles_Update').val());
+    var Service_ID = $('#Service_ID_Update').val();
+    var Service_Name = $("#Service_Name_Update").val();
+    var Service_Price_Gross = $("#Service_Price_Gross_Update").val();
+    var Service_Price_Net = $("#Service_Price_Net_Update").val();
+    var Service_Expiry = $("#Service_Expiry_Update").val();
+    var Service_Cash = $("#Service_Cash_Update option:selected").val();
+    var Service_Card = $("#Service_Card_Update option:selected").val();
+    var Service_Account = $("#Service_Account_Update option:selected").val();
+    var Service_Snap = $("#Service_Snap_Update option:selected").val();
+    var Service_Fuel = $("#Service_Fuel_Update option:selected").val();
+    var Service_Campus = $("#Service_Campus_Update option:selected").val();
+    var Service_Meal = $("#Service_mealVoucher_Update option:selected").val();
+    var Service_Shower = $("#Service_showerVoucher_Update option:selected").val();
+    var Service_Vehicles = $("#Service_Vehicles_Update_Hidden").val();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Update",
+      type: "POST",
+      data: "Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower+"&Service_Vehicles="+Service_Vehicles,
+      success: function(){
+        $('#tables').load(' #tables');
+        $('#Payment_Service_UpdateModal').modal('toggle');
+        $('#Payment_Service_UpdateForm')[0].reset();
+      }
+    });
+    event.preventDefault();
+    return false;
   });
   //Vehicle Type Update GET
   $(document).on('click', '#Update_Vehicle_TypeBtn', function() {
@@ -290,33 +322,6 @@
         $('#Update_Vehicle_TypeModal').modal('toggle');
       }
     })
-  });
-  //Payment Service Record Update
-  $(document).on('click', '#Payment_Service_Update', function(){
-    var Service_ID = $('#Service_ID_Update').val();
-    var Service_Name = $("#Service_Name_Update").val();
-    var Service_Price_Gross = $("#Service_Price_Gross_Update").val();
-    var Service_Price_Net = $("#Service_Price_Net_Update").val();
-    var Service_Expiry = $("#Service_Expiry_Update").val();
-    var Service_Cash = $("#Service_Cash_Update option:selected").val();
-    var Service_Card = $("#Service_Card_Update option:selected").val();
-    var Service_Account = $("#Service_Account_Update option:selected").val();
-    var Service_Snap = $("#Service_Snap_Update option:selected").val();
-    var Service_Fuel = $("#Service_Fuel_Update option:selected").val();
-    var Service_Campus = $("#Service_Campus_Update option:selected").val();
-    var Service_Meal = $("#Service_mealVoucher_Update option:selected").val();
-    var Service_Shower = $("#Service_showerVoucher_Update option:selected").val();
-    $.ajax({
-      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Update",
-      type: "POST",
-      data: "Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower,
-      success: function(){
-        $('#tables').load(' #tables');
-        $('#Payment_Service_UpdateModal').modal('toggle');
-      }
-    });
-    event.preventDefault();
-    return false;
   });
   //User Register (Add)
   $(document).on('click', '#User_Save_New', function(){

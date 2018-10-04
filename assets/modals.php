@@ -365,6 +365,8 @@
                 </select>
               </div>
             </div>
+          </div>
+          <div class="row">
             <div class="col">
               <div class="form-group">
                 <label>Meal Voucher</label>
@@ -381,6 +383,17 @@
                   <option value="0">Without Shower</option>
                   <option value="1">With Shower</option>
                 </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label>Select Vehicle Types</label>
+              <div class="form-group">
+                <select multiple class="form-control" name="Service_Vehicles_Update[]" id="Service_Vehicles_Update">
+                  <?php $pm->Vehicle_ServiceTypeSelect() ?>
+                </select>
+                <input type="hidden" name="Service_Vehicles_Update_Hidden" id="Service_Vehicles_Update_Hidden">
               </div>
             </div>
           </div>

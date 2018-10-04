@@ -31,11 +31,11 @@
           } else if ($this->user->userInfo("campus") == 0) {
             $patch = "";
           }
-          $number = $this->pm->findHour($row['Capture_Date'], date("Y-m-d H:i:s"));
+          $number = $this->pm->findHour($row['Capture_Date'], "");
           $style = "";
-          if($number > 2 && $number < 5) {
+          if($number >= 2 && $number < 4) {
             $style = "table-warning";
-          } else if ($number > 4) {
+          } else if ($number >= 4) {
             $style = "table-danger";
           }
           //Begin Table.

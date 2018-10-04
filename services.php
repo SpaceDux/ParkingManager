@@ -2,7 +2,7 @@
   require(__DIR__.'/global.php');
   $user->redirectRank(2);
   if(isset($_POST['addVehicleTypeName'])) {
-    $pm->addVehicleType($_POST['addVehicleTypeName'], $_POST['addVehicleTypeShort'], $_POST['addVehicleTypeURL'], $_POST['addVehicleTypeCampus']);
+    $pm->addVehicleType($_POST['addVehicleTypeName'], $_POST['addVehicleTypeShort'], $_POST['addVehicleTypeURL']);
   }
 ?>
 <!DOCTYPE html>
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/theme.css">
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/bootstrap.css">
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="<?php echo URL ?>/assets/css/jquery.lwMultiSelect.css">
   </head>
   <body>
     <?php $pm->PM_Nav();?>
@@ -63,7 +64,6 @@
                       <th>Vehicle Type Name</th>
                       <th>Vehicle Type Short</th>
                       <th>Vehicle Image</th>
-                      <th>Campus</th>
                       <th><i class="fa fa-cog"></i></th>
                     </tr>
                   </thead>
@@ -87,12 +87,6 @@
                     <input type="text" class="form-control" name="addVehicleTypeURL" value="" placeholder="http://example.com/img.png">
                   </div>
                   <div class="form-group">
-                    <label>Assign Campus</label>
-                    <select class="form-control" name="addVehicleTypeCampus">
-                      <?php $pm->PM_CampusSelectList() ?>
-                    </select>
-                  </div>
-                  <div class="form-group">
                     <input type="submit" class="btn btn-primary" value="Add Type">
                   </div>
                 </form>
@@ -111,6 +105,15 @@
     <script src="<?php echo URL?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
+    <script src="<?php echo URL?>/assets/js/jquery.lwMultiSelect.min.js"></script>
     <?php require(__DIR__."/assets/require.php");?>
+    <script type="text/javascript">
+    $('#Service_Vehicles_Update').lwMultiSelect({
+      addAllText: "Select All",
+      removeAllText: "Remove All",
+      selectedLabel: "Values accepted",
+      maxSelect: 0
+    });
+    </script>
   </body>
 </html>

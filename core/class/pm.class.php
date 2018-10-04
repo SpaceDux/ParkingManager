@@ -223,6 +223,7 @@
         $d2 = new \DateTime($time2);
         $int = $d2->diff($d1);
         $h = $int->h;
+        $h = $h + ($int->days*24);
         return $h;
       } else {
         echo "ERROR!";
@@ -233,7 +234,7 @@
       $this->mysql = new MySQL;
 
       $html = '';
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types ORDER BY campus ASC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types");
       $query->execute();
       $result = $query->fetchAll();
 
@@ -242,7 +243,6 @@
         $html .= '<td>'.$row['type_name'].'</td>';
         $html .= '<td>'.$row['type_shortName'].'</td>';
         $html .= '<td>'.$row['type_imageURL'].'</td>';
-        $html .= '<td>'.$this->PM_CampusInfo($row['campus'], "campus_name").'</td>';
         $html .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
             <button type="button" class="btn btn-danger" id="Update_Vehicle_TypeBtn" data-id="'.$row['id'].'"><i class="fa fa-cog"></i></button>
@@ -254,15 +254,28 @@
       echo $html;
       $this->mysql = null;
     }
+    //Vehicles Select menu
+    function Vehicle_ServiceTypeSelect() {
+      $this->mysql = new MySQL;
+
+      $list = '';
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types");
+      $query->execute();
+      $result = $query->fetchAll();
+      foreach ($result as $row) {
+        $list .= '<option value="'.$row['id'].'">'.$row['type_name'].'</option>';
+      }
+      echo $list;
+      $this->mysql = null;
+    }
     //Add Vehicle Type
-    function addVehicleType($name, $short, $url, $campus) {
+    function addVehicleType($name, $short, $url) {
       $this->mysql = new MySQL;
       $short = strtoupper($short);
-      $query = $this->mysql->dbc->prepare("INSERT INTO pm_vehicle_types (id, type_name, type_imageURL, type_shortName, type_allowed, campus) VALUES('', ?, ?, ?, '1', ?)");
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_vehicle_types (id, type_name, type_imageURL, type_shortName, type_allowed) VALUES('', ?, ?, ?, '1')");
       $query->bindParam(1, $name);
       $query->bindParam(2, $url);
       $query->bindParam(3, $short);
-      $query->bindParam(4, $campus);
       $query->execute();
 
       $this->mysql = null;
@@ -289,16 +302,15 @@
       $this->mysql = null;
     }
     //Vehicle Service Update
-    function Vehicle_Service_Update($id, $name, $short, $url, $campus) {
+    function Vehicle_Service_Update($id, $name, $short, $url) {
       $this->mysql = new MySQL;
       $short = strtoupper($short);
 
-      $query = $this->mysql->dbc->prepare("UPDATE pm_vehicle_types SET type_name = ?, type_imageURL = ?, type_shortName = ?, campus = ? WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("UPDATE pm_vehicle_types SET type_name = ?, type_imageURL = ?, type_shortName = ? WHERE id = ?");
       $query->bindParam(1, $name);
       $query->bindParam(2, $url);
       $query->bindParam(3, $short);
-      $query->bindParam(4, $campus);
-      $query->bindParam(5, $id);
+      $query->bindParam(4, $id);
       $query->execute();
 
       $this->mysql = null;

@@ -7,9 +7,6 @@
     =                                               =
     =        Designed, Developed & owned            =
     =        by ryan@roadkingcafe.uk                =
-    =                                               =
-    =        License:                               =
-    =        TBD                                    =
     =================================================
   */
 
@@ -43,11 +40,11 @@
   $_CONFIG['anpr_holyhead']['imgdir'] = 'http://192.168.3.201/'; //ANPR Server: Image Directory
 
   //ANPR Server Connection Details (MSSQL-Cannock)
-  $_CONFIG['anpr_cannock']['ip'] = ''; //ANPR Server: IP Address
-  $_CONFIG['anpr_cannock']['user'] = ''; //ANPR Server: User
-  $_CONFIG['anpr_cannock']['pass'] = ''; //ANPR Server: Password
+  $_CONFIG['anpr_cannock']['ip'] = '192.168.1.1'; //ANPR Server: IP Address
+  $_CONFIG['anpr_cannock']['user'] = 'pm'; //ANPR Server: User
+  $_CONFIG['anpr_cannock']['pass'] = '1212'; //ANPR Server: Password
   $_CONFIG['anpr_cannock']['port'] = ''; //ANPR Server: Port
-  $_CONFIG['anpr_cannock']['database'] = ''; //ANPR Server: Database name
+  $_CONFIG['anpr_cannock']['database'] = 'ANPR'; //ANPR Server: Database name
 
   $_CONFIG['anpr_cannock']['imgdir'] = ''; //ANPR Server: Image Directory
 
@@ -57,11 +54,10 @@
 
   $_CONFIG['gate_cannock']['out'] = ""; //Exit Barrier IP
 
-
   /*
     ParkingManager Configuration + Settings
   */
-  $_CONFIG['pm']['url'] = 'http://localhost/ParkingManager'; //PM: Url (DOES NOT END WITH '/')
+  $_CONFIG['pm']['url'] = 'http://192.168.3.18/ParkingManager'; //PM: Url (DOES NOT END WITH '/')
   $_CONFIG['pm']['timezone'] = 'Europe/London'; //PM: Set Timezone
   $_CONFIG['pm']['ticket_printer_holyhead'] = 'CITIZEN-PD-Holy'; //Name of the local printer via shared-network
   $_CONFIG['pm']['ticket_printer_cannock'] = 'CITIZEN-PD-Holy'; //Name of the local printer via shared-network

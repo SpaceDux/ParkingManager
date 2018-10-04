@@ -37,7 +37,7 @@
   } else if($handler == "Payment_Service_Update_Get") {
     $payment->Payment_Service_Update_Get($_POST['service_id']);
   } else if($handler == "Payment_Service_Update") {
-    $payment->Payment_Service_Update($_POST['Service_ID'], $_POST['Service_Name'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal'], $_POST['Service_Shower']);
+    $payment->Payment_Service_Update($_POST['Service_ID'], $_POST['Service_Name'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal'], $_POST['Service_Shower'], $_POST['Service_Vehicles']);
   } else if($handler == "Update_User_Get") {
     $ajax->Update_User_Get($_POST['User_ID']);
   } else if($handler == "Update_User") {
