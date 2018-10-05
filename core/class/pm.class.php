@@ -64,6 +64,14 @@
       $this->user = null;
       $this->campus = null;
     }
+    //Delete Notice
+    function PM_DeleteNotice($key) {
+      $this->mysql = new MySQL;
+      $query = $this->mysql->dbc->prepare("DELETE FROM pm_notices WHERE id = ?");
+      $query->bindParam(1, $key);
+      $query->execute();
+      $this->mysql = null;
+    }
     //Add new notice
     public function newNotice($title, $body, $type) {
       if(isset($title)) {
@@ -314,6 +322,54 @@
       $query->execute();
 
       $this->mysql = null;
+    }
+    //Search PM Logs
+    function PM_Search($key) {
+      $string = '%'.$key.'%';
+      $html = '';
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->campus = $this->user->userInfo("campus");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_registration LIKE ? OR veh_trlno LIKE ? AND campus = ? ORDER BY veh_timein DESC LIMIT 200");
+      $stmt->bindParam(1, $string);
+      $stmt->bindParam(2, $string);
+      $stmt->bindParam(3, $this->campus);
+      $stmt->execute();
+      $result = $stmt->fetchAll();
+
+      if(count($result) > 0) {
+        $html .= '
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Company</th>
+                <th scope="col">Registration</th>
+                <th scope="col">Trailer Number</th>
+                <th scope="col">Time IN</th>
+                <th scope="col">Expiry</th>
+              </tr>
+            </thead>
+          ';
+          $html .= '<tbody>';
+          foreach($result as $row) {
+            $html .= '
+              <tr>
+                <td>'.$row['veh_company'].'</td>
+                <td>'.$row['veh_registration'].'</td>
+                <td>'.$row['veh_trlno'].'</td>
+                <td>'.$row['veh_timein'].'</td>
+                <td>'.$row['veh_expires'].'</td>
+              </tr>
+            ';
+          }
+          $html .= '</tbody></table>';
+          echo $html;
+      } else {
+          echo 'No Data Found';
+      }
+      $this->mysql = null;
+      $this->user = null;
+      $this->campus = null;
     }
   }
 ?>

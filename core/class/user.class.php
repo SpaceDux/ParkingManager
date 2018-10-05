@@ -147,5 +147,68 @@
         die("NO ACCESS GRANTED");
       }
     }
+    //Update User GET
+    function Update_User_Get($key) {
+      $this->mysql = new MySQL;
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_users WHERE id = ?");
+      $query->bindParam(1, $key);
+      $query->execute();
+      $result = $query->fetch(\PDO::FETCH_ASSOC);
+
+      echo json_encode($result);
+      $this->mysql = null;
+    }
+    //Update User Details
+    function Update_User($id, $first_name, $last_name, $email, $campus, $anpr, $rank) {
+      $this->mysql = new MySQL;
+      $query = $this->mysql->dbc->prepare("UPDATE pm_users SET first_name = ?, last_name = ?, email = ?, campus = ?, anpr = ?, rank = ? WHERE id = ?");
+      $query->bindParam(1, $first_name);
+      $query->bindParam(2, $last_name);
+      $query->bindParam(3, $email);
+      $query->bindParam(4, $campus);
+      $query->bindParam(5, $anpr);
+      $query->bindParam(6, $rank);
+      $query->bindParam(7, $id);
+      $query->execute();
+
+      $this->mysql = null;
+    }
+    //Register User
+    function Register_User($first_name, $last_name, $email, $password, $campus, $anpr, $rank) {
+      $this->mysql = new MySQL;
+      if(isset($password)) {
+        $query = $this->mysql->dbc->prepare("INSERT INTO pm_users (id, first_name, last_name, email, password, seckey, anpr, rank, campus, active, last_log) VALUES ('', ?, ?, ?, ?, null, ?, ?, ?, '0', ?)");
+        $query->bindParam(1, $first_name);
+        $query->bindParam(2, $last_name);
+        $query->bindParam(3, $email);
+        $query->bindParam(4, password_hash($password, PASSWORD_BCRYPT));
+        $query->bindParam(5, $campus);
+        $query->bindParam(6, $anpr);
+        $query->bindParam(7, $rank);
+        $query->bindParam(8, date("Y-m-d H:i:s"));
+        $query->execute();
+      } else {
+
+      }
+      $this->mysql = null;
+    }
+    //User delete
+    function User_Delete($id) {
+      $this->mysql = new MySQL;
+      $query = $this->mysql->dbc->prepare("DELETE FROM pm_users WHERE id = ?");
+      $query->bindParam(1, $id);
+      $query->execute();
+
+      $this->mysql = null;
+    }
+    //Force USER Logout
+    function adminLogout($id) {
+      $this->mysql = new MySQL;
+      $query = $this->mysql->dbc->prepare("UPDATE pm_users SET active = 0 WHERE id = ?");
+      $query->bindParam(1, $id);
+      $query->execute();
+
+      $this->mysql = null;
+    }
   }
 ?>

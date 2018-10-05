@@ -79,29 +79,11 @@
         } else {
           $flag = '';
         }
-        //Determine Type & echo name type.
-        if($result['veh_type'] == 1) {
-          $result_type = "C/T";
-        } else if($result['veh_type'] == 2) {
-          $result_type = "CAB";
-        } else if($result['veh_type'] == 3) {
-          $result_type =  "TRL";
-        } else if($result['veh_type'] == 4) {
-          $result_type = "RIGID";
-        } else if($result['veh_type'] == 5) {
-          $result_type = "COACH";
-        } else if($result['veh_type'] == 6) {
-          $result_type = "CAR";
-        } else if($result['veh_type'] == 7) {
-          $result_type = "M/H";
-        } else if($result['veh_type'] == 0) {
-          $result_type = "N/A";
-        }
         //Begin Table content
         $table = '<tr>';
         $table .= '<td>'.$flag.$result['veh_company'].'</td>';
         $table .= '<td>'.$result['veh_registration'].'</td>';
-        $table .= '<td>'.$result_type.'</td>';
+        $table .= '<td>'.$this->Vehicle_Type_Info($result['veh_type'], "type_shortName").'</td>';
         $table .= '<td>'.date("d/H:i", strtotime($result['veh_timein'])).'</td>';
         $table .= '<td>TICKET ID</td>';
         $table .= '<td>
@@ -149,29 +131,11 @@
         } else {
           $flag = '';
         }
-        //Determine Type & echo name type.
-        if($result['veh_type'] == 1) {
-          $result_type = "C/T";
-        } else if($result['veh_type'] == 2) {
-          $result_type = "CAB";
-        } else if($result['veh_type'] == 3) {
-          $result_type =  "TRL";
-        } else if($result['veh_type'] == 4) {
-          $result_type = "RIGID";
-        } else if($result['veh_type'] == 5) {
-          $result_type = "COACH";
-        } else if($result['veh_type'] == 7) {
-          $result_type = "CAR";
-        } else if($result['veh_type'] == 8) {
-          $result_type = "M/H";
-        } else if($result['veh_type'] == 0) {
-          $result_type = "N/A";
-        }
         //Begin Table content
         $table = '<tr>';
         $table .= '<td>'.$flag.$result['veh_company'].'</td>';
         $table .= '<td>'.$result['veh_registration'].'</td>';
-        $table .= '<td>'.$result_type.'</td>';
+        $table .= '<td>'.$this->Vehicle_Type_Info($result['veh_type'], "type_shortName").'</td>';
         $table .= '<td>'.date("d/H:i", strtotime($result['veh_timein'])).'</td>';
         $table .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
@@ -217,29 +181,11 @@
         } else {
           $flag = '';
         }
-        //Determine Type & echo name type.
-        if($result['veh_type'] == 1) {
-          $result_type = "C/T";
-        } else if($result['veh_type'] == 2) {
-          $result_type = "CAB";
-        } else if($result['veh_type'] == 3) {
-          $result_type =  "TRL";
-        } else if($result['veh_type'] == 4) {
-          $result_type = "RIGID";
-        } else if($result['veh_type'] == 5) {
-          $result_type = "COACH";
-        } else if($result['veh_type'] == 7) {
-          $result_type = "CAR";
-        } else if($result['veh_type'] == 8) {
-          $result_type = "M/H";
-        } else if($result['veh_type'] == 0) {
-          $result_type = "N/A";
-        }
         //Begin Table content
         $table = '<tr>';
         $table .= '<td>'.$flag.$result['veh_company'].'</td>';
         $table .= '<td>'.$result['veh_registration'].'</td>';
-        $table .= '<td>'.$result_type.'</td>';
+        $table .= '<td>'.$this->Vehicle_Type_Info($result['veh_type'], "type_shortName").'</td>';
         $table .= '<td>'.date("d/H:i", strtotime($result['veh_timeout'])).'</td>';
         $table .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
@@ -317,24 +263,6 @@
       $query->execute();
       $result = $query->fetchAll();
       foreach ($result as $row) {
-        //Determine Type & echo name type.
-        if($row['veh_type'] == 1) {
-          $result_type = "C/T";
-        } else if($row['veh_type'] == 2) {
-          $result_type = "CAB";
-        } else if($row['veh_type'] == 3) {
-          $result_type =  "TRL";
-        } else if($row['veh_type'] == 4) {
-          $result_type = "RIGID";
-        } else if($row['veh_type'] == 5) {
-          $result_type = "COACH";
-        } else if($row['veh_type'] == 7) {
-          $result_type = "CAR";
-        } else if($row['veh_type'] == 8) {
-          $result_type = "M/H";
-        } else if($row['veh_type'] == 0) {
-          $result_type = "N/A";
-        }
         if($row['veh_flagged'] == 1) {
           $flag = '<i class="fa fa-flag" style="color: red;"></i>';
         } else {
@@ -343,7 +271,7 @@
         $table = "<tr>";
         $table .= "<td>".$flag .$row['veh_company']."</td>";
         $table .= "<td>".$row['veh_registration']."</td>";
-        $table .= "<td>".$result_type."</td>";
+        $table .= "<td>".$this->Vehicle_Type_Info($result['veh_type'], "type_shortName")."</td>";
         $table .= '<td>'.date("d/H:i", strtotime($row['veh_timein'])).'</td>';
         $table .= "<td>MOST RECENT TICKET</td>";
         $table .= '<td><input style="height: 30px;width: 30px; line-height: 30px;" type="checkbox">
@@ -431,6 +359,75 @@
         echo "<red>Time Construction error, please check & correct</red>";
       }
     }
+    //Ajax Request Exit Vehicle (SENT VIA Ajax Handler)
+    function Vehicle_Exit($key) {
+      //Prep Class
+      $this->mysql = new MySQL;
+      //Query
+      $date = date('Y-m-d H:i:s');
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_column = '3', veh_timeout = :timeout WHERE id = :id");
+      $stmt->bindParam(':timeout', $date);
+      $stmt->bindParam(':id', $key);
+      $stmt->execute();
+      $this->mysql = null;
+    }
+    //Ajax Request Mark Renewal
+    function Vehicle_MarkRenewal($key) {
+      //Prep Class
+      $this->mysql = new MySQL;
+      $this->vehicle = new Vehicles;
+      //Query
+      $renewalResult = $this->vehicle->vehInfo("veh_column", $key);
+      if($renewalResult == 1) {
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_column = '2' WHERE id = :id");
+        $stmt->bindParam(':id', $key);
+        $stmt->execute();
+      } else {
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_column = '1' WHERE id = :id");
+        $stmt->bindParam(':id', $key);
+        $stmt->execute();
+      }
+      $this->mysql = null;
+      $this->vehicle = null;
+    }
+    //Ajax setFlag
+    function Vehicle_Flag($key) {
+      //Prep Class
+      $this->mysql = new MySQL;
+      $this->vehicle = new Vehicles;
+      //Query
+      $flagResult = $this->vehicle->vehInfo("veh_flagged", $key);
+      if($flagResult == 0) {
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_flagged = '1' WHERE id = :id");
+        $stmt->bindParam(':id', $key);
+        $stmt->execute();
+      } else {
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_flagged = '0' WHERE id = :id");
+        $stmt->bindParam(':id', $key);
+        $stmt->execute();
+      }
+      $this->mysql = null;
+      $this->vehicle = null;
+    }
+    //Ajax deleteVehicle
+    function Vehicle_Delete($key) {
+      //Prep class;
+      $this->mysql = new MySQL;
+      $this->vehicle = new Vehicles;
+      //Query
+      $deleteResult = $this->vehicle->vehInfo("veh_deleted", $key);
+      if($deleteResult == 0) {
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_deleted = '1' WHERE id = :id");
+        $stmt->bindParam(':id', $key);
+        $stmt->execute();
+      } else {
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_deleted = '0' WHERE id = :id");
+        $stmt->bindParam(':id', $key);
+        $stmt->execute();
+      }
+      $this->mysql = null;
+      $this->vehicle = null;
+    }
     //Update vehicle record
     public function updateVehicle($key) {
       global $_CONFIG;
@@ -456,6 +453,17 @@
       } else {
         //Do nothing
       }
+      $this->mysql = null;
+    }
+    function Vehicle_Type_Info($id, $what) {
+      $this->mysql = new MySQL;
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types WHERE id = ?");
+      $stmt->bindParam(1, $id);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      return $result[$what];
+
       $this->mysql = null;
     }
     //check if flagged
