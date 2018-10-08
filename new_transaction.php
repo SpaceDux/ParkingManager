@@ -2,15 +2,14 @@
   require(__DIR__.'/global.php');
   $ANPRKey = $_GET['Uniqueref'];
   //Get ANPR Details
-  $anpr = $vehicles->getANPR_Record($ANPRKey);
-
+  $anpr_rec = $anpr->getANPR_Record($ANPRKey);
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Parking Manager: New Transaction | <?php echo $anpr['Plate'] ?></title>
+    <title>Parking Manager: New Transaction | <?php echo $anpr_rec['Plate'] ?></title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/theme.css">
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/bootstrap.css">
@@ -22,22 +21,78 @@
     <div id="wrapper">
       <div class="whereami">
         <div class="page">
-          <a href="<?php echo URL ?>/index">Dashboard</a> <small>\\\</small> New Transaction <small>\\\</small> <b><?php echo $anpr['Plate']?></b>
+          <a href="<?php echo URL ?>/index">Dashboard</a> <small>\\\</small> New Transaction <small>\\\</small> <b><?php echo $anpr_rec['Plate']?></b>
         </div>
       </div>
       <div class="updateContent">
         <div class="container">
-          <form action="" method="post">
+          <form action="new_transaction.php" method="post">
             <div class="row">
-              <div class="col-md-5">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </div>
-              <div class="col-md-5">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </div>
-              <div class="col-md-2">
+               <div class="col-md-5">
+                 <div class="form-group">
+                   <label for="NT_Vehicle_Plate">Vehicle Registration</label>
+                   <input type="text" class="form-control" name="NT_Vehicle_Plate" id="NT_Vehicle_Plate" placeholder="Vehicle Registration" value="<?php echo $anpr_rec['Plate']?>" style="text-transform: uppercase;" readonly>
+                   <input type="hidden" class="form-control" name="NT_ANPRKey" id="NT_ANPRKey" value="<?php echo $ANPRKey ?>" style="text-transform: uppercase;" readonly>
+                 </div>
+                 <div class="form-group">
+                   <label for="NT_Vehicle_Type">Company Name</label>
+                   <input type="text" class="form-control" name="NT_Company_Name" id="NT_Company_Name" placeholder="Company Name" style="text-transform: uppercase;" required autofocus>
+                 </div>
+                 <div class="form-group">
+                   <label for="NT_Vehicle_Type">Trailer Number</label>
+                   <input type="text" class="form-control" name="NT_Vehicle_Trailer" id="NT_Vehicle_Trailer" placeholder="Trailer Number" style="text-transform: uppercase;">
+                 </div>
+                 <div class="form-group">
+                   <label for="NT_Vehicle_Type">Vehicle Type</label>
+                   <select class="form-control" name="NT_Vehicle_Type" id="NT_Vehicle_Type" required>
+                     <option value="unchecked">-- Please choose a vehicle type --</option>
+                     <?php $vehicles->Vehicle_TypeSelect() ?>
+                   </select>
+                 </div>
+                 <div class="form-group">
+                   <label for="">ANPR Images</label>
+                   <br>
+                   <?php $anpr->ANPR_GetImage($ANPRKey) ?>
+                 </div>
+               </div>
+               <div class="col-md-7">
+                 <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                      <a class="nav-item nav-link active" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>
+                      <a class="nav-item nav-link" id="nav-card-tab" tabindex="-1" data-toggle="tab" href="#nav-card" role="tab" aria-controls="nav-card" aria-selected="false"><i class="far fa-credit-card"></i> Card</a>
+                      <a class="nav-item nav-link" id="nav-account-tab" tabindex="-1" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="false"><i class="fas fa-id-card"></i> Account</a>
+                    </div>
+                  </nav>
+                  <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-cash" role="tabpanel" aria-labelledby="nav-cash-tab">
+                      <div class="form-group">
+                        <label>Select a Cash Service</label>
+                        <div id="Cash_Dropdown">
 
-              </div>
+                        </div>
+                        <small class="form-text text-muted"> Ensure this is correct! </small>
+                        <div class="form-group" style="margin-top: 130px;">
+                          <input type="submit" id="NT_Process_Cash" name="NT_Process_Cash" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-card" role="tabpanel" aria-labelledby="nav-card-tab">
+                      <div class="form-group">
+                        <label>Select a Card Service</label>
+                        <div id="Card_Dropdown">
+
+                        </div>
+                        <small class="form-text text-muted"> Ensure this is correct! </small>
+                      </div>
+                      <div class="form-group" style="margin-top: 130px;">
+                        <input type="submit" name="NT_Process_Card" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
+                      //Account Transactions
+                    </div>
+                  </div>
+               </div>
             </div>
           </form>
         </div>

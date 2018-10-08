@@ -108,27 +108,6 @@
     </div>
   </div>
 </div>
-<!-- ANPR Images Modal -->
-<div class="modal fade" id="ANPR_ImageModal" tabindex="-1" role="dialog" aria-labelledby="ANPR_UpdateModal" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ANPR_ImageModal">ANPR Images</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div id="ANPR_Images">
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- Add Payment Service -->
 <div class="modal fade" id="Payment_Service_AddModal" tabindex="-1" role="dialog" aria-labelledby="Payment_Service_AddModal" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -142,12 +121,20 @@
       <div class="modal-body">
         <form id="Payment_Service_AddForm">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col">
               <div class="form-group">
                 <label for="Service_Name">Service Name</label>
-                <input type="text" id="Service_Name" class="form-control" placeholder="24Hour Cab Only" autofocus required>
+                <input type="text" id="Service_Name" class="form-control" placeholder="24Hour Cab Only with Meal" autofocus required>
               </div>
             </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="Service_Ticket_Name">Service Ticket Name</label>
+                <input type="text" id="Service_Ticket_Name" class="form-control" placeholder="24Hour Cab Only" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-md-6">
               <label for="Service_Price_Gross">Service Price (Gross)</label>
               <div class="input-group mb-3">
@@ -285,13 +272,21 @@
       <div class="modal-body">
         <form id="Payment_Service_UpdateForm">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col">
               <div class="form-group">
                 <label for="Service_Name">Service Name</label>
                 <input type="hidden" id="Service_ID_Update" class="form-control" autofocus>
                 <input type="text" id="Service_Name_Update" class="form-control" placeholder="24Hour Cab Only" autofocus>
               </div>
             </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="Service_Ticket_Name_Update">Service Ticket Name</label>
+                <input type="text" id="Service_Ticket_Name_Update" class="form-control" placeholder="24Hour Cab Only">
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-md-6">
               <label for="Service_Price_Gross">Service Price (Gross)</label>
               <div class="input-group mb-3">
@@ -390,10 +385,9 @@
             <div class="col">
               <label>Select Vehicle Types</label>
               <div class="form-group">
-                <select multiple class="form-control" name="Service_Vehicles_Update[]" id="Service_Vehicles_Update">
+                <select class="form-control" name="Service_Vehicles_Update" id="Service_Vehicles_Update">
                   <?php $pm->Vehicle_ServiceTypeSelect() ?>
                 </select>
-                <input type="hidden" name="Service_Vehicles_Update_Hidden" id="Service_Vehicles_Update_Hidden">
               </div>
             </div>
           </div>

@@ -57,7 +57,7 @@
   /*
     ParkingManager Configuration + Settings
   */
-  $_CONFIG['pm']['url'] = 'http://192.168.3.18/ParkingManager'; //PM: Url (DOES NOT END WITH '/')
+  $_CONFIG['pm']['url'] = 'http://localhost/ParkingManager'; //PM: Url (DOES NOT END WITH '/')
   $_CONFIG['pm']['timezone'] = 'Europe/London'; //PM: Set Timezone
   $_CONFIG['pm']['ticket_printer_holyhead'] = 'CITIZEN-PD-Holy'; //Name of the local printer via shared-network
   $_CONFIG['pm']['ticket_printer_cannock'] = 'CITIZEN-PD-Holy'; //Name of the local printer via shared-network

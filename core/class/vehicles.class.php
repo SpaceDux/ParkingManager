@@ -69,22 +69,22 @@
       $this->user = new User;
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column = 1 AND campus = ? AND veh_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
       foreach ($key as $result) {
-        if($result['veh_flagged'] == 1) {
+        if($result['parked_flag'] == 1) {
           $flag = '<i class="fa fa-flag" style="color: red;"></i> ';
         } else {
           $flag = '';
         }
         //Begin Table content
         $table = '<tr>';
-        $table .= '<td>'.$flag.$result['veh_company'].'</td>';
-        $table .= '<td>'.$result['veh_registration'].'</td>';
-        $table .= '<td>'.$this->Vehicle_Type_Info($result['veh_type'], "type_shortName").'</td>';
-        $table .= '<td>'.date("d/H:i", strtotime($result['veh_timein'])).'</td>';
+        $table .= '<td>'.$flag.$result['parked_company'].'</td>';
+        $table .= '<td>'.$result['parked_plate'].'</td>';
+        $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
+        $table .= '<td>'.date("d/H:i", strtotime($result['parked_timein'])).'</td>';
         $table .= '<td>TICKET ID</td>';
         $table .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
@@ -121,22 +121,22 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column = 2 AND campus = ? AND veh_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 2 AND parked_campus = ? AND parked_deleted < 1");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
       foreach ($key as $result) {
-        if($result['veh_flagged'] == 1) {
+        if($result['parked_flag'] == 1) {
           $flag = '<i class="fa fa-flag" style="color: red;"></i> ';
         } else {
           $flag = '';
         }
         //Begin Table content
         $table = '<tr>';
-        $table .= '<td>'.$flag.$result['veh_company'].'</td>';
-        $table .= '<td>'.$result['veh_registration'].'</td>';
-        $table .= '<td>'.$this->Vehicle_Type_Info($result['veh_type'], "type_shortName").'</td>';
-        $table .= '<td>'.date("d/H:i", strtotime($result['veh_timein'])).'</td>';
+        $table .= '<td>'.$flag.$result['parked_company'].'</td>';
+        $table .= '<td>'.$result['parked_plate'].'</td>';
+        $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
+        $table .= '<td>'.date("d/H:i", strtotime($result['parked_timein'])).'</td>';
         $table .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
           <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
@@ -171,22 +171,22 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column = 3 AND campus = ? AND veh_deleted < 1 LIMIT 30");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 3 AND parked_campus = ? AND parked_deleted < 1 LIMIT 30");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
       foreach ($key as $result) {
-        if($result['veh_flagged'] == 1) {
+        if($result['parked_flag'] == 1) {
           $flag = '<i class="fa fa-flag" style="color: red;"></i> ';
         } else {
           $flag = '';
         }
         //Begin Table content
         $table = '<tr>';
-        $table .= '<td>'.$flag.$result['veh_company'].'</td>';
-        $table .= '<td>'.$result['veh_registration'].'</td>';
-        $table .= '<td>'.$this->Vehicle_Type_Info($result['veh_type'], "type_shortName").'</td>';
-        $table .= '<td>'.date("d/H:i", strtotime($result['veh_timeout'])).'</td>';
+        $table .= '<td>'.$flag.$result['parked_company'].'</td>';
+        $table .= '<td>'.$result['parked_plate'].'</td>';
+        $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
+        $table .= '<td>'.date("d/H:i", strtotime($result['parked_timein'])).'</td>';
         $table .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
             <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
@@ -222,7 +222,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column < 3 AND campus = ? AND veh_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column < 3 AND parked_campus = ? AND parked_deleted < 1");
       $query->bindParam(1, $this->campus);
       $query->execute();
 
@@ -240,60 +240,11 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column = 2 AND campus = ? AND veh_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 2 AND parked_campus = ? AND parked_deleted < 1");
       $query->bindParam(1, $this->campus);
       $query->execute();
       return $query->rowCount();
 
-      $this->mysql = null;
-      $this->user = null;
-      $this->campus = null;
-    }
-    //Yard Check list
-    public function yardCheck() {
-      global $_CONFIG;
-      //Prepare Class'
-      $this->mysql = new MySQL;
-      $this->user = new User;
-      //Set Campus.
-      $this->campus = $this->user->userInfo('campus');
-      //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_column < 3 AND campus = ? AND veh_deleted < 1");
-      $query->bindParam(1, $this->campus);
-      $query->execute();
-      $result = $query->fetchAll();
-      foreach ($result as $row) {
-        if($row['veh_flagged'] == 1) {
-          $flag = '<i class="fa fa-flag" style="color: red;"></i>';
-        } else {
-          $flag = '';
-        }
-        $table = "<tr>";
-        $table .= "<td>".$flag .$row['veh_company']."</td>";
-        $table .= "<td>".$row['veh_registration']."</td>";
-        $table .= "<td>".$this->Vehicle_Type_Info($result['veh_type'], "type_shortName")."</td>";
-        $table .= '<td>'.date("d/H:i", strtotime($row['veh_timein'])).'</td>';
-        $table .= "<td>MOST RECENT TICKET</td>";
-        $table .= '<td><input style="height: 30px;width: 30px; line-height: 30px;" type="checkbox">
-          <div class="btn-group" role="group" aria-label="Options">
-            <a target="_blank" href="'.$_CONFIG['pm']['url']."/update/".$row['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
-            <div class="btn-group" role="group">
-              <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-              </button>
-              <div class="dropdown-menu" aria-labelledby="OptionsDrop">
-                <a class="dropdown-item" href="#">Exit Vehicle</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Mark Renewal</a>
-                <a class="dropdown-item" href="#">Flag Vehicle</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">View ANPR Record</a>
-              </div>
-            </div>
-          </div>
-        </td>';
-        echo $table;
-      }
       $this->mysql = null;
       $this->user = null;
       $this->campus = null;
@@ -303,7 +254,7 @@
       //Prep Class'
       $this->mysql = new MySQL;
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE id = ?");
       $query->bindParam(1, $id);
       $query->execute();
       $result = $query->fetch(\PDO::FETCH_ASSOC);
@@ -318,29 +269,13 @@
       $this->mysql = new MySQL;
       //Query
       if(isset($key)) {
-        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE id = ?");
+        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE id = ?");
         $query->bindParam(1, $key);
         $query->execute();
         return $query->fetch(\PDO::FETCH_ASSOC);
         $this->mysql = null;
       } else {
         //If they visit "update.php" without a vehicle ID, return to dashboard
-        header("Location: ".$_CONFIG['pm']['url']."/main");
-      }
-    }
-    //Get ANPR rec
-    public function getANPR_Record($key) {
-      global $_CONFIG;
-      //Prep Class'
-      $this->mssql = new MSSQL;
-      //Query
-      if(isset($key)) {
-        $query = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Uniqueref = ?");
-        $query->bindParam(1, $key);
-        $query->execute();
-        return $query->fetch(\PDO::FETCH_ASSOC);
-        $this->mssql = null;
-      } else {
         header("Location: ".$_CONFIG['pm']['url']."/main");
       }
     }
@@ -365,7 +300,7 @@
       $this->mysql = new MySQL;
       //Query
       $date = date('Y-m-d H:i:s');
-      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_column = '3', veh_timeout = :timeout WHERE id = :id");
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_column = '3', parked_timeout = :timeout WHERE id = :id");
       $stmt->bindParam(':timeout', $date);
       $stmt->bindParam(':id', $key);
       $stmt->execute();
@@ -377,13 +312,13 @@
       $this->mysql = new MySQL;
       $this->vehicle = new Vehicles;
       //Query
-      $renewalResult = $this->vehicle->vehInfo("veh_column", $key);
+      $renewalResult = $this->vehicle->vehInfo("parked_column", $key);
       if($renewalResult == 1) {
-        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_column = '2' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_column = '2' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       } else {
-        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_column = '1' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_column = '1' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       }
@@ -396,13 +331,13 @@
       $this->mysql = new MySQL;
       $this->vehicle = new Vehicles;
       //Query
-      $flagResult = $this->vehicle->vehInfo("veh_flagged", $key);
+      $flagResult = $this->vehicle->vehInfo("parked_flag", $key);
       if($flagResult == 0) {
-        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_flagged = '1' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_flag = '1' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       } else {
-        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_flagged = '0' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_flag = '0' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       }
@@ -415,13 +350,13 @@
       $this->mysql = new MySQL;
       $this->vehicle = new Vehicles;
       //Query
-      $deleteResult = $this->vehicle->vehInfo("veh_deleted", $key);
+      $deleteResult = $this->vehicle->vehInfo("parked_deleted", $key);
       if($deleteResult == 0) {
-        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_deleted = '1' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_deleted = '1' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       } else {
-        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_deleted = '0' WHERE id = :id");
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_deleted = '0' WHERE id = :id");
         $stmt->bindParam(':id', $key);
         $stmt->execute();
       }
@@ -435,7 +370,7 @@
       $this->mysql = new MySQL;
       //Query
       if(isset($_POST['upd_reg'])) {
-        $query = $this->mysql->dbc->prepare("UPDATE pm_parkedlog SET veh_registration = ?, veh_company = ?, veh_trlno = ?, veh_type = ?, veh_timein = ?, veh_timeout = ?, veh_column = ?, veh_comment = ? WHERE id = ?");
+        $query = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_plate = ?, parked_company = ?, parked_trailer = ?, parked_type = ?, parked_timein = ?, parked_timeout = ?, parked_column = ?, parked_comment = ? WHERE id = ?");
         $query->bindParam(1, strtoupper($_POST['upd_reg']));
         $query->bindParam(2, strtoupper($_POST['upd_company']));
         $query->bindParam(3, strtoupper($_POST['upd_trl']));
@@ -463,6 +398,20 @@
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
       return $result[$what];
+
+      $this->mysql = null;
+    }
+    //Vehicle Types Select dropdown menu
+    function Vehicle_TypeSelect() {
+      $this->mysql = new MySQL;
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types");
+      $stmt->execute();
+
+      $html = "";
+      foreach ($stmt->fetchAll() as $row) {
+        $html .= '<option value="'.$row['id'].'">'.$row['type_name'].'</option>';
+      }
+      echo $html;
 
       $this->mysql = null;
     }

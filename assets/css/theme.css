@@ -412,6 +412,10 @@ table {
 .table-dark .table-danger {
   color: #000;
 }
+.Balance {
+  height: 200px;
+  width: 200px;
+}
 footer {
   height: auto;
   width: 100%;

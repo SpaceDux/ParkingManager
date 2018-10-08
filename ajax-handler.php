@@ -29,13 +29,13 @@
   } else if($handler == "ANPR_Barrier") {
     $anpr->ToggleBarrier($_POST['barrier']);
   } else if($handler == "Payment_Add_Service") {
-    $payment->Add_Service($_POST['Service_Name'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal'], $_POST['Service_Shower']);
+    $payment->Add_Service($_POST['Service_Name'], $_POST['Service_Ticket'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal'], $_POST['Service_Shower']);
   } else if($handler == "Payment_Service_Delete") {
     $payment->DeleteService($_POST['Service']);
   } else if($handler == "Payment_Service_Update_Get") {
     $payment->Payment_Service_Update_Get($_POST['service_id']);
   } else if($handler == "Payment_Service_Update") {
-    $payment->Payment_Service_Update($_POST['Service_ID'], $_POST['Service_Name'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal'], $_POST['Service_Shower'], $_POST['Service_Vehicles']);
+    $payment->Payment_Service_Update($_POST['Service_ID'], $_POST['Service_Name'], $_POST['Service_Ticket'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal'], $_POST['Service_Shower'], $_POST['Service_Vehicles']);
   } else if($handler == "Update_User_Get") {
     $user->Update_User_Get($_POST['User_ID']);
   } else if($handler == "Update_User") {
@@ -52,5 +52,11 @@
     $pm->Vehicle_Service_Update_Get($_POST['type_id']);
   } else if($handler == "Vehicle_Service_Update_Data") {
     $pm->Vehicle_Service_Update($_POST['id'], $_POST['name'], $_POST['short'], $_POST['url'], $_POST['campus']);
+  } else if($handler == "Payment_Service_Cash_Dropdown_Get") {
+    $payment->Payment_ServiceSelect_Cash($_POST['vehicle_type']);
+  } else if($handler == "Payment_Service_Card_Dropdown_Get") {
+    $payment->Payment_ServiceSelect_Card($_POST['vehicle_type']);
+  } else if($handler == "Transaction_Proccess_Cash") {
+    $payment->Transaction_Proccess_Cash($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Type'], $_POST['Service']);
   }
 ?>

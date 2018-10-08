@@ -235,10 +235,11 @@
     var Service_Campus = $("#Service_Campus option:selected").val();
     var Service_Meal = $("#Service_mealVoucher option:selected").val();
     var Service_Shower = $("#Service_showerVoucher option:selected").val();
+    var Service_Ticket = $("#Service_Ticket_Name").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Add_Service",
       type: "POST",
-      data: "Service_Name="+Service_Name+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower,
+      data: "Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower,
       success:function() {
         $('#Payment_Service_AddModal').modal('toggle');
         $('#tables').load(' #tables');
@@ -259,6 +260,7 @@
       success:function(data) {
         $('#Service_ID_Update').val(data.id);
         $('#Service_Name_Update').val(data.service_name);
+        $('#Service_Ticket_Name_Update').val(data.service_ticket_name);
         $('#Service_Price_Gross_Update').val(data.service_price_gross);
         $('#Service_Price_Net_Update').val(data.service_price_net);
         $('#Service_Expiry_Update').val(data.service_expiry);
@@ -270,7 +272,7 @@
         $('#Service_Campus_Update').val(data.service_campus);
         $('#Service_mealVoucher_Update').val(data.service_mealVoucher);
         $('#Service_showerVoucher_Update').val(data.service_showerVoucher);
-        $('#Service_Vehicles_Update_Hidden').val(data.service_vehicles);
+        $('#Service_Vehicles_Update').val(data.service_vehicles);
         $('#Payment_Service_UpdateModal').modal('toggle');
       }
     })
@@ -291,11 +293,12 @@
     var Service_Campus = $("#Service_Campus_Update option:selected").val();
     var Service_Meal = $("#Service_mealVoucher_Update option:selected").val();
     var Service_Shower = $("#Service_showerVoucher_Update option:selected").val();
-    var Service_Vehicles = $("#Service_Vehicles_Update_Hidden").val();
+    var Service_Vehicles = $("#Service_Vehicles_Update").val();
+    var Service_Ticket = $("#Service_Ticket_Name_Update").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Update",
       type: "POST",
-      data: "Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower+"&Service_Vehicles="+Service_Vehicles,
+      data:"Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower+"&Service_Vehicles="+Service_Vehicles,
       success: function(){
         $('#tables').load(' #tables');
         $('#Payment_Service_UpdateModal').modal('toggle');
@@ -318,7 +321,6 @@
         $('#Update_Type_Name').val(data.type_name);
         $('#Update_Type_Short').val(data.type_shortName);
         $('#Update_Type_ImageURL').val(data.type_imageURL);
-        $('#Update_Type_Campus').val(data.campus);
         $('#Update_Vehicle_TypeModal').modal('toggle');
       }
     })
@@ -406,6 +408,71 @@
     })
     event.preventDefault();
     return false;
+  });
+  //Payment Service CASH Dropdown
+  $(document).on('change', '#NT_Vehicle_Type', function(){
+    var veh_id = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Cash_Dropdown').empty();
+    } else {
+      $('#Cash_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Cash_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id},
+        dataType: "text",
+        success:function(data) {
+          $('#Cash_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Payment Service CARD Dropdown
+  $(document).on('change', '#NT_Vehicle_Type', function(){
+    var veh_id = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Card_Dropdown').empty();
+    } else {
+      $('#Card_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Card_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id},
+        dataType: "text",
+        success:function(data) {
+          $('#Card_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Process Payments
+  //Cash
+  $(document).on('click', '#NT_Process_Cash', function(){
+    event.preventDefault();
+    var ANPRKey = $('#NT_ANPRKey').val();
+    var Plate = $('#NT_Vehicle_Plate').val();
+    var Company = $('#NT_Company_Name').val();
+    var Trailer = $('#NT_Vehicle_Trailer').val();
+    var Type = $('#NT_Vehicle_Type').val();
+    var Service = $('#NT_Payment_Service_Cash').val();
+    if(Plate == "") {
+      alert("A Vehicle registration is required!");
+    } else if(Company == "") {
+      alert("Company Name is required!");
+    } else if(Type === "unchecked") {
+      alert("Vehicle Type is required!");
+    } else if (Service === "unchecked") {
+      alert("Payment Service is required!");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Cash",
+        type: "POST",
+        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Type="+Type+"&Service="+Service,
+        success:function() {
+          alert("Data successfully accepted by the Server");
+        }
+      });
+    }
   });
   //Refresh ANPR (Blue button)
   $('#refreshANPR').click(function(){
