@@ -221,13 +221,13 @@
       $this->user = null;
     }
     //Payment Service Info
-    function Payment_ServiceInfo($key) {
+    function Payment_ServiceInfo($key, $what) {
       $this->mysql = new MySQL;
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE id = ?");
       $stmt->bindParam(1, $key);
       $stmt->execute();
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-      return $result[$key];
+      return $result[$what];
 
       $this->mysql = null;
     }
@@ -243,7 +243,11 @@
       //User Details
       $name = $this->user->userInfo("first_name");
       $campus = $this->user->userInfo("campus");
-
+      //Payment Service Details
+      $service_expiry = $this->Payment_ServiceInfo($Service, "service_expiry");
+      $service_name = $this->Payment_ServiceInfo($Service, "service_name");
+      $price_gross = $this->Payment_ServiceInfo($Service, "service_price_gross");
+      $price_net = $this->Payment_ServiceInfo($Service, "service_price_net");
 
 
       //SQL for Payment (13)
