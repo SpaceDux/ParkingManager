@@ -467,9 +467,68 @@
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Cash",
         type: "POST",
-        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Type="+Type+"&Service="+Service,
+        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service,
         success:function() {
-          alert("Data successfully accepted by the Server");
+          window.location.replace("<?php echo URL?>/main");//Relocate
+        }
+      });
+    }
+  });
+  //Card
+  $(document).on('click', '#NT_Process_Card', function(){
+    event.preventDefault();
+    var ANPRKey = $('#NT_ANPRKey').val();
+    var Plate = $('#NT_Vehicle_Plate').val();
+    var Company = $('#NT_Company_Name').val();
+    var Trailer = $('#NT_Vehicle_Trailer').val();
+    var Type = $('#NT_Vehicle_Type').val();
+    var Service = $('#NT_Payment_Service_Card').val();
+    if(Plate == "") {
+      alert("A Vehicle registration is required!");
+    } else if(Company == "") {
+      alert("Company Name is required!");
+    } else if(Type === "unchecked") {
+      alert("Vehicle Type is required!");
+    } else if (Service === "unchecked") {
+      alert("Payment Service is required!");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Card",
+        type: "POST",
+        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service,
+        success:function() {
+          window.location.replace("<?php echo URL?>/main");//Relocate
+        }
+      });
+    }
+  });
+  //Account
+  $(document).on('click', '#NT_Process_Account', function(){
+    event.preventDefault();
+    var ANPRKey = $('#NT_ANPRKey').val();
+    var Plate = $('#NT_Vehicle_Plate').val();
+    var Company = $('#NT_Company_Name').val();
+    var Trailer = $('#NT_Vehicle_Trailer').val();
+    var Type = $('#NT_Vehicle_Type').val();
+    var Service = $('#NT_Payment_Service_Account').val();
+    var Account_ID = $('#NT_Account').val();
+    if(Plate == "") {
+      alert("A Vehicle registration is required!");
+    } else if(Company == "") {
+      alert("Company Name is required!");
+    } else if(Type === "unchecked") {
+      alert("Vehicle Type is required!");
+    } else if (Service === "unchecked") {
+      alert("Payment Service is required!");
+    } else if (Account_ID === "unchecked") {
+      alert("Please select an Account");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Account",
+        type: "POST",
+        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Account="+Account_ID,
+        success:function() {
+          window.location.replace("<?php echo URL?>/main");
         }
       });
     }

@@ -19,7 +19,7 @@
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
         $this->pm = new PM;
-        $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
+        $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
         $query->execute();
         $result = $query->fetchAll();
         foreach ($result as $row) {

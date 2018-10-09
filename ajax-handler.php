@@ -57,6 +57,10 @@
   } else if($handler == "Payment_Service_Card_Dropdown_Get") {
     $payment->Payment_ServiceSelect_Card($_POST['vehicle_type']);
   } else if($handler == "Transaction_Proccess_Cash") {
-    $payment->Transaction_Proccess_Cash($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Type'], $_POST['Service']);
+    $payment->Transaction_Proccess_Cash($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service']);
+  } else if($handler == "Transaction_Proccess_Card") {
+    $payment->Transaction_Proccess_Card($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service']);
+  } else if($handler == "Transaction_Proccess_Card") {
+    $payment->Transaction_Proccess_Account($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Account_ID']);
   }
 ?>

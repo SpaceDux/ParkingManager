@@ -22,7 +22,7 @@
 
   //Define CONFIG settings
   define('URL', $_CONFIG['pm']['url']);
-  define('VER', "3.0.8");
+  define('VER', "3.1.0");
   define('Footer', 'ParkingManager (PM) &copy; 2018 | Designed, developed & owned by <a href="mailto:ryan@roadkingcafe.uk"><b>Ryan. W</b></a> with Roadking Truckstops &copy;');
 
 

@@ -85,7 +85,7 @@
                         <small class="form-text text-muted"> Ensure this is correct! </small>
                       </div>
                       <div class="form-group" style="margin-top: 130px;">
-                        <input type="submit" name="NT_Process_Card" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                        <input type="submit" name="NT_Process_Card" id="NT_Process_Card" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                       </div>
                     </div>
                     <div class="tab-pane fade" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
