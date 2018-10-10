@@ -113,7 +113,7 @@
                   <th scope="col">Registration</th>
                   <th scope="col">Type</th>
                   <th scope="col">Time IN</th>
-                  <th scope="col">Ticket ID</th>
+                  <th scope="col">T.ID</th>
                   <th scope="col float"><i class="fa fa-cog"></i></th>
                 </tr>
               </thead>

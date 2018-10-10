@@ -22,6 +22,9 @@
       <div class="whereami">
         <div class="page">
           <a href="<?php echo URL ?>/index">Dashboard</a> <small>\\\</small> New Transaction <small>\\\</small> <b><?php echo $anpr_rec['Plate']?></b>
+          <div class="float-right">
+            <?php $vehicles->timeCalc($anpr_rec['Capture_Date'], "");?>
+          </div>
         </div>
       </div>
       <div class="updateContent">
@@ -56,42 +59,83 @@
                  </div>
                </div>
                <div class="col-md-7">
+               <?php if ($vehicles->isVehicleAccount($anpr_rec['Plate']) == TRUE) { //ACCOUNTS
+                 $acc_id = $pm->PM_FleetInfo($anpr_rec['Plate'], "account_id");
+                 ?>
                  <nav>
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                      <a class="nav-item nav-link active" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>
-                      <a class="nav-item nav-link" id="nav-card-tab" tabindex="-1" data-toggle="tab" href="#nav-card" role="tab" aria-controls="nav-card" aria-selected="false"><i class="far fa-credit-card"></i> Card</a>
-                      <a class="nav-item nav-link" id="nav-account-tab" tabindex="-1" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="false"><i class="fas fa-id-card"></i> Account</a>
-                    </div>
-                  </nav>
-                  <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-cash" role="tabpanel" aria-labelledby="nav-cash-tab">
-                      <div class="form-group">
-                        <label>Select a Cash Service</label>
-                        <div id="Cash_Dropdown">
+                   <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                     <a class="nav-item nav-link active" id="nav-account-tab" tabindex="-1" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="false"><i class="fas fa-id-card"></i> Account</a>
+                   </div>
+                 </nav>
+                 <div class="tab-content" id="nav-tabContent">
+                   <div class="tab-pane fade show active" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
+                     <div class="form-group">
+                       <label>Select a Account Service</label>
+                       <div id="Account_Dropdown">
 
-                        </div>
-                        <small class="form-text text-muted"> Ensure this is correct! </small>
-                        <div class="form-group" style="margin-top: 130px;">
-                          <input type="submit" id="NT_Process_Cash" name="NT_Process_Cash" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="tab-pane fade" id="nav-card" role="tabpanel" aria-labelledby="nav-card-tab">
-                      <div class="form-group">
-                        <label>Select a Card Service</label>
-                        <div id="Card_Dropdown">
+                       </div>
+                       <small class="form-text text-muted"> Ensure this is correct! </small>
+                     </div>
+                     <div class="form-group">
+                       <label>Select an account</label>
+                       <?php $pm->PM_Accounts_Dropdown_Set($acc_id); ?>
+                     </div>
+                     <div class="form-group" style="margin-top: 100px;">
+                       <input type="submit" name="NT_Process_Account" id="NT_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                     </div>
+                   </div>
+                 </div>
+               <?php } else {  //NON ACCOUNT?>
+                 <nav>
+                   <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                     <a class="nav-item nav-link active" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>
+                     <a class="nav-item nav-link" id="nav-card-tab" tabindex="-1" data-toggle="tab" href="#nav-card" role="tab" aria-controls="nav-card" aria-selected="false"><i class="far fa-credit-card"></i> Card</a>
+                     <a class="nav-item nav-link" id="nav-account-tab" tabindex="-1" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="false"><i class="fas fa-id-card"></i> Account</a>
+                   </div>
+                 </nav>
+                 <div class="tab-content" id="nav-tabContent">
+                   <div class="tab-pane fade show active" id="nav-cash" role="tabpanel" aria-labelledby="nav-cash-tab">
+                     <div class="form-group">
+                       <label>Select a Cash Service</label>
+                       <div id="Cash_Dropdown">
 
-                        </div>
-                        <small class="form-text text-muted"> Ensure this is correct! </small>
-                      </div>
-                      <div class="form-group" style="margin-top: 130px;">
-                        <input type="submit" name="NT_Process_Card" id="NT_Process_Card" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
-                      </div>
-                    </div>
-                    <div class="tab-pane fade" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
-                      //Account Transactions
-                    </div>
-                  </div>
+                       </div>
+                       <small class="form-text text-muted"> Ensure this is correct! </small>
+                       <div class="form-group" style="margin-top: 130px;">
+                         <input type="submit" id="NT_Process_Cash" name="NT_Process_Cash" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                       </div>
+                     </div>
+                   </div>
+                   <div class="tab-pane fade" id="nav-card" role="tabpanel" aria-labelledby="nav-card-tab">
+                     <div class="form-group">
+                       <label>Select a Card Service</label>
+                       <div id="Card_Dropdown">
+
+                       </div>
+                       <small class="form-text text-muted"> Ensure this is correct! </small>
+                     </div>
+                     <div class="form-group" style="margin-top: 130px;">
+                       <input type="submit" name="NT_Process_Card" id="NT_Process_Card" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                     </div>
+                   </div>
+                   <div class="tab-pane fade" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
+                     <div class="form-group">
+                       <label>Select a Account Service</label>
+                       <div id="Account_Dropdown">
+
+                       </div>
+                       <small class="form-text text-muted"> Ensure this is correct! </small>
+                     </div>
+                     <div class="form-group">
+                       <label>Select an account</label>
+                       <?php $pm->PM_Accounts_Dropdown(); ?>
+                     </div>
+                     <div class="form-group" style="margin-top: 130px;">
+                       <input type="submit" name="NT_Process_Account" id="NT_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                     </div>
+                   </div>
+                 </div>
+              <?php } ?>
                </div>
             </div>
           </form>

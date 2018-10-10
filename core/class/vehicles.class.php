@@ -12,7 +12,7 @@
     private $pm;
 
     //ANPR Feed
-    public function get_anprFeed() {
+    function get_anprFeed() {
       //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
       global $_CONFIG;
       $this->user = new User;
@@ -62,7 +62,7 @@
       $this->user = null;
     }
     //Paid Feed
-    public function get_paidFeed() {
+    function get_paidFeed() {
       global $_CONFIG;
       //Prepare Class'
       $this->mysql = new MySQL;
@@ -113,7 +113,7 @@
       $this->campus = null;
     }
     //Renewal Feed
-    public function get_renewalFeed() {
+    function get_renewalFeed() {
       global $_CONFIG;
       //Prepare Class'
       $this->mysql = new MySQL;
@@ -163,7 +163,7 @@
       $this->campus = null;
     }
     //Exit Feed
-    public function get_exitFeed() {
+    function get_exitFeed() {
       global $_CONFIG;
       //Prepare Class'
       $this->mysql = new MySQL;
@@ -199,7 +199,7 @@
       $this->campus = null;
     }
     //Count ANPR
-    public function vehicle_count_anpr() {
+    function vehicle_count_anpr() {
       $this->user = new User;
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
@@ -215,7 +215,7 @@
       }
     }
     //Count Paid
-    public function vehicle_count_paid() {
+    function vehicle_count_paid() {
       //Prepare Class'
       $this->mysql = new MySQL;
       $this->user = new User;
@@ -233,7 +233,7 @@
       $this->campus = null;
     }
     //Count Renewals
-    public function vehicle_count_renewals() {
+    function vehicle_count_renewals() {
       //Prepare Class'
       $this->mysql = new MySQL;
       $this->user = new User;
@@ -250,7 +250,7 @@
       $this->campus = null;
     }
     //Vehicle Info query
-    public function vehInfo($what, $id) {
+    function vehInfo($what, $id) {
       //Prep Class'
       $this->mysql = new MySQL;
       //Query
@@ -263,7 +263,7 @@
       $this->mysql = null;
     }
     //Get Vehicle via id
-    public function getVehicle($key) {
+    function getVehicle($key) {
       global $_CONFIG;
       //Prep Class'
       $this->mysql = new MySQL;
@@ -280,7 +280,7 @@
       }
     }
     //Time Calculation, displays in a msg
-    public function timeCalc($time1, $time2) {
+    function timeCalc($time1, $time2) {
       try {
         if(isset($time1)) {
           $d1 = new \DateTime($time1);
@@ -364,7 +364,7 @@
       $this->vehicle = null;
     }
     //Update vehicle record
-    public function updateVehicle($key) {
+    function updateVehicle($key) {
       global $_CONFIG;
       // Prep Class'
       $this->mysql = new MySQL;
@@ -390,6 +390,7 @@
       }
       $this->mysql = null;
     }
+    //Vehicle Type info
     function Vehicle_Type_Info($id, $what) {
       $this->mysql = new MySQL;
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types WHERE id = ?");
@@ -416,16 +417,45 @@
       $this->mysql = null;
     }
     //check if flagged
-    public function isFlagged($key) {
+    function isFlagged($key) {
       if($key == 1) {
         echo '<div class="alert alert-warning" role="alert"><i class="fa fa-flag"></i> This vehicle appears to be <b>flagged</b>, please see Comment\'s / Notes</div>';
       }
     }
     //Check if deleted
-    public function isDeleted($key) {
+    function isDeleted($key) {
       if($key == 1) {
         echo '<div class="alert alert-danger" role="alert"><i class="fa fa-times"></i> This vehicle has been <b>deleted</b></div>';
       }
+    }
+    //Check if vehicle belongs to account.
+    function isVehicleAccount($plate) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $campus = $this->user->userInfo("campus");
+
+      $sql1 = $this->mysql->dbc->prepare("SELECT account_id FROM pm_accounts_fleet WHERE account_vehicle_plate = ?");
+      $sql1->bindParam(1, $plate);
+      $sql1->execute();
+      $result1 = $sql1->fetch(\PDO::FETCH_ASSOC);
+      $count = $sql1->rowCount();
+      if ($count > 0) {
+        $id = $result1['account_id'];
+
+        $sql2 = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ? AND campus = ? AND account_suspended = 0");
+        $sql2->bindParam(1, $id);
+        $sql2->bindParam(2, $campus);
+        $sql2->execute();
+        $count2 = $sql2->rowCount();
+        if ($count2 > 0) {
+          return TRUE;
+        }
+      } else {
+        return FALSE;
+      }
+
+      $this->mysql = null;
+      $this->user = null;
     }
   }
  ?>

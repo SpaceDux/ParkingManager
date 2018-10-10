@@ -219,13 +219,13 @@
       $this->mysql = null;
       $this->user = null;
     }
-    //Payment Service Card Select menu
+    //Payment Service Account Select menu
     function Payment_ServiceSelect_Account($vehicle) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_vehicles = ? AND service_card = 1 AND service_campus = ?");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_vehicles = ? AND service_account = 1 AND service_campus = ?");
       $stmt->bindParam(1, $vehicle);
       $stmt->bindParam(2, $campus);
       $stmt->execute();
@@ -405,5 +405,78 @@
         //ignore
       }
     }
+    //Transaction for Account
+    function Transaction_Proccess_Account($ANPRKey, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $Account_ID) {
+      if(!empty($ANPRKey)) {
+        $this->mysql = new MySQL;
+        $this->mssql = new MSSQL;
+        $this->anpr = new ANPR;
+        $this->user = new User;
+        //Misc dets
+        $current_date = date("Y-m-d H:i:s");
+        $Company = strtoupper($Company);
+        $Plate = strtoupper($Plate);
+        //ANPR Dets
+        $anprInfo = $this->anpr->getANPR_Record($ANPRKey);
+        $ANPR_Date = $anprInfo['Capture_Date'];
+        //User Details
+        $name = $this->user->userInfo("first_name");
+        $campus = $this->user->userInfo("campus");
+        //Payment Service Details
+        $service_expiry = $this->Payment_ServiceInfo($Service, "service_expiry");
+        $service_name = $this->Payment_ServiceInfo($Service, "service_name");
+        $price_gross = $this->Payment_ServiceInfo($Service, "service_price_gross");
+        $price_net = $this->Payment_ServiceInfo($Service, "service_price_net");
+        $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
+        $random_number = mt_rand(1, 9999);
+        $payment_ref = $Plate."-".$random_number;
+
+        //SQL Payment
+        $sqlPayment = $this->mysql->dbc->prepare("INSERT INTO pm_payments VALUES ('', :ANPRKey, :Plate, :Company, '3', :Service_Name, :Price_Gross, :Price_Net, :Author, :Cur_Date, :Account_ID, :Campus, :PayRef)");
+        $sqlPayment->bindParam(':ANPRKey', $ANPRKey);
+        $sqlPayment->bindParam(':Plate', $Plate);
+        $sqlPayment->bindParam(':Company', $Company);
+        $sqlPayment->bindParam(':Service_Name', $service_name);
+        $sqlPayment->bindParam(':Price_Gross', $price_gross);
+        $sqlPayment->bindParam(':Price_Net', $price_net);
+        $sqlPayment->bindParam(':Author', $name);
+        $sqlPayment->bindParam(':Cur_Date', $current_date);
+        $sqlPayment->bindParam(':Account_ID', $Account_ID);
+        $sqlPayment->bindParam(':Campus', $campus);
+        $sqlPayment->bindParam(':PayRef', $payment_ref);
+        $sqlPayment->execute();
+
+        $ref = $this->PaymentRef($Plate);
+
+        //ANPR DB SQL
+        $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
+        $sql_anprTbl->bindParam(1, $expiry);
+        $sql_anprTbl->bindParam(2, $ANPRKey);
+        $sql_anprTbl->execute();
+
+        //SQL for Parking Log 15
+        $sql_parkedLog = $this->mysql->dbc->prepare("INSERT INTO pm_parking_log VALUES ('', :ANPRKey, :PayRef, :Plate, :Trailer, :Vehicle_Type, :Company, '1', :TimeIN, '', :Expiry, '0', '0', :Account_ID, :Name, :Campus, '')");
+        $sql_parkedLog->bindParam(':ANPRKey', $ANPRKey);
+        $sql_parkedLog->bindParam(':PayRef', $ref);
+        $sql_parkedLog->bindParam(':Plate', $Plate);
+        $sql_parkedLog->bindParam(':Trailer', $Trailer);
+        $sql_parkedLog->bindParam(':Vehicle_Type', $Vehicle_Type);
+        $sql_parkedLog->bindParam(':Company', $Company);
+        $sql_parkedLog->bindParam(':TimeIN', $ANPR_Date);
+        $sql_parkedLog->bindParam(':Expiry', $expiry);
+        $sql_parkedLog->bindParam(':Account_ID', $Account_ID);
+        $sql_parkedLog->bindParam(':Name', $name);
+        $sql_parkedLog->bindParam(':Campus', $campus);
+        $sql_parkedLog->execute();
+
+        $this->mysql = null;
+        $this->mssql = null;
+        $this->anpr = null;
+        $this->user = null;
+      } else {
+        //ignore
+      }
+    }
+    
   }
 ?>

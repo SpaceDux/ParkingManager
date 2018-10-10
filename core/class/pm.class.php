@@ -12,7 +12,7 @@
     private $author;
 
     //Error Handler, used to gently display user based errors.
-    public function ErrorHandler() {
+    function ErrorHandler() {
       if(isset($this->err)) {
         $this->runErr .= '<div class="alert alert-danger" role="alert">';
         $this->runErr .= '<b>Oops: </b>';
@@ -22,7 +22,7 @@
       }
     }
     //Display Notices for the campus
-    public function displayNotice() {
+    function displayNotice() {
       //Have to issue a connection
       $this->mysql = new MySQL;
       $this->user = new User;
@@ -43,7 +43,7 @@
       $this->campus = null;
     }
     //List all notices for the campus
-    public function listNotices() {
+    function listNotices() {
       //Have to issue a connection
       $this->mysql = new MySQL;
       $this->user = new User;
@@ -73,7 +73,7 @@
       $this->mysql = null;
     }
     //Add new notice
-    public function newNotice($title, $body, $type) {
+    function newNotice($title, $body, $type) {
       if(isset($title)) {
         $this->mysql = new MySQL;
         $this->user = new User;
@@ -96,7 +96,7 @@
       }
     }
     //PM Navigation
-    public function PM_Nav() {
+    function PM_Nav() {
       $this->user = new User;
 
       //Top Bar
@@ -370,6 +370,71 @@
       $this->mysql = null;
       $this->user = null;
       $this->campus = null;
+    }
+    //PM Account Info
+    function PM_AccountInfo($key, $what) {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ?");
+      $stmt->bindParam(1, $key);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      return $result[$what];
+
+      $this->mysql = null;
+    }
+    //PM Account Dropdown
+    function PM_Accounts_Dropdown() {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $campus = $this->user->userInfo("campus");
+
+      $list = '';
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE campus = ?");
+      $query->bindParam(1, $campus);
+      $query->execute();
+      $result = $query->fetchAll();
+      $list .= '<select class="form-control form-control-lg" id="PM_Account_Select">';
+      $list .= '<option value="unchecked">-- Please choose an account --</option>';
+      foreach ($result as $row) {
+        if($row['account_suspended'] == 1) {
+          $list .= '<option style="color: red;" value="unchecked">'.$row['account_name'].' - currently suspended</option>';
+        } else {
+          $list .= '<option value="'.$row['id'].'">'.$row['account_name'].'</option>';
+        }
+      }
+      $list .= '</select>';
+      echo $list;
+      $this->mysql = null;
+      $this->user = null;
+    }
+    //Get Account info from Fleet plate
+    function PM_Accounts_Dropdown_Set($key) {
+      $this->mysql = new MySQL;
+
+      $list = '';
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ?");
+      $query->bindParam(1, $key);
+      $query->execute();
+      $result = $query->fetch(\PDO::FETCH_ASSOC);
+      $list .= '<select class="form-control form-control-lg" id="PM_Account_Select">';
+      $list .= '<option value="'.$result['id'].'">'.$result['account_name'].'</option>';
+      $list .= '</select>';
+      echo $list;
+      $this->mysql = null;
+    }
+    //Get Account info from Fleet plate
+    function PM_FleetInfo($plate, $what) {
+      $this->mysql = new MySQL;
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts_fleet WHERE account_vehicle_plate = ?");
+      $stmt->bindParam(1, $plate);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      return $result[$what];
+
+      $this->mysql = null;
     }
   }
 ?>

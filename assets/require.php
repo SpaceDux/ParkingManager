@@ -445,6 +445,24 @@
       })
     }
   });
+  //Payment Service ACCOUNT Dropdown
+  $(document).on('change', '#NT_Vehicle_Type', function(){
+    var veh_id = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Account_Dropdown').empty();
+    } else {
+      $('#Account_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Account_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id},
+        dataType: "text",
+        success:function(data) {
+          $('#Account_Dropdown').html(data);
+        }
+      })
+    }
+  });
   //Process Payments
   //Cash
   $(document).on('click', '#NT_Process_Cash', function(){
@@ -511,7 +529,7 @@
     var Trailer = $('#NT_Vehicle_Trailer').val();
     var Type = $('#NT_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_Account').val();
-    var Account_ID = $('#NT_Account').val();
+    var Account_ID = $('#PM_Account_Select').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
     } else if(Company == "") {

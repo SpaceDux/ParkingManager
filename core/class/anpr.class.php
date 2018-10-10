@@ -94,7 +94,7 @@
 
       $plate = strtoupper($plate);
 
-      $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane 01', :capDate, null, '5858', '0', null, '0', :plate2, null, null, :capDate2, null, '')");
+      $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane 01', :capDate, null, 'RoadKing - Parc Cybi Holyhead', '0', null, '0', :plate2, null, null, :capDate2, null, '')");
       $stmt->bindParam(':plate', $plate);
       $stmt->bindParam(':capDate', $time);
       $stmt->bindParam(':plate2', $plate);
