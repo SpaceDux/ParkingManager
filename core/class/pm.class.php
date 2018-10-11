@@ -122,7 +122,7 @@
       $nav .=    '<div class="userInfo">';
       $nav .=      '<div class="userName">'.$this->user->userInfo('first_name').' <b>'.substr($this->user->userInfo('last_name'), 0, 1).'</b></div>';
       $nav .=      '<div class="userLocation">';
-      $nav .=        $this->PM_CampusInfo($this->user->userInfo("campus"), "campus_name");
+      $nav .=        $this->PM_SiteInfo($this->user->userInfo("campus"), "site_name");
       $nav .=      '</div>';
       $nav .=      '<div class="pmVer">'.VER.'</div>';
       $nav .=    '</div>';
@@ -173,21 +173,21 @@
       $this->user = null;
     }
     //Dropdown menu for Campus
-    function PM_CampusSelectList() {
+    function PM_Sites_Dropdown() {
       $this->mysql = new MySQL;
 
       $list = '';
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_campus ORDER BY id ASC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_sites ORDER BY id ASC");
       $query->execute();
       $result = $query->fetchAll();
       foreach ($result as $row) {
-        $list .= '<option value="'.$row['id'].'">'.$row['campus_name'].'</option>';
+        $list .= '<option value="'.$row['id'].'">'.$row['site_name'].'</option>';
       }
       echo $list;
       $this->mysql = null;
     }
     //Dropdown menu for Ranks
-    function PM_RankSelectList() {
+    function PM_Ranks_Dropdown() {
       $this->mysql = new MySQL;
 
       $list = '';
@@ -201,10 +201,10 @@
       $this->mysql = null;
     }
     //Campus Info
-    function PM_CampusInfo($id, $key) {
+    function PM_SiteInfo($id, $key) {
       $this->mysql = new MySQL;
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_campus WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_sites WHERE id = ?");
       $query->bindParam(1, $id);
       $query->execute();
       $result = $query->fetch(\PDO::FETCH_ASSOC);
@@ -223,19 +223,6 @@
 
       return $result[$key];
       $this->mysql = null;
-    }
-    //Return timecalc hour only
-    function findHour($time1, $time2) {
-      if(isset($time1)) {
-        $d1 = new \DateTime($time1);
-        $d2 = new \DateTime($time2);
-        $int = $d2->diff($d1);
-        $h = $int->h;
-        $h = $h + ($int->days*24);
-        return $h;
-      } else {
-        echo "ERROR!";
-      }
     }
     //Get Vehicle type Details
     function PM_VehicleTypes() {
@@ -263,7 +250,7 @@
       $this->mysql = null;
     }
     //Vehicles Select menu
-    function Vehicle_ServiceTypeSelect() {
+    function PM_VehicleTypes_Dropdown() {
       $this->mysql = new MySQL;
 
       $list = '';
@@ -330,7 +317,7 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->campus = $this->user->userInfo("campus");
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parkedlog WHERE veh_registration LIKE ? OR veh_trlno LIKE ? AND campus = ? ORDER BY veh_timein DESC LIMIT 200");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate LIKE ? OR parked_trailer LIKE ? AND parked_campus = ? ORDER BY parked_timein DESC LIMIT 200");
       $stmt->bindParam(1, $string);
       $stmt->bindParam(2, $string);
       $stmt->bindParam(3, $this->campus);
@@ -354,11 +341,11 @@
           foreach($result as $row) {
             $html .= '
               <tr>
-                <td>'.$row['veh_company'].'</td>
-                <td>'.$row['veh_registration'].'</td>
-                <td>'.$row['veh_trlno'].'</td>
-                <td>'.$row['veh_timein'].'</td>
-                <td>'.$row['veh_expires'].'</td>
+                <td>'.$row['parked_company'].'</td>
+                <td>'.$row['parked_plate'].'</td>
+                <td>'.$row['parked_trailer'].'</td>
+                <td>'.date("d/m/Y H:i:s", strtotime($row['parked_timein'])).'</td>
+                <td>'.date("d/m/Y H:i:s", strtotime($row['parked_timeout'])).'</td>
               </tr>
             ';
           }

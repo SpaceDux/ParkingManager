@@ -16,11 +16,20 @@
     function getTransactions($key) {
       //Prep Class
       $this->mysql = new MySQL;
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_anprkey = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ?");
       $query->bindParam(1, $key);
       $query->execute();
       $result = $query->fetchAll();
       $this->mysql = null;
+
+      foreach($result as $row) {
+        $html = '<tr>';
+        $html .= '<td>'.$row['payment_ref'].'</td>';
+        $html .= '<td>'.$row['payment_service_name'].'</td>';
+        $html .= '<td>'.date("d/m/Y H:i", strtotime($row['payment_date'])).'</td>';
+        $html .= '<tr>';
+      }
+      echo $html;
     }
     //List all services
     function list_services() {
@@ -72,7 +81,7 @@
           $table .= '<td class="table-danger">No</td>';
         }
         $table .= "<td>".$row['service_update_author']."</td>";
-        $table .= "<td>".$this->pm->PM_CampusInfo($row['service_campus'], "campus_name")."</td>";
+        $table .= "<td>".$this->pm->PM_SiteInfo($row['service_campus'], "site_name")."</td>";
         $table .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
             <button type="button" id="Payment_Service_Update_Modal" data-id="'.$row['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></button>
@@ -477,6 +486,5 @@
         //ignore
       }
     }
-    
   }
 ?>

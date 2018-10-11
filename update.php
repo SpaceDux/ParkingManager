@@ -52,7 +52,7 @@
                 <label>Type of Vehicle</label>
                 <input type="hidden" id="hidden_veh_type" value="<?php echo $row['parked_type'] ?>">
                 <select class="form-control" name="upd_type" id="upd_type">
-                  <?php $vehicles->Vehicle_TypeSelect(); ?>
+                  <?php $pm->PM_VehicleTypes_Dropdown(); ?>
                 </select>
               </div>
               <div class="form-group">
@@ -63,33 +63,18 @@
               <table class="table table-striped table-dark text-center">
                 <thead>
                   <tr>
-                    <th scope="col">Ticket ID</th>
-                    <th scope="col">Type of Ticket</th>
+                    <th scope="col">Payment Ref</th>
+                    <th scope="col">Service Name</th>
                     <th scope="col">Service Date</th>
                     <th scope="col">
                       <div class="btn-group" role="group" aria-label="Button Group">
-                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm payBtn" data-id="" data-toggle="modal" data-target="#addPaymentModal"><i class="fas fa-pound-sign"></i></i></button>
-                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm payBtn2" data-id="" data-toggle="modal" data-target="#addPaymentModalRenew"><i class="far fa-clock"></i></i></button>
+                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm payBtn" data-id="" data-toggle="modal" data-target="#addPaymentModal"><i class="fas fa-pound-sign"></i> New Payment</button>
                       </div>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>19191</td>
-                    <td>
-                      TICKET TYPE
-                    </td>
-                    <td>
-                      H:I:S
-                    </td>
-                    <td>
-                      <div class="btn-group" role="group" aria-label="Button Group">
-                        <button type="button" id="edit" tabindex="-1" class="btn btn-danger btn-sm" data-id=""><i class="fas fa-cog"></i></button>
-                        <button type="button" tabindex="-1" onClick="deletePayment()" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></i></button>
-                      </div>
-                    </td>
-                  </tr>
+                  <?php $payment->getTransactions($row['payment_ref'])?>
                 </tbody>
               </table>
               <div class="form-group">

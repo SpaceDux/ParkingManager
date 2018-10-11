@@ -49,7 +49,7 @@
                    <label for="NT_Vehicle_Type">Vehicle Type</label>
                    <select class="form-control" name="NT_Vehicle_Type" id="NT_Vehicle_Type" required>
                      <option value="unchecked">-- Please choose a vehicle type --</option>
-                     <?php $vehicles->Vehicle_TypeSelect() ?>
+                     <?php $pm->PM_VehicleTypes_Dropdown() ?>
                    </select>
                  </div>
                  <div class="form-group">

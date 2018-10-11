@@ -31,7 +31,7 @@
           } else if ($this->user->userInfo("campus") == 0) {
             $patch = "";
           }
-          $number = $this->pm->findHour($row['Capture_Date'], "");
+          $number = $this->findHour($row['Capture_Date'], "");
           $style = "";
           if($number >= 2 && $number < 4) {
             $style = "table-warning";
@@ -402,20 +402,6 @@
 
       $this->mysql = null;
     }
-    //Vehicle Types Select dropdown menu
-    function Vehicle_TypeSelect() {
-      $this->mysql = new MySQL;
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types");
-      $stmt->execute();
-
-      $html = "";
-      foreach ($stmt->fetchAll() as $row) {
-        $html .= '<option value="'.$row['id'].'">'.$row['type_name'].'</option>';
-      }
-      echo $html;
-
-      $this->mysql = null;
-    }
     //check if flagged
     function isFlagged($key) {
       if($key == 1) {
@@ -451,11 +437,26 @@
           return TRUE;
         }
       } else {
+
+
         return FALSE;
       }
 
       $this->mysql = null;
       $this->user = null;
+    }
+    //Return timecalc hour only
+    function findHour($time1, $time2) {
+      if(isset($time1)) {
+        $d1 = new \DateTime($time1);
+        $d2 = new \DateTime($time2);
+        $int = $d2->diff($d1);
+        $h = $int->h;
+        $h = $h + ($int->days*24);
+        return $h;
+      } else {
+        echo "ERROR!";
+      }
     }
   }
  ?>

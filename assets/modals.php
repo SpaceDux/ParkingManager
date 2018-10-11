@@ -243,7 +243,7 @@
               <div class="form-group">
                 <label>Choose a campus</label>
                 <select class="form-control" name="Service_Campus" id="Service_Campus" required>
-                  <?php $pm->PM_CampusSelectList(); ?>
+                  <?php $pm->PM_Sites_Dropdown(); ?>
                 </select>
               </div>
             </div>
@@ -356,7 +356,7 @@
               <div class="form-group">
                 <label>Choose a campus</label>
                 <select class="form-control" name="Service_Campus_Update" id="Service_Campus_Update">
-                  <?php $pm->PM_CampusSelectList();?>
+                  <?php $pm->PM_Sites_Dropdown();?>
                 </select>
               </div>
             </div>
@@ -386,7 +386,7 @@
               <label>Select Vehicle Types</label>
               <div class="form-group">
                 <select class="form-control" name="Service_Vehicles_Update" id="Service_Vehicles_Update">
-                  <?php $pm->Vehicle_ServiceTypeSelect() ?>
+                  <?php $pm->PM_VehicleTypes_Dropdown() ?>
                 </select>
               </div>
             </div>
@@ -442,7 +442,7 @@
               <div class="form-group">
                 <label>Choose Campus</label>
                 <select class="form-control" name="User_Campus_Update" id="User_Campus_Update">
-                  <?php $pm->PM_CampusSelectList();?>
+                  <?php $pm->PM_Sites_Dropdown();?>
                 </select>
                 <small class="form-text text-muted">Associate a campus for the user.</small>
               </div>
@@ -461,7 +461,7 @@
               <div class="form-group">
                 <label>Choose a Rank</label>
                 <select class="form-control" name="User_Rank_Update" id="User_Rank_Update">
-                  <?php $pm->PM_RankSelectList();?>
+                  <?php $pm->PM_Ranks_Dropdown();?>
                 </select>
                 <small class="form-text text-muted">Caution when selecting a rank!</small>
               </div>
@@ -525,7 +525,7 @@
               <div class="form-group">
                 <label>Choose Campus</label>
                 <select class="form-control" name="User_Campus_Update" id="User_Campus_New">
-                  <?php $pm->PM_CampusSelectList();?>
+                  <?php $pm->PM_Sites_Dropdown();?>
                 </select>
                 <small class="form-text text-muted">Associate a campus for the user.</small>
               </div>
@@ -544,7 +544,7 @@
               <div class="form-group">
                 <label>Choose a Rank</label>
                 <select class="form-control" name="User_Rank_Update" id="User_Rank_New">
-                  <?php $pm->PM_RankSelectList();?>
+                  <?php $pm->PM_Ranks_Dropdown();?>
                 </select>
                 <small class="form-text text-muted">Caution when selecting a rank!</small>
               </div>
@@ -601,7 +601,7 @@
               <div class="form-group">
                 <label>Choose Campus</label>
                 <select class="form-control" id="Update_Type_Campus">
-                  <?php $pm->PM_CampusSelectList();?>
+                  <?php $pm->PM_Sites_Dropdown();?>
                 </select>
               </div>
             </div>
