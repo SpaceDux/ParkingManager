@@ -33,7 +33,6 @@
                       <th>First Name</th>
                       <th>Last Name</th>
                       <th>Email address</th>
-                      <th>Seckey</th>
                       <th>Access ANPR</th>
                       <th>Rank</th>
                       <th>Campus</th>

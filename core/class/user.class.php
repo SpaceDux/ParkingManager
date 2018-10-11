@@ -101,14 +101,13 @@
         $table .= "<td>".$row['first_name']."</td>";
         $table .= "<td>".$row['last_name']."</td>";
         $table .= "<td>".$row['email']."</td>";
-        $table .= "<td>".$row['seckey']."</td>";
         if($row['anpr'] == 1) {
           $table .= "<td>Yes</td>";
         } else {
           $table .= "<td>No</td>";
         }
         $table .= "<td>".$this->pm->PM_RankInfo($row['rank'], "rank_name")."</td>";
-        $table .= "<td>".$this->pm->PM_CampusInfo($row['campus'], "campus_name")."</td>";
+        $table .= "<td>".$this->pm->PM_SiteInfo($row['campus'], "site_name")."</td>";
         if($row['active'] == 1) {
           $table .= "<td>Yes</td>";
         } else {
@@ -177,7 +176,7 @@
     function Register_User($first_name, $last_name, $email, $password, $campus, $anpr, $rank) {
       $this->mysql = new MySQL;
       if(isset($password)) {
-        $query = $this->mysql->dbc->prepare("INSERT INTO pm_users (id, first_name, last_name, email, password, seckey, anpr, rank, campus, active, last_log) VALUES ('', ?, ?, ?, ?, null, ?, ?, ?, '0', ?)");
+        $query = $this->mysql->dbc->prepare("INSERT INTO pm_users (id, first_name, last_name, email, password, anpr, rank, campus, active, last_log) VALUES ('', ?, ?, ?, ?, ?, ?, ?, '0', ?)");
         $query->bindParam(1, $first_name);
         $query->bindParam(2, $last_name);
         $query->bindParam(3, $email);
