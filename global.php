@@ -7,6 +7,7 @@
   define('C', '/core');
   define('F', '/class');
   define('M', '/manage');
+//  define('P', '/plugins');
 
   //Required Files
     //Manage
@@ -19,7 +20,6 @@
   require(__DIR__ . C . F . '/vehicles.class.php');
   require(__DIR__ . C . F . '/payment.class.php');
   require(__DIR__ . C . F . '/anpr.class.php');
-
   //Define CONFIG settings
   define('URL', $_CONFIG['pm']['url']);
   define('VER', "3.1.0");

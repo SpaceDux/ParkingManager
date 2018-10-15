@@ -5,7 +5,7 @@ use Mike42\Escpos\EscposImage;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
 /* Fill in your own connector here */
-$connector = new WindowsPrintConnector("RECPRNT");
+$connector = new WindowsPrintConnector("smb://parking desk:pd@parkingdesk/pdholyhead");
 
 /* Information for the receipt */
 $items = array(
@@ -96,7 +96,7 @@ class item
         $this -> price = $price;
         $this -> dollarSign = $dollarSign;
     }
-    
+
     public function __toString()
     {
         $rightCols = 10;
@@ -105,7 +105,7 @@ class item
             $leftCols = $leftCols / 2 - $rightCols / 2;
         }
         $left = str_pad($this -> name, $leftCols) ;
-        
+
         $sign = ($this -> dollarSign ? '$ ' : '');
         $right = str_pad($sign . $this -> price, $rightCols, ' ', STR_PAD_LEFT);
         return "$left$right\n";

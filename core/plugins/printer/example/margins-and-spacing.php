@@ -5,7 +5,7 @@ use Mike42\Escpos\Printer;
 use Mike42\Escpos\EscposImage;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
-$connector = new WindowsPrintConnector("RECPRNT");
+$connector = new WindowsPrintConnector("smb://parking desk:pd@parkingdesk/pdholyhead");
 $printer = new Printer($connector);
 
 /* Line spacing */
@@ -46,4 +46,3 @@ foreach(array(512, 256, 128, 64) as $width) {
 /* Printer shutdown */
 $printer -> cut();
 $printer -> close();
-

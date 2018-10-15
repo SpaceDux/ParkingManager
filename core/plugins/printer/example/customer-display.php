@@ -6,18 +6,18 @@
 
 require __DIR__ . '/../autoload.php';
 
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\CapabilityProfile;
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\Devices\AuresCustomerDisplay;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
 /*
  * Device appears as a serial port.
- * 
+ *
  *   stat /dev/ttyACM0
  *   sudo usermod -a -G dialout [username]
  */
-$connector = new FilePrintConnector("/dev/ttyACM0");
+$connector = new WindowsPrintConnector("smb://parking desk:pd@parkingdesk/pdholyhead");
 
 // Profile and display
 $profile = CapabilityProfile::load("OCD-300");

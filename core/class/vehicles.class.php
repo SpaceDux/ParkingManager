@@ -171,7 +171,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 3 AND parked_campus = ? AND parked_deleted < 1 LIMIT 30");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 3 AND parked_campus = ? AND parked_deleted < 1 ORDER BY parked_timeout DESC LIMIT 30");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();

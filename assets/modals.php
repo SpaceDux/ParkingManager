@@ -230,6 +230,10 @@
                   <option value="0">Without Meal</option>
                   <option value="1">With Meal</option>
                 </select>
+                <div class="form-group">
+                  <label for="Service_Expiry">How many vouchers?</label>
+                  <input type="number" id="Service_Meal_Amount" class="form-control" placeholder="0" value="0" required>
+                </div>
               </div>
               <div class="form-group">
                 <label>Shower Voucher</label>
@@ -237,6 +241,10 @@
                   <option value="0">Without Shower</option>
                   <option value="1">With Shower</option>
                 </select>
+                <div class="form-group">
+                  <label for="Service_Expiry">How many vouchers?</label>
+                  <input type="number" id="Service_Shower_Amount" class="form-control" placeholder="0" value="0" required>
+                </div>
               </div>
             </div>
             <div class="col-md-12">
@@ -369,6 +377,10 @@
                   <option value="0">Without Meal</option>
                   <option value="1">With Meal</option>
                 </select>
+                <div class="form-group">
+                  <label for="Service_Expiry">How many vouchers?</label>
+                  <input type="number" id="Service_Meal_Amount_Update" class="form-control" placeholder="0" value="0" required>
+                </div>
               </div>
             </div>
             <div class="col">
@@ -378,6 +390,10 @@
                   <option value="0">Without Shower</option>
                   <option value="1">With Shower</option>
                 </select>
+                <div class="form-group">
+                  <label for="Service_Expiry">How many vouchers?</label>
+                  <input type="number" id="Service_Shower_Amount_Update" class="form-control" placeholder="0" value="0" required>
+                </div>
               </div>
             </div>
           </div>

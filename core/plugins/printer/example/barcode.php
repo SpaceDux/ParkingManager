@@ -3,7 +3,7 @@ require __DIR__ . '/../autoload.php';
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
-$connector = new WindowsPrintConnector("RECPRNT");
+$connector = new WindowsPrintConnector("smb://parking desk:pd@parkingdesk/pdholyhead");
 $printer = new Printer($connector);
 
 /* Height and width */

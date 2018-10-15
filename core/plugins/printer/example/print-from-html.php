@@ -2,9 +2,10 @@
 require __DIR__ . '/../autoload.php';
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\EscposImage;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
-$connector = new FilePrintConnector("php://stdout"); // Add connector for your printer here.
+/* Connector */
+$connector = new WindowsPrintConnector("smb://parking desk:pd@parkingdesk/pdholyhead");
 $printer = new Printer($connector);
 
 /*
@@ -13,7 +14,7 @@ $printer = new Printer($connector);
  * wkhtmltopdf, an external package which is designed to handle HTML efficiently.
  *
  * This example is provided to get you started: On Debian, first run-
- * 
+ *
  * sudo apt-get install wkhtmltopdf xvfb
  *
  * Note: Depending on the height of your pages, it is suggested that you chop it
@@ -29,7 +30,7 @@ try {
     $width = 550;
     $dest = tempnam(sys_get_temp_dir(), 'escpos') . ".png";
     $command = sprintf(
-        "xvfb-run wkhtmltoimage -n -q --width %s %s %s",
+        "wkhtmltoimage -n -q --width %s %s %s",
         escapeshellarg($width),
         escapeshellarg($source),
         escapeshellarg($dest)
@@ -44,7 +45,7 @@ try {
         }
     }
 
-    
+
     /* Run wkhtmltoimage */
     $descriptors = array(
             1 => array("pipe", "w"),

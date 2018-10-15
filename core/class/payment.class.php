@@ -103,13 +103,13 @@
       $this->pm = null;
     }
     //Add services
-    function Add_Service($name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher) {
+    function Add_Service($name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher, $meal_amount, $shower_amount) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $date = date("Y-m-d H:i");
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '')");
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', ?, ?)");
       $query->bindParam(1, $name);
       $query->bindParam(2, $ticket_name);
       $query->bindParam(3, $price_gross);
@@ -126,6 +126,8 @@
       $query->bindParam(14, $campus);
       $query->bindParam(15, $meal_voucher);
       $query->bindParam(16, $shower_voucher);
+      $query->bindParam(17, $meal_amount);
+      $query->bindParam(18, $shower_amount);
       $query->execute();
 
       $this->mysql = null;
@@ -154,13 +156,13 @@
       $this->mysql = null;
     }
     //Payment service update
-    function Payment_Service_Update($id, $name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher, $types) {
+    function Payment_Service_Update($id, $name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher, $types, $meal_amount, $shower_amount) {
       $this->mysql = new MySQL;
       $this->user = new User;
 
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ?, service_mealVoucher = ?, service_showerVoucher = ?, service_vehicles = ?, service_ticket_name = ? WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ?, service_mealVoucher = ?, service_showerVoucher = ?, service_vehicles = ?, service_ticket_name = ?, service_meal_amount = ?, service_shower_amount = ? WHERE id = ?");
       $query->bindParam(1, $name);
       $query->bindParam(2, $price_gross);
       $query->bindParam(3, $price_net);
@@ -176,7 +178,9 @@
       $query->bindParam(13, $shower_voucher);
       $query->bindParam(14, $types);
       $query->bindParam(15, $ticket_name);
-      $query->bindParam(16, $id);
+      $query->bindParam(16, $meal_amount);
+      $query->bindParam(17, $shower_amount);
+      $query->bindParam(18, $id);
       $query->execute();
 
       $this->mysql = null;
@@ -263,16 +267,58 @@
       $this->mysql = null;
     }
     //Payment Info
-    function PaymentRef($key) {
+    function PaymentInfo($key, $what) {
       $this->mysql = new MySQL;
-      $stmt = $this->mysql->dbc->prepare("SELECT payment_ref FROM pm_payments WHERE payment_vehicle_plate = ? OR id = ? ORDER BY id DESC LIMIT 1");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_vehicle_plate = ? OR id = ? ORDER BY id DESC LIMIT 1");
       $stmt->bindParam(1, $key);
       $stmt->bindParam(2, $key);
       $stmt->execute();
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-      return $result['payment_ref'];
+      return $result[$what];
 
       $this->mysql = null;
+    }
+    //Print Ticket
+    function printTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $site, $meal, $shower, $meal_count, $shower_count, $vat) {
+      global $_CONFIG;
+      $fields_string = "";
+      //set POST variables
+      $url = $_CONFIG['pm']['url'].'/core/plugins/printer/example/my.php';
+      $fields = array(
+        'ticket_name' => urlencode($ticket_name),
+        'gross' => urlencode($gross),
+        'net' => urlencode($net),
+        'company' => urlencode($company),
+        'reg' => urlencode($reg),
+        'tid' => urlencode($tid),
+        'date' => urlencode($date),
+        'expiry' => urlencode($expiry),
+        'payment_type' => urlencode($payment_type),
+        'site' => urlencode($site),
+        'meal' => urlencode($shower),
+        'shower' => urlencode($shower),
+        'meal_count' => urlencode($meal_count),
+        'shower_count' => urlencode($shower_count),
+        'vat' => urlencode($vat)
+      );
+
+      //url-ify the data for the POST
+      foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+      rtrim($fields_string, '&');
+
+      //open connection
+      $ch = curl_init();
+
+      //set the url, number of POST vars, POST data
+      curl_setopt($ch,CURLOPT_URL, $url);
+      curl_setopt($ch,CURLOPT_POST, count($fields));
+      curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+
+      //execute post
+      $result = curl_exec($ch);
+
+      //close connection
+      curl_close($ch);
     }
     //Transaction for cash
     function Transaction_Proccess_Cash($ANPRKey, $Plate, $Company, $Trailer, $Vehicle_Type, $Service) {
@@ -281,6 +327,7 @@
         $this->mssql = new MSSQL;
         $this->anpr = new ANPR;
         $this->user = new User;
+        $this->pm = new PM;
         //Misc dets
         $current_date = date("Y-m-d H:i:s");
         $Company = strtoupper($Company);
@@ -299,6 +346,13 @@
         $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
         $random_number = mt_rand(1, 9999);
         $payment_ref = $Plate."-".$random_number;
+        //Ticket Info
+        $shower = $this->Payment_ServiceInfo($Service, "service_showerVoucher");
+        $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
+        $meal = $this->Payment_ServiceInfo($Service, "service_mealVoucher");
+        $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
+        $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
+        $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //SQL Payment
         $sqlPayment = $this->mysql->dbc->prepare("INSERT INTO pm_payments VALUES ('', :ANPRKey, :Plate, :Company, '1', :Service_Name, :Price_Gross, :Price_Net, :Author, :Cur_Date, null, :Campus, :PayRef)");
@@ -314,7 +368,8 @@
         $sqlPayment->bindParam(':PayRef', $payment_ref);
         $sqlPayment->execute();
 
-        $ref = $this->PaymentRef($Plate);
+        $ref = $this->PaymentInfo($Plate, "payment_ref");
+        $pay_id = $this->PaymentInfo($Plate, "id");
 
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
@@ -336,10 +391,13 @@
         $sql_parkedLog->bindParam(':Campus', $campus);
         $sql_parkedLog->execute();
 
+        $this->printTicket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Cash", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
+
         $this->mysql = null;
         $this->mssql = null;
         $this->anpr = null;
         $this->user = null;
+        $this->pm = null;
       } else {
         //ignore
       }
@@ -351,6 +409,7 @@
         $this->mssql = new MSSQL;
         $this->anpr = new ANPR;
         $this->user = new User;
+        $this->pm = new PM;
         //Misc dets
         $current_date = date("Y-m-d H:i:s");
         $Company = strtoupper($Company);
@@ -369,6 +428,13 @@
         $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
         $random_number = mt_rand(1, 9999);
         $payment_ref = $Plate."-".$random_number;
+        //Ticket Info
+        $shower = $this->Payment_ServiceInfo($Service, "service_showerVoucher");
+        $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
+        $meal = $this->Payment_ServiceInfo($Service, "service_mealVoucher");
+        $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
+        $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
+        $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //SQL Payment
         $sqlPayment = $this->mysql->dbc->prepare("INSERT INTO pm_payments VALUES ('', :ANPRKey, :Plate, :Company, '2', :Service_Name, :Price_Gross, :Price_Net, :Author, :Cur_Date, null, :Campus, :PayRef)");
@@ -384,7 +450,8 @@
         $sqlPayment->bindParam(':PayRef', $payment_ref);
         $sqlPayment->execute();
 
-        $ref = $this->PaymentRef($Plate);
+        $ref = $this->PaymentInfo($Plate, "payment_ref");
+        $pay_id = $this->PaymentInfo($Plate, "id");
 
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
@@ -406,10 +473,13 @@
         $sql_parkedLog->bindParam(':Campus', $campus);
         $sql_parkedLog->execute();
 
+        $this->printTicket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Card", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
+
         $this->mysql = null;
         $this->mssql = null;
         $this->anpr = null;
         $this->user = null;
+        $this->pm = null;
       } else {
         //ignore
       }
@@ -421,6 +491,7 @@
         $this->mssql = new MSSQL;
         $this->anpr = new ANPR;
         $this->user = new User;
+        $this->pm = new PM;
         //Misc dets
         $current_date = date("Y-m-d H:i:s");
         $Company = strtoupper($Company);
@@ -439,6 +510,13 @@
         $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
         $random_number = mt_rand(1, 9999);
         $payment_ref = $Plate."-".$random_number;
+        //Ticket Info
+        $shower = $this->Payment_ServiceInfo($Service, "service_showerVoucher");
+        $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
+        $meal = $this->Payment_ServiceInfo($Service, "service_mealVoucher");
+        $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
+        $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
+        $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //SQL Payment
         $sqlPayment = $this->mysql->dbc->prepare("INSERT INTO pm_payments VALUES ('', :ANPRKey, :Plate, :Company, '3', :Service_Name, :Price_Gross, :Price_Net, :Author, :Cur_Date, :Account_ID, :Campus, :PayRef)");
@@ -455,7 +533,8 @@
         $sqlPayment->bindParam(':PayRef', $payment_ref);
         $sqlPayment->execute();
 
-        $ref = $this->PaymentRef($Plate);
+        $ref = $this->PaymentInfo($Plate, "payment_ref");
+        $pay_id = $this->PaymentInfo($Plate, "id");
 
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
@@ -478,10 +557,14 @@
         $sql_parkedLog->bindParam(':Campus', $campus);
         $sql_parkedLog->execute();
 
+        $this->printTicket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Account", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
+
         $this->mysql = null;
         $this->mssql = null;
         $this->anpr = null;
         $this->user = null;
+        $this->pm = null;
+
       } else {
         //ignore
       }
