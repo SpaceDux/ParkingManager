@@ -63,12 +63,12 @@
               <table class="table table-striped table-dark text-center">
                 <thead>
                   <tr>
-                    <th scope="col">Payment Ref</th>
+                    <th scope="col">Payment Type</th>
                     <th scope="col">Service Name</th>
                     <th scope="col">Service Date</th>
                     <th scope="col">
                       <div class="btn-group" role="group" aria-label="Button Group">
-                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm payBtn" data-id="" data-toggle="modal" data-target="#addPaymentModal"><i class="fas fa-pound-sign"></i> New Payment</button>
+                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm payBtn" data-id="" data-toggle="modal" data-target="#addPaymentModal"> <i class="fas fa-pound-sign"></i> New Payment </button>
                       </div>
                     </th>
                   </tr>
@@ -90,12 +90,6 @@
               <div class="form-check">
                 <label class="form-check-label">
                 <input class="form-check-input" type="radio" name="upd_col" value="2" <?php if($row['parked_column'] == 2) {echo "checked";}?>>
-                  Renewal
-                </label>
-              </div>
-              <div class="form-check">
-                <label class="form-check-label">
-                <input class="form-check-input" type="radio" name="upd_col" value="3" <?php if($row['parked_column'] == 3) {echo "checked";}?>>
                   Exit
                 </label>
               </div>
@@ -109,15 +103,13 @@
               </div>
               <div class="btn-group float-right" role="group" aria-label="Button Group">
                 <button type="submit" class="btn btn-dark"><i class="fa fa-save"></i> Save Data</button>
+                <button class="btn btn-dark" id="exitButton" onClick="exit(<?php echo $key ?>)"><i class="fa fa-times"></i> Exit</button>
                 <div class="btn-group" role="group">
                   <button id="btnGroupDrop1" type="button" class="btn btn-dark btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                   <div class="dropdown-menu">
-                    <a style="cursor: pointer" class="dropdown-item" onClick="exit(<?php echo $key ?>)">Exit Vehicle</a>
+                      <a style="cursor: pointer" id="flagButton" class="dropdown-item" onClick="setFlag(<?php echo $key ?>)">Flag Vehicle</a>
                     <div class="dropdown-divider"></div>
-                      <a style="cursor: pointer" class="dropdown-item" onClick="markRenewal(<?php echo $key ?>)">Mark Renewal</a>
-                      <a style="cursor: pointer" class="dropdown-item" onClick="setFlag(<?php echo $key ?>)">Flag Vehicle</a>
-                    <div class="dropdown-divider"></div>
-                    <a style="cursor: pointer" class="dropdown-item" onClick="deleteVehicle(<?php echo $key ?>)">Delete Vehicle</a>
+                    <a style="cursor: pointer" id="deleteButton" class="dropdown-item" onClick="deleteVehicle(<?php echo $key ?>)">Delete Vehicle</a>
                   </div>
                 </div>
               </div>

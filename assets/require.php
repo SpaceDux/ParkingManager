@@ -558,6 +558,18 @@
       });
     }
   });
+  //Update Exit
+  $('#exitButton').click(function(){
+    window.location.reload();
+  })
+  //Update Flag
+  $('#flagButton').click(function(){
+    window.location.reload();
+  })
+  //Update Delete
+  $('#deleteButton').click(function(){
+    window.location.reload();
+  })
   //Refresh ANPR (Blue button)
   $('#refreshANPR').click(function(){
     $('#anpr').load(' #anpr');

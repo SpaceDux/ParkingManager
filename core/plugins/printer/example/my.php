@@ -76,12 +76,13 @@ use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
     $printer -> feed(2);
     $printer -> text("Thank you for staying with us!\n");
     $printer -> text("www.rktruckstops.co.uk");
+    // $printer -> feed();
+    // if($charge != "Account") {
+    //   $printer -> setBarcodeHeight(40);
+    //   $printer -> setBarcodeWidth(3);
+    //   $printer -> barcode("000000002170", Printer::BARCODE_JAN13);
+    // }
     $printer -> feed(1);
-    if($charge != "Account") {
-      $printer -> setBarcodeHeight(40);
-      $printer -> setBarcodeWidth(2);
-      $printer -> barcode("000000002105", Printer::BARCODE_JAN13);
-    }
     //End ticket
     $printer -> cut();
     //Shower Ticket

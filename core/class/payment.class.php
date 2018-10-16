@@ -23,10 +23,25 @@
       $this->mysql = null;
 
       foreach($result as $row) {
+        if($row['payment_type'] == 1) {
+          $type = "Cash";
+        } else if ($row['payment_type'] == 2) {
+          $type = "Card";
+        } else if ($row['payment_type'] == 3) {
+          $type = "Account";
+        } else if ($row['payment_type'] == 4) {
+          $type = "SNAP";
+        } else if ($row['payment_type'] == 5) {
+          $type = "Fuel Card";
+        }
         $html = '<tr>';
-        $html .= '<td>'.$row['payment_ref'].'</td>';
+        $html .= '<td>'.$type.'</td>';
         $html .= '<td>'.$row['payment_service_name'].'</td>';
-        $html .= '<td>'.date("d/m/Y H:i", strtotime($row['payment_date'])).'</td>';
+        $html .= '<td>'.date("d/H:i", strtotime($row['payment_date'])).'</td>';
+        $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                    <button type="button" class="btn btn-danger"><i class="fa fa-print"></i></button>
+                    <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                  </div></td>';
         $html .= '<tr>';
       }
       echo $html;
@@ -569,5 +584,6 @@
         //ignore
       }
     }
+
   }
 ?>

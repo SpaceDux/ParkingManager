@@ -67,9 +67,10 @@
       //Prepare Class'
       $this->mysql = new MySQL;
       $this->user = new User;
+      $this->payment = new Payment;
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry > CURRENT_TIMESTAMP");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -85,7 +86,7 @@
         $table .= '<td>'.$result['parked_plate'].'</td>';
         $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
         $table .= '<td>'.date("d/H:i", strtotime($result['parked_timein'])).'</td>';
-        $table .= '<td>TICKET ID</td>';
+        $table .= '<td>'.$this->payment->PaymentInfo($result['parked_plate'], "id").'</td>';
         $table .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
             <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
@@ -98,7 +99,6 @@
               <div class="dropdown-menu" aria-labelledby="OptionsDrop">
                 <a id="exit" class="dropdown-item" onClick="exit('.$result['id'].')" href="#">Exit Vehicle</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" onClick="markRenewal('.$result['id'].')" href="#">Mark Renewal</a>
                 <a class="dropdown-item" onClick="setFlag('.$result['id'].')" href="#">Flag Vehicle</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">View ANPR Record</a>
@@ -110,6 +110,7 @@
       }
       $this->mysql = null;
       $this->user = null;
+      $this->payment = null;
       $this->campus = null;
     }
     //Renewal Feed
@@ -121,7 +122,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 2 AND parked_campus = ? AND parked_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry < CURRENT_TIMESTAMP");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -171,7 +172,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 3 AND parked_campus = ? AND parked_deleted < 1 ORDER BY parked_timeout DESC LIMIT 30");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 2 AND parked_campus = ? AND parked_deleted < 1 ORDER BY parked_timeout DESC LIMIT 30");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -222,7 +223,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column < 3 AND parked_campus = ? AND parked_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column < 2 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry > CURRENT_TIMESTAMP");
       $query->bindParam(1, $this->campus);
       $query->execute();
 
@@ -240,7 +241,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 2 AND parked_campus = ? AND parked_deleted < 1");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry < CURRENT_TIMESTAMP");
       $query->bindParam(1, $this->campus);
       $query->execute();
       return $query->rowCount();
@@ -300,30 +301,11 @@
       $this->mysql = new MySQL;
       //Query
       $date = date('Y-m-d H:i:s');
-      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_column = '3', parked_timeout = :timeout WHERE id = :id");
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_column = '2', parked_timeout = :timeout WHERE id = :id");
       $stmt->bindParam(':timeout', $date);
       $stmt->bindParam(':id', $key);
       $stmt->execute();
       $this->mysql = null;
-    }
-    //Ajax Request Mark Renewal
-    function Vehicle_MarkRenewal($key) {
-      //Prep Class
-      $this->mysql = new MySQL;
-      $this->vehicle = new Vehicles;
-      //Query
-      $renewalResult = $this->vehicle->vehInfo("parked_column", $key);
-      if($renewalResult == 1) {
-        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_column = '2' WHERE id = :id");
-        $stmt->bindParam(':id', $key);
-        $stmt->execute();
-      } else {
-        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_column = '1' WHERE id = :id");
-        $stmt->bindParam(':id', $key);
-        $stmt->execute();
-      }
-      $this->mysql = null;
-      $this->vehicle = null;
     }
     //Ajax setFlag
     function Vehicle_Flag($key) {
