@@ -10,6 +10,7 @@
     private $mssql;
     private $anprCount;
     private $pm;
+    protected $background;
 
     //ANPR Feed
     function get_anprFeed() {
@@ -127,13 +128,20 @@
       $query->execute();
       $key = $query->fetchAll();
       foreach ($key as $result) {
+        $number = $this->findHour($result['parked_expiry'], "");
+        $style = "";
+        if($number >= 2 && $number < 4) {
+          $style = "table-warning";
+        } else if ($number >= 4) {
+          $style = "table-danger";
+        }
         if($result['parked_flag'] == 1) {
           $flag = '<i class="fa fa-flag" style="color: red;"></i> ';
         } else {
           $flag = '';
         }
         //Begin Table content
-        $table = '<tr>';
+        $table = '<tr class="'.$style.'">';
         $table .= '<td>'.$flag.$result['parked_company'].'</td>';
         $table .= '<td>'.$result['parked_plate'].'</td>';
         $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
@@ -149,7 +157,6 @@
               <div class="dropdown-menu" aria-labelledby="OptionsDrop">
                 <a id="exit" class="dropdown-item" onClick="exit('.$result['id'].')" href="#">Exit Vehicle</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" onClick="markRenewal('.$result['id'].')" href="#">Mark Renewal</a>
                 <a class="dropdown-item" onClick="setFlag('.$result['id'].')" href="#">Flag Vehicle</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">View ANPR Record</a>
@@ -172,7 +179,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 2 AND parked_campus = ? AND parked_deleted < 1 ORDER BY parked_timeout DESC LIMIT 30");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 2 AND parked_campus = ? AND parked_deleted < 1 ORDER BY parked_timeout DESC LIMIT 40");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();

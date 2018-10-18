@@ -103,17 +103,6 @@
 
       $this->mssql = null;
     }
-    //ANPR Get Images
-    function ANPR_Image_Get($key) {
-      $this->mssql = new MSSQL;
-      $stmt = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Uniqueref = ?");
-      $stmt->bindParam(1, $key);
-      $stmt->execute();
-      $return = $stmt->fetchAll();
-
-      $html = '<img src="'.$return['Patch'].'" alt="..." class="img-thumbnail">';
-      echo $html;
-    }
     //Toggle Barrier
     function ToggleBarrier($key) {
       global $_CONFIG;

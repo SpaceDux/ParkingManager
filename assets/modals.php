@@ -91,7 +91,7 @@
             </div>
             <div class="col">
               <label>Add ANPR Date & Time</label>
-              <input type="text" style="text-transform: uppercase;" id="ANPR_Add_Date" class="form-control" value="<?php echo date("Y-m-d H:i:s")?>">
+              <input type="text" style="text-transform: uppercase;" id="ANPR_Add_Date" class="form-control">
             </div>
           </div>
           <div class="modal-body">

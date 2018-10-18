@@ -64,5 +64,7 @@
     $payment->Transaction_Proccess_Card($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service']);
   } else if($handler == "Transaction_Proccess_Account") {
     $payment->Transaction_Proccess_Account($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Account']);
+  } else if($handler == "Automation_Exit") {
+    $background->Automation_Exit(); //Automate the exit reads
   }
 ?>

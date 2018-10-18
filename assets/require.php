@@ -578,8 +578,33 @@
   $('.modal').on('shown.bs.modal', function() {
     $(this).find('[autofocus]').focus();
   });
+  //FOR DATE TIME ISSUE
+  function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+  }
 //Tab Key opens "AddVehicleModal" Modal
   Mousetrap.bind('tab', function() {
     $('#ANPR_AddModal').modal('show');
+    var d = new Date();
+    var date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+    var h = addZero(d.getHours());
+    var m = addZero(d.getMinutes());
+    var s = addZero(d.getSeconds());
+    var datetime = date+' '+h+':'+m+':'+s;
+    $('#ANPR_Add_Date').val(datetime);
   });
+  //Automate Exit
+  setInterval(function() {
+    $.ajax({
+      url: "<?php echo URL ?>/ajax-handler.php?handler=Automation_Exit",
+      type: "POST",
+      success:function() {
+        $('#tables').load(' #tables');
+        $('#anpr').load(' #anpr');
+      }
+    });
+  }, 10000);
 </script>
