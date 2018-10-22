@@ -20,6 +20,7 @@
   require(__DIR__ . C . F . '/vehicles.class.php');
   require(__DIR__ . C . F . '/payment.class.php');
   require(__DIR__ . C . F . '/anpr.class.php');
+  require(__DIR__ . C . F . '/account.class.php');
     //Caution
   require(__DIR__ . C . F . '/background.class.php');
   //Define CONFIG settings
@@ -41,6 +42,7 @@
     $payment = new PM\Payment;
     $anpr = new PM\ANPR;
     $background = new PM\Background;
+    $account = new PM\Account;
   }
 
   //Checks
