@@ -64,7 +64,15 @@
     $payment->Transaction_Proccess_Card($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service']);
   } else if($handler == "Transaction_Proccess_Account") {
     $payment->Transaction_Proccess_Account($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Account']);
+  } else if($handler == "Transaction_Proccess_Cash_Renewal") {
+    $payment->Transaction_Proccess_Cash_Renewal($_POST['LogID'], $_POST['ANPRKey'], $_POST['PayRef'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Expiry']);
+  } else if($handler == "Transaction_Proccess_Card_Renewal") {
+    $payment->Transaction_Proccess_Card_Renewal($_POST['LogID'], $_POST['ANPRKey'], $_POST['PayRef'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Expiry']);
+  } else if($handler == "Transaction_Proccess_Account_Renewal") {
+    $payment->Transaction_Proccess_Account_Renewal($_POST['LogID'], $_POST['ANPRKey'], $_POST['PayRef'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Account'], $_POST['Expiry']);
   } else if($handler == "Automation_Exit") {
     $background->Automation_Exit(); //Automate the exit reads
+  } else if($handler = "PM_VehicleTypes_Dropdown_Admin") {
+    $pm->PM_VehicleTypes_Dropdown_Admin($_POST['Key']);
   }
 ?>

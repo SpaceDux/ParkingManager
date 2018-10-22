@@ -87,7 +87,7 @@
         $table .= '<td>'.$result['parked_plate'].'</td>';
         $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
         $table .= '<td>'.date("d/H:i", strtotime($result['parked_timein'])).'</td>';
-        $table .= '<td>'.$this->payment->PaymentInfo($result['parked_plate'], "id").'</td>';
+        $table .= '<td>'.$this->payment->PaymentInfo($result['payment_ref'], "id").'</td>';
         $table .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
             <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
@@ -149,6 +149,7 @@
         $table .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
           <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
+          <a href="'.$_CONFIG['pm']['url']."/transaction/".$result['id'].'" class="btn btn-danger"><i class="fa fa-pound-sign"></i></a>
 
             <div class="btn-group" role="group">
               <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -159,7 +160,6 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" onClick="setFlag('.$result['id'].')" href="#">Flag Vehicle</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">View ANPR Record</a>
               </div>
             </div>
           </div>

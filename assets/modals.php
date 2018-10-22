@@ -95,9 +95,7 @@
             </div>
           </div>
           <div class="modal-body">
-            <div id="return">
 
-            </div>
           </div>
           <div class="modal-footer">
             <input type="submit" id="addANPR" class="btn btn-primary" value="Save Changes">
@@ -609,16 +607,6 @@
               <div class="form-group">
                 <label>Vehicle Image URL</label>
                 <input type="text" class="form-control" id="Update_Type_ImageURL" placeholder="http://example.com/img.png">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <div class="form-group">
-                <label>Choose Campus</label>
-                <select class="form-control" id="Update_Type_Campus">
-                  <?php $pm->PM_Sites_Dropdown();?>
-                </select>
               </div>
             </div>
           </div>

@@ -3,3 +3,4 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
 RewriteRule ^update/([0-9a-zA-Z]+) update.php?id=$1 [L,QSA]
 RewriteRule ^new_transaction/([0-9a-zA-Z]+) new_transaction.php?Uniqueref=$1 [L,QSA]
+RewriteRule ^transaction/([0-9a-zA-Z]+) transaction.php?id=$1 [L,QSA]

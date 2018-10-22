@@ -267,7 +267,7 @@
     function addVehicleType($name, $short, $url) {
       $this->mysql = new MySQL;
       $short = strtoupper($short);
-      $query = $this->mysql->dbc->prepare("INSERT INTO pm_vehicle_types (id, type_name, type_imageURL, type_shortName, type_allowed) VALUES('', ?, ?, ?, '1')");
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_vehicle_types (id, type_name, type_imageURL, type_shortName) VALUES('', ?, ?, ?)");
       $query->bindParam(1, $name);
       $query->bindParam(2, $url);
       $query->bindParam(3, $short);
@@ -408,7 +408,9 @@
       $list .= '<select class="form-control form-control-lg" id="PM_Account_Select">';
       $list .= '<option value="'.$result['id'].'">'.$result['account_name'].'</option>';
       $list .= '</select>';
+
       echo $list;
+
       $this->mysql = null;
     }
     //Get Account info from Fleet plate

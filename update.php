@@ -29,7 +29,6 @@
         </div>
       </div>
       <div class="updateContent">
-        <div id="tables">
         <div class="container">
           <form method="post" id="update">
           <div class="row">
@@ -68,7 +67,7 @@
                     <th scope="col">Service Date</th>
                     <th scope="col">
                       <div class="btn-group" role="group" aria-label="Button Group">
-                        <button type="button" tabindex="-1" class="btn btn-danger btn-sm payBtn" data-id="" data-toggle="modal" data-target="#addPaymentModal"> <i class="fas fa-pound-sign"></i> New Payment </button>
+                        <a href="<?php echo URL ?>/transaction/<?php echo $row['id']?>" tabindex="-1" class="btn btn-danger btn-sm payBtn"> <i class="fas fa-pound-sign"></i> New Payment</a>
                       </div>
                     </th>
                   </tr>
@@ -114,7 +113,6 @@
                 </div>
               </div>
             </div>
-          </div>
           </form>
           </div>
         </div>

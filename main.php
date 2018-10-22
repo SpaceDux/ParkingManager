@@ -126,7 +126,7 @@
         <div class="col-md-5">
           <div class="content">
             <div class="title">
-              Marked Renewals
+              Renewals
             </div>
             <table class="table table-bordered table-hover">
               <thead>

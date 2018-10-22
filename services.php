@@ -26,7 +26,6 @@
           <a href="<?php echo URL ?>/index">Dashboard</a> <small>\\\</small> Admin Tools <small>\\\</small> <b>Services</b>
         </div>
       </div>
-      <div id="tables">
         <div class="updateContent">
           <div class="container">
             <div class="row">
@@ -46,7 +45,7 @@
                       <th>Service SNAP</th>
                       <th>Service Fuel</th>
                       <th>Updated By</th>
-                      <th>Service Campus</th>
+                      <th>Service Site</th>
                       <th><button data-toggle="modal" data-target="#Payment_Service_AddModal" type="button" class="btn btn-danger"><i class="fa fa-plus"></i></button></th>
                     </tr>
                   </thead>
@@ -94,7 +93,6 @@
             </div>
           </div>
         </div>
-      </div>
       <footer>
         <?php echo Footer ?>
       </footer>

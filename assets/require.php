@@ -424,7 +424,7 @@
     } else {
       $('#Cash_Dropdown').html('');
       $.ajax({
-        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Cash_Dropdown_Get",
+        url: "<?php echo URL ?>/ajax-handler.php?handler=Payment_Service_Cash_Dropdown_Get",
         type: "POST",
         data: {vehicle_type:veh_id},
         dataType: "text",
@@ -454,6 +454,61 @@
   });
   //Payment Service ACCOUNT Dropdown
   $(document).on('change', '#NT_Vehicle_Type', function(){
+    var veh_id = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Account_Dropdown').empty();
+    } else {
+      $('#Account_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Account_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id},
+        dataType: "text",
+        success:function(data) {
+          $('#Account_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Renewal
+  //Payment Service CASH Dropdown
+  $(document).on('change', '#T_Vehicle_Type', function(){
+    var veh_id = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Cash_Dropdown').empty();
+    } else {
+      $('#Cash_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL ?>/ajax-handler.php?handler=Payment_Service_Cash_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id},
+        dataType: "text",
+        success:function(data) {
+          $('#Cash_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Payment Service CARD Dropdown
+  $(document).on('change', '#T_Vehicle_Type', function(){
+    var veh_id = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Card_Dropdown').empty();
+    } else {
+      $('#Card_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Card_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id},
+        dataType: "text",
+        success:function(data) {
+          $('#Card_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Payment Service ACCOUNT Dropdown
+  $(document).on('change', '#T_Vehicle_Type', function(){
     var veh_id = $(this).val();
     if(veh_id == 'unselected') {
       $('#Account_Dropdown').empty();
@@ -552,6 +607,103 @@
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Account",
         type: "POST",
         data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Account="+Account_ID,
+        success:function() {
+          window.location.replace("<?php echo URL?>/main");
+        }
+      });
+    }
+  });
+  //Renewal
+  //Cash
+  $(document).on('click', '#T_Process_Cash', function(){
+    event.preventDefault();
+    var LogID = $('#T_LogID').val();
+    var ANPRKey = $('#T_ANPRKey').val();
+    var PayRef = $('#T_PayRef').val();
+    var Plate = $('#T_Vehicle_Plate').val();
+    var Company = $('#T_Company_Name').val();
+    var Trailer = $('#T_Vehicle_Trailer').val();
+    var Type = $('#T_Vehicle_Type').val();
+    var Service = $('#NT_Payment_Service_Cash').val();
+    var Expiry = $('#T_Expiry').val();
+    if(Plate == "") {
+      alert("A Vehicle registration is required!");
+    } else if(Company == "") {
+      alert("Company Name is required!");
+    } else if(Type === "unchecked") {
+      alert("Vehicle Type is required!");
+    } else if (Service === "unchecked") {
+      alert("Payment Service is required!");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Cash_Renewal",
+        type: "POST",
+        data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry,
+        success:function() {
+          window.location.replace("<?php echo URL?>/main");//Relocate
+        }
+      });
+    }
+  });
+  //Card
+  $(document).on('click', '#T_Process_Card', function(){
+    event.preventDefault();
+    var LogID = $('#T_LogID').val();
+    var ANPRKey = $('#T_ANPRKey').val();
+    var PayRef = $('#T_PayRef').val();
+    var Plate = $('#T_Vehicle_Plate').val();
+    var Company = $('#T_Company_Name').val();
+    var Trailer = $('#T_Vehicle_Trailer').val();
+    var Type = $('#T_Vehicle_Type').val();
+    var Service = $('#NT_Payment_Service_Card').val();
+    var Expiry = $('#T_Expiry').val();
+    if(Plate == "") {
+      alert("A Vehicle registration is required!");
+    } else if(Company == "") {
+      alert("Company Name is required!");
+    } else if(Type === "unchecked") {
+      alert("Vehicle Type is required!");
+    } else if (Service === "unchecked") {
+      alert("Payment Service is required!");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Card_Renewal",
+        type: "POST",
+        data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry,
+        success:function() {
+          window.location.replace("<?php echo URL?>/main");//Relocate
+        }
+      });
+    }
+  });
+  //Account
+  $(document).on('click', '#T_Process_Account', function(){
+    event.preventDefault();
+    var LogID = $('#T_LogID').val();
+    var ANPRKey = $('#T_ANPRKey').val();
+    var PayRef = $('#T_PayRef').val();
+    var Plate = $('#T_Vehicle_Plate').val();
+    var Company = $('#T_Company_Name').val();
+    var Trailer = $('#T_Vehicle_Trailer').val();
+    var Type = $('#T_Vehicle_Type').val();
+    var Service = $('#NT_Payment_Service_Account').val();
+    var Account_ID = $('#PM_Account_Select').val();
+    var Expiry = $('#T_Expiry').val();
+    if(Plate == "") {
+      alert("A Vehicle registration is required!");
+    } else if(Company == "") {
+      alert("Company Name is required!");
+    } else if(Type === "unchecked") {
+      alert("Vehicle Type is required!");
+    } else if (Service === "unchecked") {
+      alert("Payment Service is required!");
+    } else if (Account_ID === "unchecked") {
+      alert("Please select an Account");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Account_Renewal",
+        type: "POST",
+        data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Account="+Account_ID+"&Expiry="+Expiry,
         success:function() {
           window.location.replace("<?php echo URL?>/main");
         }

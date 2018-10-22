@@ -1,15 +1,15 @@
 <?php
   require(__DIR__.'/global.php');
-  $ANPRKey = $_GET['Uniqueref'];
-  //Get ANPR Details
-  $anpr_rec = $anpr->getANPR_Record($ANPRKey);
+  $key = $_GET['id'];
+
+  $record = $vehicles->getVehicle($key);
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Parking Manager: New Transaction | <?php echo $anpr_rec['Plate'] ?></title>
+    <title>Parking Manager: New Transaction | <?php echo $record['parked_plate'] ?></title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/theme.css">
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/bootstrap.css">
@@ -21,46 +21,49 @@
     <div id="wrapper">
       <div class="whereami">
         <div class="page">
-          <a href="<?php echo URL ?>/index">Dashboard</a> <small>\\\</small> New Transaction <small>\\\</small> <b><?php echo $anpr_rec['Plate']?></b>
+          <a href="<?php echo URL ?>/index">Dashboard</a> <small>\\\</small> New Transaction <small>\\\</small> <b><?php echo $record['parked_plate']?></b>
           <div class="float-right">
-            <?php $vehicles->timeCalc($anpr_rec['Capture_Date'], "");?>
+            <?php $vehicles->timeCalc($record['parked_expiry'], "");?>
           </div>
         </div>
       </div>
       <div class="updateContent">
         <div class="container">
-          <form action="new_transaction.php" method="post">
+          <form action="transaction.php" method="post">
             <div class="row">
                <div class="col-md-5">
                  <div class="form-group">
                    <label for="NT_Vehicle_Plate">Vehicle Registration</label>
-                   <input type="text" class="form-control" name="NT_Vehicle_Plate" id="NT_Vehicle_Plate" placeholder="Vehicle Registration" value="<?php echo $anpr_rec['Plate']?>" style="text-transform: uppercase;" readonly>
-                   <input type="hidden" class="form-control" name="NT_ANPRKey" id="NT_ANPRKey" value="<?php echo $ANPRKey ?>" style="text-transform: uppercase;" readonly>
+                   <input type="text" class="form-control" name="T_Vehicle_Plate" id="T_Vehicle_Plate" placeholder="Vehicle Registration" value="<?php echo $record['parked_plate']?>" style="text-transform: uppercase;" readonly>
+                   <input type="hidden" class="form-control" name="T_LogID" id="T_LogID" value="<?php echo $key  ?>">
+                   <input type="hidden" class="form-control" name="T_ANPRKey" id="T_ANPRKey" value="<?php echo $record['parked_anprkey'] ?>">
+                   <input type="hidden" class="form-control" name="T_PayRef" id="T_PayRef" value="<?php echo $record['payment_ref'] ?>">
+                   <input type="hidden" class="form-control" name="T_Expiry" id="T_Expiry" value="<?php echo $record['parked_expiry'] ?>">
                  </div>
                  <div class="form-group">
                    <label for="NT_Vehicle_Type">Company Name</label>
-                   <input type="text" class="form-control" name="NT_Company_Name" id="NT_Company_Name" placeholder="Company Name" style="text-transform: uppercase;" required autofocus>
+                   <input type="text" class="form-control" name="T_Company_Name" id="T_Company_Name" placeholder="Company Name" value="<?php echo $record['parked_company']?>" style="text-transform: uppercase;" required autofocus>
                  </div>
                  <div class="form-group">
                    <label for="NT_Vehicle_Type">Trailer Number</label>
-                   <input type="text" class="form-control" name="NT_Vehicle_Trailer" id="NT_Vehicle_Trailer" placeholder="Trailer Number" style="text-transform: uppercase;">
+                   <input type="text" class="form-control" name="T_Vehicle_Trailer" id="T_Vehicle_Trailer" <?php echo $record['parked_trailer']?> placeholder="Trailer Number" style="text-transform: uppercase;">
                  </div>
                  <div class="form-group">
-                   <label for="NT_Vehicle_Type">Vehicle Type</label>
-                   <select class="form-control" name="NT_Vehicle_Type" id="NT_Vehicle_Type" required>
+                   <label for="T_Vehicle_Type">Vehicle Type</label>
+                   <select class="form-control" name="T_Vehicle_Type" id="T_Vehicle_Type">
                      <option value="unchecked">-- Please choose a vehicle type --</option>
                      <?php $pm->PM_VehicleTypes_Dropdown(); ?>
-                   </select>
+                    </select>
                  </div>
                  <div class="form-group">
                    <label for="">ANPR Images</label>
                    <br>
-                   <?php $anpr->ANPR_GetImage($ANPRKey) ?>
+                   <?php $anpr->ANPR_GetImage($record['parked_anprkey']) ?>
                  </div>
                </div>
                <div class="col-md-7">
-               <?php if ($vehicles->isVehicleAccount($anpr_rec['Plate']) == TRUE) { //ACCOUNTS
-                 $acc_id = $pm->PM_FleetInfo($anpr_rec['Plate'], "account_id");
+               <?php if ($vehicles->isVehicleAccount($record['parked_plate']) == TRUE) { //ACCOUNTS
+                 $acc_id = $pm->PM_FleetInfo($record['parked_plate'], "account_id");
                  ?>
                  <nav>
                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -81,7 +84,7 @@
                        <?php $pm->PM_Accounts_Dropdown_Set($acc_id); ?>
                      </div>
                      <div class="form-group" style="margin-top: 100px;">
-                       <input type="submit" name="NT_Process_Account" id="NT_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                       <input type="submit" name="T_Process_Account" id="T_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
                  </div>
@@ -102,7 +105,7 @@
                        </div>
                        <small class="form-text text-muted"> Ensure this is correct! </small>
                        <div class="form-group" style="margin-top: 130px;">
-                         <input type="submit" id="NT_Process_Cash" name="NT_Process_Cash" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                         <input type="submit" id="T_Process_Cash" name="T_Process_Cash" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                        </div>
                      </div>
                    </div>
@@ -115,7 +118,7 @@
                        <small class="form-text text-muted"> Ensure this is correct! </small>
                      </div>
                      <div class="form-group" style="margin-top: 130px;">
-                       <input type="submit" name="NT_Process_Card" id="NT_Process_Card" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                       <input type="submit" name="T_Process_Card" id="T_Process_Card" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
                    <div class="tab-pane fade" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
@@ -131,7 +134,7 @@
                        <?php $pm->PM_Accounts_Dropdown(); ?>
                      </div>
                      <div class="form-group" style="margin-top: 130px;">
-                       <input type="submit" name="NT_Process_Account" id="NT_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                       <input type="submit" name="T_Process_Account" id="T_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
                  </div>
