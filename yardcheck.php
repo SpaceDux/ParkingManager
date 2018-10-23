@@ -25,11 +25,25 @@
         <table class="table table-dark table-bordered table-hover">
           <thead>
             <tr>
+              <th scope="col">ANPR Plate</th>
+              <th scope="col">Time IN</th>
+              <th scope="col">Patch</th>
+              <th scope="col"><i class="fa fa-cog"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php $vehicles->yardCheckANPR() ?>
+          </tbody>
+        </table>
+        <table class="table table-dark table-bordered table-hover">
+          <thead>
+            <tr>
               <th scope="col">Company</th>
               <th scope="col">Registration</th>
               <th scope="col">Type</th>
+              <th scope="col">Trailer Number</th>
               <th scope="col">Time IN</th>
-              <th scope="col">Ticket ID's</th>
+              <th scope="col">Expiry Time</th>
               <th scope="col"><i class="fa fa-cog"></i></th>
             </tr>
           </thead>
@@ -49,5 +63,10 @@
     <script src="<?php echo URL ?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL ?>/assets/js/mousetrap.min.js"></script>
     <?php require(__DIR__.'/assets/require.php');?>
+    <script type="text/javascript">
+      window.onbeforeunload = function() {
+        return "Dude, are you sure you want to leave? Think of the kittens!";
+      }
+  </script>
   </body>
 </html>

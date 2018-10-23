@@ -101,8 +101,6 @@
                 <a id="exit" class="dropdown-item" onClick="exit('.$result['id'].')" href="#">Exit Vehicle</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" onClick="setFlag('.$result['id'].')" href="#">Flag Vehicle</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">View ANPR Record</a>
               </div>
             </div>
           </div>
@@ -159,7 +157,6 @@
                 <a id="exit" class="dropdown-item" onClick="exit('.$result['id'].')" href="#">Exit Vehicle</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" onClick="setFlag('.$result['id'].')" href="#">Flag Vehicle</a>
-                <div class="dropdown-divider"></div>
               </div>
             </div>
           </div>
@@ -446,6 +443,77 @@
       } else {
         echo "ERROR!";
       }
+    }
+    function yardCheck() {
+
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $campus = $this->user->userInfo("campus");
+      $html = "";
+
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column < 2 AND parked_deleted < 1 AND parked_campus = ? ORDER BY parked_expiry ASC");
+      $query->bindParam(1, $campus);
+      $query->execute();
+      $result = $query->fetchAll();
+
+      foreach ($result as $row) {
+        $html .= '<tr>';
+        $html .= '<td>'.$row['parked_company'].'</td>';
+        $html .= '<td>'.$row['parked_plate'].'</td>';
+        $html .= '<td>'.$this->Vehicle_Type_Info($row['parked_type'], "type_shortName").'</td>';
+        $html .= '<td>'.$row['parked_trailer'].'</td>';
+        $html .= '<td>'.date("d/H:s", strtotime($row['parked_timein'])).'</td>';
+        $html .= '<td>'.date("d/H:s", strtotime($row['parked_expiry'])).'</td>';
+        $html .= '<td><div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" class="btn btn-danger" onClick="exit('.$row['id'].')"><i class="fa fa-times"></i></button>
+                    <a target="_blank" href="'.URL."/update/".$row['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
+
+                  </div>
+                  <input type="checkbox" style="-ms-transform: scale(4); /* IE */-moz-transform: scale(4); /* FF */-webkit-transform: scale(4); /* Safari and Chrome */-o-transform: scale(4); /* Opera */ margin-left: 25px">
+                  </td>';
+        $html .= '</tr>';
+      }
+      echo $html;
+
+      $this->mysql = null;
+      $this->user = null;
+    }
+    function yardCheckANPR() {
+      global $_CONFIG;
+      $this->mssql = new MSSQL;
+      $this->user = new User;
+      $html = "";
+
+      $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+      $query->execute();
+      $result = $query->fetchAll();
+
+
+      foreach ($result as $row) {
+        //Get The right Path now.
+        if($this->user->userInfo("campus") == 1) {
+          $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $row['Patch']);
+        } else if($this->user->userInfo("campus") == 2) {
+          $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
+        } else if ($this->user->userInfo("campus") == 0) {
+          $patch = "";
+        }
+        $html .= '<tr>';
+        $html .= '<td>'.$row['Plate'].'</td>';
+        $html .= '<td>'.date("d/H:s", strtotime($row['Capture_Date'])).'</td>';
+        $html .= '<td><img src="'.$patch.'"></img></td>';
+        $html .= '<td><div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" id="ANPR_Edit" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
+                    <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                  </div>
+                  <input type="checkbox" style="-ms-transform: scale(4); /* IE */-moz-transform: scale(4); /* FF */-webkit-transform: scale(4); /* Safari and Chrome */-o-transform: scale(4); /* Opera */ margin-left: 25px">
+                  </td>';
+        $html .= '</tr>';
+      }
+      echo $html;
+
+      $this->mssql = null;
+      $this->user = null;
     }
   }
  ?>

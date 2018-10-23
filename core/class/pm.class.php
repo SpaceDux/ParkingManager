@@ -146,7 +146,7 @@
       $nav .=    '</li>';
       $nav .=    '<li><i class="fa fa-book"></i> Account Tools';
       $nav .=      '<ul>';
-      $nav .=        '<a href="'.URL.'/reports"><li>Account List</li></a>';
+      $nav .=        '<a href="'.URL.'/accounts"><li>Account List</li></a>';
       $nav .=      '</ul>';
       $nav .=    '</li>';
       $nav .=    '<li><i class="fa fa-cogs"></i> P<b>M</b> Tools';
