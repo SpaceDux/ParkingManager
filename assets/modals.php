@@ -621,3 +621,91 @@
     </div>
   </div>
 </div>
+<!-- Update Account Info -->
+<div class="modal fade" id="Update_AccountModal" tabindex="-1" role="dialog" aria-labelledby="Update_AccountModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Update_AccountModal">Update Account Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="Update_AccountForm">
+          <div class="col">
+            <div class="form-group">
+              <label>Account Name</label>
+              <input type="hidden" id="Update_Account_ID" class="form-control" autofocus>
+              <input type="text" class="form-control" id="Update_Account_Name" placeholder="Company Name" autofocus>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Account Contact Number</label>
+              <input type="text" class="form-control" id="Update_Account_Tel" placeholder="+7373266364" style="text-transform: uppercase;">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Account Contact Email</label>
+              <input type="text" class="form-control" id="Update_Account_Email" placeholder="example@account.com">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Account Billing Email</label>
+              <input type="text" class="form-control" id="Update_Account_Billing_Email" placeholder="example@account.com">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Account Site</label>
+              <select class="form-control" id="Update_Account_Campus">
+                <?php $pm->PM_Sites_Dropdown() ?>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" id="Update_Account_Save" value="Save Changes">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Update Fleet Modal -->
+<div class="modal fade" id="Update_Account_FleetModal" tabindex="-1" role="dialog" aria-labelledby="Update_Account_FleetModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Update_Account_FleetModal">Update Account Fleet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="Update_AccountFleet">
+          <div class="col">
+            <div class="form-group">
+              <label>Add a vehicle to this Accounts fleet</label>
+              <input type="hidden" id="Account_ID" class="form-control" autofocus>
+              <input type="text" class="form-control" id="Update_Account_Fleet_Plate" placeholder="Press ENTER to save" style="text-transform: uppercase;" autofocus>
+            </div>
+            <div id="fleets">
+
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-body">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

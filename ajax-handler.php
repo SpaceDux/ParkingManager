@@ -72,7 +72,19 @@
     $payment->Transaction_Proccess_Account_Renewal($_POST['LogID'], $_POST['ANPRKey'], $_POST['PayRef'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Account'], $_POST['Expiry']);
   } else if($handler == "Automation_Exit") {
     $background->Automation_Exit(); //Automate the exit reads
-  } else if($handler = "PM_VehicleTypes_Dropdown_Admin") {
-    $pm->PM_VehicleTypes_Dropdown_Admin($_POST['Key']);
+  } else if($handler == "Account_Update_Save") {
+    $account->Account_Update_Save($_POST['Acc_ID'], $_POST['Name'], $_POST['Tel'], $_POST['Email'], $_POST['Billing'], $_POST['Site']);
+  } else if($handler == "Account_Update_Get") {
+    $account->Account_Update_Get($_POST['Acc_ID']);
+  } else if($handler == "Account_Fleet_Update_Get") {
+    $account->Account_Fleet_Get($_POST['Acc_ID']);
+  } else if($handler == "Account_Fleet_Add") {
+    $account->Account_Fleet_Add($_POST['Acc_ID'], $_POST['Plate']);
+  } else if($handler == "Account_Fleet_Delete") {
+    $account->Account_Fleet_Delete($_POST['Key']);
+  } else if($handler == "Account_Suspend") {
+    $account->Account_Suspend($_POST['Key']);
+  } else if($handler == "Account_Delete") {
+    $account->Account_Delete($_POST['Key']);
   }
 ?>

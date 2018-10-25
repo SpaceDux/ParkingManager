@@ -4,12 +4,13 @@
   class Background {
     private $mssql;
     private $mysql;
+    private $pm;
 
-    function Automation_Exit()
-    {
+    function Automation_Exit() {
       $this->mssql = new MSSQL;
       $this->mysql = new MySQL;
       $this->user = new User;
+      $this->pm = new PM;
       $campus = $this->user->userInfo("campus");
 
       $anpr = $this->mssql->dbc->prepare("SELECT TOP 5 * FROM ANPR_REX WHERE Direction_Travel = 1 AND Lane_ID = 2 ORDER BY Capture_Date DESC");
@@ -46,15 +47,21 @@
           $query2->bindParam(2, $date);
           $query2->bindParam(3, $anpr_key);
           $query2->bindParam(4, $campus);
-          $query2->execute();
+          if($query2->execute()) {
+            $this->pm->PM_Notification_Create("PM has automatically EXIT the vehicle $plate");
+          }
+
         } else {
           //do nothing
         }
       }
 
+
       $this->mssql = null;
       $this->mysql = null;
       $this->user = null;
+      $this->pm = null;
     }
+    
   }
 ?>

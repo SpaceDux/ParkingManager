@@ -28,6 +28,42 @@
     })
     $('#tables').load(' #tables');
   }
+  //AJAX for Fleet Delete
+  function Account_Fleet_Delete(str) {
+    event.preventDefault();
+    var Key = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Account_Fleet_Delete",
+      type: "POST",
+      data: {Key:Key}
+    })
+  }
+  //AJAX account suspend
+  function Account_Suspend(str) {
+    event.preventDefault();
+    var Key = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Account_Suspend",
+      type: "POST",
+      data: {Key:Key},
+      success:function() {
+        $('#tables').load(' #tables');
+      }
+    })
+  }
+  //AJAX account delete
+  function Account_Delete(str) {
+    event.preventDefault();
+    var Key = str;
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Account_Delete",
+      type: "POST",
+      data: {Key:Key},
+      success:function() {
+        $('#tables').load(' #tables');
+      }
+    })
+  }
   //Ajax mark Renewal function
   function markRenewal(str) {
     event.preventDefault();
@@ -709,6 +745,81 @@
         }
       });
     }
+  });
+  //Account Edit Record Display
+  $(document).on('click', '#Account_UpdateButton', function() {
+    var Account_ID = $(this).data('id');
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Account_Update_Get",
+      type: "POST",
+      data: {Acc_ID:Account_ID},
+      dataType: "json",
+      success:function(data) {
+        $('#Update_Account_ID').val(data.id);
+        $('#Update_Account_Name').val(data.account_name);
+        $('#Update_Account_Tel').val(data.account_contact_no);
+        $('#Update_Account_Email').val(data.account_contact_email);
+        $('#Update_Account_Billing_Email').val(data.account_billing_email);
+        $('#Update_Account_Campus').val(data.campus);
+        $('#Update_AccountModal').modal('toggle');
+      }
+    })
+  });
+  //Account Record Update Save
+  $(document).on('click', '#Update_Account_Save', function(){
+    event.preventDefault();
+    var Account_ID = $('#Update_Account_ID').val();
+    var Name = $('#Update_Account_Name').val();
+    var Tel = $('#Update_Account_Tel').val();
+    var Email = $('#Update_Account_Email').val();
+    var Billing = $('#Update_Account_Billing_Email').val();
+    var Campus = $('#Update_Account_Campus').val();
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Account_Update_Save",
+        type: "POST",
+        data: "Acc_ID="+Account_ID+"&Name="+Name+"&Tel="+Tel+"&Email="+Email+"&Billing="+Billing+"&Site="+Campus,
+        success:function() {
+          $('#Update_AccountModal').modal('toggle');
+      }
+    });
+  });
+  //Account Fleet View
+  $(document).on('click', '#Account_UpdateFleetButton', function() {
+    var Account_ID = $(this).data('id');
+    $('#Account_ID').val(Account_ID);
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Account_Fleet_Update_Get",
+      type: "POST",
+      data: {Acc_ID:Account_ID},
+      dataType: "text",
+      success:function(data) {
+        $('#fleets').html(data);
+        $('#Update_Account_FleetModal').modal('toggle');
+      }
+    })
+  });
+  //Account Record Update Save (AND AUTO-Re-Query data)
+  $(document).on('submit', '#Update_AccountFleet', function(){
+    event.preventDefault();
+    var Account_ID = $('#Account_ID').val();
+    var Plate = $('#Update_Account_Fleet_Plate').val();
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Account_Fleet_Add",
+        type: "POST",
+        data: "Acc_ID="+Account_ID+"&Plate="+Plate,
+        success:function() {
+          $.ajax({
+            url: "<?php echo URL?>/ajax-handler.php?handler=Account_Fleet_Update_Get",
+            type: "POST",
+            data: {Acc_ID:Account_ID},
+            dataType: "text",
+            success:function(data) {
+              $('#fleets').html(data);
+              document.getElementById("Update_AccountFleet").reset();
+            }
+          })
+      }
+    });
   });
   //Update Exit
   $('#exitButton').click(function(){

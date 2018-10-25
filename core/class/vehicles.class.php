@@ -303,13 +303,24 @@
     function Vehicle_Exit($key) {
       //Prep Class
       $this->mysql = new MySQL;
+      $this->pm = new PM;
+      $this->user = new User;
+
+      $vehicle = $this->vehInfo("parked_plate", $key);
+      $name = $this->user->userInfo("first_name");
+
       //Query
       $date = date('Y-m-d H:i:s');
       $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_column = '2', parked_timeout = :timeout WHERE id = :id");
       $stmt->bindParam(':timeout', $date);
       $stmt->bindParam(':id', $key);
-      $stmt->execute();
+      if($stmt->execute()) {
+        $this->pm->PM_Notification_Create("$vehicle has been successfully marked EXIT by $name", "0");
+      }
+
       $this->mysql = null;
+      $this->pm = null;
+      $this->user = null;
     }
     //Ajax setFlag
     function Vehicle_Flag($key) {
@@ -414,7 +425,7 @@
       if ($count > 0) {
         $id = $result1['account_id'];
 
-        $sql2 = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ? AND campus = ? AND account_suspended = 0");
+        $sql2 = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ? AND campus = ? AND account_suspended = 0 AND account_deleted = 0");
         $sql2->bindParam(1, $id);
         $sql2->bindParam(2, $campus);
         $sql2->execute();
@@ -444,6 +455,7 @@
         echo "ERROR!";
       }
     }
+    //Yard Check
     function yardCheck() {
 
       $this->mysql = new MySQL;
@@ -478,6 +490,7 @@
       $this->mysql = null;
       $this->user = null;
     }
+    //Yard Check ANPR
     function yardCheckANPR() {
       global $_CONFIG;
       $this->mssql = new MSSQL;
@@ -515,5 +528,6 @@
       $this->mssql = null;
       $this->user = null;
     }
+
   }
  ?>

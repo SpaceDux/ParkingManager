@@ -377,7 +377,7 @@
       $campus = $this->user->userInfo("campus");
 
       $list = '';
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE campus = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE campus = ? AND account_deleted = 0");
       $query->bindParam(1, $campus);
       $query->execute();
       $result = $query->fetchAll();
@@ -423,6 +423,25 @@
       return $result[$what];
 
       $this->mysql = null;
+    }
+    //Notifications
+    function PM_Notification_Create($text, $urgency) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      if(isset($text)) {
+        $date = date("Y-m-d H:i:s");
+
+        $site = $this->user->userInfo("campus");
+
+        $stmt = $this->mysql->dbc->prepare("INSERT INTO pm_notifications VALUES ('', ?, ?, ?, ?)");
+        $stmt->bindParam(1, $text);
+        $stmt->bindParam(2, $site);
+        $stmt->bindParam(3, $date);
+        $stmt->bindParam(4, $urgency);
+        $stmt->execute();
+      }
+      $this->mysql = null;
+      $this->user = null;
     }
   }
 ?>
