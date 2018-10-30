@@ -658,18 +658,91 @@
               <input type="text" class="form-control" id="Update_Account_Billing_Email" placeholder="example@account.com">
             </div>
           </div>
-          <div class="col">
-            <div class="form-group">
-              <label>Account Site</label>
-              <select class="form-control" id="Update_Account_Campus">
-                <?php $pm->PM_Sites_Dropdown() ?>
-              </select>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Account Site</label>
+                <select class="form-control" id="Update_Account_Campus">
+                  <?php $pm->PM_Sites_Dropdown() ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Share Account</label>
+                <select class="form-control" id="Update_Account_Share">
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
         <div class="modal-body">
           <div class="modal-footer">
             <input type="submit" class="btn btn-primary" id="Update_Account_Save" value="Save Changes">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Update Account Info -->
+<div class="modal fade" id="New_AccountModal" tabindex="-1" role="dialog" aria-labelledby="New_AccountModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="New_AccountModal">Register New Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="New_AccountModalForm">
+          <div class="col">
+            <div class="form-group">
+              <label>Account Name</label>
+              <input type="text" class="form-control" id="New_Account_Name" placeholder="Company Name" autofocus>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Account Contact Number</label>
+              <input type="text" class="form-control" id="New_Account_Tel" placeholder="+7373266364" style="text-transform: uppercase;">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Account Contact Email</label>
+              <input type="text" class="form-control" id="New_Account_Email" placeholder="example@account.com">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Account Billing Email</label>
+              <input type="text" class="form-control" id="New_Account_Billing_Email" placeholder="example@account.com">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Account Site</label>
+                <select class="form-control" id="New_Account_Campus">
+                  <?php $pm->PM_Sites_Dropdown() ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Share Account</label>
+                <select class="form-control" id="New_Account_Share">
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" id="New_Account_Save" value="Save Changes">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </form>

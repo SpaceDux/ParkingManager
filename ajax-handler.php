@@ -73,7 +73,7 @@
   } else if($handler == "Automation_Exit") {
     $background->Automation_Exit(); //Automate the exit reads
   } else if($handler == "Account_Update_Save") {
-    $account->Account_Update_Save($_POST['Acc_ID'], $_POST['Name'], $_POST['Tel'], $_POST['Email'], $_POST['Billing'], $_POST['Site']);
+    $account->Account_Update_Save($_POST['Acc_ID'], $_POST['Name'], $_POST['Tel'], $_POST['Email'], $_POST['Billing'], $_POST['Site'], $_POST['Share']);
   } else if($handler == "Account_Update_Get") {
     $account->Account_Update_Get($_POST['Acc_ID']);
   } else if($handler == "Account_Fleet_Update_Get") {
@@ -86,5 +86,7 @@
     $account->Account_Suspend($_POST['Key']);
   } else if($handler == "Account_Delete") {
     $account->Account_Delete($_POST['Key']);
+  } else if($handler == "Account_New") {
+    $account->Account_New($_POST['Name'], $_POST['Contact_no'], $_POST['Contact_Email'], $_POST['Billing_Email'], $_POST['Campus'], $_POST['Share']);
   }
 ?>

@@ -59,6 +59,7 @@ if($_POST['site'] == 1) {
     $printer -> text("£".$gross."\n");
     $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
     $printer -> setTextSize(1, 1);
+    $printer -> feed();
     $printer -> text("VAT @ 20%: Net £".$net." - £".number_format($vat_pay, 2));
     $printer -> feed(2);
     $printer -> selectPrintMode();

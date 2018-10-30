@@ -141,7 +141,7 @@
       $nav .=    '</li>';
       $nav .=    '<li><i class="fa fa-pound-sign"></i> Payment Tools';
       $nav .=     ' <ul>';
-      $nav .=        '<a href="'.URL.'/reports"><li>Transactions History</li></a>';
+      $nav .=        '<a href="'.URL.'/transaction_log"><li>Transactions History</li></a>';
       $nav .=      '</ul>';
       $nav .=    '</li>';
       $nav .=    '<li><i class="fa fa-book"></i> Account Tools';
@@ -369,31 +369,6 @@
       return $result[$what];
 
       $this->mysql = null;
-    }
-    //PM Account Dropdown
-    function PM_Accounts_Dropdown() {
-      $this->mysql = new MySQL;
-      $this->user = new User;
-      $campus = $this->user->userInfo("campus");
-
-      $list = '';
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE campus = ? AND account_deleted = 0");
-      $query->bindParam(1, $campus);
-      $query->execute();
-      $result = $query->fetchAll();
-      $list .= '<select class="form-control form-control-lg" id="PM_Account_Select">';
-      $list .= '<option value="unchecked">-- Please choose an account --</option>';
-      foreach ($result as $row) {
-        if($row['account_suspended'] == 1) {
-          $list .= '<option style="color: red;" value="unchecked">'.$row['account_name'].' - currently suspended</option>';
-        } else {
-          $list .= '<option value="'.$row['id'].'">'.$row['account_name'].'</option>';
-        }
-      }
-      $list .= '</select>';
-      echo $list;
-      $this->mysql = null;
-      $this->user = null;
     }
     //Get Account info from Fleet plate
     function PM_Accounts_Dropdown_Set($key) {

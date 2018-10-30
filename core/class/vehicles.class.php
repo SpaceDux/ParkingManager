@@ -411,37 +411,6 @@
         echo '<div class="alert alert-danger" role="alert"><i class="fa fa-times"></i> This vehicle has been <b>deleted</b></div>';
       }
     }
-    //Check if vehicle belongs to account.
-    function isVehicleAccount($plate) {
-      $this->mysql = new MySQL;
-      $this->user = new User;
-      $campus = $this->user->userInfo("campus");
-
-      $sql1 = $this->mysql->dbc->prepare("SELECT account_id FROM pm_accounts_fleet WHERE account_vehicle_plate = ?");
-      $sql1->bindParam(1, $plate);
-      $sql1->execute();
-      $result1 = $sql1->fetch(\PDO::FETCH_ASSOC);
-      $count = $sql1->rowCount();
-      if ($count > 0) {
-        $id = $result1['account_id'];
-
-        $sql2 = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ? AND campus = ? AND account_suspended = 0 AND account_deleted = 0");
-        $sql2->bindParam(1, $id);
-        $sql2->bindParam(2, $campus);
-        $sql2->execute();
-        $count2 = $sql2->rowCount();
-        if ($count2 > 0) {
-          return TRUE;
-        }
-      } else {
-
-
-        return FALSE;
-      }
-
-      $this->mysql = null;
-      $this->user = null;
-    }
     //Return timecalc hour only
     function findHour($time1, $time2) {
       if(isset($time1)) {

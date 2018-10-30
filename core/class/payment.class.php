@@ -794,6 +794,55 @@
         //ignore
       }
     }
+    //List all payments
+    function Transaction_Log_24() {
+      $this->user = new User;
+      $this->mysql = new MySQL;
+      $this->account = new Account;
+      $campus = $this->user->userInfo("campus");
 
+      $date1 = date("Y-m-d 21:00");
+      $date2 = date("Y-m-d 21:00", strtotime('-24 hours'));
+
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date DESC");
+      $query->bindParam(1, $campus);
+      $query->bindParam(2, $date2);
+      $query->bindParam(3, $date1);
+      $query->execute();
+
+      $result = $query->fetchAll();
+
+      $html = '<tr>';
+      foreach ($result as $row) {
+        if($row['payment_type'] == 1) {
+          $type = "Cash";
+        } else if ($row['payment_type'] == 2) {
+          $type = "Card";
+        } else if ($row['payment_type'] == 3) {
+          $type = "Account";
+        }
+
+        $html .= '<td>'.$row['payment_company_name'].'</td>';
+        $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
+        $html .= '<td>'.$row['payment_service_name'].'</td>';
+        $html .= '<td>'.$type.'</td>';
+        $html .= '<td> £'.$row['payment_price_gross'].'</td>';
+        $html .= '<td> £'.$row['payment_price_net'].'</td>';
+        $html .= '<td>'.date("d/H:i", strtotime($row['payment_date'])).'</td>';
+        $html .= '<td>'.$row['payment_ref'].'</td>';
+        $html .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
+        $html .= '<td>'.$row['payment_author'].'</td>';
+        $html .= '<td>
+                    buttons
+                  </td>';
+        $html .= '</tr>';
+      }
+
+      echo $html;
+
+      $this->user = null;
+      $this->mysql = null;
+      $this->account = null;
+    }
   }
 ?>

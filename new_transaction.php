@@ -59,8 +59,8 @@
                  </div>
                </div>
                <div class="col-md-7">
-               <?php if ($vehicles->isVehicleAccount($anpr_rec['Plate']) == TRUE) { //ACCOUNTS
-                 $acc_id = $pm->PM_FleetInfo($anpr_rec['Plate'], "account_id");
+               <?php if ($account->Account_Check($anpr_rec['Plate']) == TRUE) { //ACCOUNTS
+                 $acc_id = $account->Account_FleetInfo($anpr_rec['Plate'], "account_id");
                  ?>
                  <nav>
                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -78,7 +78,7 @@
                      </div>
                      <div class="form-group">
                        <label>Select an account</label>
-                       <?php $pm->PM_Accounts_Dropdown_Set($acc_id); ?>
+                       <?php $account->Account_List_Dropdown_Set($acc_id); ?>
                      </div>
                      <div class="form-group" style="margin-top: 100px;">
                        <input type="submit" name="NT_Process_Account" id="NT_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
@@ -128,7 +128,7 @@
                      </div>
                      <div class="form-group">
                        <label>Select an account</label>
-                       <?php $pm->PM_Accounts_Dropdown(); ?>
+                       <?php $account->Account_List_Dropdown(); ?>
                      </div>
                      <div class="form-group" style="margin-top: 130px;">
                        <input type="submit" name="NT_Process_Account" id="NT_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">

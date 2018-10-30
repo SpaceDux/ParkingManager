@@ -32,6 +32,7 @@
   function Account_Fleet_Delete(str) {
     event.preventDefault();
     var Key = str;
+    var Acc_ID = $('#Account_ID').val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Account_Fleet_Delete",
       type: "POST",
@@ -761,6 +762,7 @@
         $('#Update_Account_Email').val(data.account_contact_email);
         $('#Update_Account_Billing_Email').val(data.account_billing_email);
         $('#Update_Account_Campus').val(data.campus);
+        $('#Update_Account_Share').val(data.account_shared);
         $('#Update_AccountModal').modal('toggle');
       }
     })
@@ -774,10 +776,11 @@
     var Email = $('#Update_Account_Email').val();
     var Billing = $('#Update_Account_Billing_Email').val();
     var Campus = $('#Update_Account_Campus').val();
+    var Share = $('#Update_Account_Share').val();
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Account_Update_Save",
         type: "POST",
-        data: "Acc_ID="+Account_ID+"&Name="+Name+"&Tel="+Tel+"&Email="+Email+"&Billing="+Billing+"&Site="+Campus,
+        data: "Acc_ID="+Account_ID+"&Name="+Name+"&Tel="+Tel+"&Email="+Email+"&Billing="+Billing+"&Site="+Campus+"&Share="+Share,
         success:function() {
           $('#Update_AccountModal').modal('toggle');
       }

@@ -23,8 +23,9 @@
     function Account_FleetInfo($key, $what) {
       $this->mysql = new MySQL;
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts_fleet WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts_fleet WHERE id = ? OR account_vehicle_plate = ?");
       $query->bindParam(1, $key);
+      $query->bindParam(2, $key);
       $query->execute();
       $result = $query->fetch(\PDO::FETCH_ASSOC);
 
@@ -59,6 +60,11 @@
         $html .= '<td>'.$row['account_contact_email'].'</td>';
         $html .= '<td>'.$this->pm->PM_SiteInfo($row['campus'], "site_name").'</td>';
         $html .= '<td>'.date("d/m/y H:i", strtotime($row['account_updated'])).'</td>';
+        if($row['account_shared'] == 1) {
+          $html .= '<td>Yes</td>';
+        } else {
+          $html .= '<td>No</td>';
+        }
         $html .= '<td><div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                   <button type="button" id="Account_UpdateButton" data-id="'.$row['id'].'" class="btn btn-secondary"><i class="fa fa-cog"></i> Update</button>
                   <button type="button" id="Account_UpdateFleetButton" data-id="'.$row['id'].'" class="btn btn-secondary"><i class="fa fa-truck"></i> Fleet</button>
@@ -85,6 +91,7 @@
 
       $this->mysql = null;
       $this->user = null;
+      $this->pm = null;
     }
     //Get Account Information and Encode for JS
     function Account_Update_Get($key) {
@@ -104,7 +111,7 @@
       $this->mysql = null;
     }
     //Update Account Information Modal PHP
-    function Account_Update_Save($key, $name, $tel, $email, $billing, $site) {
+    function Account_Update_Save($key, $name, $tel, $email, $billing, $site, $share) {
       $this->mysql = new MySQL;
       $this->pm = new PM;
       $this->user = new User;
@@ -113,14 +120,15 @@
 
       $date = date("Y-m-d H:i:s");
 
-      $query = $this->mysql->dbc->prepare("UPDATE pm_accounts SET account_name = ?, account_contact_no = ?, account_contact_email = ?, account_billing_email = ?, account_updated = ?, campus = ? WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("UPDATE pm_accounts SET account_name = ?, account_contact_no = ?, account_contact_email = ?, account_billing_email = ?, account_updated = ?, campus = ?, account_shared = ? WHERE id = ?");
       $query->bindParam(1, $name);
       $query->bindParam(2, $tel);
       $query->bindParam(3, $email);
       $query->bindParam(4, $billing);
       $query->bindParam(5, $date);
       $query->bindParam(6, $site);
-      $query->bindParam(7, $key);
+      $query->bindParam(7, $share);
+      $query->bindParam(8, $key);
       if($query->execute()) {
         $this->pm->PM_Notification_Create("$user has successfully updated $name's information.", "0");
       }
@@ -166,6 +174,7 @@
 
       $this->mysql = null;
     }
+    //Account Fleet Add
     function Account_Fleet_Add($key, $plate) {
       $this->mysql = new MySQL;
       $this->pm = new PM;
@@ -189,6 +198,7 @@
       $this->pm = null;
       $this->user = null;
     }
+    //Account Fleet Delete
     function Account_Fleet_Delete($key) {
       $this->mysql = new MySQL;
 
@@ -202,6 +212,7 @@
 
       $this->mysql = null;
     }
+    //Account Suspend
     function Account_Suspend($key) {
       $this->mysql = new MySQL;
 
@@ -218,6 +229,7 @@
       }
       $this->mysql = null;
     }
+    //Account Delete
     function Account_Delete($key) {
       $this->mysql = new MySQL;
 
@@ -232,6 +244,84 @@
         $query->bindParam(1, $key);
         $query->execute();
       }
+      $this->mysql = null;
+    }
+    //Check if vehicle belongs to account.
+    function Account_Check($plate) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $campus = $this->user->userInfo("campus");
+
+      $sql1 = $this->mysql->dbc->prepare("SELECT account_id FROM pm_accounts_fleet WHERE account_vehicle_plate = ?");
+      $sql1->bindParam(1, $plate);
+      $sql1->execute();
+      $result1 = $sql1->fetch(\PDO::FETCH_ASSOC);
+      $count = $sql1->rowCount();
+      if ($count > 0) {
+        $id = $result1['account_id'];
+
+        $sql2 = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ? AND account_suspended = 0 AND account_deleted = 0");
+        $sql2->bindParam(1, $id);
+        $sql2->execute();
+        $result = $sql2->fetch(\PDO::FETCH_ASSOC);
+        $count2 = count($result);
+        if ($count2 > 0) {
+          if($result['account_shared'] == 1) {
+            return TRUE;
+          } else if ($result['campus'] == $campus) {
+            return TRUE;
+          } else {
+            return FALSE;
+          }
+        }
+      } else {
+        return FALSE;
+      }
+
+      $this->mysql = null;
+      $this->user = null;
+    }
+    //PM Account Dropdown
+    function Account_List_Dropdown() {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $campus = $this->user->userInfo("campus");
+
+      $list = '';
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE campus = ? OR account_shared = 1 AND account_deleted = 0");
+      $query->bindParam(1, $campus);
+      $query->execute();
+      $result = $query->fetchAll();
+      $list .= '<select class="form-control form-control-lg" id="PM_Account_Select">';
+      $list .= '<option value="unchecked">-- Please choose an account --</option>';
+      foreach ($result as $row) {
+        if($row['account_suspended'] == 1) {
+          $list .= '<option style="color: red;" value="unchecked">'.$row['account_name'].' - currently suspended</option>';
+        } else {
+          $list .= '<option value="'.$row['id'].'">'.$row['account_name'].'</option>';
+        }
+      }
+      $list .= '</select>';
+      echo $list;
+      $this->mysql = null;
+      $this->user = null;
+    }
+    //Get Account info from Fleet plate
+    function Account_List_Dropdown_Set($key) {
+      $this->mysql = new MySQL;
+
+      $list = '';
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ?");
+      $query->bindParam(1, $key);
+      $query->execute();
+      $result = $query->fetch(\PDO::FETCH_ASSOC);
+
+      $list .= '<select class="form-control form-control-lg" id="PM_Account_Select">';
+      $list .= '<option value="'.$result['id'].'">'.$result['account_name'].'</option>';
+      $list .= '</select>';
+
+      echo $list;
+
       $this->mysql = null;
     }
   }
