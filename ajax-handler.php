@@ -88,5 +88,17 @@
     $account->Account_Delete($_POST['Key']);
   } else if($handler == "Account_New") {
     $account->Account_New($_POST['Name'], $_POST['Contact_no'], $_POST['Contact_Email'], $_POST['Billing_Email'], $_POST['Campus'], $_POST['Share']);
+  } else if($handler == "Payment_Service_SNAP_Dropdown_Get") {
+    $payment->Payment_ServiceSelect_SNAP($_POST['vehicle_type']);
+  } else if($handler == "Payment_Service_Fuel_Dropdown_Get") {
+    $payment->Payment_ServiceSelect_Fuel($_POST['vehicle_type']);
+  } else if($handler == "Transaction_Proccess_SNAP") {
+    $payment->Transaction_Proccess_SNAP($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['etp']);
+  } else if($handler == "Transaction_Proccess_Fuel") {
+    $payment->Transaction_Proccess_Fuel($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['etp']);
+  } else if($handler == "Transaction_Proccess_SNAP_Renewal") {
+    $payment->Transaction_Proccess_SNAP_Renewal($_POST['LogID'], $_POST['ANPRKey'], $_POST['PayRef'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Expiry'], $_POST['etp']);
+  } else if($handler == "Transaction_Proccess_Fuel_Renewal") {
+    $payment->Transaction_Proccess_Fuel_Renewal($_POST['LogID'], $_POST['ANPRKey'], $_POST['PayRef'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Expiry'], $_POST['etp']);
   }
 ?>

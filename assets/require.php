@@ -507,6 +507,42 @@
       })
     }
   });
+  //Payment Service SNAP Dropdown
+  $(document).on('change', '#NT_Vehicle_Type', function(){
+    var veh_id = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#SNAP_Dropdown').empty();
+    } else {
+      $('#SNAP_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_SNAP_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id},
+        dataType: "text",
+        success:function(data) {
+          $('#SNAP_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Payment Service Fuel Dropdown
+  $(document).on('change', '#NT_Vehicle_Type', function(){
+    var veh_id = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Fuel_Dropdown').empty();
+    } else {
+      $('#Fuel_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Fuel_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id},
+        dataType: "text",
+        success:function(data) {
+          $('#Fuel_Dropdown').html(data);
+        }
+      })
+    }
+  });
   //Renewal
   //Payment Service CASH Dropdown
   $(document).on('change', '#T_Vehicle_Type', function(){
@@ -650,6 +686,68 @@
       });
     }
   });
+  //SNAP
+  $(document).on('click', '#NT_Process_SNAP', function(){
+    event.preventDefault();
+    var ANPRKey = $('#NT_ANPRKey').val();
+    var Plate = $('#NT_Vehicle_Plate').val();
+    var Company = $('#NT_Company_Name').val();
+    var Trailer = $('#NT_Vehicle_Trailer').val();
+    var Type = $('#NT_Vehicle_Type').val();
+    var Service = $('#NT_Payment_Service_SNAP').val();
+    var etp = $('#NT_Process_SNAP_TID').val();
+    if(Plate == "") {
+      alert("A Vehicle registration is required!");
+    } else if(Company == "") {
+      alert("Company Name is required!");
+    } else if(Type === "unchecked") {
+      alert("Vehicle Type is required!");
+    } else if (Service === "unchecked") {
+      alert("Payment Service is required!");
+    } else if (etp === "") {
+      alert("Please enter the ETP's Ticket ID");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_SNAP",
+        type: "POST",
+        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&etp="+etp,
+        success:function() {
+          window.location.replace("<?php echo URL?>/main");
+        }
+      });
+    }
+  });
+  //Fuel
+  $(document).on('click', '#NT_Process_Fuel', function(){
+    event.preventDefault();
+    var ANPRKey = $('#NT_ANPRKey').val();
+    var Plate = $('#NT_Vehicle_Plate').val();
+    var Company = $('#NT_Company_Name').val();
+    var Trailer = $('#NT_Vehicle_Trailer').val();
+    var Type = $('#NT_Vehicle_Type').val();
+    var Service = $('#NT_Payment_Service_Fuel').val();
+    var etp = $('#NT_Process_Fuel_TID').val();
+    if(Plate == "") {
+      alert("A Vehicle registration is required!");
+    } else if(Company == "") {
+      alert("Company Name is required!");
+    } else if(Type === "unchecked") {
+      alert("Vehicle Type is required!");
+    } else if (Service === "unchecked") {
+      alert("Payment Service is required!");
+    } else if (etp === "") {
+      alert("Please enter the ETP's Ticket ID");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Fuel",
+        type: "POST",
+        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&etp="+etp,
+        success:function() {
+          window.location.replace("<?php echo URL?>/main");
+        }
+      });
+    }
+  });
   //Renewal
   //Cash
   $(document).on('click', '#T_Process_Cash', function(){
@@ -741,6 +839,80 @@
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Account_Renewal",
         type: "POST",
         data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Account="+Account_ID+"&Expiry="+Expiry,
+        success:function() {
+          window.location.replace("<?php echo URL?>/main");
+        }
+      });
+    }
+  });
+  //Snap
+  $(document).on('click', '#T_Process_SNAP', function(){
+    event.preventDefault();
+    var LogID = $('#T_LogID').val();
+    var ANPRKey = $('#T_ANPRKey').val();
+    var PayRef = $('#T_PayRef').val();
+    var Plate = $('#T_Vehicle_Plate').val();
+    var Company = $('#T_Company_Name').val();
+    var Trailer = $('#T_Vehicle_Trailer').val();
+    var Type = $('#T_Vehicle_Type').val();
+    var Service = $('#NT_Payment_Service_Account').val();
+    var Account_ID = $('#PM_Account_Select').val();
+    var Expiry = $('#T_Expiry').val();
+    var etp = $('#T_Process_SNAP_TID').val();
+    if(Plate == "") {
+      alert("A Vehicle registration is required!");
+    } else if(Company == "") {
+      alert("Company Name is required!");
+    } else if(Type === "unchecked") {
+      alert("Vehicle Type is required!");
+    } else if (Service === "unchecked") {
+      alert("Payment Service is required!");
+    } else if (Account_ID === "unchecked") {
+      alert("Please select an Account");
+    } else if (etp === "") {
+      alert("Please enter the ETP Ticket ID");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_SNAP_Renewal",
+        type: "POST",
+        data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry+"&etp="+etp,
+        success:function() {
+          window.location.replace("<?php echo URL?>/main");
+        }
+      });
+    }
+  });
+  //Fuel
+  $(document).on('click', '#T_Process_Fuel', function(){
+    event.preventDefault();
+    var LogID = $('#T_LogID').val();
+    var ANPRKey = $('#T_ANPRKey').val();
+    var PayRef = $('#T_PayRef').val();
+    var Plate = $('#T_Vehicle_Plate').val();
+    var Company = $('#T_Company_Name').val();
+    var Trailer = $('#T_Vehicle_Trailer').val();
+    var Type = $('#T_Vehicle_Type').val();
+    var Service = $('#NT_Payment_Service_Account').val();
+    var Account_ID = $('#PM_Account_Select').val();
+    var Expiry = $('#T_Expiry').val();
+    var etp = $('#T_Process_Fuel_TID').val();
+    if(Plate == "") {
+      alert("A Vehicle registration is required!");
+    } else if(Company == "") {
+      alert("Company Name is required!");
+    } else if(Type === "unchecked") {
+      alert("Vehicle Type is required!");
+    } else if (Service === "unchecked") {
+      alert("Payment Service is required!");
+    } else if (Account_ID === "unchecked") {
+      alert("Please select an Account");
+    } else if (etp === "") {
+      alert("Please enter the ETP Ticket ID");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Fuel_Renewal",
+        type: "POST",
+        data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry+"&etp="+etp,
         success:function() {
           window.location.replace("<?php echo URL?>/main");
         }
@@ -862,15 +1034,4 @@
     var datetime = date+' '+h+':'+m+':'+s;
     $('#ANPR_Add_Date').val(datetime);
   });
-  //Automate Exit
-  setInterval(function() {
-    $.ajax({
-      url: "<?php echo URL ?>/ajax-handler.php?handler=Automation_Exit",
-      type: "POST",
-      success:function() {
-        $('#tables').load(' #tables');
-        $('#anpr').load(' #anpr');
-      }
-    });
-  }, 10000);
 </script>

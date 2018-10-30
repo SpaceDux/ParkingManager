@@ -497,6 +497,6 @@
       $this->mssql = null;
       $this->user = null;
     }
-
+    
   }
  ?>

@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>Parking Manager: Account List</title>
+      <title>Parking Manager: 24hr Transaction History</title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/theme.css">
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/bootstrap.css">
@@ -18,7 +18,7 @@
     <div id="wrapper">
       <div class="whereami">
         <div class="page">
-          <a href="<?php echo URL ?>/main">Dashboard</a> <small>\\\</small><b> Transaction Log (24hr)</b>
+          <a href="<?php echo URL ?>/main">Dashboard</a> <small>\\\</small><b> Transaction History (9pm - 9pm)</b>
         </div>
       </div>
       <div class="updateContent">

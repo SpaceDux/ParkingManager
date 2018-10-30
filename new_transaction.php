@@ -91,6 +91,8 @@
                      <a class="nav-item nav-link active" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>
                      <a class="nav-item nav-link" id="nav-card-tab" tabindex="-1" data-toggle="tab" href="#nav-card" role="tab" aria-controls="nav-card" aria-selected="false"><i class="far fa-credit-card"></i> Card</a>
                      <a class="nav-item nav-link" id="nav-account-tab" tabindex="-1" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="false"><i class="fas fa-id-card"></i> Account</a>
+                     <a class="nav-item nav-link" id="nav-snap-tab" tabindex="-1" data-toggle="tab" href="#nav-snap" role="tab" aria-controls="nav-snap" aria-selected="false"> SNAP</a>
+                     <a class="nav-item nav-link" id="nav-fuel-tab" tabindex="-1" data-toggle="tab" href="#nav-fuel" role="tab" aria-controls="nav-fuel" aria-selected="false"> Fuel Card</a>
                    </div>
                  </nav>
                  <div class="tab-content" id="nav-tabContent">
@@ -132,6 +134,38 @@
                      </div>
                      <div class="form-group" style="margin-top: 130px;">
                        <input type="submit" name="NT_Process_Account" id="NT_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                     </div>
+                   </div>
+                   <div class="tab-pane fade" id="nav-snap" role="tabpanel" aria-labelledby="nav-snap-tab">
+                     <div class="form-group">
+                       <label>Select a SNAP Service</label>
+                       <div id="SNAP_Dropdown">
+
+                       </div>
+                       <small class="form-text text-muted"> Ensure this is correct! </small>
+                     </div>
+                     <div class="form-group">
+                       <label>ETP Ticket ID number</label>
+                       <input type="number" class="form-control" name="NT_Process_SNAP_TID" id="NT_Process_SNAP_TID" value="" placeholder="ETP Ticket ID">
+                     </div>
+                     <div class="form-group" style="margin-top: 130px;">
+                       <input type="submit" name="NT_Process_SNAP" id="NT_Process_SNAP" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                     </div>
+                   </div>
+                   <div class="tab-pane fade" id="nav-fuel" role="tabpanel" aria-labelledby="nav-fuel-tab">
+                     <div class="form-group">
+                       <label>Select a Fuel Service</label>
+                       <div id="Fuel_Dropdown">
+
+                       </div>
+                       <small class="form-text text-muted"> Ensure this is correct! </small>
+                     </div>
+                     <div class="form-group">
+                       <label>ETP Ticket ID number</label>
+                       <input type="number" class="form-control" name="NT_Process_Fuel_TID" id="NT_Process_Fuel_TID" value="" placeholder="ETP Ticket ID">
+                     </div>
+                     <div class="form-group" style="margin-top: 130px;">
+                       <input type="submit" name="NT_Process_Fuel" id="NT_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
                  </div>

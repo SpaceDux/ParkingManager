@@ -48,7 +48,7 @@
           $query2->bindParam(3, $anpr_key);
           $query2->bindParam(4, $campus);
           if($query2->execute()) {
-            $this->pm->PM_Notification_Create("PM has automatically EXIT the vehicle $plate");
+            $this->pm->PM_Notification_Create("ParkingManager has automatically EXIT the vehicle $plate");
           }
 
         } else {
@@ -62,6 +62,6 @@
       $this->user = null;
       $this->pm = null;
     }
-    
+
   }
 ?>
