@@ -998,7 +998,7 @@
         $expiry = date("Y-m-d H:i:s", strtotime($Expiry.'+ '.$service_expiry.' hours'));
 
         //Payment Details for Function Query
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp);
 
         // //SQL Payment
         // $sqlPayment = $this->mysql->dbc->prepare("INSERT INTO pm_payments VALUES ('', :ANPRKey, :Plate, :Company, '3', :Service_Name, :Price_Gross, :Price_Net, :Author, :Cur_Date, :Account, :Campus, :PayRef)");
