@@ -497,6 +497,14 @@
       $this->mssql = null;
       $this->user = null;
     }
-    
+    //Set Expiry after Payment
+    function Parking_Log_Expiry_Update($key, $time) {
+      $this->mysql = new MySQL;
+      $sql_parkedLog = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_expiry = ? WHERE id = ?");
+      $sql_parkedLog->bindParam(1, $time);
+      $sql_parkedLog->bindParam(2, $key);
+      $sql_parkedLog->execute();
+      $this->mysql = null;
+    }
   }
  ?>

@@ -176,7 +176,7 @@
     function Register_User($first_name, $last_name, $email, $password, $campus, $anpr, $rank) {
       $this->mysql = new MySQL;
       if(isset($password)) {
-        $query = $this->mysql->dbc->prepare("INSERT INTO pm_users (id, first_name, last_name, email, password, anpr, rank, campus, active, last_log) VALUES ('', ?, ?, ?, ?, ?, ?, ?, '0', ?)");
+        $query = $this->mysql->dbc->prepare("INSERT INTO pm_users (first_name, last_name, email, password, anpr, rank, campus, active, last_log) VALUES (?, ?, ?, ?, ?, ?, ?, '0', ?)");
         $query->bindParam(1, $first_name);
         $query->bindParam(2, $last_name);
         $query->bindParam(3, $email);

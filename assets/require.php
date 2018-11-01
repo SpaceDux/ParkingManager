@@ -598,6 +598,42 @@
       })
     }
   });
+  //Payment Service SNAP Dropdown
+  $(document).on('change', '#T_Vehicle_Type', function(){
+    var veh_id = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#SNAP_Dropdown').empty();
+    } else {
+      $('#SNAP_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_SNAP_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id},
+        dataType: "text",
+        success:function(data) {
+          $('#SNAP_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Payment Service Fuel Dropdown
+  $(document).on('change', '#T_Vehicle_Type', function(){
+    var veh_id = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Fuel_Dropdown').empty();
+    } else {
+      $('#Fuel_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Fuel_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id},
+        dataType: "text",
+        success:function(data) {
+          $('#Fuel_Dropdown').html(data);
+        }
+      })
+    }
+  });
   //Process Payments
   //Cash
   $(document).on('click', '#NT_Process_Cash', function(){

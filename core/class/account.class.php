@@ -185,10 +185,10 @@
       $account = $this->Account_GetInfo($key, "account_name");
 
       $date = date("Y-m-d H:i:s");
-
-      $query = $this->mysql->dbc->prepare("INSERT INTO pm_accounts_fleet VALUES ('', ?, ?, ?)");
+      $plate = strtoupper($plate);
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_accounts_fleet (account_id, account_vehicle_plate, account_vehicle_added) VALUES (?, ?, ?)");
       $query->bindParam(1, $key);
-      $query->bindParam(2, strtoupper($plate));
+      $query->bindParam(2, $plate);
       $query->bindParam(3, $date);
       if($query->execute()) {
         $this->pm->PM_Notification_Create("$user has successfully updated $account's Fleet record.", "0");

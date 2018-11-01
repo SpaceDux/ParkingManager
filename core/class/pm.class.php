@@ -80,7 +80,7 @@
         $this->campus = $this->user->userInfo("campus");
         $this->author = $this->user->userInfo("first_name");
 
-        $query = $this->mysql->dbc->prepare("INSERT INTO pm_notices VALUES ('', ?, ?, ?, ?, ?)");
+        $query = $this->mysql->dbc->prepare("INSERT INTO pm_notices (notice_type, notice_title, notice_body, notice_author, campus) VALUES (?, ?, ?, ?, ?)");
         $query->bindParam(1, $type);
         $query->bindParam(2, $title);
         $query->bindParam(3, $body);
@@ -266,7 +266,7 @@
     function addVehicleType($name, $short, $url) {
       $this->mysql = new MySQL;
       $short = strtoupper($short);
-      $query = $this->mysql->dbc->prepare("INSERT INTO pm_vehicle_types (id, type_name, type_imageURL, type_shortName) VALUES('', ?, ?, ?)");
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_vehicle_types (type_name, type_imageURL, type_shortName) VALUES(?, ?, ?)");
       $query->bindParam(1, $name);
       $query->bindParam(2, $url);
       $query->bindParam(3, $short);
@@ -357,48 +357,6 @@
       $this->user = null;
       $this->campus = null;
     }
-    //PM Account Info
-    function PM_AccountInfo($key, $what) {
-      $this->mysql = new MySQL;
-
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ?");
-      $stmt->bindParam(1, $key);
-      $stmt->execute();
-      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-      return $result[$what];
-
-      $this->mysql = null;
-    }
-    //Get Account info from Fleet plate
-    function PM_Accounts_Dropdown_Set($key) {
-      $this->mysql = new MySQL;
-
-      $list = '';
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ?");
-      $query->bindParam(1, $key);
-      $query->execute();
-      $result = $query->fetch(\PDO::FETCH_ASSOC);
-      $list .= '<select class="form-control form-control-lg" id="PM_Account_Select">';
-      $list .= '<option value="'.$result['id'].'">'.$result['account_name'].'</option>';
-      $list .= '</select>';
-
-      echo $list;
-
-      $this->mysql = null;
-    }
-    //Get Account info from Fleet plate
-    function PM_FleetInfo($plate, $what) {
-      $this->mysql = new MySQL;
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts_fleet WHERE account_vehicle_plate = ?");
-      $stmt->bindParam(1, $plate);
-      $stmt->execute();
-      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-      return $result[$what];
-
-      $this->mysql = null;
-    }
     //Notifications
     function PM_Notification_Create($text, $urgency) {
       $this->mysql = new MySQL;
@@ -408,7 +366,7 @@
 
         $site = $this->user->userInfo("campus");
 
-        $stmt = $this->mysql->dbc->prepare("INSERT INTO pm_notifications VALUES ('', ?, ?, ?, ?)");
+        $stmt = $this->mysql->dbc->prepare("INSERT INTO pm_notifications (notification_text, notification_site, notification_created, notification_urgency) VALUES (?, ?, ?, ?)");
         $stmt->bindParam(1, $text);
         $stmt->bindParam(2, $site);
         $stmt->bindParam(3, $date);

@@ -42,7 +42,7 @@
           $query->bindParam(2, $id);
           $query->execute();
 
-          $query2 = $this->mysql->dbc->prepare("INSERT INTO pm_exit_log VALUES ('', ?, ?, ?, ?)");
+          $query2 = $this->mysql->dbc->prepare("INSERT INTO pm_exit_log (exit_id, exit_time, exit_anpr_key, exit_site) VALUES (?, ?, ?, ?)");
           $query2->bindParam(1, $id);
           $query2->bindParam(2, $date);
           $query2->bindParam(3, $anpr_key);
