@@ -160,15 +160,17 @@
     //Update User Details
     function Update_User($id, $first_name, $last_name, $email, $campus, $anpr, $rank) {
       $this->mysql = new MySQL;
-      $query = $this->mysql->dbc->prepare("UPDATE pm_users SET first_name = ?, last_name = ?, email = ?, campus = ?, anpr = ?, rank = ? WHERE id = ?");
-      $query->bindParam(1, $first_name);
-      $query->bindParam(2, $last_name);
-      $query->bindParam(3, $email);
-      $query->bindParam(4, $campus);
-      $query->bindParam(5, $anpr);
-      $query->bindParam(6, $rank);
-      $query->bindParam(7, $id);
-      $query->execute();
+      if(isset($id)) {
+        $query = $this->mysql->dbc->prepare("UPDATE pm_users SET first_name = ?, last_name = ?, email = ?, campus = ?, anpr = ?, rank = ? WHERE id = ?");
+        $query->bindParam(1, $first_name);
+        $query->bindParam(2, $last_name);
+        $query->bindParam(3, $email);
+        $query->bindParam(4, $campus);
+        $query->bindParam(5, $anpr);
+        $query->bindParam(6, $rank);
+        $query->bindParam(7, $id);
+        $query->execute();
+      }
 
       $this->mysql = null;
     }
