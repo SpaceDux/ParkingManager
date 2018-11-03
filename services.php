@@ -28,8 +28,19 @@
       </div>
         <div class="updateContent">
           <div class="container">
-            <div class="row">
-              <div class="col-md-12">
+            <ul class="nav nav-tabs" id="Payment_Service_Tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="0-tab" data-toggle="tab" href="#dev" role="tab" aria-controls="0" aria-selected="true">Roadking: Development</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="1-tab" data-toggle="tab" href="#holyhead" role="tab" aria-controls="1" aria-selected="false">Roadking: Holyhead</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="2-tab" data-toggle="tab" href="#hollies" role="tab" aria-controls="2" aria-selected="false">Roadking: Hollies</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="Payment_Service_TabContent">
+              <div class="tab-pane fade show active" id="dev" role="tabpanel" aria-labelledby="dev">
                 <table class="table table-hover table-bordered">
                   <thead class="thead-dark">
                     <tr>
@@ -50,7 +61,57 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php $payment->list_services();?>
+                    <?php $payment->list_services(0);?>
+                  </tbody>
+                </table>
+              </div>
+              <div class="tab-pane fade" id="holyhead" role="tabpanel" aria-labelledby="holyhead">
+                <table class="table table-hover table-bordered">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Service Name</th>
+                      <th>Service Price (Gross)</th>
+                      <th>Service Price (Net)</th>
+                      <th>Service Expiry (Hours)</th>
+                      <th>Service Meal</th>
+                      <th>Service Shower</th>
+                      <th>Service Cash</th>
+                      <th>Service Card</th>
+                      <th>Service Account</th>
+                      <th>Service SNAP</th>
+                      <th>Service Fuel</th>
+                      <th>Updated By</th>
+                      <th>Service Site</th>
+                      <th><button data-toggle="modal" data-target="#Payment_Service_AddModal" type="button" class="btn btn-danger"><i class="fa fa-plus"></i></button></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php $payment->list_services(1);?>
+                  </tbody>
+                </table>
+              </div>
+              <div class="tab-pane fade" id="hollies" role="tabpanel" aria-labelledby="hollies">
+                <table class="table table-hover table-bordered">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Service Name</th>
+                      <th>Service Price (Gross)</th>
+                      <th>Service Price (Net)</th>
+                      <th>Service Expiry (Hours)</th>
+                      <th>Service Meal</th>
+                      <th>Service Shower</th>
+                      <th>Service Cash</th>
+                      <th>Service Card</th>
+                      <th>Service Account</th>
+                      <th>Service SNAP</th>
+                      <th>Service Fuel</th>
+                      <th>Updated By</th>
+                      <th>Service Site</th>
+                      <th><button data-toggle="modal" data-target="#Payment_Service_AddModal" type="button" class="btn btn-danger"><i class="fa fa-plus"></i></button></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php $payment->list_services(2);?>
                   </tbody>
                 </table>
               </div>

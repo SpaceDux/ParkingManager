@@ -48,10 +48,11 @@
       echo $html;
     }
     //List all services
-    function list_services() {
+    function list_services($site) {
       $this->mysql = new MySQL;
       $this->pm = new PM;
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services ORDER BY service_price_gross ASC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_campus = ? ORDER BY service_price_gross ASC");
+      $query->bindParam(1, $site);
       $query->execute();
       $result = $query->fetchAll();
 
