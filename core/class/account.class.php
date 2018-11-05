@@ -324,5 +324,27 @@
 
       $this->mysql = null;
     }
+    //Account registration
+    function Account_Register($name, $tel, $email, $billing, $site, $shared) {
+      $this->mysql = new MySQL;
+      $this->pm = new PM;
+
+      $date = date("Y-m-d H:i:s");
+
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_accounts (account_name, account_shared, account_contact_no, account_contact_email, account_billing_email, account_suspended, account_deleted, account_updated, campus) VALUES (?, ?, ?, ?, ?, '0', '0', ?, ?)");
+      $query->bindParam(1, $name);
+      $query->bindParam(2, $shared);
+      $query->bindParam(3, $tel);
+      $query->bindParam(4, $email);
+      $query->bindParam(5, $billing);
+      $query->bindParam(6, $date);
+      $query->bindParam(7, $site);
+      if($query->execute()) {
+        $this->pm->PM_Notification_Create('A new account has been added to PM - '.$name.'', 0);
+      }
+
+      $this->mysql = null;
+      $this->pm = null;
+    }
   }
 ?>

@@ -1009,6 +1009,24 @@
       }
     })
   });
+  //Save Account Info
+  $(document).on('click', '#New_Account_Save', function(){
+    event.preventDefault();    
+    var name = $('#New_Account_Name').val();
+    var tel = $('#New_Account_Tel').val();
+    var email = $('#New_Account_Email').val();
+    var billing = $('#New_Account_Billing_Email').val();
+    var site = $('#New_Account_Campus').val();
+    var shared = $('#New_Account_Share').val();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Account_Register",
+      type: "POST",
+      data: "name="+name+"&tel="+tel+"&email="+email+"&billing="+billing+"&site="+site+"&shared="+shared,
+      success:function() {
+        document.getElementById("New_AccountModalForm").reset();
+      }
+    })
+  })
   //Account Record Update Save (AND AUTO-Re-Query data)
   $(document).on('submit', '#Update_AccountFleet', function(){
     event.preventDefault();

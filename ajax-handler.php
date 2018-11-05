@@ -100,5 +100,7 @@
     $payment->Transaction_Proccess_SNAP_Renewal($_POST['LogID'], $_POST['ANPRKey'], $_POST['PayRef'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Expiry'], $_POST['etp']);
   } else if($handler == "Transaction_Proccess_Fuel_Renewal") {
     $payment->Transaction_Proccess_Fuel_Renewal($_POST['LogID'], $_POST['ANPRKey'], $_POST['PayRef'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Expiry'], $_POST['etp']);
+  } else if ($handler == "Account_Register") {
+    $account->Account_Register($_POST['name'], $_POST['tel'], $_POST['email'], $_POST['billing'], $_POST['site'], $_POST['shared']);
   }
 ?>
