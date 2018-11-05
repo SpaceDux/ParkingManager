@@ -404,6 +404,15 @@
                 </select>
               </div>
             </div>
+            <div class="col">
+              <label>Allow Any Vehicle</label>
+              <div class="form-group">
+                <select class="form-control" name="Service_Vehicles_Any_Update" id="Service_Vehicles_Any_Update">
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-body">

@@ -315,6 +315,7 @@
         $('#Service_Meal_Amount_Update').val(data.service_meal_amount);
         $('#Service_Shower_Amount_Update').val(data.service_shower_amount);
         $('#Service_Vehicles_Update').val(data.service_vehicles);
+        $('#Service_Vehicles_Any_Update').val(data.service_anyvehicle);
         $('#Payment_Service_UpdateModal').modal('toggle');
       }
     })
@@ -339,10 +340,11 @@
     var Service_Meal_Amount = $("#Service_Meal_Amount_Update").val();
     var Service_Shower_Amount = $("#Service_Shower_Amount_Update").val();
     var Service_Ticket = $("#Service_Ticket_Name_Update").val();
+    var Service_Any = $("#Service_Vehicles_Any_Update").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Update",
       type: "POST",
-      data:"Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower+"&Service_Vehicles="+Service_Vehicles+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount,
+      data:"Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower+"&Service_Vehicles="+Service_Vehicles+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Any="+Service_Any,
       success: function(){
         $('#tables').load(' #tables');
         $('#Payment_Service_UpdateModal').modal('toggle');
@@ -1011,7 +1013,7 @@
   });
   //Save Account Info
   $(document).on('click', '#New_Account_Save', function(){
-    event.preventDefault();    
+    event.preventDefault();
     var name = $('#New_Account_Name').val();
     var tel = $('#New_Account_Tel').val();
     var email = $('#New_Account_Email').val();
@@ -1024,6 +1026,7 @@
       data: "name="+name+"&tel="+tel+"&email="+email+"&billing="+billing+"&site="+site+"&shared="+shared,
       success:function() {
         document.getElementById("New_AccountModalForm").reset();
+        $('#New_AccountModal').modal('toggle');
       }
     })
   })
