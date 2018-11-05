@@ -1027,6 +1027,7 @@
       success:function() {
         document.getElementById("New_AccountModalForm").reset();
         $('#New_AccountModal').modal('toggle');
+        $('#tables').load(' #tables');
       }
     })
   })
