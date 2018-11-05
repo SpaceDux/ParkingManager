@@ -333,6 +333,7 @@
                 <th scope="col">Trailer Number</th>
                 <th scope="col">Time IN</th>
                 <th scope="col">Expiry</th>
+                <th scope="col">Time OUT</th>
               </tr>
             </thead>
           ';
@@ -343,8 +344,9 @@
                 <td>'.$row['parked_company'].'</td>
                 <td>'.$row['parked_plate'].'</td>
                 <td>'.$row['parked_trailer'].'</td>
-                <td>'.date("d/m/Y H:i:s", strtotime($row['parked_timein'])).'</td>
-                <td>'.date("d/m/Y H:i:s", strtotime($row['parked_timeout'])).'</td>
+                <td>'.date("d/m/y H:i:s", strtotime($row['parked_timein'])).'</td>
+                <td>'.date("d/m/y H:i:s", strtotime($row['parked_expiry'])).'</td>
+                <td>'.date("d/m/y H:i:s", strtotime($row['parked_timeout'])).'</td>
               </tr>
             ';
           }

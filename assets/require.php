@@ -28,6 +28,29 @@
     })
     $('#tables').load(' #tables');
   }
+  //Ajax delete payment
+  function Payment_Delete(str) {
+    event.preventDefault();
+    $('#Delete_Payment_Modal').modal('toggle');
+    var Str = str;
+    var Pay_ID = $('#Payment_ID').val(Str);
+    var text = $('#Payment_Delete_Comment').val();
+    $(document).on('click', '#DeletePayment', function() {
+      if(text == '') {
+        alert("Please enter a valid reason!");
+      } else {
+        $.ajax({
+          url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Delete",
+          type: "POST",
+          data: "Pay_ID="+Pay_ID+"&Comment="+text,
+          succes:function() {
+            $('#tables').load(' #tables');
+            $('#Delete_Payment_Modal').modal('toggle');
+          }
+        })
+      }
+    })
+  }
   //AJAX for Fleet Delete
   function Account_Fleet_Delete(str) {
     event.preventDefault();
@@ -1054,6 +1077,7 @@
       }
     });
   });
+
   //Update Exit
   $('#exitButton').click(function(){
     window.location.reload();

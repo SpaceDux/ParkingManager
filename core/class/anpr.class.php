@@ -9,6 +9,7 @@
 
     //Search ANPR records
     function ANPR_Search($key) {
+      global $_CONFIG;
       $this->user = new User;
       if($this->user->userInfo("anpr") > 0) {
         $string = '%'.$key.'%';
@@ -30,20 +31,28 @@
                   <th scope="col">Capture Date</th>
                   <th scope="col">Lane Name</th>
                   <th scope="col">Expiry</th>
+                  <th scope="col">Patch</th>
                 </tr>
               </thead>
             ';
             $html .= '<tbody>';
             foreach($result as $row) {
+              if($this->user->userInfo("campus") == 1) {
+                $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $row['Patch']);
+              } else if($this->user->userInfo("campus") == 2) {
+                $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
+              } else if ($this->user->userInfo("campus") == 0) {
+                $patch = "";
+              }
               $html .= '
                 <tr>
                   <td>'.$row['Plate'].'</td>
                   <td>'.$row['Original_Plate'].'</td>
-                  <td>'.$row['Capture_Date'].'</td>
+                  <td>'.date("d/m/y H:i", strtotime($row['Capture_Date'])).'</td>
                   <td>'.$row['Lane_Name'].'</td>
-                  <td>'.$row['Expiry'].'</td>
-                </tr>
-              ';
+                  <td>'.date("d/m/y H:i", strtotime($row['Expiry'])).'</td>
+                  <td><img src="'.$patch.'"></img></td>
+                </tr>';
             }
             $html .= '</tbody></table>';
             echo $html;

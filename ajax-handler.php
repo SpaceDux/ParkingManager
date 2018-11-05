@@ -102,5 +102,7 @@
     $payment->Transaction_Proccess_Fuel_Renewal($_POST['LogID'], $_POST['ANPRKey'], $_POST['PayRef'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Expiry'], $_POST['etp']);
   } else if ($handler == "Account_Register") {
     $account->Account_Register($_POST['name'], $_POST['tel'], $_POST['email'], $_POST['billing'], $_POST['site'], $_POST['shared']);
+  } else if($handler == "Payment_Delete") {
+    $account->Payment_Delete($_POST['Pay_ID'], $_POST['Comment']);
   }
 ?>

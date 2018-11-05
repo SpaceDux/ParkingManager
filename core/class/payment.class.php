@@ -16,7 +16,7 @@
     function getTransactions($key) {
       //Prep Class
       $this->mysql = new MySQL;
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? ORDER BY payment_date DESC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0 ORDER BY payment_date DESC");
       $query->bindParam(1, $key);
       $query->execute();
       $result = $query->fetchAll();
@@ -39,8 +39,8 @@
         $html .= '<td>'.date("d/H:i", strtotime($row['payment_date'])).'</td>';
         $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
                     <button type="button" class="btn btn-danger"><i class="fa fa-print"></i></button>
-                    <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                  </div>
+                    <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                    </div>
                   </td>';
         $html .= '<tr>';
       }
@@ -161,15 +161,16 @@
       $this->mysql = null;
     }
     //Add Transaction
-    function Payment_ProcessNew($ANPRKey, $plate, $company, $pay_type, $service_name, $gross, $net, $author, $date, $account, $campus, $ref, $etp) {
+    function Payment_ProcessNew($ANPRKey, $plate, $company, $pay_type, $service, $service_name, $gross, $net, $author, $date, $account, $campus, $ref, $etp) {
       $this->mysql = new MySQL;
       $this->pm = new PM;
 
-      $sqlPayment = $this->mysql->dbc->prepare("INSERT INTO pm_payments (payment_anprkey, payment_vehicle_plate, payment_company_name, payment_type, payment_service_name, payment_price_gross, payment_price_net, payment_author, payment_date, payment_account_id, payment_campus, payment_ref, payment_etp_id) VALUES (:ANPRKey, :Plate, :Company, :Type, :Service_Name, :Price_Gross, :Price_Net, :Author, :Cur_Date, :Account, :Campus, :PayRef, :ETP)");
+      $sqlPayment = $this->mysql->dbc->prepare("INSERT INTO pm_payments (payment_anprkey, payment_vehicle_plate, payment_company_name, payment_type, payment_service_id, payment_service_name, payment_price_gross, payment_price_net, payment_author, payment_date, payment_account_id, payment_campus, payment_ref, payment_etp_id, payment_deleted, payment_deleted_comment) VALUES (:ANPRKey, :Plate, :Company, :Type, :Service_ID, :Service_Name, :Price_Gross, :Price_Net, :Author, :Cur_Date, :Account, :Campus, :PayRef, :ETP, '0', '')");
       $sqlPayment->bindParam(':ANPRKey', $ANPRKey);
       $sqlPayment->bindParam(':Plate', $plate);
       $sqlPayment->bindParam(':Company', $company);
       $sqlPayment->bindParam(':Type', $pay_type);
+      $sqlPayment->bindParam(':Service_ID', $service);
       $sqlPayment->bindParam(':Service_Name', $service_name);
       $sqlPayment->bindParam(':Price_Gross', $gross);
       $sqlPayment->bindParam(':Price_Net', $net);
@@ -478,7 +479,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Insert Payment data
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "1", $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -538,7 +539,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Payment Details for Function Query
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -599,7 +600,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Payment Details for Function Query
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $service_name, $price_gross, $price_net, $name, $current_date, $Account_ID, $campus, $payment_ref, null);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account_ID, $campus, $payment_ref, null);
 
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
@@ -655,7 +656,7 @@
         $payment_ref = $Plate."-".$random_number;
 
         //Payment Details for Function Query
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp);
 
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
@@ -708,7 +709,7 @@
         $payment_ref = $Plate."-".$random_number;
 
         //Payment Details for Function Query
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp);
 
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
@@ -768,7 +769,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "1", $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -822,7 +823,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -874,7 +875,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $service_name, $price_gross, $price_net, $name, $current_date, $Account, $campus, $PayRef, null);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account, $campus, $PayRef, null);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -921,7 +922,7 @@
         $expiry = date("Y-m-d H:i:s", strtotime($Expiry.'+ '.$service_expiry.' hours'));
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -964,7 +965,7 @@
         $expiry = date("Y-m-d H:i:s", strtotime($Expiry.'+ '.$service_expiry.' hours'));
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -1034,6 +1035,26 @@
       $this->user = null;
       $this->mysql = null;
       $this->account = null;
+    }
+    function Payment_Delete($key, $comment) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->pm = new PM;
+
+      $user = $this->user->userInfo("first_name").' '.$this->user->userInfo("last_name");
+
+      $service = $this->PaymentInfo($key, "payment_service_id");
+
+      $query = $this->mysql->dbc->prepare("UPDATE pm_payments SET payment_deleted = 1, payment_deleted_comment = ? WHERE id = ?");
+      $query->bindParam(1, $comment);
+      $query->bindParam(2, $key);
+      if($query->execute()) {
+        $this->pm->PM_Notification_Create("$user has successfully deleted a transaction. ID: $key", 1);
+      }
+
+      $this->mysql = null;
+      $this->user = null;
+      $this->pm = null;
     }
   }
 ?>
