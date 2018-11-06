@@ -64,7 +64,6 @@
                <div class="col-md-7">
                <?php if ($account->Account_Check($record['parked_plate']) == TRUE) { //ACCOUNTS
                  $acc_id = $account->Account_FleetInfo($record['parked_plate'], "account_id");
-                 echo $acc_id;
                  ?>
                  <nav>
                    <div class="nav nav-tabs" id="nav-tab" role="tablist">

@@ -1112,4 +1112,17 @@
     var datetime = date+' '+h+':'+m+':'+s;
     $('#ANPR_Add_Date').val(datetime);
   });
+
+  //automate Exit x30secs
+  setInterval(function(){
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler?handler=Automation_Exit",
+      type: "POST",
+      success:function() {
+        $('#tables').load(' #table');
+        $('#anpr').load(' #anpr');
+      }
+    })
+  }, 100000);
+
 </script>

@@ -35,6 +35,7 @@
                       <th scope="col">Account Site</th>
                       <th scope="col">Account Updated</th>
                       <th scope="col">Account Shared</th>
+                      <th scope="col">Fleet</th>
                       <th><button data-toggle="modal" data-target="#New_AccountModal" type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button></th>
                     </tr>
                   </thead>

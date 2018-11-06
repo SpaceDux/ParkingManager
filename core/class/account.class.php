@@ -64,6 +64,7 @@
         } else {
           $html .= '<td>No</td>';
         }
+        $html .= '<td>'.$this->Account_Fleet_Count($row['id']).'</td>';
         $html .= '<td><div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                   <button type="button" id="Account_UpdateButton" data-id="'.$row['id'].'" class="btn btn-secondary"><i class="fa fa-cog"></i> Update</button>
                   <button type="button" id="Account_UpdateFleetButton" data-id="'.$row['id'].'" class="btn btn-secondary"><i class="fa fa-truck"></i> Fleet</button>
@@ -344,6 +345,18 @@
 
       $this->mysql = null;
       $this->pm = null;
+    }
+    //Fleet Counter
+    function Account_Fleet_Count($key) {
+      $this->mysql = new MySQL;
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts_fleet WHERE account_id = ?");
+      $query->bindParam(1, $key);
+      $query->execute();
+      $return = $query->fetchAll();
+
+      return count($return);
+
+      $this->mysql = null;
     }
   }
 ?>
