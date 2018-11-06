@@ -801,22 +801,22 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <form id="DeletePaymentForm">
       <div class="modal-body">
-        <form>
           <div class="col">
             <div class="form-group">
               <label>Reason for deleting this transaction</label>
-              <input type="hidden" id="Payment_ID" class="form-control" autofocus>
+              <input type="hidden" id="Payment_ID" class="form-control">
               <input type="text" class="form-control" id="Payment_Delete_Comment" placeholder="Please supply a valid reason!" autofocus>
             </div>
           </div>
-        </form>
       </div>
       <div class="modal-body">
         <div class="modal-footer">
-          <button type="button" id="DeletePayment" class="btn btn-danger" data-dismiss="modal">Delete Transaction</button>
+          <input type="submit" id="Payment_Delete_Submit" class="btn btn-danger" data-dismiss="modal" value="Delete Payment">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
+      </form>
       </div>
     </div>
   </div>

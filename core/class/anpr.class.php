@@ -15,9 +15,10 @@
         $string = '%'.$key.'%';
         $html = '';
         $this->mssql = new MSSQL;
-        $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Plate LIKE ? OR Original_Plate LIKE ? ORDER BY Capture_Date DESC");
+        $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Plate LIKE ? OR Original_Plate LIKE ? OR Uniqueref LIKE ? ORDER BY Capture_Date DESC");
         $stmt->bindParam(1, $string);
         $stmt->bindParam(2, $string);
+        $stmt->bindParam(3, $string);
         $stmt->execute();
         $result = $stmt->fetchAll();
 
@@ -182,6 +183,17 @@
       } else {
         header("Location: ".$_CONFIG['pm']['url']."/main");
       }
+    }
+    //Set Time
+    function ANPR_Expiry_Set($key, $time) {
+      $this->mssql = new MSSQL;
+
+      $query = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Expiry = ? WHERE Uniqueref = ?");
+      $query->bindParam(1, $time);
+      $query->bindParam(2, $key);
+      $query->execute();
+
+      $this->mssql = null;
     }
   }
 

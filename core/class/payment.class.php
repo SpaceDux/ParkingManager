@@ -775,7 +775,7 @@
         $sql_anprTbl->bindParam(1, $expiry);
         $sql_anprTbl->bindParam(2, $ANPRKey);
         if($sql_anprTbl->execute()) {
-          $this->vehicles->Parking_Log_Expiry_Update($LogID, $expiry);
+          $this->vehicles->Parking_Log_Expiry_Update($ANPRKey, $expiry);
         }
 
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -829,7 +829,7 @@
         $sql_anprTbl->bindParam(1, $expiry);
         $sql_anprTbl->bindParam(2, $ANPRKey);
         if($sql_anprTbl->execute()) {
-          $this->vehicles->Parking_Log_Expiry_Update($LogID, $expiry);
+          $this->vehicles->Parking_Log_Expiry_Update($ANPRKey, $expiry);
         }
 
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -881,7 +881,7 @@
         $sql_anprTbl->bindParam(1, $expiry);
         $sql_anprTbl->bindParam(2, $ANPRKey);
         if($sql_anprTbl->execute()) {
-          $this->vehicles->Parking_Log_Expiry_Update($LogID, $expiry);
+          $this->vehicles->Parking_Log_Expiry_Update($ANPRKey, $expiry);
         }
 
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -928,7 +928,7 @@
         $sql_anprTbl->bindParam(1, $expiry);
         $sql_anprTbl->bindParam(2, $ANPRKey);
         if($sql_anprTbl->execute()) {
-          $this->vehicles->Parking_Log_Expiry_Update($LogID, $expiry);
+          $this->vehicles->Parking_Log_Expiry_Update($ANPRKey, $expiry);
         }
 
         $this->mssql = null;
@@ -971,7 +971,7 @@
         $sql_anprTbl->bindParam(1, $expiry);
         $sql_anprTbl->bindParam(2, $ANPRKey);
         if($sql_anprTbl->execute()) {
-          $this->vehicles->Parking_Log_Expiry_Update($LogID, $expiry);
+          $this->vehicles->Parking_Log_Expiry_Update($ANPRKey, $expiry);
         }
 
         $this->mssql = null;
@@ -1036,25 +1036,42 @@
       $this->mysql = null;
       $this->account = null;
     }
+    //Delete Transaction
     function Payment_Delete($key, $comment) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->pm = new PM;
+      $this->mssql = new MSSQL;
+      $this->anpr = new ANPR;
+      $this->vehicles = new Vehicles;
 
-      $user = $this->user->userInfo("first_name").' '.$this->user->userInfo("last_name");
-
+      $user = $this->user->userInfo("first_name");
       $service = $this->PaymentInfo($key, "payment_service_id");
+      $anprkey = $this->PaymentInfo($key, "payment_anprkey");
+
+      $service_expiry = $this->Payment_ServiceInfo($service, "service_expiry");
+      $q = $this->mysql->dbc->prepare("SELECT parked_expiry FROM pm_parking_log WHERE parked_anprkey = ?");
+      $q->bindParam(1, $anprkey);
+      $q->execute();
+
+      $return = $q->fetch(\PDO::FETCH_ASSOC);
+      $expiry = $return['parked_expiry'];
+      $new_expiry = date("Y-m-d H:i:s", strtotime($expiry.' - '.$service_expiry.' hours'));
 
       $query = $this->mysql->dbc->prepare("UPDATE pm_payments SET payment_deleted = 1, payment_deleted_comment = ? WHERE id = ?");
       $query->bindParam(1, $comment);
       $query->bindParam(2, $key);
       if($query->execute()) {
+        $this->anpr->ANPR_Expiry_Set($anprkey, $new_expiry);
+        $this->vehicles->Parking_Log_Expiry_Update($anprkey, $new_expiry);
         $this->pm->PM_Notification_Create("$user has successfully deleted a transaction. ID: $key", 1);
       }
 
       $this->mysql = null;
       $this->user = null;
       $this->pm = null;
+      $this->anpr = null;
+      $this->vehicles = null;
     }
   }
 ?>
