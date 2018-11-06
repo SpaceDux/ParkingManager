@@ -61,6 +61,7 @@
                <div class="col-md-7">
                <?php if ($account->Account_Check($anpr_rec['Plate']) == TRUE) { //ACCOUNTS
                  $acc_id = $account->Account_FleetInfo($anpr_rec['Plate'], "account_id");
+                 echo $acc_id;
                  ?>
                  <nav>
                    <div class="nav nav-tabs" id="nav-tab" role="tablist">

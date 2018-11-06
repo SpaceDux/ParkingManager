@@ -23,9 +23,8 @@
     function Account_FleetInfo($key, $what) {
       $this->mysql = new MySQL;
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts_fleet WHERE id = ? OR account_vehicle_plate = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts_fleet WHERE account_vehicle_plate = ?");
       $query->bindParam(1, $key);
-      $query->bindParam(2, $key);
       $query->execute();
       $result = $query->fetch(\PDO::FETCH_ASSOC);
 
