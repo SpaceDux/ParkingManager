@@ -1119,8 +1119,7 @@
       url: "<?php echo URL?>/ajax-handler?handler=Automation_Exit",
       type: "POST",
       success:function() {
-        $('#tables').load(' #table');
-        $('#anpr').load(' #anpr');
+        $('#tables').load(' #tables');
       }
     })
   }, 100000);
