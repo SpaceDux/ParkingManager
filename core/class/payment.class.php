@@ -126,7 +126,7 @@
       $date = date("Y-m-d H:i");
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services (service_name, service_ticket_name, service_price_gross, service_price_net, service_expiry, service_cash, service_card, service_account, service_snap, service_fuel, service_author, service_created, service_update_author, service_campus, service_mealVoucher, service_meal_amount, service_showerVoucher, service_shower_amount, service_vehicles, service_anyvehicle) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '')");
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services (service_name, service_ticket_name, service_price_gross, service_price_net, service_expiry, service_cash, service_card, service_account, service_snap, service_fuel, service_author, service_created, service_update_author, service_campus, service_mealVoucher, service_meal_amount, service_showerVoucher, service_shower_amount, service_vehicles, service_anyvehicle) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', '0')");
       $query->bindParam(1, $name);
       $query->bindParam(2, $ticket_name);
       $query->bindParam(3, $price_gross);
@@ -145,7 +145,11 @@
       $query->bindParam(16, $meal_amount);
       $query->bindParam(17, $shower_voucher);
       $query->bindParam(18, $shower_amount);
-      $query->execute();
+      if($query->execute()) {
+        echo "Executed successfully";
+      } else {
+        echo "Executed unsuccessfully";
+      }
 
       $this->mysql = null;
       $this->user = null;
