@@ -104,5 +104,7 @@
     $account->Account_Register($_POST['name'], $_POST['tel'], $_POST['email'], $_POST['billing'], $_POST['site'], $_POST['shared']);
   } else if($handler == "Payment_Delete") {
     $payment->Payment_Delete($_POST['Pay_ID'], $_POST['Comment']);
+  } else if ($handler == "NT_Print_Ticket") {
+    $payment->NT_Print_Ticket($_POST['ANPRKey'], $_POST['Plate'], $_POST['Date'], $_POST['Company']);
   }
 ?>

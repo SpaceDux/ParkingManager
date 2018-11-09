@@ -821,3 +821,20 @@
     </div>
   </div>
 </div>
+<!-- Print Ticket modal -->
+<div class="modal fade" id="Print_Ticket_Modal" tabindex="-1" role="dialog" aria-labelledby="Print_Ticket_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Print_Ticket_Modal">Print Ticket?</h5>
+      </div>
+      <div class="modal-body">
+        Would you like to print a parking ticket for this transaction now?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" tabindex="1" autofocus id="NT_Print_Ticket_Yes">Yes</button>
+        <button type="button" class="btn btn-danger" tabindex="2" id="NT_Print_Ticket_No">No</button>
+      </div>
+    </div>
+  </div>
+</div>

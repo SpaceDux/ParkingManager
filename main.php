@@ -241,6 +241,17 @@
             }
         }
     });
+    //Tab Key opens "AddVehicleModal" Modal
+      Mousetrap.bind('tab', function() {
+        $('#ANPR_AddModal').modal('show');
+        var d = new Date();
+        var date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+        var h = addZero(d.getHours());
+        var m = addZero(d.getMinutes());
+        var s = addZero(d.getSeconds());
+        var datetime = date+' '+h+':'+m+':'+s;
+        $('#ANPR_Add_Date').val(datetime);
+      });
     </script>
   </body>
 </html>

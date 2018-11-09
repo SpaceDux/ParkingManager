@@ -666,7 +666,7 @@
         type: "POST",
         data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service,
         success:function() {
-          window.location.replace("<?php echo URL?>/main");//Relocate
+          $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
         }
       });
     }
@@ -694,7 +694,7 @@
         type: "POST",
         data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service,
         success:function() {
-          window.location.replace("<?php echo URL?>/main");//Relocate
+          $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
         }
       });
     }
@@ -711,8 +711,6 @@
     var Account_ID = $('#PM_Account_Select').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
-    } else if(Company == "") {
-      alert("Company Name is required!");
     } else if(Type === "unchecked") {
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
@@ -725,7 +723,7 @@
         type: "POST",
         data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Account="+Account_ID,
         success:function() {
-          window.location.replace("<?php echo URL?>/main");
+          $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
         }
       });
     }
@@ -819,7 +817,7 @@
         type: "POST",
         data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry,
         success:function() {
-          window.location.replace("<?php echo URL?>/main");//Relocate
+          $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
         }
       });
     }
@@ -870,8 +868,6 @@
     var Expiry = $('#T_Expiry').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
-    } else if(Company == "") {
-      alert("Company Name is required!");
     } else if(Type === "unchecked") {
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
@@ -1073,6 +1069,28 @@
       }
     });
   });
+  //Print Ticket Modal Controller
+  $(document).on('click', '#NT_Print_Ticket_Yes', function() {
+    event.preventDefault();
+    var ANPRKey = $('#NT_ANPRKey').val();
+    var Plate = $('#NT_Vehicle_Plate').val();
+    var DateIN = $('#NT_Date').val();
+    var Company = $('#NT_Company_Name').val();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=NT_Print_Ticket",
+      type: "POST",
+      data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Date="+DateIN+"&Company="+Company,
+      success:function() {
+        window.location.replace("<?php echo URL?>/main");
+      }
+    });
+  });
+  //Print Ticket Modal Controller
+  $(document).on('click', '#NT_Print_Ticket_No', function() {
+    event.preventDefault();
+    window.location.replace("<?php echo URL?>/main");
+  });
+
 
   //Update Exit
   $('#exitButton').click(function(){
@@ -1101,17 +1119,6 @@
     }
     return i;
   }
-//Tab Key opens "AddVehicleModal" Modal
-  Mousetrap.bind('tab', function() {
-    $('#ANPR_AddModal').modal('show');
-    var d = new Date();
-    var date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-    var h = addZero(d.getHours());
-    var m = addZero(d.getMinutes());
-    var s = addZero(d.getSeconds());
-    var datetime = date+' '+h+':'+m+':'+s;
-    $('#ANPR_Add_Date').val(datetime);
-  });
 
   //automate Exit x30secs
   setInterval(function(){

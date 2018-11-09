@@ -3,6 +3,7 @@
   $ANPRKey = $_GET['Uniqueref'];
   //Get ANPR Details
   $anpr_rec = $anpr->getANPR_Record($ANPRKey);
+  $date = date("Y-m-d H:i:s", strtotime($anpr_rec['Capture_Date']));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,6 +37,7 @@
                    <label for="NT_Vehicle_Plate">Vehicle Registration</label>
                    <input type="text" class="form-control" name="NT_Vehicle_Plate" id="NT_Vehicle_Plate" placeholder="Vehicle Registration" value="<?php echo $anpr_rec['Plate']?>" style="text-transform: uppercase;" readonly>
                    <input type="hidden" class="form-control" name="NT_ANPRKey" id="NT_ANPRKey" value="<?php echo $ANPRKey ?>" style="text-transform: uppercase;" readonly>
+                   <input type="hidden" class="form-control" name="NT_Date" id="NT_Date" value="<?php echo $date ?>" style="text-transform: uppercase;" readonly>
                  </div>
                  <div class="form-group">
                    <label for="NT_Vehicle_Type">Company Name</label>

@@ -5,9 +5,9 @@ use Mike42\Escpos\Printer;
 use Mike42\Escpos\EscposImage;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
-if($_POST['site'] == 1) {
+if($_POST['site'] < 2) {
   /* Connector */
-  $connector = new WindowsPrintConnector("smb://parking desk:pd@parkingdesk/pdholyhead");
+  $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
   $printer = new Printer($connector);
 
   $logo = EscposImage::load("resources/".$_POST['site']."/logo.png", false);

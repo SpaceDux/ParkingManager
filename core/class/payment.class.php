@@ -423,8 +423,6 @@
         'expiry' => urlencode($expiry),
         'payment_type' => urlencode($payment_type),
         'site' => urlencode($site),
-        'meal' => urlencode($shower),
-        'shower' => urlencode($shower),
         'meal_count' => urlencode($meal_count),
         'shower_count' => urlencode($shower_count),
         'vat' => urlencode($vat)
@@ -447,6 +445,83 @@
 
       //close connection
       curl_close($ch);
+    }
+    function NT_Print_Ticket($key, $plate, $date, $company) {
+      global $_CONFIG;
+      $this->user = new User;
+      $this->pm = new PM;
+      $service = $this->PaymentInfo($plate, "payment_service_id");
+
+      $ticket_name = $this->Payment_ServiceInfo($service, "service_ticket_name");
+      $expiryHrs = $this->Payment_ServiceInfo($service, "service_expiry");
+      $shower = $this->Payment_ServiceInfo($service, "service_showerVoucher");
+      $meal = $this->Payment_ServiceInfo($service, "service_mealVoucher");
+
+      $gross = $this->PaymentInfo($plate, "payment_price_gross");
+      $tid = $this->PaymentInfo($plate, "id");
+      $type = $this->PaymentInfo($plate, "payment_type");
+      $net = $this->PaymentInfo($plate, "payment_price_net");
+      $meal_count = $this->Payment_ServiceInfo($service, "service_meal_amount");
+      $shower_count = $this->Payment_ServiceInfo($service, "service_shower_amount");
+      $expiry = date("Y-m-d H:i:s", strtotime($date.' +'.$expiryHrs.' hours'));
+
+      $site = $this->user->userInfo("campus");
+      $vat = $this->pm->PM_SiteInfo($site, "site_vat");
+
+      //$payment_type
+      if($type == 1) {
+        $payment_type = "Cash";
+      } else if ($type == 2) {
+        $payment_type = "Card";
+      } else if ($type == 3) {
+        $payment_type = "Account";
+      } else if ($type == 4) {
+        $payment_type = "SNAP";
+      } else if ($type == 5) {
+        $payment_type = "Fuel Card";
+      }
+
+      $fields_string = "";
+      //set POST variables
+      $url = $_CONFIG['pm']['url'].'/core/plugins/printer/example/parking_ticket.php';
+      $fields = array(
+        'ticket_name' => urlencode($ticket_name),
+        'gross' => urlencode($gross),
+        'net' => urlencode($net),
+        'company' => urlencode($company),
+        'reg' => urlencode($plate),
+        'tid' => urlencode($tid),
+        'date' => urlencode($date),
+        'expiry' => urlencode($expiry),
+        'payment_type' => urlencode($payment_type),
+        'site' => urlencode($site),
+        'shower' => urlencode($shower),
+        'meal' => urlencode($meal),
+        'meal_count' => urlencode($meal_count),
+        'shower_count' => urlencode($shower_count),
+        'vat' => urlencode($vat)
+      );
+
+      //url-ify the data for the POST
+      foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+      rtrim($fields_string, '&');
+
+      //open connection
+      $ch = curl_init();
+
+      //set the url, number of POST vars, POST data
+      curl_setopt($ch,CURLOPT_URL, $url);
+      curl_setopt($ch,CURLOPT_POST, count($fields));
+      curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+
+      //execute post
+      $result = curl_exec($ch);
+
+      //close connection
+      curl_close($ch);
+
+      $this->user = null;
+      $this->pm = null;
     }
     //Transaction for cash
     function Transaction_Proccess_Cash($ANPRKey, $Plate, $Company, $Trailer, $Vehicle_Type, $Service) {
@@ -496,8 +571,6 @@
 
         //Create new parking log information.
         $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
-
-        $this->Print_Parking_Ticket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Cash", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
 
         $this->mysql = null;
         $this->mssql = null;
@@ -558,8 +631,6 @@
         $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
 
 
-        $this->Print_Parking_Ticket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Card", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
-
         $this->mysql = null;
         $this->mssql = null;
         $this->anpr = null;
@@ -619,8 +690,6 @@
         //Create new parking log information.
         $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
 
-
-        $this->Print_Parking_Ticket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Account", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
 
         $this->mysql = null;
         $this->mssql = null;
@@ -784,7 +853,7 @@
 
         $pay_id = $this->PaymentInfo($Plate, "id");
 
-        $this->Print_Parking_Ticket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Card", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
+        //$this->Print_Parking_Ticket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Card", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
 
         $this->mssql = null;
         $this->user = null;

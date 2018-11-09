@@ -3,6 +3,9 @@
   $key = $_GET['id'];
 
   $record = $vehicles->getVehicle($key);
+
+  $date = date("Y-m-d H:i:s", strtotime($record['parked_expiry']));
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,6 +42,10 @@
                    <input type="hidden" class="form-control" name="T_ANPRKey" id="T_ANPRKey" value="<?php echo $record['parked_anprkey'] ?>">
                    <input type="hidden" class="form-control" name="T_PayRef" id="T_PayRef" value="<?php echo $record['payment_ref'] ?>">
                    <input type="hidden" class="form-control" name="T_Expiry" id="T_Expiry" value="<?php echo $record['parked_expiry'] ?>">
+                   <input type="hidden" class="form-control" name="NT_Date" id="NT_Date" value="<?php echo $date ?>">
+                   <input type="hidden" class="form-control" name="NT_Vehicle_Plate" id="NT_Vehicle_Plate" value="<?php echo $record['parked_plate'] ?>">
+                   <input type="hidden" class="form-control" name="NT_Company_Name" id="NT_Company_Name" value="<?php echo $record['parked_company'] ?>">
+                   <input type="hidden" class="form-control" name="NT_ANPRKey" id="NT_ANPRKey" value="<?php echo $record['parked_anprkey'] ?>">
                  </div>
                  <div class="form-group">
                    <label for="NT_Vehicle_Type">Company Name</label>
