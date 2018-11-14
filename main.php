@@ -80,12 +80,15 @@
         <div class="col-md-7">
           <?php $pm->displayNotice(); ?>
           <!-- ANPR Feed Table -->
-            <div class="content">
-              <div class="title">
-                <b style="color:red;">Live</b> ANPR Feed
-                <div class="float-right"><button type="button" class="btn btn-primary" id="refreshANPR"><i class="fa fa-sync"></i></button></div>
+          <div class="content">
+            <div class="title">
+              <b style="color:red;">Live</b> ANPR Feed
+              <div class="btn-group float-right" role="group" aria-label="">
+                <button type="button" class="btn btn-primary" id="refreshANPR"><i class="fa fa-sync-alt"></i></button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ANPR_FilterSearchModal"><i class="fa fa-search"></i></button>
               </div>
-              <div id="anpr">
+            </div>
+            <div id="anpr">
               <table class="table table-dark table-bordered table-hover">
                 <thead>
                   <tr>
@@ -96,7 +99,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <?php $vehicles->get_anprFeed()?>
+                  <?php $vehicles->get_anprFeed() ?>
                 </tbody>
               </table>
             </div>

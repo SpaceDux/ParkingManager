@@ -268,7 +268,7 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_campus = ? AND service_vehicles = ? OR service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_campus = ? AND service_vehicles = ? OR service_anyvehicle = 1 AND service_campus = ? ORDER BY service_price_gross, service_expiry ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
       $stmt->bindParam(3, $campus);
@@ -297,12 +297,12 @@
       $stmt->bindParam(2, $vehicle);
       $stmt->bindParam(3, $campus);
       $stmt->execute();
-
       $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Card" id="NT_Payment_Service_Card" required>';
       $html .= '<option value="unchecked">-- Please choose a service --</option>';
       foreach ($stmt->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
       }
+
       $html .= '</select>';
 
       echo $html;

@@ -220,6 +220,24 @@
         })
       }
     });
+    //ANPR Search Filter
+    $('#ANPR_Filter').keyup(function(){
+      var Filter = $(this).val();
+      if(Filter == '') {
+        $('#ANPR_FilterResult').empty();
+      } else {
+        $('#ANPR_FilterResult').html('');
+        $.ajax({
+          url: "<?php echo URL?>/ajax-handler.php?handler=ANPR_FilterSearch",
+          type: "POST",
+          data: {Filter:Filter},
+          dataType: "text",
+          success:function(data) {
+            $('#ANPR_FilterResult').html(data);
+          }
+        })
+      }
+    })
   });
   //ANPR Edit Record Display
   $(document).on('click', '#ANPR_Edit', function() {
@@ -1091,7 +1109,6 @@
     window.location.replace("<?php echo URL?>/main");
   });
 
-
   //Update Exit
   $('#exitButton').click(function(){
     window.location.reload();
@@ -1120,7 +1137,7 @@
     return i;
   }
 
-  //automate Exit x30secs
+  //automate Exit x1min
   setInterval(function(){
     $.ajax({
       url: "<?php echo URL?>/ajax-handler?handler=Automation_Exit",

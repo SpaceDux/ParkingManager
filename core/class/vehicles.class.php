@@ -39,6 +39,7 @@
           } else if ($number >= 4) {
             $style = "table-danger";
           }
+
           //Begin Table.
           $table = '<tr class="'.$style.'">';
           $table .= '<td>'.$row['Plate'].'</td>';
@@ -52,9 +53,11 @@
                       </div>
                     </td>';
           $table .= '</tr>';
-
+          
           echo $table;
         }
+
+
         $this->mssql = null;
         $this->pm = null;
       } else if ($this->user->userInfo("anpr") == 0) {

@@ -838,3 +838,24 @@
     </div>
   </div>
 </div>
+<!-- ANPR Filter Search -->
+<div class="modal fade" id="ANPR_FilterSearchModal" tabindex="-1" role="dialog" aria-labelledby="ANPR_FilterSearchModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ANPR_FilterSearchModal">ANPR Filtered Search</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input type="text" class="form-control" id="ANPR_Filter" placeholder="Enter the plate you require" autofocus>
+        </div>
+        <div id="ANPR_FilterResult">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

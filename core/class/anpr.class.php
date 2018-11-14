@@ -195,6 +195,73 @@
 
       $this->mssql = null;
     }
+    //ANPR Filter Search
+    function ANPR_FilterSearch($key) {
+      //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
+      global $_CONFIG;
+      $key = '%'.$key.'%';
+      $this->user = new User;
+      if($this->user->userInfo("anpr") == 1) {
+        $this->mssql = new MSSQL;
+        $this->pm = new PM;
+        $this->vehicles = new Vehicles;
+        $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Plate LIKE ? AND Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+        $query->bindParam(1, $key);
+        $query->execute();
+        $result = $query->fetchAll();
+        $table = '<table class="table table-dark table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Registration</th>
+            <th scope="col">Time IN</th>
+            <th scope="col">Patch</th>
+            <th scope="col"><i class="fa fa-cog"></i></th>
+          </tr>
+        </thead>';
+
+        foreach ($result as $row) {
+          //Get The right Path now.
+          if($this->user->userInfo("campus") == 1) {
+            $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $row['Patch']);
+          } else if($this->user->userInfo("campus") == 2) {
+            $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
+          } else if ($this->user->userInfo("campus") == 0) {
+            $patch = "";
+          }
+
+          $number = $this->vehicles->findHour($row['Capture_Date'], "");
+          $style = "";
+          if($number >= 2 && $number < 4) {
+            $style = "table-warning";
+          } else if ($number >= 4) {
+            $style = "table-danger";
+          }
+          //Begin Table.
+          $table .= '<tbody>';
+          $table .= '<tr class="'.$style.'">';
+          $table .= '<td>'.$row['Plate'].'</td>';
+          $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+          $table .= '<td><img src="'.$patch.'"></img></td>';
+          $table .= '<td>
+                      <div class="btn-group" role="group" aria-label="Options">
+                        <a href="'.URL.'/new_transaction/'.$row['Uniqueref'].'" class="btn btn-danger"><i class="fa fa-pound-sign"></i></a>
+                        <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                      </div>
+                    </td>';
+          $table .= '</tr>';
+
+        }
+        $table .= '</tbody></table>';
+        echo $table;
+
+        $this->mssql = null;
+        $this->pm = null;
+        $this->vehicles = null;
+      } else if ($this->user->userInfo("anpr") == 0) {
+        echo "ANPR is disabled for this user, please contact your manager.";
+      }
+      $this->user = null;
+    }
   }
 
 ?>
