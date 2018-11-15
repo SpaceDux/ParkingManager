@@ -323,7 +323,7 @@
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
-      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Cash" id="NT_Payment_Service_Cash" required>';
+      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Card" id="NT_Payment_Service_Card" required>';
       $html .= '<option value="unchecked">-- Please choose a service --</option>';
       foreach ($stmt->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
@@ -354,7 +354,7 @@
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
-      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Cash" id="NT_Payment_Service_Cash" required>';
+      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Account" id="NT_Payment_Service_Account" required>';
       $html .= '<option value="unchecked">-- Please choose a service --</option>';
       foreach ($stmt->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
@@ -385,7 +385,7 @@
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
-      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Cash" id="NT_Payment_Service_Cash" required>';
+      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_SNAP" id="NT_Payment_Service_Snap" required>';
       $html .= '<option value="unchecked">-- Please choose a service --</option>';
       foreach ($stmt->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
@@ -416,7 +416,7 @@
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
-      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Cash" id="NT_Payment_Service_Cash" required>';
+      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Fuel" id="NT_Payment_Service_Fuel" required>';
       $html .= '<option value="unchecked">-- Please choose a service --</option>';
       foreach ($stmt->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
@@ -671,7 +671,7 @@
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
-        //Payment Details for Function Query
+        //Insert Payment data
         $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
@@ -682,6 +682,7 @@
         $sql_anprTbl->bindParam(1, $expiry);
         $sql_anprTbl->bindParam(2, $ANPRKey);
         $sql_anprTbl->execute();
+
 
         //Create new parking log information.
         $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
@@ -731,9 +732,8 @@
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
-        //Payment Details for Function Query
+        //Insert Payment data
         $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account_ID, $campus, $payment_ref, null);
-
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -744,18 +744,17 @@
         $sql_anprTbl->bindParam(2, $ANPRKey);
         $sql_anprTbl->execute();
 
+
         //Create new parking log information.
         $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
 
         $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
-
 
         $this->mysql = null;
         $this->mssql = null;
         $this->anpr = null;
         $this->user = null;
         $this->pm = null;
-
       } else {
         //ignore
       }
@@ -786,9 +785,19 @@
         $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
         $random_number = mt_rand(1, 9999);
         $payment_ref = $Plate."-".$random_number;
+        //Ticket Info
+        $shower = $this->Payment_ServiceInfo($Service, "service_showerVoucher");
+        $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
+        $meal = $this->Payment_ServiceInfo($Service, "service_mealVoucher");
+        $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
+        $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
+        $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
-        //Payment Details for Function Query
+        //Insert Payment data
         $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp);
+
+        $ref = $this->PaymentInfo($Plate, "payment_ref");
+        $pay_id = $this->PaymentInfo($Plate, "id");
 
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
@@ -796,12 +805,11 @@
         $sql_anprTbl->bindParam(2, $ANPRKey);
         $sql_anprTbl->execute();
 
-        $ref = $this->PaymentInfo($Plate, "payment_ref");
-        $pay_id = $this->PaymentInfo($Plate, "id");
 
         //Create new parking log information.
         $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
 
+        $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
         $this->mysql = null;
         $this->mssql = null;
@@ -810,7 +818,6 @@
         $this->pm = null;
       } else {
         //ignore
-
       }
     }
     //Transaction for Fuel
@@ -839,9 +846,19 @@
         $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
         $random_number = mt_rand(1, 9999);
         $payment_ref = $Plate."-".$random_number;
+        //Ticket Info
+        $shower = $this->Payment_ServiceInfo($Service, "service_showerVoucher");
+        $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
+        $meal = $this->Payment_ServiceInfo($Service, "service_mealVoucher");
+        $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
+        $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
+        $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
-        //Payment Details for Function Query
+        //Insert Payment data
         $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp);
+
+        $ref = $this->PaymentInfo($Plate, "payment_ref");
+        $pay_id = $this->PaymentInfo($Plate, "id");
 
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
@@ -849,11 +866,11 @@
         $sql_anprTbl->bindParam(2, $ANPRKey);
         $sql_anprTbl->execute();
 
-        $ref = $this->PaymentInfo($Plate, "payment_ref");
-        $pay_id = $this->PaymentInfo($Plate, "id");
 
         //Create new parking log information.
         $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
+
+        $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
         $this->mysql = null;
         $this->mssql = null;
@@ -862,7 +879,6 @@
         $this->pm = null;
       } else {
         //ignore
-
       }
     }
 
@@ -1127,7 +1143,7 @@
       $date1 = date("Y-m-d 21:00");
       $date2 = date("Y-m-d 21:00", strtotime('-24 hours'));
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date DESC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_date BETWEEN ? AND ? AND payment_deleted = 0 ORDER BY payment_date DESC");
       $query->bindParam(1, $campus);
       $query->bindParam(2, $date2);
       $query->bindParam(3, $date1);
@@ -1159,8 +1175,10 @@
         $html .= '<td>'.$row['payment_ref'].'</td>';
         $html .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
         $html .= '<td>'.$row['payment_author'].'</td>';
-        $html .= '<td>
-                    buttons
+        $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                    <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
+                    <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                    </div>
                   </td>';
         $html .= '</tr>';
       }
@@ -1222,7 +1240,7 @@
         $Ticket_Result = $TicketInfo->fetch(\PDO::FETCH_ASSOC);
 
         $service_id = $this->PaymentInfo($pay_id, "payment_service_id");
-        $payment_type = $this->PaymentInfo($pay_id, "payment_type");
+        $paid = $this->PaymentInfo($pay_id, "payment_type");
         $Plate = $this->PaymentInfo($pay_id, "payment_vehicle_plate");
         $Company = $this->PaymentInfo($pay_id, "payment_company_name");
         $price_gross = $this->PaymentInfo($pay_id, "payment_price_gross");
@@ -1236,6 +1254,18 @@
         $shower_count = $this->Payment_ServiceInfo($service_id, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($service_id, "service_meal_amount");
         $ticket_name = $this->Payment_ServiceInfo($service_id, "service_ticket_name");
+
+        if($paid == 1) {
+          $payment_type = "Cash";
+        } else if ($paid == 2) {
+          $payment_type = "Card";
+        } else if ($paid == 3) {
+          $payment_type = "Account";
+        } else if ($paid == 4) {
+          $payment_type = "SNAP";
+        } else if ($paid == 5) {
+          $payment_type = "Fuel Card";
+        }
 
         $this->Print_Parking_Ticket($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $site, $meal, $shower, $meal_count, $shower_count, $vatno);
       }
