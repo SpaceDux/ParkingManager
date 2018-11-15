@@ -182,6 +182,16 @@
     $('#Delete_Payment_Modal').modal('toggle');
     $('#Payment_ID').val(str);
   }
+  //Payment Ticket Reprint
+  function Reprint_Ticket(str) {
+    event.preventDefault();
+    var id = str;
+    $.ajax({
+      url: "<?php echo URL ?>/ajax-handler.php?handler=Reprint_Ticket",
+      type: "POST",
+      data: {id:id}
+    })
+  }
   //Search Functions
   $(document).ready(function() {
     //ANPR Search

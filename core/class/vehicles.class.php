@@ -53,7 +53,7 @@
                       </div>
                     </td>';
           $table .= '</tr>';
-          
+
           echo $table;
         }
 
@@ -194,12 +194,12 @@
         $table .= '<td>'.$flag.$result['parked_company'].'</td>';
         $table .= '<td>'.$result['parked_plate'].'</td>';
         $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
-        $table .= '<td>'.date("d/H:i", strtotime($result['parked_timein'])).'</td>';
+        $table .= '<td>'.date("d/H:i", strtotime($result['parked_timeout'])).'</td>';
         $table .= '<td>
-          <div class="btn-group" role="group" aria-label="Options">
-            <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
-          </div>
-        </td>';
+                      <div class="btn-group" role="group" aria-label="Options">
+                        <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
+                      </div>
+                    </td>';
         echo $table;
       }
       $this->mysql = null;

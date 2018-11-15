@@ -38,7 +38,7 @@
         $html .= '<td>'.$row['payment_service_name'].'</td>';
         $html .= '<td>'.date("d/H:i", strtotime($row['payment_date'])).'</td>';
         $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
-                    <button type="button" class="btn btn-danger"><i class="fa fa-print"></i></button>
+                    <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
                     <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                     </div>
                   </td>';
@@ -203,6 +203,7 @@
       $this->mysql = null;
       $this->pm = null;
     }
+    //Add Vehicle to parking log
     function Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus) {
       //SQL for Parking Log 15
       $sql_parkedLog = $this->mysql->dbc->prepare("INSERT INTO pm_parking_log (parked_anprkey, payment_ref, parked_plate, parked_trailer, parked_type, parked_company, parked_column, parked_timein, parked_timeout, parked_expiry, parked_flag, parked_deleted, parked_account_id, parked_author, parked_campus, parked_comment) VALUES (:ANPRKey, :PayRef, :Plate, :Trailer, :Vehicle_Type, :Company, '1', :TimeIN, '', :Expiry, '0', '0', null, :Name, :Campus, '')");
@@ -217,6 +218,20 @@
       $sql_parkedLog->bindParam(':Name', $name);
       $sql_parkedLog->bindParam(':Campus', $campus);
       $sql_parkedLog->execute();
+    }
+    //Gather payment information & vehicle info
+    function Payment_Ticket_Info($tid, $ticket_printed, $processed, $date, $expiry) {
+      $this->mysql = new MySQL;
+
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_tickets (ticket_tid, ticket_printed, ticket_date_processed, ticket_date, ticket_expiry) VALUES (?, ?, ?, ?, ?)");
+      $query->bindParam(1, $tid);
+      $query->bindParam(2, $ticket_printed);
+      $query->bindParam(3, $processed);
+      $query->bindParam(4, $date);
+      $query->bindParam(5, $expiry);
+      $query->execute();
+
+      $this->mysql = null;
     }
     //Payment service GET
     function Payment_Service_Update_Get($id) {
@@ -268,15 +283,22 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_campus = ? AND service_vehicles = ? OR service_anyvehicle = 1 AND service_campus = ? ORDER BY service_price_gross, service_expiry ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_campus = ? AND service_vehicles = ? ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
-      $stmt->bindParam(3, $campus);
       $stmt->execute();
+
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2->bindParam(1, $campus);
+      $stmt2->execute();
 
       $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Cash" id="NT_Payment_Service_Cash" required>';
       $html .= '<option value="unchecked">-- Please choose a service --</option>';
       foreach ($stmt->fetchAll() as $row) {
+        $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+      }
+      $html .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
+      foreach ($stmt2->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
       }
       $html .= '</select>';
@@ -292,17 +314,24 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_campus = ? AND service_vehicles = ? OR service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_campus = ? AND service_vehicles = ? ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
-      $stmt->bindParam(3, $campus);
       $stmt->execute();
-      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Card" id="NT_Payment_Service_Card" required>';
+
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2->bindParam(1, $campus);
+      $stmt2->execute();
+
+      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Cash" id="NT_Payment_Service_Cash" required>';
       $html .= '<option value="unchecked">-- Please choose a service --</option>';
       foreach ($stmt->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
       }
-
+      $html .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
+      foreach ($stmt2->fetchAll() as $row) {
+        $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+      }
       $html .= '</select>';
 
       echo $html;
@@ -316,15 +345,22 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_campus = ? AND service_vehicles = ? OR service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_campus = ? AND service_vehicles = ? ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
-      $stmt->bindParam(3, $campus);
       $stmt->execute();
 
-      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Account" id="NT_Payment_Service_Account" required>';
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2->bindParam(1, $campus);
+      $stmt2->execute();
+
+      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Cash" id="NT_Payment_Service_Cash" required>';
       $html .= '<option value="unchecked">-- Please choose a service --</option>';
       foreach ($stmt->fetchAll() as $row) {
+        $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+      }
+      $html .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
+      foreach ($stmt2->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
       }
       $html .= '</select>';
@@ -340,15 +376,22 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_campus = ? AND service_vehicles = ? OR service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_campus = ? AND service_vehicles = ? ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
-      $stmt->bindParam(3, $campus);
       $stmt->execute();
 
-      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_SNAP" id="NT_Payment_Service_SNAP" required>';
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2->bindParam(1, $campus);
+      $stmt2->execute();
+
+      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Cash" id="NT_Payment_Service_Cash" required>';
       $html .= '<option value="unchecked">-- Please choose a service --</option>';
       foreach ($stmt->fetchAll() as $row) {
+        $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+      }
+      $html .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
+      foreach ($stmt2->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
       }
       $html .= '</select>';
@@ -364,15 +407,22 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_campus = ? AND service_vehicles = ? OR service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_campus = ? AND service_vehicles = ? ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
-      $stmt->bindParam(3, $campus);
       $stmt->execute();
 
-      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Fuel" id="NT_Payment_Service_Fuel" required>';
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2->bindParam(1, $campus);
+      $stmt2->execute();
+
+      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_Cash" id="NT_Payment_Service_Cash" required>';
       $html .= '<option value="unchecked">-- Please choose a service --</option>';
       foreach ($stmt->fetchAll() as $row) {
+        $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+      }
+      $html .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
+      foreach ($stmt2->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
       }
       $html .= '</select>';
@@ -406,7 +456,7 @@
 
       $this->mysql = null;
     }
-    //Print Ticket
+    //Print Ticket (For reprints)
     function Print_Parking_Ticket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $site, $meal, $shower, $meal_count, $shower_count, $vat) {
       global $_CONFIG;
       $fields_string = "";
@@ -423,6 +473,8 @@
         'expiry' => urlencode($expiry),
         'payment_type' => urlencode($payment_type),
         'site' => urlencode($site),
+        'meal' => urlencode($meal),
+        'shower' => urlencode($shower),
         'meal_count' => urlencode($meal_count),
         'shower_count' => urlencode($shower_count),
         'vat' => urlencode($vat)
@@ -446,6 +498,7 @@
       //close connection
       curl_close($ch);
     }
+    //Print the ticket via modal click
     function NT_Print_Ticket($key, $plate, $date, $company) {
       global $_CONFIG;
       $this->user = new User;
@@ -569,8 +622,11 @@
         $sql_anprTbl->bindParam(2, $ANPRKey);
         $sql_anprTbl->execute();
 
+
         //Create new parking log information.
         $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
+
+        $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
         $this->mysql = null;
         $this->mssql = null;
@@ -630,6 +686,7 @@
         //Create new parking log information.
         $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
 
+        $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
         $this->mysql = null;
         $this->mssql = null;
@@ -689,6 +746,8 @@
 
         //Create new parking log information.
         $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
+
+        $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
 
         $this->mysql = null;
@@ -796,7 +855,6 @@
         //Create new parking log information.
         $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
 
-
         $this->mysql = null;
         $this->mssql = null;
         $this->anpr = null;
@@ -853,7 +911,7 @@
 
         $pay_id = $this->PaymentInfo($Plate, "id");
 
-        //$this->Print_Parking_Ticket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Card", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
+        $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
         $this->mssql = null;
         $this->user = null;
@@ -907,7 +965,9 @@
 
         $pay_id = $this->PaymentInfo($Plate, "id");
 
-        $this->Print_Parking_Ticket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Card", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
+        $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
+
+        //$this->Print_Parking_Ticket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Card", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
 
         $this->mssql = null;
         $this->user = null;
@@ -959,7 +1019,9 @@
 
         $pay_id = $this->PaymentInfo($Plate, "id");
 
-        $this->Print_Parking_Ticket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Account", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
+        $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
+
+        //$this->Print_Parking_Ticket($service_ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $ANPR_Date, $expiry, "Account", $campus, $meal, $shower, $meal_count, $shower_count, $site_vat);
 
         $this->mssql = null;
         $this->user = null;
@@ -1146,5 +1208,42 @@
       $this->anpr = null;
       $this->vehicles = null;
     }
+    //Reprint a parking ticket with information gathered in pm_tickets
+    function Reprint_Ticket($pay_id) {
+      $this->mysql = new MySQL;
+      $this->vehicles = new Vehicles;
+      $this->pm = new PM;
+
+      if(!empty($pay_id)) {
+        //Ticket Query
+        $TicketInfo = $this->mysql->dbc->prepare("SELECT * FROM pm_tickets WHERE ticket_tid = ?");
+        $TicketInfo->bindParam(1, $pay_id);
+        $TicketInfo->execute();
+        $Ticket_Result = $TicketInfo->fetch(\PDO::FETCH_ASSOC);
+
+        $service_id = $this->PaymentInfo($pay_id, "payment_service_id");
+        $payment_type = $this->PaymentInfo($pay_id, "payment_type");
+        $Plate = $this->PaymentInfo($pay_id, "payment_vehicle_plate");
+        $Company = $this->PaymentInfo($pay_id, "payment_company_name");
+        $price_gross = $this->PaymentInfo($pay_id, "payment_price_gross");
+        $price_net = $this->PaymentInfo($pay_id, "payment_price_net");
+        $site = $this->PaymentInfo($pay_id, "payment_campus");
+        $vatno = $this->pm->PM_SiteInfo($site, "site_vat");
+        $date = $Ticket_Result['ticket_date'];
+        $expiry = $Ticket_Result['ticket_expiry'];
+        $shower = $this->Payment_ServiceInfo($service_id, "service_showerVoucher");
+        $meal = $this->Payment_ServiceInfo($service_id, "service_mealVoucher");
+        $shower_count = $this->Payment_ServiceInfo($service_id, "service_shower_amount");
+        $meal_count = $this->Payment_ServiceInfo($service_id, "service_meal_amount");
+        $ticket_name = $this->Payment_ServiceInfo($service_id, "service_ticket_name");
+
+        $this->Print_Parking_Ticket($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $site, $meal, $shower, $meal_count, $shower_count, $vatno);
+      }
+
+      $this->mysql = null;
+      $this->vehicles = null;
+      $this->pm = null;
+    }
+
   }
 ?>

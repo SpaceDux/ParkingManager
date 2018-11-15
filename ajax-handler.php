@@ -108,5 +108,8 @@
     $payment->NT_Print_Ticket($_POST['ANPRKey'], $_POST['Plate'], $_POST['Date'], $_POST['Company']);
   } else if($handler == "ANPR_FilterSearch") {
     $anpr->ANPR_FilterSearch($_POST['Filter']);
+  } else if($handler == "Reprint_Ticket") {
+    $payment->Reprint_Ticket($_POST['id']);
   }
+  
 ?>
