@@ -110,6 +110,8 @@
     $anpr->ANPR_FilterSearch($_POST['Filter']);
   } else if($handler == "Reprint_Ticket") {
     $payment->Reprint_Ticket($_POST['id']);
+  } else if($handler == "Account_Report") {
+    $account->Account_Report($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
   }
-  
+
 ?>

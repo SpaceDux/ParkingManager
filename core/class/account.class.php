@@ -358,5 +358,87 @@
 
       $this->mysql = null;
     }
+    //Account payment reports
+    function Account_Report($account, $dateStart, $dateEnd) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->vehicle = new Vehicles;
+      $campus = $this->user->userInfo("campus");
+      $date1 = date("Y-m-d 00:00:00", strtotime($dateStart));
+      $date2 = date("Y-m-d 23:59:59", strtotime($dateEnd));
+      $priceGross = 0;
+      $priceNet = 0;
+      $totalTransactions = 0;
+
+      $html = '<table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Plate</th>
+                      <th scope="col">Trailer</th>
+                      <th scope="col">Vehicle Type</th>
+                      <th scope="col">Time ARRIVAL</th>
+                      <th scope="col">Time DEPARTURE</th>
+                      <th scope="col">Payment Ref</th>
+                    </tr>
+                  </thead>
+                <tbody>';
+
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_type = 3 AND payment_account_id = ? AND payment_deleted = 0 AND payment_campus = ? AND payment_date BETWEEN ? AND ? GROUP BY payment_ref ORDER BY payment_date ASC");
+      $query->bindParam(1, $account);
+      $query->bindParam(2, $campus);
+      $query->bindParam(3, $date1);
+      $query->bindParam(4, $date2);
+      $query->execute();
+      foreach ($query->fetchAll() as $row) {
+        $key = $row['payment_ref'];
+        $query2 = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE payment_ref = ? ORDER BY parked_timein ASC");
+        $query2->bindParam(1, $key);
+        $query2->execute();
+        foreach ($query2->fetchAll() as $row) {
+          if(isset($row['parked_timeout']) AND $row['parked_timeout'] == "") {
+            $timeout = "";
+          } else {
+            $timeout = date("d/m/y H:i", strtotime($row['parked_timeout']));
+          }
+          $key2 = $row['payment_ref'];
+          $html .= '<tr class="table-primary" style="color: #000;">';
+          $html .= '<td>'.$row['parked_plate'].'</td>';
+          $html .= '<td>'.$row['parked_trailer'].'</td>';
+          $html .= '<td>'.$this->vehicle->Vehicle_Type_Info($row['parked_type'], "type_shortName").'</td>';
+          $html .= '<td>'.date("d/m/y H:i", strtotime($row['parked_timein'])).'</td>';
+          $html .= '<td>'.$timeout.'</td>';
+          $html .= '<td>'.$row['payment_ref'].'</td>';
+          $html .= '</tr>';
+          $query3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0");
+          $query3->bindParam(1, $key2);
+          $query3->execute();
+          foreach($query3->fetchAll() as $row) {
+            $priceGross += $row['payment_price_gross'];
+            $priceNet += $row['payment_price_net'];
+            $totalTransactions++;
+
+            $html .= '<tr>';
+            $html .= '<td>'.$row['id'].'</td>';
+            $html .= '<td colspan="2">'.$row['payment_service_name'].'</td>';
+            $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>';
+            $html .= '<td> £'.$row['payment_price_gross'].'</td>';
+            $html .= '<td> £'.$row['payment_price_net'].'</td>';
+            $html .= '</tr>';
+          }
+        }
+      }
+      $html .= '<tr class="table-danger" style="text-align: center;">';
+      $html .= '<td colspan="2">Total Transactions: '.$totalTransactions.'</td>';
+      $html .= '<td colspan="2">Gross Price: £'.$priceGross.'</td>';
+      $html .= '<td colspan="2">Net Price: £'.$priceNet.'</td>';
+      $html .= '</tr>';
+      $html .= "</tbody></table>";
+      echo $html;
+
+
+      $this->mysql = null;
+      $this->user = null;
+      $this->vehicle = null;
+    }
   }
 ?>

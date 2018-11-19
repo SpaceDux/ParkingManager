@@ -876,7 +876,7 @@
         type: "POST",
         data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry,
         success:function() {
-          window.location.replace("<?php echo URL?>/main");//Relocate
+          $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
         }
       });
     }
@@ -908,7 +908,7 @@
         type: "POST",
         data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Account="+Account_ID+"&Expiry="+Expiry,
         success:function() {
-          window.location.replace("<?php echo URL?>/main");
+          $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
         }
       });
     }
@@ -1117,6 +1117,30 @@
   $(document).on('click', '#NT_Print_Ticket_No', function() {
     event.preventDefault();
     window.location.replace("<?php echo URL?>/main");
+  });
+  //Account Report Generate
+  $(document).on('click', '#GenerateAccountReport', function() {
+    event.preventDefault();
+    var Account = $("#PM_Account_Select").val();
+    var DateStart = $("#DateFrom").val();
+    var DateEnd = $("#DateToo").val();
+    if(Account == "unchecked") {
+      alert("Please select an account");
+    } else if(DateStart == "") {
+      alert("Please pick a start date");
+    } else if(DateEnd == "") {
+      alert("Please pick an end date");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Account_Report",
+        type: "POST",
+        data: "Account="+Account+"&DateStart="+DateStart+"&DateEnd="+DateEnd,
+        success:function(data) {
+          $('#result').html(data);
+        }
+      })
+    }
+
   });
 
   //Update Exit
