@@ -65,6 +65,7 @@
                     <th scope="col">Payment Type</th>
                     <th scope="col">Service Name</th>
                     <th scope="col">Service Date</th>
+                    <th scope="col">Processed By</th>
                     <th scope="col">
                       <div class="btn-group" role="group" aria-label="Button Group">
                         <a href="<?php echo URL ?>/transaction/<?php echo $row['id']?>" tabindex="-1" class="btn btn-danger btn-sm payBtn"> <i class="fas fa-pound-sign"></i> New Payment</a>
@@ -78,7 +79,7 @@
               </table>
               <div class="form-group">
                 <label for="upd_timein">Time IN</label>
-                <input type="text" class="form-control" id="upd_timein" name="upd_timein" placeholder="Time IN: Y-m-d H:m" value="<?php echo $row['parked_timein'] ?>">
+                <input type="text" class="form-control" id="upd_timein" name="upd_timein" placeholder="Time IN: Y-m-d H:m" value="<?php echo date("Y-m-d H:i:s", strtotime($row['parked_timein'])) ?>">
               </div>
               <div class="form-check">
                 <label class="form-check-label">

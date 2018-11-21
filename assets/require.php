@@ -1084,6 +1084,7 @@
         }
     });
   });
+  //Delete PAYMENT
   $(document).on('click', '#Payment_Delete_Submit', function() {
     event.preventDefault();
     var Payment_ID = $('#Payment_ID').val();
@@ -1142,7 +1143,16 @@
     }
 
   });
-
+  //Add Time to add ANPR modal
+  $(document).on('click', '#AddANPRModal', function() {
+    var d = new Date();
+    var date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+    var h = addZero(d.getHours());
+    var m = addZero(d.getMinutes());
+    var s = addZero(d.getSeconds());
+    var datetime = date+' '+h+':'+m+':'+s;
+    $('#ANPR_Add_Date').val(datetime);
+  });
   //Update Exit
   $('#exitButton').click(function(){
     window.location.reload();
@@ -1170,7 +1180,6 @@
     }
     return i;
   }
-
   //automate Exit x1min
   setInterval(function(){
     $.ajax({

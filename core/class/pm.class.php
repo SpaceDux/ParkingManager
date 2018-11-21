@@ -109,7 +109,7 @@
       $nav .=  '<ul>';
       $nav .=    '<a onClick="menuHide()"><li><i class="fas fa-align-justify"></i></li></a>';
       $nav .=    '<li data-toggle="modal" data-target="#searchModal"><i class="fa fa-search"></i></li>';
-      $nav .=    '<li data-toggle="modal" data-target="#ANPR_AddModal"><i class="fa fa-plus"></i></li>';
+      $nav .=    '<li data-toggle="modal" id="AddANPRModal" data-target="#ANPR_AddModal"><i class="fa fa-plus"></i></li>';
       $nav .=    '<li onClick="ANPR_Barrier(1)" title="Toggle Entry Barrier"><i class="fa fa-arrow-right"></i></li>';
       $nav .=    '<li onClick="ANPR_Barrier(0)" title="Toggle Exit Barrier"><i class="fa fa-arrow-left"></i></li>';
       $nav .=  '</ul>';
@@ -317,10 +317,11 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->campus = $this->user->userInfo("campus");
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate LIKE ? OR parked_trailer LIKE ? AND parked_campus = ? ORDER BY parked_timein DESC LIMIT 200");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate LIKE ? OR parked_trailer LIKE ? OR parked_company LIKE ? AND parked_campus = ? ORDER BY parked_timein DESC LIMIT 200");
       $stmt->bindParam(1, $string);
       $stmt->bindParam(2, $string);
-      $stmt->bindParam(3, $this->campus);
+      $stmt->bindParam(3, $string);
+      $stmt->bindParam(4, $this->campus);
       $stmt->execute();
       $result = $stmt->fetchAll();
 

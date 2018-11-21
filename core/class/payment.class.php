@@ -36,7 +36,8 @@
         }
         $html .= '<td>'.$type.'</td>';
         $html .= '<td>'.$row['payment_service_name'].'</td>';
-        $html .= '<td>'.date("d/H:i", strtotime($row['payment_date'])).'</td>';
+        $html .= '<td>'.date("d/m H:i", strtotime($row['payment_date'])).'</td>';
+        $html .= '<td>'.$row['payment_author'].'</td>';
         $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
                     <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
                     <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
@@ -446,7 +447,7 @@
     //Payment Info
     function PaymentInfo($key, $what) {
       $this->mysql = new MySQL;
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_vehicle_plate = ? OR id = ? OR payment_ref = ? ORDER BY id DESC LIMIT 1");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_vehicle_plate = ? OR id = ? OR payment_ref = ? AND payment_deleted = 0 ORDER BY id DESC LIMIT 1");
       $stmt->bindParam(1, $key);
       $stmt->bindParam(2, $key);
       $stmt->bindParam(3, $key);
@@ -1273,6 +1274,11 @@
       $this->mysql = null;
       $this->vehicles = null;
       $this->pm = null;
+    }
+    function Payment_Count_Account($account, $campus, $dateStart, $dateEnd) {
+      $this->mysql = new MySQL;
+      
+      $this->mysql = null;
     }
   }
 ?>
