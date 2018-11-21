@@ -381,7 +381,6 @@
                   </tr>
                 </thead>
               <tbody>';
-      $stat .= '</tbody></table></div>';
 
       $html = '<table class="table table-bordered table-hover">
                   <thead>
@@ -396,6 +395,28 @@
                     </tr>
                   </thead>
                 <tbody>';
+
+      //Stats
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_type = 3 AND payment_account_id = ? AND payment_deleted = 0 AND payment_campus = ? AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id ORDER BY payment_price_gross ASC");
+      $query->bindParam(1, $account);
+      $query->bindParam(2, $campus);
+      $query->bindParam(3, $date1);
+      $query->bindParam(4, $date2);
+      $query->execute();
+      foreach($query->fetchAll() as $row) {
+        $key = $row['payment_service_id'];
+        $count = $this->payment->Payment_Count_Account($account, $campus, $key, $date1, $date2);
+        $net = $this->payment->Payment_ServiceInfo($key, "service_price_net") * $count;
+        $gross = $this->payment->Payment_ServiceInfo($key, "service_price_gross") * $count;
+
+        $stat .= '<tr>';
+        $stat .= '<td>'.$this->payment->Payment_ServiceInfo($key, "service_name").'</td>';
+        $stat .= '<td>'.$this->payment->Payment_Count_Account($account, $campus, $key, $date1, $date2).'</td>';
+        $stat .= '<td>'.$gross.'</td>';
+        $stat .= '<td>'.$net.'</td>';
+        $stat .= '</tr>';
+      }
+      $stat .= '</tbody></table></div>';
       //Report
       $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_type = 3 AND payment_account_id = ? AND payment_deleted = 0 AND payment_campus = ? AND payment_date BETWEEN ? AND ? GROUP BY payment_ref ORDER BY payment_date ASC");
       $query->bindParam(1, $account);
