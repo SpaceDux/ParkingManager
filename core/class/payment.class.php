@@ -207,6 +207,7 @@
     //Add Vehicle to parking log
     function Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus) {
       //SQL for Parking Log 15
+      $Trailer = strtoupper($Trailer);
       $sql_parkedLog = $this->mysql->dbc->prepare("INSERT INTO pm_parking_log (parked_anprkey, payment_ref, parked_plate, parked_trailer, parked_type, parked_company, parked_column, parked_timein, parked_timeout, parked_expiry, parked_flag, parked_deleted, parked_account_id, parked_author, parked_campus, parked_comment) VALUES (:ANPRKey, :PayRef, :Plate, :Trailer, :Vehicle_Type, :Company, '1', :TimeIN, '', :Expiry, '0', '0', null, :Name, :Campus, '')");
       $sql_parkedLog->bindParam(':ANPRKey', $ANPRKey);
       $sql_parkedLog->bindParam(':PayRef', $ref);

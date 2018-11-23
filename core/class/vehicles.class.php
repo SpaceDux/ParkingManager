@@ -124,7 +124,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry < CURRENT_TIMESTAMP");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry < CURRENT_TIMESTAMP ORDER BY parked_expiry ASC");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();

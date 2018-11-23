@@ -364,6 +364,7 @@
       $this->user = new User;
       $this->vehicle = new Vehicles;
       $this->payment = new Payment;
+      $this->reports = new Reports;
       $campus = $this->user->userInfo("campus");
       $date1 = date("Y-m-d 00:00:00", strtotime($dateStart));
       $date2 = date("Y-m-d 23:59:59", strtotime($dateEnd));
@@ -412,8 +413,8 @@
         $stat .= '<tr>';
         $stat .= '<td>'.$this->payment->Payment_ServiceInfo($key, "service_name").'</td>';
         $stat .= '<td>'.$this->payment->Payment_Count_Account($account, $campus, $key, $date1, $date2).'</td>';
-        $stat .= '<td>'.$gross.'</td>';
-        $stat .= '<td>'.$net.'</td>';
+        $stat .= '<td>'.number_format($gross, 2).'</td>';
+        $stat .= '<td colspan="2">'.number_format($net, 2).'</td>';
         $stat .= '</tr>';
       }
       $stat .= '</tbody></table></div>';
@@ -435,6 +436,12 @@
           } else {
             $timeout = date("d/m/y H:i", strtotime($row['parked_timeout']));
           }
+          $d1 = new \DateTime($row['parked_timein']);
+          $d2 = new \DateTime($row['parked_timeout']);
+          $int = $d2->diff($d1);
+          $h = $int->h;
+          $h = $h + ($int->days*24);
+
           $key2 = $row['payment_ref'];
           $html .= '<tr class="table-primary" style="color: #000;">';
           $html .= '<td>'.$row['parked_plate'].'</td>';
@@ -443,7 +450,7 @@
           $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['parked_timein'])).'</td>';
           $html .= '<td>'.$timeout.'</td>';
           $html .= '<td>'.$row['payment_ref'].'</td>';
-          $html .= '<td>LOTS OF HRS</td>';
+          $html .= '<td>'.$h.' hours & '.$int->format('%i').' minutes</td>';
           $html .= '</tr>';
           $query3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0");
           $query3->bindParam(1, $key2);
@@ -453,20 +460,21 @@
             $priceNet += $row['payment_price_net'];
             $totalTransactions++;
             $html .= '<tr>';
-            $html .= '<td>'.$row['id'].'</td>';
+            $html .= '<td>T.ID: '.$row['id'].'</td>';
             $html .= '<td colspan="2">'.$row['payment_service_name'].'</td>';
             $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>';
             $html .= '<td> £'.$row['payment_price_gross'].'</td>';
             $html .= '<td> £'.$row['payment_price_net'].'</td>';
+            $html .= '<td></td>';
             $html .= '</tr>';
           }
         }
       }
       $html .= '<tr class="table-danger" style="text-align: center;">';
       $html .= '<td colspan="2">Total Transactions: '.$totalTransactions.'</td>';
-      $html .= '<td colspan="2">Gross Price: £'.$priceGross.'</td>';
-      $html .= '<td colspan="2">Net Price: £'.$priceNet.'</td>';
-      $html .= '<td colspan="1">Something else</td>';
+      $html .= '<td colspan="2">Gross Price: £'.number_format($priceGross, 2).'</td>';
+      $html .= '<td colspan="2">Net Price: £'.number_format($priceNet, 2).'</td>';
+      $html .= '<td colspan="2"></td>';
       $html .= '</tr>';
       $html .= "</tbody></table>";
 

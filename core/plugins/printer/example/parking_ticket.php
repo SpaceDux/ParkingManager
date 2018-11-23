@@ -37,7 +37,7 @@ if($_POST['site'] < 2) {
   $date = date("d/m/Y H:i", strtotime($date));
   $expiry = date("d/m/Y H:i", strtotime($expiry));
   //Detail Columns
-  $company_reg = new detail_col("Company: ".$company, 'Reg: '.$reg);
+  $company_reg = new detail_col("Company: ".substr($company, 0, 10), 'Reg: '.$reg);
   $tid_date = new detail_col('T.ID: '.$tid, 'Date:  '.$date);
   $shower_details = new detail_col("Reg: ".$reg, "Exp: ".$expiry);
   $meal_details = new detail_col("Reg: ".$reg, "Exp: ".$expiry);
