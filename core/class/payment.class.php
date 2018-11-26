@@ -1,5 +1,9 @@
 <?php
+
   namespace ParkingManager;
+  use Mike42\Escpos\Printer;
+  use Mike42\Escpos\EscposImage;
+  use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
   class Payment
   {
@@ -883,7 +887,6 @@
         //ignore
       }
     }
-
     //Renewals
     //Transaction for Cash
     function Transaction_Proccess_Cash_Renewal($LogID, $ANPRKey, $PayRef, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $Expiry) {
@@ -1275,20 +1278,6 @@
       $this->mysql = null;
       $this->vehicles = null;
       $this->pm = null;
-    }
-    function Payment_Count_Account($account, $campus, $service, $dateStart, $dateEnd) {
-      $this->mysql = new MySQL;
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_type = 3 AND payment_account_id = ? AND payment_service_id = ? AND payment_campus = ? AND payment_date BETWEEN ? AND ? ORDER BY id ASC");
-      $query->bindParam(1, $account);
-      $query->bindParam(2, $service);
-      $query->bindParam(3, $campus);
-      $query->bindParam(4, $dateStart);
-      $query->bindParam(5, $dateEnd);
-      $query->execute();
-      return count($query->fetchAll());
-      //$result = $query->fetchAll();
-
-      $this->mysql = null;
     }
   }
 ?>

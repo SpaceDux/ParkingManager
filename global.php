@@ -7,6 +7,7 @@
   define('C', '/core');
   define('F', '/class');
   define('M', '/manage');
+  define('V', '/vendor');
 //  define('P', '/plugins');
 
   //Required Files
@@ -24,6 +25,7 @@
   require(__DIR__ . C . F . '/reports.class.php');
     //Caution
   require(__DIR__ . C . F . '/background.class.php');
+  require(__DIR__ . V . '/autoload.php');
   //Define CONFIG settings
   define('URL', $_CONFIG['pm']['url']);
   define('VER', "3.1.8");
@@ -44,6 +46,7 @@
     $anpr = new PM\ANPR;
     $background = new PM\Background;
     $account = new PM\Account;
+    $reports = new PM\Reports;
   }
 
   //Checks
