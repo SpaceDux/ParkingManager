@@ -112,6 +112,7 @@
     $payment->Reprint_Ticket($_POST['id']);
   } else if($handler == "Account_Report") {
     $reports->Account_Report($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
+  } else if($handler == "Report_DownloadXLSX") {
+    $reports->WriteExcel($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
   }
-
 ?>

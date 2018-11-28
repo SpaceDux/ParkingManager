@@ -254,6 +254,7 @@
         var s = addZero(d.getSeconds());
         var datetime = date+' '+h+':'+m+':'+s;
         $('#ANPR_Add_Date').val(datetime);
+        $(this).find('[autofocus]').focus();
       });
     </script>
   </body>

@@ -1,5 +1,9 @@
 <?php
   require(__DIR__.'/global.php');
+
+  if(!empty($_POST['PM_Account_Select']) AND $_POST['ReportStart'] !== null AND $_POST['ReportEnd'] !== null) {
+    $reports->WriteExcel($_POST['PM_Account_Select'], $_POST['ReportStart'], $_POST['ReportEnd']);
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +30,7 @@
         <div class="container">
           <div class="row">
             <div class="col-md-12">
-              <form class="form-row" action="" method="post">
+              <form class="form-row" action="" method="post" download>
                 <div class="col">
                   <?php $account->Account_List_Dropdown() ?>
                 </div>
@@ -35,7 +39,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="DateFromIcon"><i class="fa fa-calendar"></i></span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Report Start Date" data-toggle="datepicker" id="DateFrom">
+                    <input type="text" class="form-control" name="ReportStart" placeholder="Report Start Date" data-toggle="datepicker" id="DateFrom">
                   </div>
                 </div>
                 <div class="col">
@@ -43,17 +47,20 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="DateTooIcon"><i class="fa fa-calendar"></i></span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Report End Date" data-toggle="datepicker" id="DateToo">
+                    <input type="text" class="form-control" name="ReportEnd" placeholder="Report End Date" data-toggle="datepicker" id="DateToo">
                   </div>
                 </div>
                 <div class="col-md-2">
-                  <button type="button" id="GenerateAccountReport" class="btn btn-success btn-lg">Generate Report</button>
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" id="GenerateAccountReport" class="btn btn-lg btn-secondary">Sales</button>
+                      <input type="submit" class="btn btn-lg btn-secondary" value="Download">
+                  </div>
                 </div>
               </form>
             </div>
           </div>
           <div id="result">
-            
+
           </div>
         </div>
       </div>
@@ -68,6 +75,7 @@
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/datepicker.min.js"></script>
+    <script src="<?php echo URL?>/assets/js/download.js"></script>
     <?php require(__DIR__."/assets/require.php");?>
     <script type="text/javascript">
     $('[data-toggle="datepicker"]').datepicker({format: 'dd-mm-yyyy'});

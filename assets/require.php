@@ -286,7 +286,10 @@
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=ANPR_Add",
       type: "POST",
-      data: "Plate="+Plate+"&Date="+Capture_Date
+      data: "Plate="+Plate+"&Date="+Capture_Date,
+      success:function() {
+        $('#ANPR_AddForm')[0].reset();
+      }
     });
     event.preventDefault();
     $('#anpr').load(' #anpr');
@@ -1141,7 +1144,29 @@
         }
       })
     }
-
+  });
+  //Account Report Generate
+  $(document).on('click', '#Report_DownloadXLSX', function() {
+    event.preventDefault();
+    var Account = $("#PM_Account_Select").val();
+    var DateStart = $("#DateFrom").val();
+    var DateEnd = $("#DateToo").val();
+    if(Account == "unchecked") {
+      alert("Please select an account");
+    } else if(DateStart == "") {
+      alert("Please pick a start date");
+    } else if(DateEnd == "") {
+      alert("Please pick an end date");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Report_DownloadXLSX",
+        type: "POST",
+        data: "Account="+Account+"&DateStart="+DateStart+"&DateEnd="+DateEnd,
+        success:function(data) {
+          $('#result').load(data);
+        }
+      })
+    }
   });
   //Add Time to add ANPR modal
   $(document).on('click', '#AddANPRModal', function() {

@@ -292,7 +292,7 @@
       $query->bindParam(1, $campus);
       $query->execute();
       $result = $query->fetchAll();
-      $list .= '<select class="form-control form-control-lg" id="PM_Account_Select">';
+      $list .= '<select class="form-control form-control-lg" name="PM_Account_Select" id="PM_Account_Select">';
       $list .= '<option value="unchecked">-- Please choose an account --</option>';
       foreach ($result as $row) {
         if($row['account_suspended'] == 1) {
