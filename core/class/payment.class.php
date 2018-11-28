@@ -1148,7 +1148,7 @@
       $date1 = date("Y-m-d 21:00");
       $date2 = date("Y-m-d 21:00", strtotime('-24 hours'));
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_date BETWEEN ? AND ? AND payment_deleted = 0 ORDER BY payment_date DESC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date DESC");
       $query->bindParam(1, $campus);
       $query->bindParam(2, $date2);
       $query->bindParam(3, $date1);

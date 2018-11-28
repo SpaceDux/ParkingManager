@@ -311,7 +311,7 @@
                       'bold' => true,
                   ],
                   'alignment' => [
-                      'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                      'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
                   ],
                   'borders' => [
                       'top' => [

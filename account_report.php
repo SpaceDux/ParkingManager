@@ -1,7 +1,7 @@
 <?php
   require(__DIR__.'/global.php');
 
-  if(!empty($_POST['PM_Account_Select']) AND $_POST['ReportStart'] !== null AND $_POST['ReportEnd'] !== null) {
+  if(!empty($_POST['PM_Account_Select']) AND !empty($_POST['ReportStart']) AND !empty($_POST['ReportEnd'])) {
     $reports->WriteExcel($_POST['PM_Account_Select'], $_POST['ReportStart'], $_POST['ReportEnd']);
   }
 ?>
@@ -39,7 +39,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="DateFromIcon"><i class="fa fa-calendar"></i></span>
                     </div>
-                    <input type="text" class="form-control" name="ReportStart" placeholder="Report Start Date" data-toggle="datepicker" id="DateFrom">
+                    <input type="text" class="form-control" name="ReportStart" placeholder="Report Start Date" data-toggle="datepicker" id="DateFrom" autocomplete="off">
                   </div>
                 </div>
                 <div class="col">
@@ -47,7 +47,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="DateTooIcon"><i class="fa fa-calendar"></i></span>
                     </div>
-                    <input type="text" class="form-control" name="ReportEnd" placeholder="Report End Date" data-toggle="datepicker" id="DateToo">
+                    <input type="text" class="form-control" name="ReportEnd" placeholder="Report End Date" data-toggle="datepicker" id="DateToo" autocomplete="off">
                   </div>
                 </div>
                 <div class="col-md-2">
