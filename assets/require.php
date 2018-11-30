@@ -230,6 +230,24 @@
         })
       }
     });
+    //PM Payments Search
+    $('#PM_PaymentSearch').keyup(function(){
+      var PMKey = $(this).val();
+      if(PMKey == '') {
+        $('#return').empty();
+      } else {
+        $('#return').html('');
+        $.ajax({
+         url: "<?php echo URL?>/ajax-handler.php?handler=PM_PaymentSearch",
+         type: "POST",
+         data: {PMKey:PMKey},
+         dataType: "text",
+         success:function(data) {
+           $('#return').html(data);
+         }
+        })
+      }
+    });
     //ANPR Search Filter
     $('#ANPR_Filter').keyup(function(){
       var Filter = $(this).val();
@@ -926,8 +944,7 @@
     var Company = $('#T_Company_Name').val();
     var Trailer = $('#T_Vehicle_Trailer').val();
     var Type = $('#T_Vehicle_Type').val();
-    var Service = $('#NT_Payment_Service_Account').val();
-    var Account_ID = $('#PM_Account_Select').val();
+    var Service = $('#NT_Payment_Service_Snap').val();
     var Expiry = $('#T_Expiry').val();
     var etp = $('#T_Process_SNAP_TID').val();
     if(Plate == "") {
@@ -938,8 +955,6 @@
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
-    } else if (Account_ID === "unchecked") {
-      alert("Please select an Account");
     } else if (etp === "") {
       alert("Please enter the ETP Ticket ID");
     } else {
@@ -948,7 +963,7 @@
         type: "POST",
         data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry+"&etp="+etp,
         success:function() {
-          window.location.replace("<?php echo URL?>/main");
+          //window.location.replace("<?php echo URL?>/main");
         }
       });
     }
@@ -963,8 +978,7 @@
     var Company = $('#T_Company_Name').val();
     var Trailer = $('#T_Vehicle_Trailer').val();
     var Type = $('#T_Vehicle_Type').val();
-    var Service = $('#NT_Payment_Service_Account').val();
-    var Account_ID = $('#PM_Account_Select').val();
+    var Service = $('#NT_Payment_Service_Fuel').val();
     var Expiry = $('#T_Expiry').val();
     var etp = $('#T_Process_Fuel_TID').val();
     if(Plate == "") {
@@ -975,8 +989,6 @@
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
-    } else if (Account_ID === "unchecked") {
-      alert("Please select an Account");
     } else if (etp === "") {
       alert("Please enter the ETP Ticket ID");
     } else {
@@ -985,7 +997,7 @@
         type: "POST",
         data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry+"&etp="+etp,
         success:function() {
-          window.location.replace("<?php echo URL?>/main");
+          //window.location.replace("<?php echo URL?>/main");
         }
       });
     }

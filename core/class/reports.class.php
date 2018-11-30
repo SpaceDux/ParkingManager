@@ -155,6 +155,7 @@
       $this->vehicle = new Vehicles;
       $this->account = new Account;
       $this->payment = new Payment;
+
       $account_name = $this->account->Account_GetInfo($account, "account_name");
       $file_name = $account_name.' RC '.$dateStart.' - '.$dateEnd;
       $campus = $this->user->userInfo("campus");
@@ -393,6 +394,11 @@
         $spreadsheet->disconnectWorksheets();
         unset($spreadsheet);
         die();
+        $this->mysql = null;
+        $this->user = null;
+        $this->vehicle = null;
+        $this->account = null;
+        $this->payment = null;
     }
   }
 ?>

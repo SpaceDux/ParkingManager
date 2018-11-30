@@ -1053,7 +1053,7 @@
       }
     }
     //Transaction for SNAP
-    function Transaction_Proccess_SNAP_Renewal($LogID, $ANPRKey, $PayRef, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $Account, $Expiry, $etp) {
+    function Transaction_Proccess_SNAP_Renewal($LogID, $ANPRKey, $PayRef, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $Expiry, $etp) {
       if(!empty($ANPRKey)) {
         $this->mssql = new MSSQL;
         $this->user = new User;
@@ -1096,7 +1096,7 @@
       }
     }
     //Transaction for Fuel
-    function Transaction_Proccess_Fuel_Renewal($LogID, $ANPRKey, $PayRef, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $Account, $Expiry, $etp) {
+    function Transaction_Proccess_Fuel_Renewal($LogID, $ANPRKey, $PayRef, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $Expiry, $etp) {
       if(!empty($ANPRKey)) {
         $this->mssql = new MSSQL;
         $this->user = new User;
@@ -1139,10 +1139,10 @@
       }
     }
     //List all payments
-    function Transaction_Log_24() {
+    function Transaction_Log() {
       $this->user = new User;
       $this->mysql = new MySQL;
-      $this->account = new Account;
+      // $this->account = new Account;
       $campus = $this->user->userInfo("campus");
 
       $date1 = date("Y-m-d 21:00");
@@ -1153,42 +1153,6 @@
       $query->bindParam(2, $date2);
       $query->bindParam(3, $date1);
       $query->execute();
-
-      $result = $query->fetchAll();
-
-      $html = '<tr>';
-      foreach ($result as $row) {
-        if($row['payment_type'] == 1) {
-          $type = "Cash";
-        } else if ($row['payment_type'] == 2) {
-          $type = "Card";
-        } else if ($row['payment_type'] == 3) {
-          $type = "Account";
-        } else if ($row['payment_type'] == 4) {
-          $type = "SNAP";
-        } else if ($row['payment_type'] == 5) {
-          $type = "Fuel";
-        }
-
-        $html .= '<td>'.$row['payment_company_name'].'</td>';
-        $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
-        $html .= '<td>'.$row['payment_service_name'].'</td>';
-        $html .= '<td>'.$type.'</td>';
-        $html .= '<td> £'.$row['payment_price_gross'].'</td>';
-        $html .= '<td> £'.$row['payment_price_net'].'</td>';
-        $html .= '<td>'.date("d/H:i", strtotime($row['payment_date'])).'</td>';
-        $html .= '<td>'.$row['payment_ref'].'</td>';
-        $html .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
-        $html .= '<td>'.$row['payment_author'].'</td>';
-        $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
-                    <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
-                    <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                    </div>
-                  </td>';
-        $html .= '</tr>';
-      }
-
-      echo $html;
 
       $this->user = null;
       $this->mysql = null;
@@ -1278,6 +1242,59 @@
       $this->mysql = null;
       $this->vehicles = null;
       $this->pm = null;
+    }
+    //Search PM Logs
+    function PM_PaymentSearch($key) {
+      $string = '%'.$key.'%';
+      $html = '';
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->campus = $this->user->userInfo("campus");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_vehicle_plate LIKE ? OR id LIKE ? OR payment_etp_id LIKE ? AND payment_campus = ? ORDER BY payment_date DESC LIMIT 200");
+      $stmt->bindParam(1, $string);
+      $stmt->bindParam(2, $string);
+      $stmt->bindParam(3, $string);
+      $stmt->bindParam(4, $this->campus);
+      $stmt->execute();
+      $result = $stmt->fetchAll();
+
+      if(count($result) > 0) {
+        $html .= '
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">T.ID</th>
+                <th scope="col">Company</th>
+                <th scope="col">Plate</th>
+                <th scope="col">Service</th>
+                <th scope="col">Date</th>
+                <th scope="col"><i class="fa fa-cog"></i></th>
+              </tr>
+            </thead>
+          ';
+          $html .= '<tbody>';
+          foreach($result as $row) {
+            $html .= '
+              <tr>
+                <td>'.$row['id'].'</td>
+                <td>'.$row['payment_company_name'].'</td>
+                <td>'.$row['payment_vehicle_plate'].'</td>
+                <td>'.$row['payment_service_name'].'</td>
+                <td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>
+                <td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                  <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
+                  <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                </div></td>
+              </tr>';
+          }
+          $html .= '</tbody></table>';
+          echo $html;
+      } else {
+          echo 'No Data Found';
+      }
+      $this->mysql = null;
+      $this->user = null;
+      $this->campus = null;
     }
   }
 ?>

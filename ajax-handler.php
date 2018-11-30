@@ -24,8 +24,6 @@
     $anpr->ANPR_Add($_POST['Plate'], $_POST['Date']);
   } else if($handler == "PM_Search") {
     $pm->PM_Search($_POST['PMKey']);
-  } else if($handler == "ANPR_Image_Get") {
-    $anpr->ANPR_Image_Get($_POST['anpr_id']);
   } else if($handler == "ANPR_Barrier") {
     $anpr->ToggleBarrier($_POST['barrier']);
   } else if($handler == "Payment_Add_Service") {
@@ -114,5 +112,7 @@
     $reports->Account_Report($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
   } else if($handler == "Report_DownloadXLSX") {
     $reports->WriteExcel($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
+  } else if($handler == "PM_PaymentSearch") {
+    $payment->PM_PaymentSearch($_POST['PMKey']);
   }
 ?>
