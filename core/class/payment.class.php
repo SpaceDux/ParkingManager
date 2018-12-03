@@ -1139,20 +1139,169 @@
       }
     }
     //List all payments
-    function Transaction_Log() {
+    function Transaction_Log($date1, $date2, $cash, $card, $account, $snap, $fuel) {
       $this->user = new User;
       $this->mysql = new MySQL;
+      $this->account = new Account;
       // $this->account = new Account;
       $campus = $this->user->userInfo("campus");
 
-      $date1 = date("Y-m-d 21:00");
-      $date2 = date("Y-m-d 21:00", strtotime('-24 hours'));
+      $date1 = date("Y-m-d 00:00:00", strtotime($date1));
+      $date2 = date("Y-m-d 23:59:59", strtotime($date2));
+      $html = '';
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date DESC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date, payment_type DESC");
       $query->bindParam(1, $campus);
-      $query->bindParam(2, $date2);
-      $query->bindParam(3, $date1);
+      $query->bindParam(2, $date1);
+      $query->bindParam(3, $date2);
       $query->execute();
+
+      $html .= '<div class="row">
+                  <div class="col-md-12">
+                    <table class="table table-dark table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th scope="col">Company</th>
+                          <th scope="col">Plate</th>
+                          <th scope="col">Payment Service Name</th>
+                          <th scope="col">Paid</th>
+                          <th scope="col">Gross</th>
+                          <th scope="col">Net</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Payment Ref</th>
+                          <th scope="col">Account</th>
+                          <th scope="col">Author</th>
+                          <th scope="col"><i class="fa fa-cog"></i></th>
+                        </tr>
+                      </thead>';
+      $html .= '<tbody>';
+
+      foreach ($query->fetchAll() as $row) {
+        $paid = $row['payment_type'];
+        if($paid == 1) {
+          $payment_type = "Cash";
+        } else if ($paid == 2) {
+          $payment_type = "Card";
+        } else if ($paid == 3) {
+          $payment_type = "Account";
+        } else if ($paid == 4) {
+          $payment_type = "SNAP";
+        } else if ($paid == 5) {
+          $payment_type = "Fuel Card";
+        }
+
+        if($row['payment_type'] == 1 AND $cash == 1) {
+          $html .= '<tr>';
+          $html .= '<td>'.$row['payment_company_name'].'</td>';
+          $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
+          $html .= '<td>'.$row['payment_service_name'].'</td>';
+          $html .= '<td>'.$payment_type.'</td>';
+          $html .= '<td>'.$row['payment_price_gross'].'</td>';
+          $html .= '<td>'.$row['payment_price_net'].'</td>';
+          $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>';
+          $html .= '<td>'.$row['payment_ref'].'</td>';
+          $html .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
+          $html .= '<td>'.$row['payment_author'].'</td>';
+          $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                      <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
+                      <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      </div>
+                    </td>';
+          $html .= '</tr>';
+        } else {
+          //nothing
+        }
+        if($row['payment_type'] == 2 AND $card == 1) {
+          $html .= '<tr>';
+          $html .= '<td>'.$row['payment_company_name'].'</td>';
+          $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
+          $html .= '<td>'.$row['payment_service_name'].'</td>';
+          $html .= '<td>'.$payment_type.'</td>';
+          $html .= '<td>'.$row['payment_price_gross'].'</td>';
+          $html .= '<td>'.$row['payment_price_net'].'</td>';
+          $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>';
+          $html .= '<td>'.$row['payment_ref'].'</td>';
+          $html .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
+          $html .= '<td>'.$row['payment_author'].'</td>';
+          $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                      <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
+                      <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      </div>
+                    </td>';
+          $html .= '</tr>';
+        } else {
+          //nothing
+        }
+        if($row['payment_type'] == 3 AND $account == 1) {
+          $html .= '<tr>';
+          $html .= '<td>'.$row['payment_company_name'].'</td>';
+          $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
+          $html .= '<td>'.$row['payment_service_name'].'</td>';
+          $html .= '<td>'.$payment_type.'</td>';
+          $html .= '<td>'.$row['payment_price_gross'].'</td>';
+          $html .= '<td>'.$row['payment_price_net'].'</td>';
+          $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>';
+          $html .= '<td>'.$row['payment_ref'].'</td>';
+          $html .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
+          $html .= '<td>'.$row['payment_author'].'</td>';
+          $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                      <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
+                      <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      </div>
+                    </td>';
+          $html .= '</tr>';
+        } else {
+          // nothing
+        }
+        if($row['payment_type'] == 4 AND $snap == 1) {
+          $html .= '<tr>';
+          $html .= '<td>'.$row['payment_company_name'].'</td>';
+          $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
+          $html .= '<td>'.$row['payment_service_name'].'</td>';
+          $html .= '<td>'.$payment_type.'</td>';
+          $html .= '<td>'.$row['payment_price_gross'].'</td>';
+          $html .= '<td>'.$row['payment_price_net'].'</td>';
+          $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>';
+          $html .= '<td>'.$row['payment_ref'].'</td>';
+          $html .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
+          $html .= '<td>'.$row['payment_author'].'</td>';
+          $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                      <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
+                      <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      </div>
+                    </td>';
+          $html .= '</tr>';
+        } else {
+          //nothing
+        }
+        if($row['payment_type'] == 5 AND $fuel == 1) {
+          $html .= '<tr>';
+          $html .= '<td>'.$row['payment_company_name'].'</td>';
+          $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
+          $html .= '<td>'.$row['payment_service_name'].'</td>';
+          $html .= '<td>'.$payment_type.'</td>';
+          $html .= '<td>'.$row['payment_price_gross'].'</td>';
+          $html .= '<td>'.$row['payment_price_net'].'</td>';
+          $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>';
+          $html .= '<td>'.$row['payment_ref'].'</td>';
+          $html .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
+          $html .= '<td>'.$row['payment_author'].'</td>';
+          $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                      <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
+                      <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      </div>
+                    </td>';
+          $html .= '</tr>';
+        } else {
+          //nothing
+        }
+      }
+      $html .= '</table>
+              </div>
+            </div>';
+      $html .= '</tbody>';
+
+      echo $html;
 
       $this->user = null;
       $this->mysql = null;

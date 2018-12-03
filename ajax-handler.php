@@ -114,5 +114,23 @@
     $reports->WriteExcel($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
   } else if($handler == "PM_PaymentSearch") {
     $payment->PM_PaymentSearch($_POST['PMKey']);
+  } else if($handler == "Payment_Transaction_Log") {
+    //Set Values for non-set checkboxes
+    if(!isset($_POST['TL_Cash'])) {
+      $_POST['TL_Cash'] = 0;
+    }
+    if(!isset($_POST['TL_Card'])) {
+      $_POST['TL_Card'] = 0;
+    }
+    if(!isset($_POST['TL_Account'])) {
+      $_POST['TL_Account'] = 0;
+    }
+    if(!isset($_POST['TL_SNAP'])) {
+      $_POST['TL_SNAP'] = 0;
+    }
+    if(!isset($_POST['TL_Fuel'])) {
+      $_POST['TL_Fuel'] = 0;
+    }
+    $payment->Transaction_Log($_POST['TL_DateStart'], $_POST['TL_DateEnd'], $_POST['TL_Cash'], $_POST['TL_Card'], $_POST['TL_Account'], $_POST['TL_SNAP'], $_POST['TL_Fuel']);
   }
 ?>

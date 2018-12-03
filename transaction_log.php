@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/theme.css">
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/bootstrap.css">
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="<?php echo URL ?>/assets/css/datepicker.min.css">
   </head>
   <body style="background: #fff;">
     <?php $pm->PM_Nav() ?>
@@ -24,28 +25,68 @@
       <div class="updateContent">
         <div class="container">
           <div class="row">
-            <div class="col-md-12">
-              <table class="table table-dark table-hover table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">Company</th>
-                    <th scope="col">Plate</th>
-                    <th scope="col">Payment Service Name</th>
-                    <th scope="col">Paid</th>
-                    <th scope="col">Gross</th>
-                    <th scope="col">Net</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Payment Ref</th>
-                    <th scope="col">Account</th>
-                    <th scope="col">Author</th>
-                    <th scope="col"><i class="fa fa-cog"></i></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php $payment->Transaction_Log_24() ?>
-                </tbody>
-              </table>
+            <div class="row">
+              <div class="col-md-12">
+                <form class="form-row" action="" method="post" id="TL_Form">
+                  <!-- <div class="form-group">
+                    <input type="text" class="form-control form-control-lg" name="TL_Search" id="TL_Search" placeholder="Plate OR Company">
+                  </div> -->
+                  <div class="col">
+                    <div class="input-group input-group-lg mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                      </div>
+                      <input type="text" class="form-control" name="TL_DateStart" placeholder="Start Date" data-toggle="datepicker" id="TL_DateStart" value="<?php echo date("d-m-Y"); ?>" autocomplete="off">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="input-group input-group-lg mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                      </div>
+                      <input type="text" class="form-control" name="TL_DateEnd" placeholder="End Date" data-toggle="datepicker" id="TL_DateEnd" value="<?php echo date("d-m-Y"); ?>" autocomplete="off">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-check">
+                      <!-- <input type="hidden" name="TL_Cash" value="0"> -->
+                      <input class="form-check-input" type="checkbox" name="TL_Cash" id="TL_Cash" value="1" checked>
+                      <label class="form-check-label" for="TL_Cash">Cash</label>
+                    </div>
+                    <div class="form-check">
+                      <!-- <input type="hidden" name="TL_Card" value="0"> -->
+                      <input class="form-check-input" type="checkbox" name="TL_Card" id="TL_Card" value="1" checked>
+                      <label class="form-check-label" for="TL_Card">Card</label>
+                    </div>
+                    <div class="form-check">
+                      <!-- <input type="hidden" name="TL_Account" value="0"> -->
+                      <input class="form-check-input" type="checkbox" name="TL_Account" id="TL_Account" value="1" checked>
+                      <label class="form-check-label" for="TL_Account">Account</label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-check">
+                      <!-- <input type="hidden" name="TL_SNAP" value="0"> -->
+                      <input class="form-check-input" type="checkbox" name="TL_SNAP" id="TL_SNAP" value="1" checked>
+                      <label class="form-check-label" for="TL_SNAP">SNAP Account</label>
+                    </div>
+                    <div class="form-check">
+                      <!-- <input type="hidden" name="TL_Fuel" value="0"> -->
+                      <input class="form-check-input" type="checkbox" name="TL_Fuel" id="TL_Fuel" value="1" checked>
+                      <label class="form-check-label" for="TL_Fuel">Fuel Card</label>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="btn-group" role="group" aria-label="View Sales">
+                      <button type="button" id="TL_ViewSales" class="btn btn-lg btn-secondary">View Sales</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
+          </div>
+          <div id="result">
+
           </div>
         </div>
       </div>
@@ -59,6 +100,10 @@
     <script src="<?php echo URL?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
+    <script src="<?php echo URL?>/assets/js/datepicker.min.js"></script>
     <?php require(__DIR__."/assets/require.php");?>
+    <script type="text/javascript">
+      $('[data-toggle="datepicker"]').datepicker({format: 'dd-mm-yyyy'});
+    </script>
   </body>
 </html>

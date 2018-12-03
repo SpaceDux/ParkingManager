@@ -1180,6 +1180,27 @@
       })
     }
   });
+  //Trans Log Generate
+  $(document).on('click', '#TL_ViewSales', function() {
+    event.preventDefault();
+    var DateStart = $("#TL_DateStart").val();
+    var DateEnd = $("#TL_DateEnd").val();
+    var postData = $("#TL_Form").serialize();
+    if(DateStart == "") {
+      alert("Please pick a start date");
+    } else if(DateEnd == "") {
+      alert("Please pick an end date");
+    } else {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Transaction_Log",
+        type: "POST",
+        data: postData,
+        success:function(data) {
+          $('#result').html(data);
+        }
+      })
+    }
+  });
   //Add Time to add ANPR modal
   $(document).on('click', '#AddANPRModal', function() {
     var d = new Date();

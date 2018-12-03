@@ -98,7 +98,7 @@
           $html .= '<td>'.$row['payment_ref'].'</td>';
           $html .= '<td>'.$h.' hours & '.$int->format('%i').' minutes</td>';
           $html .= '</tr>';
-          $query3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0");
+          $query3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0 AND payment_type = 3 ORDER BY payment_date ASC");
           $query3->bindParam(1, $key2);
           $query3->execute();
           foreach($query3->fetchAll() as $row) {
@@ -136,7 +136,7 @@
     //Count the payments
     function Payment_Count_Account($account, $campus, $service, $dateStart, $dateEnd) {
       $this->mysql = new MySQL;
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_type = 3 AND payment_account_id = ? AND payment_service_id = ? AND payment_campus = ? AND payment_date BETWEEN ? AND ? ORDER BY id ASC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_type = 3 AND payment_account_id = ? AND payment_service_id = ? AND payment_campus = ? AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? ORDER BY id ASC");
       $query->bindParam(1, $account);
       $query->bindParam(2, $service);
       $query->bindParam(3, $campus);
@@ -341,14 +341,14 @@
             $sheet->setCellValue('G'.$rows, $h.' hours & '.$int->format('%i').' minutes');
             $rows++;
             //Each payment listed
-            $query3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0");
+            $query3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0 AND payment_type = 3 ORDER BY payment_date ASC");
             $query3->bindParam(1, $key2);
             $query3->execute();
             foreach($query3->fetchAll() as $row) {
               $totalTransactions++;
               $total_net += $row['payment_price_net'];
               $total_gross += $row['payment_price_gross'];
-              $sheet->setCellValue('A'.$rows, $row['id']);
+              $sheet->setCellValue('A'.$rows, 'T.ID: '.$row['id']);
               $sheet->setCellValue('B'.$rows, $row['payment_service_name']);
               $sheet->setCellValue('D'.$rows, date("d/m/Y H:i:s", strtotime($row['payment_date'])));
               $sheet->setCellValue('F'.$rows, '£'.$row['payment_price_gross']);

@@ -75,10 +75,9 @@
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/datepicker.min.js"></script>
-    <script src="<?php echo URL?>/assets/js/download.js"></script>
     <?php require(__DIR__."/assets/require.php");?>
     <script type="text/javascript">
-    $('[data-toggle="datepicker"]').datepicker({format: 'dd-mm-yyyy'});
-  </script>
+      $('[data-toggle="datepicker"]').datepicker({format: 'dd-mm-yyyy'});
+    </script>
   </body>
 </html>
