@@ -46,7 +46,7 @@
   $_CONFIG['anpr_cannock']['port'] = ''; //ANPR Server: Port
   $_CONFIG['anpr_cannock']['database'] = 'ANPR'; //ANPR Server: Database name
 
-  $_CONFIG['anpr_cannock']['imgdir'] = ''; //ANPR Server: Image Directory
+  $_CONFIG['anpr_cannock']['imgdir'] = 'http://192.168.1.1/'; //ANPR Server: Image Directory
 
   //Gate Functions
   $_CONFIG['gate_holyhead']['in'] = "http://192.168.3.37/setParam.cgi?DOPulseStart_05=1?"; //Entry Barrier IP

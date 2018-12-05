@@ -111,7 +111,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="Payment_Service_AddModal">Add Payment Service</h5>
+        <h5 class="modal-title" id="Payment_Service_AddModal">New Payment Service</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -151,10 +151,16 @@
                 <input type="text" id="Service_Price_Net" class="form-control" placeholder="10..." required>
               </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
               <div class="form-group">
                 <label for="Service_Expiry">Service Expiry</label>
                 <input type="number" id="Service_Expiry" class="form-control" placeholder="24 (Hours)" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="Service_Expiry">Service Group</label>
+                <?php $payment->Payment_Service_Group_Dropdown() ?>
               </div>
             </div>
             <div class="col">

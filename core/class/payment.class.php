@@ -1,9 +1,6 @@
 <?php
 
   namespace ParkingManager;
-  // use Mike42\Escpos\Printer;
-  // use Mike42\Escpos\EscposImage;
-  // use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
   class Payment
   {
@@ -125,13 +122,13 @@
       $this->pm = null;
     }
     //Add services
-    function Add_Service($name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher, $meal_amount, $shower_amount) {
+    function Add_Service($name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher, $meal_amount, $shower_amount, $group) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $date = date("Y-m-d H:i");
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services (service_name, service_ticket_name, service_price_gross, service_price_net, service_expiry, service_cash, service_card, service_account, service_snap, service_fuel, service_author, service_created, service_update_author, service_campus, service_mealVoucher, service_meal_amount, service_showerVoucher, service_shower_amount, service_vehicles, service_anyvehicle) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', '0')");
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services (service_name, service_ticket_name, service_price_gross, service_price_net, service_expiry, service_cash, service_card, service_account, service_snap, service_fuel, service_author, service_created, service_update_author, service_campus, service_mealVoucher, service_meal_amount, service_showerVoucher, service_shower_amount, service_vehicles, service_anyvehicle, service_group) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', '0', ?)");
       $query->bindParam(1, $name);
       $query->bindParam(2, $ticket_name);
       $query->bindParam(3, $price_gross);
@@ -150,6 +147,7 @@
       $query->bindParam(16, $meal_amount);
       $query->bindParam(17, $shower_voucher);
       $query->bindParam(18, $shower_amount);
+      $query->bindParam(19, $group);
       if($query->execute()) {
         echo "Executed successfully";
       } else {
@@ -252,13 +250,13 @@
       $this->mysql = null;
     }
     //Payment service update
-    function Payment_Service_Update($id, $name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher, $types, $meal_amount, $shower_amount, $any) {
+    function Payment_Service_Update($id, $name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher, $types, $meal_amount, $shower_amount, $any, $group) {
       $this->mysql = new MySQL;
       $this->user = new User;
 
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ?, service_mealVoucher = ?, service_showerVoucher = ?, service_vehicles = ?, service_ticket_name = ?, service_meal_amount = ?, service_shower_amount = ?, service_anyvehicle = ? WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ?, service_mealVoucher = ?, service_showerVoucher = ?, service_vehicles = ?, service_ticket_name = ?, service_meal_amount = ?, service_shower_amount = ?, service_anyvehicle = ?, service_group = ? WHERE id = ?");
       $query->bindParam(1, $name);
       $query->bindParam(2, $price_gross);
       $query->bindParam(3, $price_net);
@@ -277,7 +275,8 @@
       $query->bindParam(16, $meal_amount);
       $query->bindParam(17, $shower_amount);
       $query->bindParam(18, $any);
-      $query->bindParam(19, $id);
+      $query->bindParam(19, $group);
+      $query->bindParam(20, $id);
       $query->execute();
 
       $this->mysql = null;
@@ -1444,6 +1443,25 @@
       $this->mysql = null;
       $this->user = null;
       $this->campus = null;
+    }
+    //Payment Service Groups
+    function Payment_Service_Group_Dropdown() {
+      $this->mysql = new MySQL;
+
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services_groups");
+      $query->execute();
+
+      $html = '<select class="form-control form-control-lg" name="PM_PaymentService_Group" id="PM_PaymentService_Group" required>';
+      $html .= '<option value="unchecked">-- Please choose a group --</option>';
+      foreach ($query->fetchAll() as $row) {
+        $html .= '<option value="'.$row['id'].'">'.$row['group_name'].'</option>';
+      }
+
+      $html .= '</select>';
+
+      echo $html;
+
+      $this->mysql = null;
     }
   }
 ?>

@@ -22,6 +22,7 @@
   require(__DIR__ . C . F . '/anpr.class.php');
   require(__DIR__ . C . F . '/account.class.php');
   require(__DIR__ . C . F . '/reports.class.php');
+  require(__DIR__ . C . F . '/ticket.class.php');
     //Caution
   require(__DIR__ . C . F . '/background.class.php');
   require(__DIR__ . V . '/autoload.php');
@@ -46,6 +47,7 @@
     $background = new PM\Background;
     $account = new PM\Account;
     $reports = new PM\Reports;
+    $ticket = new PM\Ticket;
   }
 
   //Checks

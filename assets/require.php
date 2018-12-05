@@ -330,10 +330,11 @@
     var Service_Ticket = $("#Service_Ticket_Name").val();
     var Service_Meal_Amount = $("#Service_Meal_Amount").val();
     var Service_Shower_Amount = $("#Service_Shower_Amount").val();
+    var Service_Group = $("#PM_PaymentService_Group").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Add_Service",
       type: "POST",
-      data: "Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount,
+      data: "Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Group="+Service_Group,
       success:function() {
         $('#Payment_Service_AddModal').modal('toggle');
         $('#tables').load(' #tables');

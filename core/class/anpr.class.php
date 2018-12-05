@@ -154,8 +154,8 @@
         $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $result['Patch']);
         $patch2 = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $result['Overview']);
       } else if($this->user->userInfo("campus") == 2) {
-        $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $result['Patch']);
-        $patch2 = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $result['Overview']);
+        $patch = str_replace("F:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $result['Patch']);
+        $patch2 = str_replace("F:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $result['Overview']);
       } else if ($this->user->userInfo("campus") == 0) {
         $patch = "";
         $patch2 = "";
@@ -229,7 +229,7 @@
           if($this->user->userInfo("campus") == 1) {
             $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $row['Patch']);
           } else if($this->user->userInfo("campus") == 2) {
-            $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
+            $patch = str_replace("F:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
           } else if ($this->user->userInfo("campus") == 0) {
             $patch = "";
           }
