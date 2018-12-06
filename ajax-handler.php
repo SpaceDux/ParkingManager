@@ -27,13 +27,13 @@
   } else if($handler == "ANPR_Barrier") {
     $anpr->ToggleBarrier($_POST['barrier']);
   } else if($handler == "Payment_Add_Service") {
-    $payment->Add_Service($_POST['Service_Name'], $_POST['Service_Ticket'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal'], $_POST['Service_Shower'], $_POST['Service_Meal_Amount'], $_POST['Service_Shower_Amount'], $_POST['Service_Group']);
+    $payment->Add_Service($_POST['Service_Name'], $_POST['Service_Ticket'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal_Amount'], $_POST['Service_Shower_Amount'], $_POST['Service_Group'], $_POST['Service_Vehicles'], $_POST['Service_Vehicles_Any']);
   } else if($handler == "Payment_Service_Delete") {
     $payment->DeleteService($_POST['Service']);
   } else if($handler == "Payment_Service_Update_Get") {
     $payment->Payment_Service_Update_Get($_POST['service_id']);
   } else if($handler == "Payment_Service_Update") {
-    $payment->Payment_Service_Update($_POST['Service_ID'], $_POST['Service_Name'], $_POST['Service_Ticket'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal'], $_POST['Service_Shower'], $_POST['Service_Vehicles'], $_POST['Service_Meal_Amount'], $_POST['Service_Shower_Amount'], $_POST['Service_Any'], $_POST['Service_Group']);
+    $payment->Payment_Service_Update($_POST['Service_ID'], $_POST['Service_Name'], $_POST['Service_Ticket'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Vehicles'], $_POST['Service_Meal_Amount'], $_POST['Service_Shower_Amount'], $_POST['Service_Any'], $_POST['Service_Group']);
   } else if($handler == "Update_User_Get") {
     $user->Update_User_Get($_POST['User_ID']);
   } else if($handler == "Update_User") {
@@ -133,4 +133,5 @@
     }
     $payment->Transaction_Log($_POST['TL_DateStart'], $_POST['TL_DateEnd'], $_POST['TL_Cash'], $_POST['TL_Card'], $_POST['TL_Account'], $_POST['TL_SNAP'], $_POST['TL_Fuel']);
   }
+
 ?>

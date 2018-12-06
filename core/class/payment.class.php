@@ -64,13 +64,13 @@
         $table .= "<td>".$row['service_price_gross']."</td>";
         $table .= "<td>".$row['service_price_net']."</td>";
         $table .= "<td>".$row['service_expiry']."</td>";
-        if($row['service_mealVoucher'] == 1) {
-          $table .= '<td class="table-success">Yes</td>';
+        if($row['service_meal_amount'] > 0) {
+          $table .= '<td class="table-success">'.$row['service_meal_amount'].'</td>';
         } else {
           $table .= '<td class="table-danger">No</td>';
         }
-        if($row['service_showerVoucher'] == 1) {
-          $table .= '<td class="table-success">Yes</td>';
+        if($row['service_shower_amount'] > 0) {
+          $table .= '<td class="table-success">'.$row['service_shower_amount'].'</td>';
         } else {
           $table .= '<td class="table-danger">No</td>';
         }
@@ -122,13 +122,13 @@
       $this->pm = null;
     }
     //Add services
-    function Add_Service($name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher, $meal_amount, $shower_amount, $group) {
+    function Add_Service($name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_amount, $shower_amount, $group, $vehicles, $any) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $date = date("Y-m-d H:i");
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services (service_name, service_ticket_name, service_price_gross, service_price_net, service_expiry, service_cash, service_card, service_account, service_snap, service_fuel, service_author, service_created, service_update_author, service_campus, service_mealVoucher, service_meal_amount, service_showerVoucher, service_shower_amount, service_vehicles, service_anyvehicle, service_group) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', '0', ?)");
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services (service_name, service_ticket_name, service_price_gross, service_price_net, service_expiry, service_cash, service_card, service_account, service_snap, service_fuel, service_author, service_created, service_update_author, service_campus, service_meal_amount, service_shower_amount, service_vehicles, service_anyvehicle, service_group) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       $query->bindParam(1, $name);
       $query->bindParam(2, $ticket_name);
       $query->bindParam(3, $price_gross);
@@ -143,10 +143,10 @@
       $query->bindParam(12, $date);
       $query->bindParam(13, $fname);
       $query->bindParam(14, $campus);
-      $query->bindParam(15, $meal_voucher);
-      $query->bindParam(16, $meal_amount);
-      $query->bindParam(17, $shower_voucher);
-      $query->bindParam(18, $shower_amount);
+      $query->bindParam(15, $meal_amount);
+      $query->bindParam(16, $shower_amount);
+      $query->bindParam(17, $vehicle);
+      $query->bindParam(18, $any);
       $query->bindParam(19, $group);
       if($query->execute()) {
         echo "Executed successfully";
@@ -250,13 +250,12 @@
       $this->mysql = null;
     }
     //Payment service update
-    function Payment_Service_Update($id, $name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_voucher, $shower_voucher, $types, $meal_amount, $shower_amount, $any, $group) {
+    function Payment_Service_Update($id, $name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $types, $meal_amount, $shower_amount, $any, $group) {
       $this->mysql = new MySQL;
       $this->user = new User;
-
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ?, service_mealVoucher = ?, service_showerVoucher = ?, service_vehicles = ?, service_ticket_name = ?, service_meal_amount = ?, service_shower_amount = ?, service_anyvehicle = ?, service_group = ? WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ?, service_vehicles = ?, service_ticket_name = ?, service_meal_amount = ?, service_shower_amount = ?, service_anyvehicle = ?, service_group = ? WHERE id = ?");
       $query->bindParam(1, $name);
       $query->bindParam(2, $price_gross);
       $query->bindParam(3, $price_net);
@@ -268,16 +267,18 @@
       $query->bindParam(9, $fuel);
       $query->bindParam(10, $fname);
       $query->bindParam(11, $campus);
-      $query->bindParam(12, $meal_voucher);
-      $query->bindParam(13, $shower_voucher);
-      $query->bindParam(14, $types);
-      $query->bindParam(15, $ticket_name);
-      $query->bindParam(16, $meal_amount);
-      $query->bindParam(17, $shower_amount);
-      $query->bindParam(18, $any);
-      $query->bindParam(19, $group);
-      $query->bindParam(20, $id);
-      $query->execute();
+      $query->bindParam(12, $types);
+      $query->bindParam(13, $ticket_name);
+      $query->bindParam(14, $meal_amount);
+      $query->bindParam(15, $shower_amount);
+      $query->bindParam(16, $any);
+      $query->bindParam(17, $group);
+      $query->bindParam(18, $id);
+      if($query->execute()) {
+        echo "Successful";
+      } else {
+        echo "Unsuccessful";
+      }
 
       $this->mysql = null;
       $this->user = null;
@@ -461,59 +462,17 @@
 
       $this->mysql = null;
     }
-    //Print Ticket (For reprints)
-    function Print_Parking_Ticket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $site, $meal, $shower, $meal_count, $shower_count, $vat) {
-      global $_CONFIG;
-      $fields_string = "";
-      //set POST variables
-      $url = $_CONFIG['pm']['url'].'/core/plugins/printer/example/parking_ticket.php';
-      $fields = array(
-        'ticket_name' => urlencode($ticket_name),
-        'gross' => urlencode($gross),
-        'net' => urlencode($net),
-        'company' => urlencode($company),
-        'reg' => urlencode($reg),
-        'tid' => urlencode($tid),
-        'date' => urlencode($date),
-        'expiry' => urlencode($expiry),
-        'payment_type' => urlencode($payment_type),
-        'site' => urlencode($site),
-        'meal' => urlencode($meal),
-        'shower' => urlencode($shower),
-        'meal_count' => urlencode($meal_count),
-        'shower_count' => urlencode($shower_count),
-        'vat' => urlencode($vat)
-      );
-
-      //url-ify the data for the POST
-      foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-      rtrim($fields_string, '&');
-
-      //open connection
-      $ch = curl_init();
-
-      //set the url, number of POST vars, POST data
-      curl_setopt($ch,CURLOPT_URL, $url);
-      curl_setopt($ch,CURLOPT_POST, count($fields));
-      curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-
-      //execute post
-      $result = curl_exec($ch);
-
-      //close connection
-      curl_close($ch);
-    }
     //Print the ticket via modal click
     function NT_Print_Ticket($key, $plate, $date, $company) {
       global $_CONFIG;
       $this->user = new User;
       $this->pm = new PM;
+      $this->ticket = new Ticket;
+
       $service = $this->PaymentInfo($plate, "payment_service_id");
 
       $ticket_name = $this->Payment_ServiceInfo($service, "service_ticket_name");
       $expiryHrs = $this->Payment_ServiceInfo($service, "service_expiry");
-      $shower = $this->Payment_ServiceInfo($service, "service_showerVoucher");
-      $meal = $this->Payment_ServiceInfo($service, "service_mealVoucher");
 
       $gross = $this->PaymentInfo($plate, "payment_price_gross");
       $tid = $this->PaymentInfo($plate, "id");
@@ -522,10 +481,6 @@
       $meal_count = $this->Payment_ServiceInfo($service, "service_meal_amount");
       $shower_count = $this->Payment_ServiceInfo($service, "service_shower_amount");
       $expiry = date("Y-m-d H:i:s", strtotime($date.' +'.$expiryHrs.' hours'));
-
-      $site = $this->user->userInfo("campus");
-      $vat = $this->pm->PM_SiteInfo($site, "site_vat");
-
       //$payment_type
       if($type == 1) {
         $payment_type = "Cash";
@@ -538,48 +493,12 @@
       } else if ($type == 5) {
         $payment_type = "Fuel Card";
       }
-
-      $fields_string = "";
-      //set POST variables
-      $url = $_CONFIG['pm']['url'].'/core/plugins/printer/example/parking_ticket.php';
-      $fields = array(
-        'ticket_name' => urlencode($ticket_name),
-        'gross' => urlencode($gross),
-        'net' => urlencode($net),
-        'company' => urlencode($company),
-        'reg' => urlencode($plate),
-        'tid' => urlencode($tid),
-        'date' => urlencode($date),
-        'expiry' => urlencode($expiry),
-        'payment_type' => urlencode($payment_type),
-        'site' => urlencode($site),
-        'shower' => urlencode($shower),
-        'meal' => urlencode($meal),
-        'meal_count' => urlencode($meal_count),
-        'shower_count' => urlencode($shower_count),
-        'vat' => urlencode($vat)
-      );
-
-      //url-ify the data for the POST
-      foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-      rtrim($fields_string, '&');
-
-      //open connection
-      $ch = curl_init();
-
-      //set the url, number of POST vars, POST data
-      curl_setopt($ch,CURLOPT_URL, $url);
-      curl_setopt($ch,CURLOPT_POST, count($fields));
-      curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-
-      //execute post
-      $result = curl_exec($ch);
-
-      //close connection
-      curl_close($ch);
+      //Finally, print ticket
+      $this->ticket->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count);
 
       $this->user = null;
       $this->pm = null;
+      $this->ticket = null;
     }
     //Transaction for cash
     function Transaction_Proccess_Cash($ANPRKey, $Plate, $Company, $Trailer, $Vehicle_Type, $Service) {
@@ -1343,11 +1262,12 @@
       $this->anpr = null;
       $this->vehicles = null;
     }
-    //Reprint a parking ticket with information gathered in pm_tickets
+    //Reprint a parking ticket with information gathered in pm_tickets (Uses new Ticket.class)
     function Reprint_Ticket($pay_id) {
       $this->mysql = new MySQL;
       $this->vehicles = new Vehicles;
       $this->pm = new PM;
+      $this->ticket = new Ticket;
 
       if(!empty($pay_id)) {
         //Ticket Query
@@ -1362,16 +1282,11 @@
         $Company = $this->PaymentInfo($pay_id, "payment_company_name");
         $price_gross = $this->PaymentInfo($pay_id, "payment_price_gross");
         $price_net = $this->PaymentInfo($pay_id, "payment_price_net");
-        $site = $this->PaymentInfo($pay_id, "payment_campus");
-        $vatno = $this->pm->PM_SiteInfo($site, "site_vat");
         $date = $Ticket_Result['ticket_date'];
         $expiry = $Ticket_Result['ticket_expiry'];
-        $shower = $this->Payment_ServiceInfo($service_id, "service_showerVoucher");
-        $meal = $this->Payment_ServiceInfo($service_id, "service_mealVoucher");
         $shower_count = $this->Payment_ServiceInfo($service_id, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($service_id, "service_meal_amount");
         $ticket_name = $this->Payment_ServiceInfo($service_id, "service_ticket_name");
-
         if($paid == 1) {
           $payment_type = "Cash";
         } else if ($paid == 2) {
@@ -1383,13 +1298,13 @@
         } else if ($paid == 5) {
           $payment_type = "Fuel Card";
         }
-
-        $this->Print_Parking_Ticket($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $site, $meal, $shower, $meal_count, $shower_count, $vatno);
+        $this->ticket->Printer_ParkingTicket($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count);
       }
 
       $this->mysql = null;
       $this->vehicles = null;
       $this->pm = null;
+      $this->ticket = null;
     }
     //Search PM Logs
     function PM_PaymentSearch($key) {
@@ -1451,13 +1366,10 @@
       $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services_groups");
       $query->execute();
 
-      $html = '<select class="form-control form-control-lg" name="PM_PaymentService_Group" id="PM_PaymentService_Group" required>';
-      $html .= '<option value="unchecked">-- Please choose a group --</option>';
+      $html = '<option value="unchecked">-- Please choose a group --</option>';
       foreach ($query->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['group_name'].'</option>';
       }
-
-      $html .= '</select>';
 
       echo $html;
 

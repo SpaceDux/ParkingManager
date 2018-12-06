@@ -139,7 +139,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">£</span>
                 </div>
-                <input type="text" id="Service_Price_Gross" class="form-control" placeholder="10..." required>
+                <input type="text" id="Service_Price_Gross" class="form-control" placeholder="10.00" required>
               </div>
             </div>
             <div class="col-md-6">
@@ -148,7 +148,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">£</span>
                 </div>
-                <input type="text" id="Service_Price_Net" class="form-control" placeholder="10..." required>
+                <input type="text" id="Service_Price_Net" class="form-control" placeholder="8.33" required>
               </div>
             </div>
             <div class="col-md-6">
@@ -160,100 +160,94 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="Service_Expiry">Service Group</label>
-                <?php $payment->Payment_Service_Group_Dropdown() ?>
-              </div>
-            </div>
-            <div class="col">
-              <div class="form-group">
-                <lable>Accept Cash Transactions</label>
-                  <br>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-secondary active">
-                    <input type="radio" name="Service_Cash" class="Service_Cash" autocomplete="off" value="1" checked> Accept
-                  </label>
-                  <label class="btn btn-secondary">
-                    <input type="radio" name="Service_Cash" class="Service_Cash" autocomplete="off" value="0"> Don't Accept
-                  </label>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Accept Card Transactions</label>
-                <br>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-secondary active">
-                    <input type="radio" name="Service_Card" class="Service_Card" autocomplete="off" value="1" checked> Accept
-                  </label>
-                  <label class="btn btn-secondary">
-                    <input type="radio" name="Service_Card" class="Service_Card" autocomplete="off" value="0"> Don't Accept
-                  </label>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Accept Account Transactions</label>
-                <br>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-secondary active">
-                    <input type="radio" name="Service_Account" class="Service_Account" autocomplete="off" value="1" checked> Accept
-                  </label>
-                  <label class="btn btn-secondary">
-                    <input type="radio" name="Service_Account" class="Service_Account" autocomplete="off" value="0"> Don't Accept
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="form-group">
-                <label>Accept SNAP Transactions</label>
-                <br>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-secondary active">
-                    <input type="radio" name="Service_Snap" class="Service_Snap" autocomplete="off" value="1" checked> Accept
-                  </label>
-                  <label class="btn btn-secondary">
-                    <input type="radio" name="Service_Snap" class="Service_Snap" autocomplete="off" value="0"> Don't Accept
-                  </label>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Accept Fuel Transactions</label>
-                <br>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-secondary active">
-                    <input type="radio" name="Service_Fuel" class="Service_Fuel" autocomplete="off" value="1" checked> Accept
-                  </label>
-                  <label class="btn btn-secondary">
-                    <input type="radio" name="Service_Fuel" class="Service_Fuel" autocomplete="off" value="0"> Don't Accept
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="form-group">
-                <label>Meal Voucher</label>
-                <select class="form-control" name="Service_mealVoucher" id="Service_mealVoucher">
-                  <option value="0">Without Meal</option>
-                  <option value="1">With Meal</option>
+                <select class="form-control" name="Service_Group" id="Service_Group">
+                  <?php $payment->Payment_Service_Group_Dropdown() ?>
                 </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="Service_Cash">Allow Cash Payments</label>
+                <select class="form-control" id="Service_Cash">
+                  <option value="0">Don't Accept Cash</option>
+                  <option value="1">Accept Cash</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="Service_Card">Allow Card Payments</label>
+                <select class="form-control" id="Service_Card">
+                  <option value="0">Don't Accept Card</option>
+                  <option value="1">Accept Card</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="Service_Account">Allow Account Payments</label>
+                <select class="form-control" id="Service_Account">
+                  <option value="0">Don't Accept Account</option>
+                  <option value="1">Accept Account</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="Service_SNAP">Allow SNAP Payments</label>
+                <select class="form-control" id="Service_SNAP">
+                  <option value="0">Don't Accept SNAP</option>
+                  <option value="1">Accept SNAP</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="Service_Fuel">Allow Fuel Card Payments</label>
+                <select class="form-control" id="Service_Fuel">
+                  <option value="0">Don't Accept Fuel Card</option>
+                  <option value="1">Accept Fuel Card</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
                 <div class="form-group">
-                  <label for="Service_Expiry">How many vouchers?</label>
+                  <label for="Service_Meal_Amount">How many MEAL vouchers?</label>
                   <input type="number" id="Service_Meal_Amount" class="form-control" placeholder="0" value="0" required>
                 </div>
               </div>
+            </div>
+            <div class="col-md-6">
               <div class="form-group">
-                <label>Shower Voucher</label>
-                <select class="form-control" name="Service_showerVoucher" id="Service_showerVoucher">
-                  <option value="0">Without Shower</option>
-                  <option value="1">With Shower</option>
-                </select>
                 <div class="form-group">
-                  <label for="Service_Expiry">How many vouchers?</label>
+                  <label for="Service_Shower_Amount">How many SHOWER vouchers?</label>
                   <input type="number" id="Service_Shower_Amount" class="form-control" placeholder="0" value="0" required>
                 </div>
               </div>
             </div>
-            <div class="col-md-12">
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="Service_Vehicles">Select Vehicle Types</label>
               <div class="form-group">
-                <label>Choose a campus</label>
+                <select class="form-control" name="Service_Vehicles" id="Service_Vehicles">
+                  <?php $pm->PM_VehicleTypes_Dropdown() ?>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <label for="Service_Vehicles_Any">Allow ANY Vehicle?</label>
+              <div class="form-group">
+                <select class="form-control" name="Service_Vehicles_Any_Update" id="Service_Vehicles_Any">
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Choose a site</label>
                 <select class="form-control" name="Service_Campus" id="Service_Campus" required>
                   <?php $pm->PM_Sites_Dropdown(); ?>
                 </select>
@@ -286,116 +280,106 @@
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <label for="Service_Name">Service Name</label>
-                <input type="hidden" id="Service_ID_Update" class="form-control" autofocus>
-                <input type="text" id="Service_Name_Update" class="form-control" placeholder="24Hour Cab Only" autofocus>
+                <label for="Service_Name_Update">Service Name</label>
+                <input type="hidden" id="Service_ID_Update" class="form-control">
+                <input type="text" id="Service_Name_Update" class="form-control" placeholder="24Hour Cab Only with Meal" autofocus required>
               </div>
             </div>
             <div class="col">
               <div class="form-group">
                 <label for="Service_Ticket_Name_Update">Service Ticket Name</label>
-                <input type="text" id="Service_Ticket_Name_Update" class="form-control" placeholder="24Hour Cab Only">
+                <input type="text" id="Service_Ticket_Name_Update" class="form-control" placeholder="24Hour Cab Only" required>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <label for="Service_Price_Gross">Service Price (Gross)</label>
+              <label for="Service_Price_Gross_Update">Service Price (Gross)</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">£</span>
                 </div>
-                <input type="text" id="Service_Price_Gross_Update" class="form-control" placeholder="10...">
+                <input type="text" id="Service_Price_Gross_Update" class="form-control" placeholder="10.00" required>
               </div>
             </div>
             <div class="col-md-6">
-              <label for="Service_Price_Net">Service Price (Net)</label>
+              <label for="Service_Price_Net_Update">Service Price (Net)</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">£</span>
                 </div>
-                <input type="text" id="Service_Price_Net_Update" class="form-control" placeholder="10...">
+                <input type="text" id="Service_Price_Net_Update" class="form-control" placeholder="8.33" required>
               </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
               <div class="form-group">
-                <label for="Service_Expiry">Service Expiry</label>
-                <input type="number" id="Service_Expiry_Update" class="form-control" placeholder="24 (Hours)">
+                <label for="Service_Expiry_Update">Service Expiry</label>
+                <input type="number" id="Service_Expiry_Update" class="form-control" placeholder="24 (Hours)" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="Service_Expiry_Update">Service Group</label>
+                <select class="form-control" name="Service_Group_Update" id="Service_Group_Update">
+                  <?php $payment->Payment_Service_Group_Dropdown() ?>
+                </select>
               </div>
             </div>
             <div class="col">
               <div class="form-group">
-                <label>Accept Cash Transactions</label>
-                <select class="form-control" name="Service_Cash_Update" id="Service_Cash_Update">
-                  <option value="1">Accept Cash</option>
+                <label for="Service_Cash_Update">Allow Cash Payments</label>
+                <select class="form-control" id="Service_Cash_Update">
                   <option value="0">Don't Accept Cash</option>
+                  <option value="1">Accept Cash</option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Accept Card Transactions</label>
-                <select class="form-control" name="Service_Card_Update" id="Service_Card_Update">
-                  <option value="1">Accept Card</option>
+                <label for="Service_Card_Update">Allow Card Payments</label>
+                <select class="form-control" id="Service_Card_Update">
                   <option value="0">Don't Accept Card</option>
+                  <option value="1">Accept Card</option>
                 </select>
               </div>
             </div>
             <div class="col">
               <div class="form-group">
-                <label>Accept Account Transactions</label>
-                <select class="form-control" name="Service_Account_Update" id="Service_Account_Update">
-                  <option value="1">Accept Account</option>
+                <label for="Service_Account_Update">Allow Account Payments</label>
+                <select class="form-control" id="Service_Account_Update">
                   <option value="0">Don't Accept Account</option>
+                  <option value="1">Accept Account</option>
                 </select>
               </div>
             </div>
             <div class="col">
               <div class="form-group">
-                <label>Accept Fuel Card Transactions</label>
-                <select class="form-control" name="Service_Fuel_Update" id="Service_Fuel_Update">
-                  <option value="1">Accept Fuel Card</option>
-                  <option value="0">Don't Accept Fuel Card</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Accept SNAP Transactions</label>
-                <select class="form-control" name="Service_Snap_Update" id="Service_Snap_Update">
-                  <option value="1">Accept SNAP</option>
+                <label for="Service_SNAP_Update">Allow SNAP Payments</label>
+                <select class="form-control" id="Service_SNAP_Update">
                   <option value="0">Don't Accept SNAP</option>
+                  <option value="1">Accept SNAP</option>
                 </select>
               </div>
-            </div>
-            <div class="col-md-12">
               <div class="form-group">
-                <label>Choose a campus</label>
-                <select class="form-control" name="Service_Campus_Update" id="Service_Campus_Update">
-                  <?php $pm->PM_Sites_Dropdown();?>
+                <label for="Service_Fuel_Update">Allow Fuel Card Payments</label>
+                <select class="form-control" id="Service_Fuel_Update">
+                  <option value="0">Don't Accept Fuel Card</option>
+                  <option value="1">Accept Fuel Card</option>
                 </select>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col">
+            <div class="col-md-6">
               <div class="form-group">
-                <label>Meal Voucher</label>
-                <select class="form-control" name="Service_mealVoucher_Update" id="Service_mealVoucher_Update">
-                  <option value="0">Without Meal</option>
-                  <option value="1">With Meal</option>
-                </select>
                 <div class="form-group">
-                  <label for="Service_Expiry">How many vouchers?</label>
+                  <label for="Service_Meal_Amount_Update">How many MEAL vouchers?</label>
                   <input type="number" id="Service_Meal_Amount_Update" class="form-control" placeholder="0" value="0" required>
                 </div>
               </div>
             </div>
-            <div class="col">
+            <div class="col-md-6">
               <div class="form-group">
-                <label>Shower Voucher</label>
-                <select class="form-control" name="Service_showerVoucher_Update" id="Service_showerVoucher_Update">
-                  <option value="0">Without Shower</option>
-                  <option value="1">With Shower</option>
-                </select>
                 <div class="form-group">
-                  <label for="Service_Expiry">How many vouchers?</label>
+                  <label for="Service_Shower_Amount_Update">How many SHOWER vouchers?</label>
                   <input type="number" id="Service_Shower_Amount_Update" class="form-control" placeholder="0" value="0" required>
                 </div>
               </div>
@@ -403,7 +387,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <label>Select Vehicle Types</label>
+              <label for="Service_Vehicles_Update">Select Vehicle Types</label>
               <div class="form-group">
                 <select class="form-control" name="Service_Vehicles_Update" id="Service_Vehicles_Update">
                   <?php $pm->PM_VehicleTypes_Dropdown() ?>
@@ -411,11 +395,21 @@
               </div>
             </div>
             <div class="col">
-              <label>Allow Any Vehicle</label>
+              <label for="Service_Vehicles_Any_Update">Allow ANY Vehicle?</label>
               <div class="form-group">
-                <select class="form-control" name="Service_Vehicles_Any_Update" id="Service_Vehicles_Any_Update">
+                <select class="form-control" name="Service_Vehicles_Any_Update_Update" id="Service_Vehicles_Any_Update">
                   <option value="0">No</option>
                   <option value="1">Yes</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="Service_Campus_Update">Choose a site</label>
+                <select class="form-control" name="Service_Campus_Update" id="Service_Campus_Update" required>
+                  <?php $pm->PM_Sites_Dropdown(); ?>
                 </select>
               </div>
             </div>

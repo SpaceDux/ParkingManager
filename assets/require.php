@@ -319,22 +319,22 @@
     var Service_Price_Gross = $("#Service_Price_Gross").val();
     var Service_Price_Net = $("#Service_Price_Net").val();
     var Service_Expiry = $("#Service_Expiry").val();
-    var Service_Cash = $(".Service_Cash:checked").val();
-    var Service_Card = $(".Service_Card:checked").val();
-    var Service_Account = $(".Service_Account:checked").val();
-    var Service_Snap = $(".Service_Snap:checked").val();
-    var Service_Fuel = $(".Service_Fuel:checked").val();
-    var Service_Campus = $("#Service_Campus option:selected").val();
-    var Service_Meal = $("#Service_mealVoucher option:selected").val();
-    var Service_Shower = $("#Service_showerVoucher option:selected").val();
+    var Service_Cash = $("#Service_Cash").val();
+    var Service_Card = $("#Service_Card").val();
+    var Service_Account = $("#Service_Account").val();
+    var Service_Snap = $("#Service_Snap").val();
+    var Service_Fuel = $("#Service_Fuel").val();
+    var Service_Campus = $("#Service_Campus").val();
     var Service_Ticket = $("#Service_Ticket_Name").val();
     var Service_Meal_Amount = $("#Service_Meal_Amount").val();
     var Service_Shower_Amount = $("#Service_Shower_Amount").val();
-    var Service_Group = $("#PM_PaymentService_Group").val();
+    var Service_Group = $("#Service_Group").val();
+    var Service_Vehicles = $("#Service_Vehicles").val();
+    var Service_Vehicles_Any = $("#Service_Vehicles_Any").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Add_Service",
       type: "POST",
-      data: "Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Group="+Service_Group,
+      data: "Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Group="+Service_Group+"&Service_Vehicles="+Service_Vehicles+"&Service_Vehicles_Any="+Service_Vehicles_Any,
       success:function() {
         $('#Payment_Service_AddModal').modal('toggle');
         $('#tables').load(' #tables');
@@ -365,13 +365,12 @@
         $('#Service_Snap_Update').val(data.service_snap);
         $('#Service_Fuel_Update').val(data.service_fuel);
         $('#Service_Campus_Update').val(data.service_campus);
-        $('#Service_mealVoucher_Update').val(data.service_mealVoucher);
-        $('#Service_showerVoucher_Update').val(data.service_showerVoucher);
         $('#Service_Vehicles_Update').val(data.service_vehicles);
         $('#Service_Meal_Amount_Update').val(data.service_meal_amount);
         $('#Service_Shower_Amount_Update').val(data.service_shower_amount);
         $('#Service_Vehicles_Update').val(data.service_vehicles);
         $('#Service_Vehicles_Any_Update').val(data.service_anyvehicle);
+        $('#Service_Group_Update').val(data.service_group);
         $('#Payment_Service_UpdateModal').modal('toggle');
       }
     })
@@ -384,23 +383,22 @@
     var Service_Price_Gross = $("#Service_Price_Gross_Update").val();
     var Service_Price_Net = $("#Service_Price_Net_Update").val();
     var Service_Expiry = $("#Service_Expiry_Update").val();
-    var Service_Cash = $("#Service_Cash_Update option:selected").val();
-    var Service_Card = $("#Service_Card_Update option:selected").val();
+    var Service_Cash = $("#Service_Cash_Update").val();
+    var Service_Card = $("#Service_Card_Update").val();
     var Service_Account = $("#Service_Account_Update option:selected").val();
     var Service_Snap = $("#Service_Snap_Update option:selected").val();
     var Service_Fuel = $("#Service_Fuel_Update option:selected").val();
     var Service_Campus = $("#Service_Campus_Update option:selected").val();
-    var Service_Meal = $("#Service_mealVoucher_Update option:selected").val();
-    var Service_Shower = $("#Service_showerVoucher_Update option:selected").val();
     var Service_Vehicles = $("#Service_Vehicles_Update").val();
     var Service_Meal_Amount = $("#Service_Meal_Amount_Update").val();
     var Service_Shower_Amount = $("#Service_Shower_Amount_Update").val();
     var Service_Ticket = $("#Service_Ticket_Name_Update").val();
     var Service_Any = $("#Service_Vehicles_Any_Update").val();
+    var Service_Group = $("#Service_Group_Update").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Update",
       type: "POST",
-      data:"Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal="+Service_Meal+"&Service_Shower="+Service_Shower+"&Service_Vehicles="+Service_Vehicles+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Any="+Service_Any,
+      data:"Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Vehicles="+Service_Vehicles+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Any="+Service_Any+"&Service_Group="+Service_Group,
       success: function(){
         $('#tables').load(' #tables');
         $('#Payment_Service_UpdateModal').modal('toggle');
