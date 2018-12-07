@@ -6,8 +6,7 @@
 
   class Ticket {
     //Print Columns on ticket.
-    function Printer_Columns($leftCol, $rightCol, $leftWidth, $rightWidth, $space = 0)
-    {
+    function Printer_Columns($leftCol, $rightCol, $leftWidth, $rightWidth, $space = 0){
       $leftWrapped = wordwrap($leftCol, $leftWidth, "\n", true);
       $rightWrapped = wordwrap($rightCol, $rightWidth, "\n", true);
 
@@ -23,8 +22,7 @@
     }
     //Begin Tickets
     //Print parking ticket
-    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count)
-    {
+    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count) {
       $this->user = new User;
       $this->pm = new PM;
       $campus = $this->user->userInfo("campus");
@@ -136,8 +134,8 @@
       $this->user = null;
       $this->pm = null;
     }
-    function Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type)
-    {
+    //Print Truckwash Ticket
+    function Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type) {
       $this->user = new User;
       $this->pm = new PM;
       $campus = $this->user->userInfo("campus");
