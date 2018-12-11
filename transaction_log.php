@@ -76,6 +76,13 @@
                       <label class="form-check-label" for="TL_Fuel">Fuel Card</label>
                     </div>
                   </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <select class="form-control form-control-lg" name="TL_Group" id="TL_Group" autocomplete="off">
+                        <?php $payment->Payment_Service_Group_Dropdown() ?>
+                      </select>
+                    </div>
+                  </div>
                   <div class="col-md-2">
                     <div class="btn-group" role="group" aria-label="View Sales">
                       <button type="button" id="TL_ViewSales" class="btn btn-lg btn-secondary">View Sales</button>
