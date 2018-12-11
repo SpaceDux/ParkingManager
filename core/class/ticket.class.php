@@ -20,6 +20,18 @@
       }
       return implode($allLines, "\n") . "\n";
     }
+    //Printer Director
+    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group) {
+      if($group == 1) {
+        //Parking Ticket
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count);
+      } else if ($group == 2) {
+        //Truckwash Ticket
+        $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type);
+      } else if ($group == 3) {
+        //Nothing for this group yet
+      }
+    }
     //Begin Tickets
     //Print parking ticket
     function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count) {
