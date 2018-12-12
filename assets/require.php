@@ -322,7 +322,7 @@
     var Service_Cash = $("#Service_Cash").val();
     var Service_Card = $("#Service_Card").val();
     var Service_Account = $("#Service_Account").val();
-    var Service_Snap = $("#Service_Snap").val();
+    var Service_Snap = $("#Service_SNAP").val();
     var Service_Fuel = $("#Service_Fuel").val();
     var Service_Campus = $("#Service_Campus").val();
     var Service_Ticket = $("#Service_Ticket_Name").val();
@@ -362,7 +362,7 @@
         $('#Service_Cash_Update').val(data.service_cash);
         $('#Service_Card_Update').val(data.service_card);
         $('#Service_Account_Update').val(data.service_account);
-        $('#Service_Snap_Update').val(data.service_snap);
+        $('#Service_SNAP_Update').val(data.service_snap);
         $('#Service_Fuel_Update').val(data.service_fuel);
         $('#Service_Campus_Update').val(data.service_campus);
         $('#Service_Vehicles_Update').val(data.service_vehicles);
@@ -385,10 +385,10 @@
     var Service_Expiry = $("#Service_Expiry_Update").val();
     var Service_Cash = $("#Service_Cash_Update").val();
     var Service_Card = $("#Service_Card_Update").val();
-    var Service_Account = $("#Service_Account_Update option:selected").val();
-    var Service_Snap = $("#Service_Snap_Update option:selected").val();
-    var Service_Fuel = $("#Service_Fuel_Update option:selected").val();
-    var Service_Campus = $("#Service_Campus_Update option:selected").val();
+    var Service_Account = $("#Service_Account_Update").val();
+    var Service_Snap = $("#Service_SNAP_Update").val();
+    var Service_Fuel = $("#Service_Fuel_Update").val();
+    var Service_Campus = $("#Service_Campus_Update").val();
     var Service_Vehicles = $("#Service_Vehicles_Update").val();
     var Service_Meal_Amount = $("#Service_Meal_Amount_Update").val();
     var Service_Shower_Amount = $("#Service_Shower_Amount_Update").val();

@@ -40,7 +40,7 @@
               </li>
             </ul>
             <div class="tab-content" id="Payment_Service_TabContent">
-              <div class="tab-pane fade show active" id="dev" role="tabpanel" aria-labelledby="dev">
+              <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="dev">
                 <table class="table table-hover table-bordered">
                   <thead class="thead-dark">
                     <tr>
