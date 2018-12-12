@@ -465,7 +465,6 @@
     }
     //Print the ticket via modal click
     function NT_Print_Ticket($key, $plate, $date, $company) {
-      global $_CONFIG;
       $this->user = new User;
       $this->pm = new PM;
       $this->ticket = new Ticket;
@@ -496,8 +495,8 @@
         $payment_type = "Fuel Card";
       }
       //Finally, print ticket
-      $this->ticket->Direction($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group);
-
+      $this->ticket->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group);
+      die("PRINTED?");
       $this->user = null;
       $this->pm = null;
       $this->ticket = null;
@@ -1269,6 +1268,8 @@
     }
     //Reprint a parking ticket with information gathered in pm_tickets (Uses new Ticket.class)
     function Reprint_Ticket($pay_id) {
+      die("PRINTED?");
+
       $this->mysql = new MySQL;
       $this->vehicles = new Vehicles;
       $this->pm = new PM;
@@ -1306,6 +1307,7 @@
           $payment_type = "Fuel Card";
         }
         $this->ticket->Direction($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count, $group);
+
       }
 
       $this->mysql = null;

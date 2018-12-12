@@ -20,22 +20,9 @@
       }
       return implode($allLines, "\n") . "\n";
     }
-    //Printer Director
-    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group) {
-      if($group == 1) {
-        //Parking Ticket
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count);
-      } else if ($group == 2) {
-        //Truckwash Ticket
-        $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type);
-      } else if ($group == 3) {
-        //With meals
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count);
-      }
-    }
     //Begin Tickets
     //Print parking ticket
-    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count) {
+    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group) {
       $this->user = new User;
       $this->pm = new PM;
       $campus = $this->user->userInfo("campus");
@@ -51,7 +38,7 @@
       } else if ($campus == 2) {
         //Cannock
         $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
-      } else {
+      } else if ($campus == 3) {
         //Developer
         $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
       }
@@ -144,6 +131,7 @@
         $printer -> close();
       }
 
+      die("Printed");
       $this->user = null;
       $this->pm = null;
     }
@@ -165,7 +153,7 @@
         } else if ($campus == 2) {
           //Cannock
           $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
-        } else {
+        } else if($campus == 3){
           //Developer
           $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
         }
@@ -254,7 +242,6 @@
       } finally {
         $printer -> close();
       }
-
       $this->user = null;
       $this->pm = null;
     }
