@@ -20,17 +20,26 @@
       }
       return implode($allLines, "\n") . "\n";
     }
+    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group) {
+      if($group == 1) {
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count);
+      } else if ($group == 2) {
+        $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type);
+      } else if ($group == 3) {
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count);
+      }
+    }
     //Begin Tickets
     //Print parking ticket
-    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group) {
+    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count) {
       $this->user = new User;
       $this->pm = new PM;
       $campus = $this->user->userInfo("campus");
       //VAT Information
       $vat_rate = "20";
       $vat_pay = ($gross - $net);
-      $vatnum = $this->pm->PM_SiteInfo($this->user->userInfo("campus"), "site_vat");
-      $img_dir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/assets/img/printer/".$campus;
+      $vatnum = $this->pm->PM_SiteInfo($campus, "site_vat");
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
       //Printer Connection
       if($campus == 1) {
         //Holyhead
@@ -131,7 +140,6 @@
         $printer -> close();
       }
 
-      die("Printed");
       $this->user = null;
       $this->pm = null;
     }
@@ -143,8 +151,8 @@
       //VAT Information
       $vat_rate = "20";
       $vat_pay = ($gross - $net);
-      $vatnum = $this->pm->PM_SiteInfo($this->user->userInfo("campus"), "site_vat");
-      $img_dir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/assets/img/printer/".$campus;
+      $vatnum = $this->pm->PM_SiteInfo($campus, "site_vat");
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
       try {
         //Printer Connection
         if($campus == 1) {
