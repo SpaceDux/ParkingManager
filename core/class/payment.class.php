@@ -481,6 +481,7 @@
       $net = $this->PaymentInfo($plate, "payment_price_net");
       $meal_count = $this->Payment_ServiceInfo($service, "service_meal_amount");
       $shower_count = $this->Payment_ServiceInfo($service, "service_shower_amount");
+      $group = $this->Payment_ServiceInfo($service, "service_group");
       $expiry = date("Y-m-d H:i:s", strtotime($date.' +'.$expiryHrs.' hours'));
       //$payment_type
       if($type == 1) {
@@ -495,7 +496,7 @@
         $payment_type = "Fuel Card";
       }
       //Finally, print ticket
-      $this->ticket->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count);
+      $this->ticket->Direction($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group);
 
       $this->user = null;
       $this->pm = null;
@@ -1291,6 +1292,8 @@
         $shower_count = $this->Payment_ServiceInfo($service_id, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($service_id, "service_meal_amount");
         $ticket_name = $this->Payment_ServiceInfo($service_id, "service_ticket_name");
+        $group = $this->Payment_ServiceInfo($service_id, "service_group");
+
         if($paid == 1) {
           $payment_type = "Cash";
         } else if ($paid == 2) {
@@ -1302,7 +1305,7 @@
         } else if ($paid == 5) {
           $payment_type = "Fuel Card";
         }
-        $this->ticket->Printer_ParkingTicket($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count);
+        $this->ticket->Direction($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count, $group);
       }
 
       $this->mysql = null;

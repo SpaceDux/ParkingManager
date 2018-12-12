@@ -29,7 +29,8 @@
         //Truckwash Ticket
         $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type);
       } else if ($group == 3) {
-        //Nothing for this group yet
+        //With meals
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count);
       }
     }
     //Begin Tickets
