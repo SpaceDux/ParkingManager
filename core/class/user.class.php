@@ -124,6 +124,8 @@
               <div class="dropdown-menu" aria-labelledby="OptionsDrop">
                 <a class="dropdown-item" onClick="User_Delete('.$row['id'].')" href="#">Delete User</a>
                 <a class="dropdown-item" onClick="Force_Logout('.$row['id'].')" href="#">Force Logout</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" onClick="Change_User_Password('.$row['id'].')" href="#">Change Password</a>
               </div>
             </div>
           </div>
@@ -208,6 +210,18 @@
       $query = $this->mysql->dbc->prepare("UPDATE pm_users SET active = 0 WHERE id = ?");
       $query->bindParam(1, $id);
       $query->execute();
+
+      $this->mysql = null;
+    }
+    function adminChangePW($id, $pw) {
+      $this->mysql = new MySQL;
+
+      $new_pass = password_hash($pw, PASSWORD_BCRYPT);
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_users SET password = ? WHERE id = ?");
+      $stmt->bindParam(1, $new_pass);
+      $stmt->bindParam(2, $id);
+      $stmt->execute();
 
       $this->mysql = null;
     }

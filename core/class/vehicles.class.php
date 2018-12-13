@@ -509,5 +509,16 @@
       $sql_parkedLog->execute();
       $this->mysql = null;
     }
+    //Set new Veh Type
+    function Vehicle_Update_Type($id, $type) {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_type = ? WHERE id = ?");
+      $stmt->bindParam(1, $type);
+      $stmt->bindParam(2, $id);
+      $stmt->execute();
+
+      $this->mysql = null;
+    }
   }
  ?>

@@ -838,6 +838,28 @@
     </div>
   </div>
 </div>
+<!-- USER PW CHANGE -->
+<div class="modal fade" id="User_Change_PW" tabindex="-1" role="dialog" aria-labelledby="User_Change_PW" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="User_Change_PW_Title">Update Password</h5>
+      </div>
+      <form class="form-group" id="User_Change_PW_Form" method="post">
+        <div class="modal-body">
+            <input type="hidden" name="User_ID" id="User_ID_ChangePW">
+            <label>New Password</label>
+            <input type="password" class="form-control" name="User_Password" autofocus id="User_New_Password" placeholder="Password">
+            <label>Confirm new password</label>
+            <input type="password" class="form-control" id="User_New_Password_Confirm" value="" placeholder="Password">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" autofocus id="User_Change_PW_Confirm">Confirm Change</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 <!-- ANPR Filter Search -->
 <div class="modal fade" id="ANPR_FilterSearchModal" tabindex="-1" role="dialog" aria-labelledby="ANPR_FilterSearchModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog modal-lg" role="document">
@@ -854,7 +876,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success">Close</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

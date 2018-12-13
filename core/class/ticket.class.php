@@ -59,6 +59,9 @@
       $date = date("d/m/Y H:i", strtotime($date));
       $expiry = date("d/m/Y H:i", strtotime($expiry));
 
+      //Limit amount of chars in company name.
+      $company = substr($company, 0, 9);
+
       //Sorting column data
       $line_one = $this->Printer_Columns("Company: ".$company, "Reg: ".$reg, 18, 24, 2);
       $line_two = $this->Printer_Columns("ID: ".$tid, "Date: ".$date, 18, 24, 2);
@@ -153,6 +156,9 @@
       $vat_pay = ($gross - $net);
       $vatnum = $this->pm->PM_SiteInfo($campus, "site_vat");
       $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
+      //Limit amount of chars in company name.
+      $company = substr($company, 0, 9);
+
       try {
         //Printer Connection
         if($campus == 1) {

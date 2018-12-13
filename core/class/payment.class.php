@@ -831,7 +831,8 @@
         $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
-        $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
+
+        $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
         $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group);
@@ -884,7 +885,8 @@
         $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
-        $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
+
+        $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
         $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group);
@@ -938,7 +940,8 @@
         $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
-        $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
+
+        $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
         $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account, $campus, $PayRef, null, $group);
@@ -990,6 +993,9 @@
         $expiry = date("Y-m-d H:i:s", strtotime($Expiry.'+ '.$service_expiry.' hours'));
         $group = $this->Payment_ServiceInfo($Service, "service_group");
 
+        $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
+
+
         //SQL Payment
         $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp, $group);
         //ANPR DB SQL
@@ -1033,6 +1039,9 @@
         $price_net = $this->Payment_ServiceInfo($Service, "service_price_net");
         $expiry = date("Y-m-d H:i:s", strtotime($Expiry.'+ '.$service_expiry.' hours'));
         $group = $this->Payment_ServiceInfo($Service, "service_group");
+
+        $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
+
 
         //SQL Payment
         $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp, $group);

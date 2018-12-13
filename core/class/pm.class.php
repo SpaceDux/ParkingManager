@@ -316,6 +316,7 @@
       $html = '';
       $this->mysql = new MySQL;
       $this->user = new User;
+      $this->vehicles = new Vehicles;
       $this->campus = $this->user->userInfo("campus");
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate LIKE ? OR parked_trailer LIKE ? OR parked_company LIKE ? AND parked_campus = ? ORDER BY parked_timein DESC LIMIT 200");
       $stmt->bindParam(1, $string);
@@ -333,9 +334,11 @@
                 <th scope="col">Company</th>
                 <th scope="col">Registration</th>
                 <th scope="col">Trailer Number</th>
+                <th scope="col">Type</th>
                 <th scope="col">Time IN</th>
                 <th scope="col">Expiry</th>
                 <th scope="col">Time OUT</th>
+                <th scope="col"><i class="fa fa-cog"></i></th>
               </tr>
             </thead>
           ';
@@ -346,11 +349,16 @@
                 <td>'.$row['parked_company'].'</td>
                 <td>'.$row['parked_plate'].'</td>
                 <td>'.$row['parked_trailer'].'</td>
+                <td>'.$this->vehicles->Vehicle_Type_Info($row['parked_type'], "type_shortName").'</td>
                 <td>'.date("d/m/y H:i:s", strtotime($row['parked_timein'])).'</td>
                 <td>'.date("d/m/y H:i:s", strtotime($row['parked_expiry'])).'</td>
                 <td>'.date("d/m/y H:i:s", strtotime($row['parked_timeout'])).'</td>
-              </tr>
-            ';
+                <td>
+                  <div class="btn-group" role="group" aria-label="Options">
+                    <a href="'.URL."/update/".$row['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
+                  </div>
+                </td>
+              </tr>';
           }
           $html .= '</tbody></table>';
           echo $html;
@@ -360,6 +368,7 @@
       $this->mysql = null;
       $this->user = null;
       $this->campus = null;
+      $this->vehicles = null;
     }
     //Notifications
     function PM_Notification_Create($text, $urgency) {

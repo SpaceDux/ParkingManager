@@ -28,6 +28,12 @@
     })
     $('#tables').load(' #tables');
   }
+  //Change USer PW
+  function Change_User_Password(str) {
+    event.preventDefault();
+    $('#User_Change_PW').modal('toggle');
+    $('#User_ID_ChangePW').val(str);
+  }
   //AJAX for Fleet Delete
   function Account_Fleet_Delete(str) {
     event.preventDefault();
@@ -962,7 +968,7 @@
         type: "POST",
         data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry+"&etp="+etp,
         success:function() {
-          //window.location.replace("<?php echo URL?>/main");
+          window.location.replace("<?php echo URL?>/main");
         }
       });
     }
@@ -996,7 +1002,7 @@
         type: "POST",
         data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry+"&etp="+etp,
         success:function() {
-          //window.location.replace("<?php echo URL?>/main");
+          window.location.replace("<?php echo URL?>/main");
         }
       });
     }
@@ -1124,7 +1130,7 @@
       type: "POST",
       data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Date="+DateIN+"&Company="+Company,
       success:function() {
-        //window.location.replace("<?php echo URL?>/main");
+        window.location.replace("<?php echo URL?>/main");
       }
     });
   });
@@ -1210,6 +1216,24 @@
     var datetime = date+' '+h+':'+m+':'+s;
     $('#ANPR_Add_Date').val(datetime);
   });
+  //Change PW
+  $(document).on('click', '#User_Change_PW_Confirm', function(){
+    var data = $('#User_Change_PW_Form').serialize();
+    var Pass1 = $('#User_New_Password').val();
+    var Pass2 = $('#User_New_Password_Confirm').val();
+    if(Pass1 === Pass2) {
+      $.ajax({
+        url: "<?php echo URL?>/ajax-handler.php?handler=Change_User_Password",
+        type: "POST",
+        data: data,
+        success:function() {
+          $('#User_Change_PW').modal('toggle');
+        }
+      })
+    } else {
+      alert("Are you sure those passwords match? Try again");
+    }
+  })
   //Update Exit
   $('#exitButton').click(function(){
     window.location.reload();
