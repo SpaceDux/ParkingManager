@@ -1121,9 +1121,17 @@
           $payment_type = "Fuel Card";
         }
 
+        if($row['payment_deleted'] == 1) {
+          $style = 'table-danger';
+          $comment = '<i class="fa fa-trash"></i>';
+        } else {
+          $style = '';
+          $comment = '';
+        }
+
         if($row['payment_type'] == 1 AND $cash == 1) {
-          $html .= '<tr>';
-          $html .= '<td>'.$row['payment_company_name'].'</td>';
+          $html .= '<tr class="'.$style.'">';
+          $html .= '<td>'.$row['payment_company_name']." ".$comment.'</td>';
           $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
           $html .= '<td>'.$row['payment_service_name'].'</td>';
           $html .= '<td>'.$payment_type.'</td>';
@@ -1390,6 +1398,26 @@
       echo $html;
 
       $this->mysql = null;
+    }
+    //Count payments
+    function Payment_Count($id, $paid, $date1, $date2) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $campus = $this->user->userInfo("campus");
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = ? AND payment_service_id = ? AND payment_date BETWEEN ? AND ?");
+      $stmt->bindParam(1, $campus);
+      $stmt->bindParam(2, $paid);
+      $stmt->bindParam(3, $id);
+      $stmt->bindParam(4, $date1);
+      $stmt->bindParam(5, $date2);
+      $stmt->execute();
+      $result = $stmt->fetchAll();
+
+      return count($result);
+
+      $this->mysql = null;
+      $this->user = null;
     }
   }
 ?>

@@ -259,5 +259,123 @@
       $this->user = null;
       $this->pm = null;
     }
+    //Print 9pm Figures
+    function Printer_9PM() {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->payment = new Payment;
+      $campus = $this->user->userInfo("campus");
+      $date1 = date("Y-m-d 21:00:00");
+      $date2 = date("Y-m-d 21:00:00", strtotime("-24 hours"));
+      //Cash Query
+      $stmt1 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 1 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id");
+      $stmt1->bindParam(1, $campus);
+      $stmt1->bindParam(2, $date2);
+      $stmt1->bindParam(3, $date1);
+      $stmt1->execute();
+      $result1 = $stmt1->fetchAll();
+      //Card Query
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 2 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id");
+      $stmt2->bindParam(1, $campus);
+      $stmt2->bindParam(2, $date2);
+      $stmt2->bindParam(3, $date1);
+      $stmt2->execute();
+      $result2 = $stmt2->fetchAll();
+      //Account Query
+      $stmt3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 3 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id");
+      $stmt3->bindParam(1, $campus);
+      $stmt3->bindParam(2, $date2);
+      $stmt3->bindParam(3, $date1);
+      $stmt3->execute();
+      $result3 = $stmt3->fetchAll();
+      //SNAP Query
+      $stmt4 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 4 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id");
+      $stmt4->bindParam(1, $campus);
+      $stmt4->bindParam(2, $date2);
+      $stmt4->bindParam(3, $date1);
+      $stmt4->execute();
+      $result4 = $stmt4->fetchAll();
+      //FUEL Query
+      $stmt5 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 5 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id");
+      $stmt5->bindParam(1, $campus);
+      $stmt5->bindParam(2, $date2);
+      $stmt5->bindParam(3, $date1);
+      $stmt5->execute();
+      $result5 = $stmt5->fetchAll();
+
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
+      //Printer Connection
+      if($campus == 1) {
+        //Holyhead
+        $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
+      } else if ($campus == 2) {
+        //Cannock
+        $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
+      } else if ($campus == 3) {
+        //Developer
+        $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
+      }
+      $printer = new Printer($connector);
+      $logo = EscposImage::load($img_dir."/logo.png", false);
+      //Ticket Code
+      try {
+        //Settlement
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> graphics($logo);
+        $printer -> feed();
+        $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
+        $printer -> setTextSize(1, 1);
+        // Name of Ticket
+        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> setTextSize(1, 2);
+        $printer -> setFont(Printer::FONT_A);
+        $printer -> text("END OF DAY PARKING SETTLEMENT");
+        $printer -> feed(2);
+        $printer -> selectPrintMode();
+        $printer -> text("Cash Sales");
+        foreach ($result1 as $row) {
+          $line = $this->Printer_Columns($row['payment_service_name'], $this->payment->Payment_Count($row['payment_service_id'], 1, $date2, $date1), 30, 10, 2);
+          $printer -> feed();
+          $printer -> text($line);
+        }
+        $printer -> feed(2);
+        $printer -> text("Card Sales");
+        foreach ($result2 as $row) {
+          $line = $this->Printer_Columns($row['payment_service_name'], $this->payment->Payment_Count($row['payment_service_id'], 2, $date2, $date1), 30, 10, 2);
+          $printer -> feed();
+          $printer -> text($line);
+        }
+        $printer -> feed(2);
+        $printer -> text("Account Sales");
+        foreach ($result3 as $row) {
+          $line = $this->Printer_Columns($row['payment_service_name'], $this->payment->Payment_Count($row['payment_service_id'], 3, $date2, $date1), 30, 10, 2);
+          $printer -> feed();
+          $printer -> text($line);
+        }
+        $printer -> feed(2);
+        $printer -> text("SNAP Sales");
+        foreach ($result4 as $row) {
+          $line = $this->Printer_Columns($row['payment_service_name'], $this->payment->Payment_Count($row['payment_service_id'], 4, $date2, $date1), 30, 10, 2);
+          $printer -> feed();
+          $printer -> text($line);
+        }
+        $printer -> feed(2);
+        $printer -> text("Fuel Card Sales");
+        foreach ($result5 as $row) {
+          $line = $this->Printer_Columns($row['payment_service_name'], $this->payment->Payment_Count($row['payment_service_id'], 5, $date2, $date1), 30, 10, 2);
+          $printer -> feed();
+          $printer -> text($line);
+        }
+        $printer -> feed(2);
+        $printer -> selectPrintMode();
+        $printer-> cut();
+      } finally {
+        $printer->close();
+      }
+      $this->mysql = null;
+      $this->user = null;
+      $this->payment = null;
+    }
   }
 ?>
