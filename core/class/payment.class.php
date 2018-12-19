@@ -1092,6 +1092,7 @@
                     <table class="table table-dark table-hover table-bordered">
                       <thead>
                         <tr>
+                          <th scope="col">T.ID</th>
                           <th scope="col">Company</th>
                           <th scope="col">Plate</th>
                           <th scope="col">Payment Service Name</th>
@@ -1123,7 +1124,7 @@
 
         if($row['payment_deleted'] == 1) {
           $style = 'table-danger';
-          $comment = '<i class="fa fa-trash"></i>';
+          $comment = '<i class="fa fa-trash" title="'.$row['payment_deleted_comment'].'"></i>';
         } else {
           $style = '';
           $comment = '';
@@ -1131,6 +1132,7 @@
 
         if($row['payment_type'] == 1 AND $cash == 1) {
           $html .= '<tr class="'.$style.'">';
+          $html .= '<td>'.$row['id'].'</td>';
           $html .= '<td>'.$row['payment_company_name']." ".$comment.'</td>';
           $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
           $html .= '<td>'.$row['payment_service_name'].'</td>';

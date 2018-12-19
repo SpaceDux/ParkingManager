@@ -86,6 +86,11 @@
                   <div class="col-md-2">
                     <div class="btn-group" role="group" aria-label="View Sales">
                       <button type="button" id="TL_ViewSales" class="btn btn-lg btn-secondary">View Sales</button>
+                      <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <a class="dropdown-item" href="#" onClick="EOD_SettlementToggle()">EOD Settlement</a>
+                      </div>
                     </div>
                   </div>
                 </form>

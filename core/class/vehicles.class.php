@@ -44,7 +44,7 @@
           $table = '<tr class="'.$style.'">';
           $table .= '<td>'.$row['Plate'].'</td>';
           $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
-          $table .= '<td><img src="'.$patch.'"></img></td>';
+          $table .= '<td><img style="max-width: 140px; max-height: 50px;" src="'.$patch.'"></img></td>';
           $table .= '<td>
                       <div class="btn-group" role="group" aria-label="Options">
                         <button type="button" id="ANPR_Edit" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>

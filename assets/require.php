@@ -28,6 +28,14 @@
     })
     $('#tables').load(' #tables');
   }
+  //AJAX for Exit
+  function EOD_SettlementToggle() {
+    event.preventDefault();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=EOD_Settlement",
+      type: "POST"
+    })
+  }
   //Change USer PW
   function Change_User_Password(str) {
     event.preventDefault();
