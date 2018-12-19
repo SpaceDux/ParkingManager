@@ -264,7 +264,7 @@
         $sql2->bindParam(1, $id);
         $sql2->execute();
         $result = $sql2->fetch(\PDO::FETCH_ASSOC);
-        $count2 = count($result);
+        $count2 = $sql2->rowCount();
         if ($count2 > 0) {
           if($result['account_shared'] == 1) {
             return TRUE;

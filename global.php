@@ -59,4 +59,7 @@
   }
   #Check a session hasn't remotely been cut
   $user->forceLogout();
+
+
+  //error_reporting(0);
 ?>

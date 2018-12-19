@@ -1109,14 +1109,18 @@
     event.preventDefault();
     var Payment_ID = $('#Payment_ID').val();
     var text = $('#Payment_Delete_Comment').val();
-    $.ajax({
-      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Delete",
-      type: "POST",
-      data: "Pay_ID="+Payment_ID+"&Comment="+text,
-      success:function() {
-        document.getElementById("DeletePaymentForm").reset();
+      if(text == "") {
+        alert("Please provide a valid comment");
+      } else {
+        $.ajax({
+          url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Delete",
+          type: "POST",
+          data: "Pay_ID="+Payment_ID+"&Comment="+text,
+          success:function() {
+            document.getElementById("DeletePaymentForm").reset();
+          }
+        });
       }
-    });
   });
   //Print Ticket Modal Controller
   $(document).on('click', '#NT_Print_Ticket_Yes', function() {
@@ -1270,6 +1274,6 @@
         $('#tables').load(' #tables');
       }
     })
-  }, 100000);
+  }, 30000);
 
 </script>
