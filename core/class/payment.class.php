@@ -392,7 +392,7 @@
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
-      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_SNAP" id="NT_Payment_Service_Snap" required>';
+      $html = '<select class="form-control form-control-lg" name="NT_Payment_Service_SNAP" id="NT_Payment_Service_SNAP" required>';
       $html .= '<option value="unchecked">-- Please choose a service --</option>';
       foreach ($stmt->fetchAll() as $row) {
         $html .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
@@ -1122,6 +1122,7 @@
           $payment_type = "Fuel Card";
         }
 
+        //Is deleted
         if($row['payment_deleted'] == 1) {
           $style = 'table-danger';
           $comment = '<i class="fa fa-trash" title="'.$row['payment_deleted_comment'].'"></i>';
@@ -1149,11 +1150,9 @@
                       </div>
                     </td>';
           $html .= '</tr>';
-        } else {
-          //nothing
-        }
-        if($row['payment_type'] == 2 AND $card == 1) {
-          $html .= '<tr>';
+        } else if($row['payment_type'] == 2 AND $card == 1) {
+          $html .= '<tr class="'.$style.'">';
+          $html .= '<td>'.$row['id'].'</td>';
           $html .= '<td>'.$row['payment_company_name'].'</td>';
           $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
           $html .= '<td>'.$row['payment_service_name'].'</td>';
@@ -1170,11 +1169,27 @@
                       </div>
                     </td>';
           $html .= '</tr>';
-        } else {
-          //nothing
-        }
-        if($row['payment_type'] == 3 AND $account == 1) {
-          $html .= '<tr>';
+        } else if($row['payment_type'] == 3 AND $account == 1) {
+          $html .= '<tr class="'.$style.'">';
+          $html .= '<td>'.$row['id'].'</td>';
+          $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
+          $html .= '<td>'.$row['payment_service_name'].'</td>';
+          $html .= '<td>'.$payment_type.'</td>';
+          $html .= '<td>'.$row['payment_price_gross'].'</td>';
+          $html .= '<td>'.$row['payment_price_net'].'</td>';
+          $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>';
+          $html .= '<td>'.$row['payment_ref'].'</td>';
+          $html .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
+          $html .= '<td>'.$row['payment_author'].'</td>';
+          $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                      <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
+                      <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      </div>
+                    </td>';
+          $html .= '</tr>';
+        } else if($row['payment_type'] == 4 AND $snap == 1) {
+          $html .= '<tr class="'.$style.'">';
+          $html .= '<td>'.$row['id'].'</td>';
           $html .= '<td>'.$row['payment_company_name'].'</td>';
           $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
           $html .= '<td>'.$row['payment_service_name'].'</td>';
@@ -1191,32 +1206,9 @@
                       </div>
                     </td>';
           $html .= '</tr>';
-        } else {
-          // nothing
-        }
-        if($row['payment_type'] == 4 AND $snap == 1) {
-          $html .= '<tr>';
-          $html .= '<td>'.$row['payment_company_name'].'</td>';
-          $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
-          $html .= '<td>'.$row['payment_service_name'].'</td>';
-          $html .= '<td>'.$payment_type.'</td>';
-          $html .= '<td>'.$row['payment_price_gross'].'</td>';
-          $html .= '<td>'.$row['payment_price_net'].'</td>';
-          $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>';
-          $html .= '<td>'.$row['payment_ref'].'</td>';
-          $html .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
-          $html .= '<td>'.$row['payment_author'].'</td>';
-          $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
-                      <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
-                      <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                      </div>
-                    </td>';
-          $html .= '</tr>';
-        } else {
-          //nothing
-        }
-        if($row['payment_type'] == 5 AND $fuel == 1) {
-          $html .= '<tr>';
+        } else if($row['payment_type'] == 5 AND $fuel == 1) {
+          $html .= '<tr class="'.$style.'">';
+          $html .= '<td>'.$row['id'].'</td>';
           $html .= '<td>'.$row['payment_company_name'].'</td>';
           $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
           $html .= '<td>'.$row['payment_service_name'].'</td>';

@@ -303,7 +303,7 @@
       $stmt5->execute();
       $result5 = $stmt5->fetchAll();
 
-      $img_dir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/assets/img/printer/".$campus;
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
       //Printer Connection
       if($campus == 1) {
         //Holyhead

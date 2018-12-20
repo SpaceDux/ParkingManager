@@ -23,6 +23,7 @@
   require(__DIR__ . C . F . '/account.class.php');
   require(__DIR__ . C . F . '/reports.class.php');
   require(__DIR__ . C . F . '/ticket.class.php');
+  require(__DIR__ . C . F . '/etp.class.php');
     //Caution
   require(__DIR__ . C . F . '/background.class.php');
   require(__DIR__ . V . '/autoload.php');

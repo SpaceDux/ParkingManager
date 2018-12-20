@@ -816,7 +816,7 @@
         type: "POST",
         data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&etp="+etp,
         success:function() {
-          window.location.replace("<?php echo URL?>/main");
+          //window.location.replace("<?php echo URL?>/main");
         }
       });
     }
@@ -957,7 +957,7 @@
     var Company = $('#T_Company_Name').val();
     var Trailer = $('#T_Vehicle_Trailer').val();
     var Type = $('#T_Vehicle_Type').val();
-    var Service = $('#NT_Payment_Service_Snap').val();
+    var Service = $('#NT_Payment_Service_SNAP').val();
     var Expiry = $('#T_Expiry').val();
     var etp = $('#T_Process_SNAP_TID').val();
     if(Plate == "") {
