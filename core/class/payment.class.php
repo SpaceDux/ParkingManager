@@ -1172,6 +1172,7 @@
         } else if($row['payment_type'] == 3 AND $account == 1) {
           $html .= '<tr class="'.$style.'">';
           $html .= '<td>'.$row['id'].'</td>';
+          $html .= '<td>'.$row['payment_company_name'].'</td>';
           $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
           $html .= '<td>'.$row['payment_service_name'].'</td>';
           $html .= '<td>'.$payment_type.'</td>';

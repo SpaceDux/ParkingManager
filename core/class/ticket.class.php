@@ -268,35 +268,35 @@
       $date1 = date("Y-m-d 21:00:00");
       $date2 = date("Y-m-d 21:00:00", strtotime("-1 day"));
       //Cash Query
-      $stmt1 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 1 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id");
+      $stmt1 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 1 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_vehicles");
       $stmt1->bindParam(1, $campus);
       $stmt1->bindParam(2, $date2);
       $stmt1->bindParam(3, $date1);
       $stmt1->execute();
       $result1 = $stmt1->fetchAll();
       //Card Query
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 2 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 2 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_vehicles");
       $stmt2->bindParam(1, $campus);
       $stmt2->bindParam(2, $date2);
       $stmt2->bindParam(3, $date1);
       $stmt2->execute();
       $result2 = $stmt2->fetchAll();
       //Account Query
-      $stmt3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 3 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id");
+      $stmt3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 3 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_vehicles");
       $stmt3->bindParam(1, $campus);
       $stmt3->bindParam(2, $date2);
       $stmt3->bindParam(3, $date1);
       $stmt3->execute();
       $result3 = $stmt3->fetchAll();
       //SNAP Query
-      $stmt4 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 4 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id");
+      $stmt4 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 4 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_vehicles");
       $stmt4->bindParam(1, $campus);
       $stmt4->bindParam(2, $date2);
       $stmt4->bindParam(3, $date1);
       $stmt4->execute();
       $result4 = $stmt4->fetchAll();
       //FUEL Query
-      $stmt5 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 5 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id");
+      $stmt5 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 5 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_vehicles");
       $stmt5->bindParam(1, $campus);
       $stmt5->bindParam(2, $date2);
       $stmt5->bindParam(3, $date1);
