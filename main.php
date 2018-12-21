@@ -32,6 +32,8 @@
                 vehicles <b>parked</b>
               </div>
             </div>
+          </div>
+          <div class="col-md-3">
             <div class="statBox">
               <div class="statIcon">
                 <i class="far fa-clock"></i>
@@ -56,6 +58,8 @@
                 awaiting <b>payment</b>
               </div>
             </div>
+          </div>
+          <div class="col-md-3">
             <div class="statBox">
               <div class="statIcon">
                 <i class="fas fa-h-square"></i>
@@ -68,11 +72,11 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <!-- <div class="col-md-6">
             <div class="statBox-LG">
               <canvas id="lastChart" width="400" height="auto" style="width:auto;max-height:181px;"></canvas>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div id="tables">
@@ -178,7 +182,7 @@
     <script src="<?php echo URL?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
-    <script src="<?php echo URL?>/assets/js/Chart.bundle.min.js"></script>
+    <!-- <script src="<?php echo URL?>/assets/js/Chart.bundle.min.js"></script> -->
     <?php require(__DIR__.'/assets/require.php');?>
     <!-- Chart JS -->
     <script type="text/javascript">

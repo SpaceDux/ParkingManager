@@ -268,42 +268,12 @@
       $date1 = date("Y-m-d 21:00:00");
       $date2 = date("Y-m-d 21:00:00", strtotime("-1 day"));
       //Cash Query
-      $stmt1 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 1 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id ORDER BY payment_price_gross ASC");
+      $stmt1 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_campus = ? ORDER BY service_vehicles ASC");
       $stmt1->bindParam(1, $campus);
-      $stmt1->bindParam(2, $date2);
-      $stmt1->bindParam(3, $date1);
       $stmt1->execute();
       $result1 = $stmt1->fetchAll();
-      //Card Query
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 2 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id ORDER BY payment_price_gross ASC");
-      $stmt2->bindParam(1, $campus);
-      $stmt2->bindParam(2, $date2);
-      $stmt2->bindParam(3, $date1);
-      $stmt2->execute();
-      $result2 = $stmt2->fetchAll();
-      //Account Query
-      $stmt3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 3 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id ORDER BY payment_price_gross ASC");
-      $stmt3->bindParam(1, $campus);
-      $stmt3->bindParam(2, $date2);
-      $stmt3->bindParam(3, $date1);
-      $stmt3->execute();
-      $result3 = $stmt3->fetchAll();
-      //SNAP Query
-      $stmt4 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 4 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id ORDER BY payment_price_gross ASC");
-      $stmt4->bindParam(1, $campus);
-      $stmt4->bindParam(2, $date2);
-      $stmt4->bindParam(3, $date1);
-      $stmt4->execute();
-      $result4 = $stmt4->fetchAll();
-      //FUEL Query
-      $stmt5 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 5 AND payment_deleted = 0 AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id ORDER BY payment_price_gross ASC");
-      $stmt5->bindParam(1, $campus);
-      $stmt5->bindParam(2, $date2);
-      $stmt5->bindParam(3, $date1);
-      $stmt5->execute();
-      $result5 = $stmt5->fetchAll();
 
-      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/assets/img/printer/".$campus;
       //Printer Connection
       if($campus == 1) {
         //Holyhead
@@ -338,46 +308,13 @@
         $printer -> selectPrintMode();
         $printer -> text("Cash Sales");
         foreach ($result1 as $row) {
-          $printer -> selectPrintMode(Printer::MODE_UNDERLINE);
-          $line = $this->Printer_Columns($row['payment_service_name'], $this->payment->Payment_Count($row['payment_service_id'], 1, $date2, $date1), 30, 10, 2);
-          $printer -> feed();
-          $printer -> text($line);
-        }
-        $printer -> selectPrintMode();
-        $printer -> feed(2);
-        $printer -> text("Card Sales");
-        foreach ($result2 as $row) {
-          $printer -> selectPrintMode(Printer::MODE_UNDERLINE);
-          $line = $this->Printer_Columns($row['payment_service_name'], $this->payment->Payment_Count($row['payment_service_id'], 2, $date2, $date1), 30, 10, 2);
-          $printer -> feed();
-          $printer -> text($line);
-        }
-        $printer -> selectPrintMode();
-        $printer -> feed(2);
-        $printer -> text("Account Sales");
-        foreach ($result3 as $row) {
-          $printer -> selectPrintMode(Printer::MODE_UNDERLINE);
-          $line = $this->Printer_Columns($row['payment_service_name'], $this->payment->Payment_Count($row['payment_service_id'], 3, $date2, $date1), 30, 10, 2);
-          $printer -> feed();
-          $printer -> text($line);
-        }
-        $printer -> selectPrintMode();
-        $printer -> feed(2);
-        $printer -> text("SNAP Sales");
-        foreach ($result4 as $row) {
-          $printer -> selectPrintMode(Printer::MODE_UNDERLINE);
-          $line = $this->Printer_Columns($row['payment_service_name'], $this->payment->Payment_Count($row['payment_service_id'], 4, $date2, $date1), 30, 10, 2);
-          $printer -> feed();
-          $printer -> text($line);
-        }
-        $printer -> selectPrintMode();
-        $printer -> feed(2);
-        $printer -> text("Fuel Card Sales");
-        foreach ($result5 as $row) {
-          $printer -> selectPrintMode(Printer::MODE_UNDERLINE);
-          $line = $this->Printer_Columns($row['payment_service_name'], $this->payment->Payment_Count($row['payment_service_id'], 5, $date2, $date1), 30, 10, 2);
-          $printer -> feed();
-          $printer -> text($line);
+          if($row['service_cash'] == 1 AND $row['service_group'] != 2) {
+            $data = $this->payment->Payment_Count($row['id'], 1, $date2, $date1).'/'.$this->payment->Payment_Count($row['id'], 2, $date2, $date1).'/'.$this->payment->Payment_Count($row['id'], 3, $date2, $date1).'/'.$this->payment->Payment_Count($row['id'], 4, $date2, $date1).'/'.$this->payment->Payment_Count($row['id'], 5, $date2, $date1);
+            $printer -> selectPrintMode(Printer::MODE_UNDERLINE);
+            $line = $this->Printer_Columns($row['service_name'], $data, 26, 14, 2);
+            $printer -> feed();
+            $printer -> text($line);
+          }
         }
         $printer -> feed(2);
         $printer -> selectPrintMode();
