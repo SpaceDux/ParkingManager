@@ -816,7 +816,7 @@
         type: "POST",
         data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&etp="+etp,
         success:function() {
-          //window.location.replace("<?php echo URL?>/main");
+          window.location.replace("<?php echo URL?>/main");
         }
       });
     }
@@ -1117,7 +1117,7 @@
     event.preventDefault();
     var Payment_ID = $('#Payment_ID').val();
     var text = $('#Payment_Delete_Comment').val();
-      if(text == "") {
+      if(text === "") {
         alert("Please provide a valid comment");
       } else {
         $.ajax({

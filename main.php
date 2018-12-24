@@ -36,19 +36,6 @@
           <div class="col-md-3">
             <div class="statBox">
               <div class="statIcon">
-                <i class="far fa-clock"></i>
-              </div>
-              <div class="Stat">
-              <b><?php echo $vehicles->vehicle_count_renewals();?></b>
-              </div>
-              <div class="statText">
-                renewals
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="statBox">
-              <div class="statIcon">
                 <i class="fas fa-shopping-basket"></i>
               </div>
               <div class="Stat">
@@ -56,6 +43,19 @@
               </div>
               <div class="statText">
                 awaiting <b>payment</b>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="statBox">
+              <div class="statIcon">
+                <i class="far fa-clock"></i>
+              </div>
+              <div class="Stat">
+                <b><?php echo $vehicles->vehicle_count_renewals();?></b>
+              </div>
+              <div class="statText">
+                renewals
               </div>
             </div>
           </div>
@@ -185,7 +185,7 @@
     <!-- <script src="<?php echo URL?>/assets/js/Chart.bundle.min.js"></script> -->
     <?php require(__DIR__.'/assets/require.php');?>
     <!-- Chart JS -->
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
     var ctx = document.getElementById("lastChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
@@ -247,7 +247,8 @@
                 }]
             }
         }
-    });
+    }); -->
+    <script type="text/javascript">
     //Tab Key opens "AddVehicleModal" Modal
       Mousetrap.bind('tab', function() {
         $('#ANPR_AddModal').modal('show');

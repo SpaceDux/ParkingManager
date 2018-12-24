@@ -168,11 +168,11 @@
       $this->mysql = null;
     }
     //Add Transaction
-    function Payment_ProcessNew($ANPRKey, $plate, $company, $pay_type, $service, $service_name, $gross, $net, $author, $date, $account, $campus, $ref, $etp, $group) {
+    function Payment_ProcessNew($ANPRKey, $plate, $company, $pay_type, $service, $service_name, $gross, $net, $author, $date, $account, $campus, $ref, $etp, $group, $vehicle_type) {
       $this->mysql = new MySQL;
       $this->pm = new PM;
 
-      $sqlPayment = $this->mysql->dbc->prepare("INSERT INTO pm_payments (payment_anprkey, payment_vehicle_plate, payment_company_name, payment_type, payment_service_id, payment_service_name, payment_price_gross, payment_price_net, payment_author, payment_date, payment_account_id, payment_campus, payment_ref, payment_etp_id, payment_deleted, payment_deleted_comment, payment_service_group) VALUES (:ANPRKey, :Plate, :Company, :Type, :Service_ID, :Service_Name, :Price_Gross, :Price_Net, :Author, :Cur_Date, :Account, :Campus, :PayRef, :ETP, '0', '', :Group)");
+      $sqlPayment = $this->mysql->dbc->prepare("INSERT INTO pm_payments (payment_anprkey, payment_vehicle_plate, payment_company_name, payment_type, payment_service_id, payment_service_name, payment_price_gross, payment_price_net, payment_author, payment_date, payment_account_id, payment_campus, payment_ref, payment_etp_id, payment_deleted, payment_deleted_comment, payment_service_group, payment_vehicle_type) VALUES (:ANPRKey, :Plate, :Company, :Type, :Service_ID, :Service_Name, :Price_Gross, :Price_Net, :Author, :Cur_Date, :Account, :Campus, :PayRef, :ETP, '0', '', :Group, :Vehicle_Type)");
       $sqlPayment->bindParam(':ANPRKey', $ANPRKey);
       $sqlPayment->bindParam(':Plate', $plate);
       $sqlPayment->bindParam(':Company', $company);
@@ -188,6 +188,7 @@
       $sqlPayment->bindParam(':PayRef', $ref);
       $sqlPayment->bindParam(':ETP', $etp);
       $sqlPayment->bindParam(':Group', $group);
+      $sqlPayment->bindParam(':Vehicle_Type', $vehicle_type);
       if($sqlPayment->execute()) {
         $newDate = date("D - H:i", strtotime($date));
         if($pay_type == 1) {
@@ -203,7 +204,6 @@
         }
         $this->pm->PM_Notification_Create("A $type payment has been authorised and processed by $author at $newDate, ref: $ref", "0");
       }
-
       $this->mysql = null;
       $this->pm = null;
     }
@@ -535,7 +535,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Insert Payment data
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -595,7 +595,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Insert Payment data
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -655,7 +655,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Insert Payment data
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account_ID, $campus, $payment_ref, null, $group);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account_ID, $campus, $payment_ref, null, $group, $Vehicle_Type);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -715,7 +715,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Insert Payment data
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp, $group);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp, $group, $Vehicle_Type);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -775,7 +775,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Insert Payment data
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp, $group);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp, $group, $Vehicle_Type);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -835,7 +835,7 @@
         $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group, $Vehicle_Type);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -889,7 +889,7 @@
         $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group, $Vehicle_Type);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -944,7 +944,7 @@
         $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account, $campus, $PayRef, null, $group);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account, $campus, $PayRef, null, $group, $Vehicle_Type);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -997,7 +997,7 @@
 
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp, $group);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp, $group, $Vehicle_Type);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -1044,7 +1044,7 @@
 
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp, $group);
+        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp, $group, $Vehicle_Type);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -1410,6 +1410,176 @@
       $result = $stmt->fetchAll();
 
       return count($result);
+
+      $this->mysql = null;
+      $this->user = null;
+    }
+    function Test() {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $campus = $this->user->userInfo("campus");
+
+      $date1 = date("Y-m-d 21:00:00");
+      $date2 = date("Y-m-d 21:00:00", strtotime("-1 day"));
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_deleted = 0 AND payment_campus = ? AND payment_date BETWEEN ? AND ?");
+      $stmt->bindParam(1, $campus);
+      $stmt->bindParam(2, $date2);
+      $stmt->bindParam(3, $date1);
+      $stmt->execute();
+      $£3Cash = 0;
+      $£6Cash = 0;
+      $£10Cash = 0;
+      $£15Cash = 0;
+      $£18Cash = 0;
+      $£23Cash = 0;
+      //Card
+      $£3Card = 0;
+      $£6Card = 0;
+      $£10Card = 0;
+      $£15Card = 0;
+      $£18Card = 0;
+      $£23Card = 0;
+      //Account
+      $£3Acc = 0;
+      $£6Acc = 0;
+      $£10Acc = 0;
+      $£15Acc = 0;
+      $£18Acc = 0;
+      $£23Acc = 0;
+      //SNAP
+      $£3SNAP = 0;
+      $£6SNAP = 0;
+      $£10SNAP = 0;
+      $£15SNAP = 0;
+      $£18SNAP = 0;
+      $£23SNAP = 0;
+      //FUEL
+      $£3Fuel = 0;
+      $£6Fuel = 0;
+      $£10Fuel = 0;
+      $£15Fuel = 0;
+      $£18Fuel = 0;
+      $£23Fuel = 0;
+      foreach ($stmt->fetchAll() as $row) {
+        //Cash
+        if($row['payment_type'] == 1 AND $row['payment_service_group'] != 2) {
+          //CT
+          if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] != 2) {
+            $£3Cash++;
+          } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] != 2) {
+            $£6Cash++;
+          } else if($row['payment_price_gross'] == '15.00' AND $row['payment_vehicle_type'] != 2) {
+            $£15Cash++;
+          } else if($row['payment_price_gross'] == '23.00' AND $row['payment_vehicle_type'] != 2) {
+            $£23Cash++;
+          } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] != 2) {
+            $£15Cash+=2;
+          } else if($row['payment_price_gross'] == '46.00' AND $row['payment_vehicle_type'] != 2) {
+            $£23Cash+=2;
+          } else if($row['payment_price_gross'] == '45.00' AND $row['payment_vehicle_type'] != 2) {
+            $£15Cash+=3;
+          } else if($row['payment_price_gross'] == '69.00' AND $row['payment_vehicle_type'] != 2) {
+            $£23Cash+=3;
+          }
+          //Cab
+          if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] == 2) {
+            $£3Cash++;
+          } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] == 2) {
+            $£6Cash++;
+          } else if($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
+            $£10Cash++;
+          } else if($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 2) {
+            $£18Cash++;
+          } else if($row['payment_price_gross'] == '20.00' AND $row['payment_vehicle_type'] == 2) {
+            $£10Cash+=2;
+          } else if($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
+            $£18Cash+=2;
+          } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] == 2) {
+            $£10Cash+=3;
+          } else if($row['payment_price_gross'] == '54.00' AND $row['payment_vehicle_type'] == 2) {
+            $£18Cash+=3;
+          }
+        }
+        //Card
+        if($row['payment_type'] == 2 AND $row['payment_service_group'] != 2) {
+          //CT
+          if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] != 2) {
+            $£3Card++;
+          } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] != 2) {
+            $£6Card++;
+          } else if($row['payment_price_gross'] == '15.00' AND $row['payment_vehicle_type'] != 2) {
+            $£15Card++;
+          } else if($row['payment_price_gross'] == '23.00' AND $row['payment_vehicle_type'] != 2) {
+            $£23Card++;
+          } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] != 2) {
+            $£15Card+=2;
+          } else if($row['payment_price_gross'] == '46.00' AND $row['payment_vehicle_type'] != 2) {
+            $£23Card+=2;
+          } else if($row['payment_price_gross'] == '45.00' AND $row['payment_vehicle_type'] != 2) {
+            $£15Card+=3;
+          } else if($row['payment_price_gross'] == '69.00' AND $row['payment_vehicle_type'] != 2) {
+            $£23Card+=3;
+          }
+          //Cab
+          if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] == 2) {
+            $£3Card++;
+          } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] == 2) {
+            $£6Card++;
+          } else if($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
+            $£10Card++;
+          } else if($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 2) {
+            $£18Card++;
+          } else if($row['payment_price_gross'] == '20.00' AND $row['payment_vehicle_type'] == 2) {
+            $£10Card+=2;
+          } else if($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
+            $£18Card+=2;
+          } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] == 2) {
+            $£10Card+=3;
+          } else if($row['payment_price_gross'] == '54.00' AND $row['payment_vehicle_type'] == 2) {
+            $£18Card+=3;
+          }
+        }
+        //Account
+        if($row['payment_type'] == 3 AND $row['payment_service_group'] != 2) {
+          //CT
+          if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] != 2) {
+            $£3Acc++;
+          } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] != 2) {
+            $£6Acc++;
+          } else if($row['payment_price_gross'] == '15.00' AND $row['payment_vehicle_type'] != 2) {
+            $£15Acc++;
+          } else if($row['payment_price_gross'] == '23.00' AND $row['payment_vehicle_type'] != 2) {
+            $£23Acc++;
+          } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] != 2) {
+            $£15Acc+=2;
+          } else if($row['payment_price_gross'] == '46.00' AND $row['payment_vehicle_type'] != 2) {
+            $£23Acc+=2;
+          } else if($row['payment_price_gross'] == '45.00' AND $row['payment_vehicle_type'] != 2) {
+            $£15Acc+=3;
+          } else if($row['payment_price_gross'] == '69.00' AND $row['payment_vehicle_type'] != 2) {
+            $£23Acc+=3;
+          }
+          //Cab
+          if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] == 2) {
+            $£3Acc++;
+          } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] == 2) {
+            $£6Acc++;
+          } else if($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
+            $£10Acc++;
+          } else if($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 2) {
+            $£18Acc++;
+          } else if($row['payment_price_gross'] == '20.00' AND $row['payment_vehicle_type'] == 2) {
+            $£10Acc+=2;
+          } else if($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
+            $£18Acc+=2;
+          } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] == 2) {
+            $£10Acc+=3;
+          } else if($row['payment_price_gross'] == '54.00' AND $row['payment_vehicle_type'] == 2) {
+            $£18Acc+=3;
+          }
+        }
+      }
 
       $this->mysql = null;
       $this->user = null;
