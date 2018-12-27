@@ -49,6 +49,7 @@
     $account = new PM\Account;
     $reports = new PM\Reports;
     $ticket = new PM\Ticket;
+    $etp = new PM\ETP;
   }
 
   //Checks

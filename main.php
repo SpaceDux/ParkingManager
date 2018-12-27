@@ -26,7 +26,7 @@
                 <i class="fas fa-truck"></i>
               </div>
               <div class="Stat">
-              <b><?php echo $vehicles->vehicle_count_paid() + $vehicles->vehicle_count_anpr();?></b><small>/200</small>
+              <b><?php echo $vehicles->vehicle_count_paid() + $vehicles->vehicle_count_anpr() + $vehicles->vehicle_count_renewals();?></b><small>/200</small>
               </div>
               <div class="statText">
                 vehicles <b>parked</b>

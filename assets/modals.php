@@ -166,6 +166,7 @@
               </div>
             </div>
             <div class="col">
+              <hr>
               <div class="form-group">
                 <label for="Service_Cash">Allow Cash Payments</label>
                 <select class="form-control" id="Service_Cash">
@@ -180,8 +181,6 @@
                   <option value="1">Accept Card</option>
                 </select>
               </div>
-            </div>
-            <div class="col">
               <div class="form-group">
                 <label for="Service_Account">Allow Account Payments</label>
                 <select class="form-control" id="Service_Account">
@@ -189,8 +188,10 @@
                   <option value="1">Accept Account</option>
                 </select>
               </div>
+              <hr>
             </div>
             <div class="col">
+              <hr>
               <div class="form-group">
                 <label for="Service_SNAP">Allow SNAP Payments</label>
                 <select class="form-control" id="Service_SNAP">
@@ -205,6 +206,11 @@
                   <option value="1">Accept Fuel Card</option>
                 </select>
               </div>
+              <div class="form-group">
+                <label for="Service_ETPID">ETP Service ID (via API)</label>
+                <input type="text" class="form-control" id="Service_ETPID" value="" placeholder="2453...">
+              </div>
+              <hr>
             </div>
           </div>
           <div class="row">
@@ -316,6 +322,7 @@
                 <label for="Service_Expiry_Update">Service Expiry</label>
                 <input type="number" id="Service_Expiry_Update" class="form-control" placeholder="24 (Hours)" required>
               </div>
+              <hr>
             </div>
             <div class="col-md-6">
               <div class="form-group">
@@ -324,6 +331,7 @@
                   <?php $payment->Payment_Service_Group_Dropdown() ?>
                 </select>
               </div>
+              <hr>
             </div>
             <div class="col">
               <div class="form-group">
@@ -340,8 +348,6 @@
                   <option value="1">Accept Card</option>
                 </select>
               </div>
-            </div>
-            <div class="col">
               <div class="form-group">
                 <label for="Service_Account_Update">Allow Account Payments</label>
                 <select class="form-control" id="Service_Account_Update">
@@ -349,6 +355,7 @@
                   <option value="1">Accept Account</option>
                 </select>
               </div>
+              <hr>
             </div>
             <div class="col">
               <div class="form-group">
@@ -365,6 +372,11 @@
                   <option value="1">Accept Fuel Card</option>
                 </select>
               </div>
+              <div class="form-group">
+                <label for="Service_ETPID">ETP Service ID (via API)</label>
+                <input type="text" class="form-control" id="Service_ETPID_Update" value="" placeholder="2453...">
+              </div>
+              <hr>
             </div>
           </div>
           <div class="row">

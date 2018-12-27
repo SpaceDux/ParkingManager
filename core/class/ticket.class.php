@@ -288,227 +288,231 @@
       }
       $printer = new Printer($connector);
       $logo = EscposImage::load($img_dir."/logo.png", false);
-      //Ticket Code
-      try {
-        //Settlement
-        $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        $printer -> graphics($logo);
-        $printer -> feed();
-        $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
-        $printer -> setTextSize(1, 1);
-        // Name of Ticket
-        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-        $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        $printer -> setTextSize(1, 2);
-        $printer -> setFont(Printer::FONT_A);
-        $printer -> text("END OF DAY PARKING SETTLEMENT\n");
-        $printer -> setTextSize(1, 1);
-        $printer -> setFont(Printer::FONT_A);
-        $printer -> text(date("d/m/y H:i", strtotime($date2))." - ".date("d/m/y H:i", strtotime($date1)));
-        $printer -> feed(2);
-        $printer -> selectPrintMode();
-        $£3Cash = 0;
-        $£6Cash = 0;
-        $£10Cash = 0;
-        $£15Cash = 0;
-        $£18Cash = 0;
-        $£23Cash = 0;
-        //Card
-        $£3Card = 0;
-        $£6Card = 0;
-        $£10Card = 0;
-        $£15Card = 0;
-        $£18Card = 0;
-        $£23Card = 0;
-        //Account
-        $£3Acc = 0;
-        $£6Acc = 0;
-        $£10Acc = 0;
-        $£15Acc = 0;
-        $£18Acc = 0;
-        $£23Acc = 0;
-        //SNAP
-        $£3SNAP = 0;
-        $£6SNAP = 0;
-        $£10SNAP = 0;
-        $£15SNAP = 0;
-        $£18SNAP = 0;
-        $£23SNAP = 0;
-        //FUEL
-        $£3Fuel = 0;
-        $£6Fuel = 0;
-        $£10Fuel = 0;
-        $£15Fuel = 0;
-        $£18Fuel = 0;
-        $£23Fuel = 0;
-        foreach ($stmt->fetchAll() as $row) {
-          //Cash
-          if($row['payment_type'] == 1 AND $row['payment_service_group'] != 2) {
-            //CT
-            if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] != 2) {
-              $£3Cash++;
-            } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] != 2) {
-              $£6Cash++;
-            } else if($row['payment_price_gross'] == '15.00' AND $row['payment_vehicle_type'] != 2) {
-              $£15Cash++;
-            } else if($row['payment_price_gross'] == '23.00' AND $row['payment_vehicle_type'] != 2) {
-              $£23Cash++;
-            } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] != 2) {
-              $£15Cash+=2;
-            } else if($row['payment_price_gross'] == '46.00' AND $row['payment_vehicle_type'] != 2) {
-              $£23Cash+=2;
-            } else if($row['payment_price_gross'] == '45.00' AND $row['payment_vehicle_type'] != 2) {
-              $£15Cash+=3;
-            } else if($row['payment_price_gross'] == '69.00' AND $row['payment_vehicle_type'] != 2) {
-              $£23Cash+=3;
-            }
-            //Cab
-            if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] == 2) {
-              $£3Cash++;
-            } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] == 2) {
-              $£6Cash++;
-            } else if($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
-              $£10Cash++;
-            } else if($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 2) {
-              $£18Cash++;
-            } else if($row['payment_price_gross'] == '20.00' AND $row['payment_vehicle_type'] == 2) {
-              $£10Cash+=2;
-            } else if($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
-              $£18Cash+=2;
-            } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] == 2) {
-              $£10Cash+=3;
-            } else if($row['payment_price_gross'] == '54.00' AND $row['payment_vehicle_type'] == 2) {
-              $£18Cash+=3;
-            }
-          }
+      if($campus == 1) {
+        //Ticket Code
+        try {
+          //Settlement
+          $printer -> setJustification(Printer::JUSTIFY_CENTER);
+          $printer -> graphics($logo);
+          $printer -> feed();
+          $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
+          $printer -> setTextSize(1, 1);
+          // Name of Ticket
+          $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+          $printer -> setJustification(Printer::JUSTIFY_CENTER);
+          $printer -> setTextSize(1, 2);
+          $printer -> setFont(Printer::FONT_A);
+          $printer -> text("END OF DAY PARKING SETTLEMENT\n");
+          $printer -> setTextSize(1, 1);
+          $printer -> setFont(Printer::FONT_A);
+          $printer -> text(date("d/m/y H:i", strtotime($date2))." - ".date("d/m/y H:i", strtotime($date1)));
+          $printer -> feed(2);
+          $printer -> selectPrintMode();
+          $£3Cash = 0;
+          $£6Cash = 0;
+          $£10Cash = 0;
+          $£15Cash = 0;
+          $£18Cash = 0;
+          $£23Cash = 0;
           //Card
-          if($row['payment_type'] == 2 AND $row['payment_service_group'] != 2) {
-            //CT
-            if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] != 2) {
-              $£3Card++;
-            } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] != 2) {
-              $£6Card++;
-            } else if($row['payment_price_gross'] == '15.00' AND $row['payment_vehicle_type'] != 2) {
-              $£15Card++;
-            } else if($row['payment_price_gross'] == '23.00' AND $row['payment_vehicle_type'] != 2) {
-              $£23Card++;
-            } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] != 2) {
-              $£15Card+=2;
-            } else if($row['payment_price_gross'] == '46.00' AND $row['payment_vehicle_type'] != 2) {
-              $£23Card+=2;
-            } else if($row['payment_price_gross'] == '45.00' AND $row['payment_vehicle_type'] != 2) {
-              $£15Card+=3;
-            } else if($row['payment_price_gross'] == '69.00' AND $row['payment_vehicle_type'] != 2) {
-              $£23Card+=3;
-            }
-            //Cab
-            if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] == 2) {
-              $£3Card++;
-            } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] == 2) {
-              $£6Card++;
-            } else if($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
-              $£10Card++;
-            } else if($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 2) {
-              $£18Card++;
-            } else if($row['payment_price_gross'] == '20.00' AND $row['payment_vehicle_type'] == 2) {
-              $£10Card+=2;
-            } else if($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
-              $£18Card+=2;
-            } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] == 2) {
-              $£10Card+=3;
-            } else if($row['payment_price_gross'] == '54.00' AND $row['payment_vehicle_type'] == 2) {
-              $£18Card+=3;
-            }
-          }
+          $£3Card = 0;
+          $£6Card = 0;
+          $£10Card = 0;
+          $£15Card = 0;
+          $£18Card = 0;
+          $£23Card = 0;
           //Account
-          if($row['payment_type'] == 3 AND $row['payment_service_group'] != 2) {
-            //CT
-            if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] != 2) {
-              $£3Acc++;
-            } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] != 2) {
-              $£6Acc++;
-            } else if($row['payment_price_gross'] == '15.00' AND $row['payment_vehicle_type'] != 2) {
-              $£15Acc++;
-            } else if($row['payment_price_gross'] == '23.00' AND $row['payment_vehicle_type'] != 2) {
-              $£23Acc++;
-            } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] != 2) {
-              $£15Acc+=2;
-            } else if($row['payment_price_gross'] == '46.00' AND $row['payment_vehicle_type'] != 2) {
-              $£23Acc+=2;
-            } else if($row['payment_price_gross'] == '45.00' AND $row['payment_vehicle_type'] != 2) {
-              $£15Acc+=3;
-            } else if($row['payment_price_gross'] == '69.00' AND $row['payment_vehicle_type'] != 2) {
-              $£23Acc+=3;
+          $£3Acc = 0;
+          $£6Acc = 0;
+          $£10Acc = 0;
+          $£15Acc = 0;
+          $£18Acc = 0;
+          $£23Acc = 0;
+          //SNAP
+          $£3SNAP = 0;
+          $£6SNAP = 0;
+          $£10SNAP = 0;
+          $£15SNAP = 0;
+          $£18SNAP = 0;
+          $£23SNAP = 0;
+          //FUEL
+          $£3Fuel = 0;
+          $£6Fuel = 0;
+          $£10Fuel = 0;
+          $£15Fuel = 0;
+          $£18Fuel = 0;
+          $£23Fuel = 0;
+          foreach ($stmt->fetchAll() as $row) {
+            //Cash
+            if($row['payment_type'] == 1 AND $row['payment_service_group'] != 2) {
+              //CT
+              if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] != 2) {
+                $£3Cash++;
+              } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] != 2) {
+                $£6Cash++;
+              } else if($row['payment_price_gross'] == '15.00' AND $row['payment_vehicle_type'] != 2) {
+                $£15Cash++;
+              } else if($row['payment_price_gross'] == '23.00' AND $row['payment_vehicle_type'] != 2) {
+                $£23Cash++;
+              } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] != 2) {
+                $£15Cash+=2;
+              } else if($row['payment_price_gross'] == '46.00' AND $row['payment_vehicle_type'] != 2) {
+                $£23Cash+=2;
+              } else if($row['payment_price_gross'] == '45.00' AND $row['payment_vehicle_type'] != 2) {
+                $£15Cash+=3;
+              } else if($row['payment_price_gross'] == '69.00' AND $row['payment_vehicle_type'] != 2) {
+                $£23Cash+=3;
+              }
+              //Cab
+              if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] == 2) {
+                $£3Cash++;
+              } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] == 2) {
+                $£6Cash++;
+              } else if($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
+                $£10Cash++;
+              } else if($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 2) {
+                $£18Cash++;
+              } else if($row['payment_price_gross'] == '20.00' AND $row['payment_vehicle_type'] == 2) {
+                $£10Cash+=2;
+              } else if($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
+                $£18Cash+=2;
+              } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] == 2) {
+                $£10Cash+=3;
+              } else if($row['payment_price_gross'] == '54.00' AND $row['payment_vehicle_type'] == 2) {
+                $£18Cash+=3;
+              }
             }
-            //Cab
-            if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] == 2) {
-              $£3Acc++;
-            } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] == 2) {
-              $£6Acc++;
-            } else if($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
-              $£10Acc++;
-            } else if($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 2) {
-              $£18Acc++;
-            } else if($row['payment_price_gross'] == '20.00' AND $row['payment_vehicle_type'] == 2) {
-              $£10Acc+=2;
-            } else if($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
-              $£18Acc+=2;
-            } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] == 2) {
-              $£10Acc+=3;
-            } else if($row['payment_price_gross'] == '54.00' AND $row['payment_vehicle_type'] == 2) {
-              $£18Acc+=3;
+            //Card
+            if($row['payment_type'] == 2 AND $row['payment_service_group'] != 2) {
+              //CT
+              if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] != 2) {
+                $£3Card++;
+              } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] != 2) {
+                $£6Card++;
+              } else if($row['payment_price_gross'] == '15.00' AND $row['payment_vehicle_type'] != 2) {
+                $£15Card++;
+              } else if($row['payment_price_gross'] == '23.00' AND $row['payment_vehicle_type'] != 2) {
+                $£23Card++;
+              } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] != 2) {
+                $£15Card+=2;
+              } else if($row['payment_price_gross'] == '46.00' AND $row['payment_vehicle_type'] != 2) {
+                $£23Card+=2;
+              } else if($row['payment_price_gross'] == '45.00' AND $row['payment_vehicle_type'] != 2) {
+                $£15Card+=3;
+              } else if($row['payment_price_gross'] == '69.00' AND $row['payment_vehicle_type'] != 2) {
+                $£23Card+=3;
+              }
+              //Cab
+              if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] == 2) {
+                $£3Card++;
+              } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] == 2) {
+                $£6Card++;
+              } else if($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
+                $£10Card++;
+              } else if($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 2) {
+                $£18Card++;
+              } else if($row['payment_price_gross'] == '20.00' AND $row['payment_vehicle_type'] == 2) {
+                $£10Card+=2;
+              } else if($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
+                $£18Card+=2;
+              } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] == 2) {
+                $£10Card+=3;
+              } else if($row['payment_price_gross'] == '54.00' AND $row['payment_vehicle_type'] == 2) {
+                $£18Card+=3;
+              }
+            }
+            //Account
+            if($row['payment_type'] == 3 AND $row['payment_service_group'] != 2) {
+              //CT
+              if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] != 2) {
+                $£3Acc++;
+              } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] != 2) {
+                $£6Acc++;
+              } else if($row['payment_price_gross'] == '15.00' AND $row['payment_vehicle_type'] != 2) {
+                $£15Acc++;
+              } else if($row['payment_price_gross'] == '23.00' AND $row['payment_vehicle_type'] != 2) {
+                $£23Acc++;
+              } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] != 2) {
+                $£15Acc+=2;
+              } else if($row['payment_price_gross'] == '46.00' AND $row['payment_vehicle_type'] != 2) {
+                $£23Acc+=2;
+              } else if($row['payment_price_gross'] == '45.00' AND $row['payment_vehicle_type'] != 2) {
+                $£15Acc+=3;
+              } else if($row['payment_price_gross'] == '69.00' AND $row['payment_vehicle_type'] != 2) {
+                $£23Acc+=3;
+              }
+              //Cab
+              if($row['payment_price_gross'] == '3.00' AND $row['payment_vehicle_type'] == 2) {
+                $£3Acc++;
+              } else if($row['payment_price_gross'] == '6.00' AND $row['payment_vehicle_type'] == 2) {
+                $£6Acc++;
+              } else if($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
+                $£10Acc++;
+              } else if($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 2) {
+                $£18Acc++;
+              } else if($row['payment_price_gross'] == '20.00' AND $row['payment_vehicle_type'] == 2) {
+                $£10Acc+=2;
+              } else if($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
+                $£18Acc+=2;
+              } else if($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] == 2) {
+                $£10Acc+=3;
+              } else if($row['payment_price_gross'] == '54.00' AND $row['payment_vehicle_type'] == 2) {
+                $£18Acc+=3;
+              }
             }
           }
+          $line_one = $this->Printer_Columns("3hr / DRIVER CAR - £3", $£3Cash, 30, 10, 4);
+          $line_two = $this->Printer_Columns("4hr / C/O / Car - £6", $£6Cash, 30, 10, 4);
+          $line_three = $this->Printer_Columns("Cab Parking - £10", $£10Cash, 30, 10, 4);
+          $line_four = $this->Printer_Columns("C/T Parking - £15", $£15Cash, 30, 10, 4);
+          $line_five = $this->Printer_Columns("Cab + Meal - £18", $£18Cash, 30, 10, 4);
+          $line_six = $this->Printer_Columns("C/T + Meal - £23", $£23Cash, 30, 10, 4);
+          $printer -> text("Cash Sales");
+          $printer -> feed();
+          $printer -> text($line_one);
+          $printer -> text($line_two);
+          $printer -> text($line_three);
+          $printer -> text($line_four);
+          $printer -> text($line_five);
+          $printer -> text($line_six);
+          $printer -> feed(2);
+          $line_one = $this->Printer_Columns("3hr / DRIVER CAR - £3", $£3Card, 30, 10, 4);
+          $line_two = $this->Printer_Columns("4hr / C/O / Car - £6", $£6Card, 30, 10, 4);
+          $line_three = $this->Printer_Columns("Cab Parking - £10", $£10Card, 30, 10, 4);
+          $line_four = $this->Printer_Columns("C/T Parking - £15", $£15Card, 30, 10, 4);
+          $line_five = $this->Printer_Columns("Cab + Meal - £18", $£18Card, 30, 10, 4);
+          $line_six = $this->Printer_Columns("C/T + Meal - £23", $£23Card, 30, 10, 4);
+          $printer -> text("Card Sales");
+          $printer -> feed();
+          $printer -> text($line_one);
+          $printer -> text($line_two);
+          $printer -> text($line_three);
+          $printer -> text($line_four);
+          $printer -> text($line_five);
+          $printer -> text($line_six);
+          $printer -> feed(2);
+          $line_one = $this->Printer_Columns("3hr / DRIVER CAR - £3", $£3Acc, 30, 10, 4);
+          $line_two = $this->Printer_Columns("4hr / C/O / Car - £6", $£6Acc, 30, 10, 4);
+          $line_three = $this->Printer_Columns("Cab Parking - £10", $£10Acc, 30, 10, 4);
+          $line_four = $this->Printer_Columns("C/T Parking - £15", $£15Acc, 30, 10, 4);
+          $line_five = $this->Printer_Columns("Cab + Meal - £18", $£18Acc, 30, 10, 4);
+          $line_six = $this->Printer_Columns("C/T + Meal - £23", $£23Acc, 30, 10, 4);
+          $printer -> text("Account Sales");
+          $printer -> feed();
+          $printer -> text($line_one);
+          $printer -> text($line_two);
+          $printer -> text($line_three);
+          $printer -> text($line_four);
+          $printer -> text($line_five);
+          $printer -> text($line_six);
+          $printer -> feed(2);
+          $printer -> selectPrintMode();
+          $printer-> cut();
+        } finally {
+          $printer->close();
         }
-        $line_one = $this->Printer_Columns("3hr / DRIVER CAR - £3", $£3Cash, 30, 10, 4);
-        $line_two = $this->Printer_Columns("4hr / C/O / Car - £6", $£6Cash, 30, 10, 4);
-        $line_three = $this->Printer_Columns("Cab Parking - £10", $£10Cash, 30, 10, 4);
-        $line_four = $this->Printer_Columns("C/T Parking - £15", $£15Cash, 30, 10, 4);
-        $line_five = $this->Printer_Columns("Cab + Meal - £18", $£18Cash, 30, 10, 4);
-        $line_six = $this->Printer_Columns("C/T + Meal - £23", $£23Cash, 30, 10, 4);
-        $printer -> text("Cash Sales");
-        $printer -> feed();
-        $printer -> text($line_one);
-        $printer -> text($line_two);
-        $printer -> text($line_three);
-        $printer -> text($line_four);
-        $printer -> text($line_five);
-        $printer -> text($line_six);
-        $printer -> feed(2);
-        $line_one = $this->Printer_Columns("3hr / DRIVER CAR - £3", $£3Card, 30, 10, 4);
-        $line_two = $this->Printer_Columns("4hr / C/O / Car - £6", $£6Card, 30, 10, 4);
-        $line_three = $this->Printer_Columns("Cab Parking - £10", $£10Card, 30, 10, 4);
-        $line_four = $this->Printer_Columns("C/T Parking - £15", $£15Card, 30, 10, 4);
-        $line_five = $this->Printer_Columns("Cab + Meal - £18", $£18Card, 30, 10, 4);
-        $line_six = $this->Printer_Columns("C/T + Meal - £23", $£23Card, 30, 10, 4);
-        $printer -> text("Card Sales");
-        $printer -> feed();
-        $printer -> text($line_one);
-        $printer -> text($line_two);
-        $printer -> text($line_three);
-        $printer -> text($line_four);
-        $printer -> text($line_five);
-        $printer -> text($line_six);
-        $printer -> feed(2);
-        $line_one = $this->Printer_Columns("3hr / DRIVER CAR - £3", $£3Acc, 30, 10, 4);
-        $line_two = $this->Printer_Columns("4hr / C/O / Car - £6", $£6Acc, 30, 10, 4);
-        $line_three = $this->Printer_Columns("Cab Parking - £10", $£10Acc, 30, 10, 4);
-        $line_four = $this->Printer_Columns("C/T Parking - £15", $£15Acc, 30, 10, 4);
-        $line_five = $this->Printer_Columns("Cab + Meal - £18", $£18Acc, 30, 10, 4);
-        $line_six = $this->Printer_Columns("C/T + Meal - £23", $£23Acc, 30, 10, 4);
-        $printer -> text("Account Sales");
-        $printer -> feed();
-        $printer -> text($line_one);
-        $printer -> text($line_two);
-        $printer -> text($line_three);
-        $printer -> text($line_four);
-        $printer -> text($line_five);
-        $printer -> text($line_six);
-        $printer -> feed(2);
-        $printer -> selectPrintMode();
-        $printer-> cut();
-      } finally {
-        $printer->close();
+      } else if ($campus == 2) {
+        //Cannock EOD
       }
       $this->mysql = null;
       $this->user = null;

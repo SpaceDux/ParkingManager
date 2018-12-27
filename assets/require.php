@@ -345,10 +345,11 @@
     var Service_Group = $("#Service_Group").val();
     var Service_Vehicles = $("#Service_Vehicles").val();
     var Service_Vehicles_Any = $("#Service_Vehicles_Any").val();
+    var Service_ETPID = $("#Service_ETPID").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Add_Service",
       type: "POST",
-      data: "Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Group="+Service_Group+"&Service_Vehicles="+Service_Vehicles+"&Service_Vehicles_Any="+Service_Vehicles_Any,
+      data: "Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Group="+Service_Group+"&Service_Vehicles="+Service_Vehicles+"&Service_Vehicles_Any="+Service_Vehicles_Any+"&Service_ETPID="+Service_ETPID,
       success:function() {
         $('#Payment_Service_AddModal').modal('toggle');
         $('#tables').load(' #tables');
@@ -385,6 +386,7 @@
         $('#Service_Vehicles_Update').val(data.service_vehicles);
         $('#Service_Vehicles_Any_Update').val(data.service_anyvehicle);
         $('#Service_Group_Update').val(data.service_group);
+        $('#Service_ETPID_Update').val(data.service_etpid);
         $('#Payment_Service_UpdateModal').modal('toggle');
       }
     })
@@ -409,10 +411,11 @@
     var Service_Ticket = $("#Service_Ticket_Name_Update").val();
     var Service_Any = $("#Service_Vehicles_Any_Update").val();
     var Service_Group = $("#Service_Group_Update").val();
+    var Service_ETPID = $("#Service_ETPID_Update").val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Update",
       type: "POST",
-      data:"Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Vehicles="+Service_Vehicles+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Any="+Service_Any+"&Service_Group="+Service_Group,
+      data:"Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Vehicles="+Service_Vehicles+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Any="+Service_Any+"&Service_Group="+Service_Group+"&Service_ETPID="+Service_ETPID,
       success: function(){
         $('#tables').load(' #tables');
         $('#Payment_Service_UpdateModal').modal('toggle');
