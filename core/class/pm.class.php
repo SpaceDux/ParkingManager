@@ -29,7 +29,7 @@
       //Get User  Campus
       $this->campus = $this->user->userInfo("campus");
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_notices WHERE campus = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_notices WHERE campus = ? ORDER BY id DESC");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $result = $query->fetchAll();
@@ -50,7 +50,7 @@
       //Get User  Campus
       $this->campus = $this->user->userInfo("campus");
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_notices WHERE campus = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_notices WHERE campus = ? ORDER BY id DESC");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $result = $query->fetchAll();

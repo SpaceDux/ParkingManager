@@ -154,10 +154,6 @@
                        </div>
                        <small class="form-text text-muted"> Ensure this is correct! </small>
                      </div>
-                     <div class="form-group">
-                       <label>ETP Ticket ID number</label>
-                       <input type="number" class="form-control" name="T_Process_SNAP_TID" id="T_Process_SNAP_TID" value="" placeholder="ETP Ticket ID">
-                     </div>
                      <div class="form-group" style="margin-top: 130px;">
                        <input type="submit" name="T_Process_SNAP" id="T_Process_SNAP" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>

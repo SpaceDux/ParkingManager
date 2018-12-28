@@ -6,7 +6,6 @@
 
   class ETP {
     function SNAP_ListServices() {
-      $this->mysql = new MySQL;
       $this->user = new User;
       //Begin API client
       $client = new Client(['base_uri' => 'https://test.etpcp.com/etp/']);
@@ -51,7 +50,51 @@
                 </table>";
 
       echo $html;
-      $this->mysql = null;
+      $this->user = null;
+    }
+    //Add SNAP transaction
+    function Proccess_Transaction_SNAP($etpid, $plate, $name) {
+      global $_CONFIG;
+      $this->user = new User;
+      $campus = $this->user->userInfo("campus");
+
+      $client = new Client(['base_uri' => 'https://test.etpcp.com/etp/']);
+      if($campus == 1 OR $campus == 0) {
+        //Begin API client
+        $response = $client->post('transaction/add', [
+          'auth' => array($_CONFIG['etp_api']['user-holyhead'], $_CONFIG['etp_api']['pass-holyhead']),
+          'json' => [
+            'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
+            'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
+            'serviceid' => $etpid,
+            'regno' => $plate,
+            'drivername' => $name
+          ]
+        ]);
+        $return = json_decode($response->getBody(), true);
+        if($return['outputstatus'] == 1) {
+          return $return['outputtransactionid'];
+        } else {
+          return FALSE;
+        }
+      } else if ($campus == 2) {
+        $response = $client->post('transaction/add', [
+          'auth' => array($_CONFIG['etp_api']['user-holyhead'], $_CONFIG['etp_api']['pass-holyhead']),
+          'json' => [
+            'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
+            'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
+            'serviceid' => $etpid,
+            'regno' => $plate,
+            'drivername' => $name
+          ]
+        ]);
+        $return =  json_decode($response->getBody(), true);
+        if($return['outputstatus'] == 1) {
+          return $return['outputtransactionid'];
+        } else {
+          return FALSE;
+        }
+      }
       $this->user = null;
     }
   }

@@ -30,7 +30,7 @@
 
   $_CONFIG['anpr_dev']['imgdir'] = ''; //ANPR Server: Image Directory
 
-  //ANPR Server Connection Details (MSSQL-Holyhead) arble2501
+  //ANPR Server Connection Details (MSSQL-Holyhead)
   $_CONFIG['anpr_holyhead']['ip'] = '192.168.3.201'; //ANPR Server: IP Address
   $_CONFIG['anpr_holyhead']['user'] = 'pm'; //ANPR Server: User
   $_CONFIG['anpr_holyhead']['pass'] = '1212'; //ANPR Server: Password
@@ -49,9 +49,10 @@
   $_CONFIG['anpr_cannock']['imgdir'] = 'http://192.168.1.1/'; //ANPR Server: Image Directory
 
   //Gate Functions
+  //Holyhead
   $_CONFIG['gate_holyhead']['in'] = "http://192.168.3.37/setParam.cgi?DOPulseStart_05=1?"; //Entry Barrier IP
   $_CONFIG['gate_holyhead']['out'] = "http://192.168.3.37/setParam.cgi?DOPulseStart_04=1?"; //Exit Barrier IP
-
+  //Cannock
   $_CONFIG['gate_cannock']['out'] = ""; //Exit Barrier IP
 
   /*
@@ -61,4 +62,15 @@
   $_CONFIG['pm']['timezone'] = 'Europe/London'; //PM: Set Timezone
   $_CONFIG['pm']['ticket_printer_holyhead'] = 'pdholyhead'; //Name of the local printer via shared-network
   $_CONFIG['pm']['ticket_printer_cannock'] = 'CITIZEN-PD-Holy'; //Name of the local printer via shared-network
+  //ETP Settings
+  //Holyhead
+  $_CONFIG['etp_api']['user-holyhead'] = "Po5r9023";
+  $_CONFIG['etp_api']['pass-holyhead'] = "a9(K)LK_ee_47$$2";
+  $_CONFIG['etp_api']['location_user-holyhead'] = "holyhead";
+  $_CONFIG['etp_api']['location_pass-holyhead'] = "2hst36sg";
+  //Cannock
+  $_CONFIG['etp_api']['user-cannock'] = "Po5r9023";
+  $_CONFIG['etp_api']['pass-cannock'] = "a9(K)LK_ee_47$$2";
+  $_CONFIG['etp_api']['location_user-cannock'] = "holyhead";
+  $_CONFIG['etp_api']['location_pass-cannock'] = "2hst36sg";
 ?>

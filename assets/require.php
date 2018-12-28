@@ -811,15 +811,18 @@
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
-    } else if (etp === "") {
-      alert("Please enter the ETP's Ticket ID");
     } else {
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_SNAP",
         type: "POST",
-        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&etp="+etp,
-        success:function() {
-          window.location.replace("<?php echo URL?>/main");
+        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service,
+        success:function(response) {
+          //window.location.replace("<?php echo URL?>/main");
+          if(response==1) {
+            $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
+          } else {
+            alert("Transaction not accepted, SNAP refused payment.");
+          }
         }
       });
     }
@@ -962,7 +965,6 @@
     var Type = $('#T_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_SNAP').val();
     var Expiry = $('#T_Expiry').val();
-    var etp = $('#T_Process_SNAP_TID').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
     } else if(Company == "") {
@@ -971,15 +973,18 @@
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
-    } else if (etp === "") {
-      alert("Please enter the ETP Ticket ID");
     } else {
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_SNAP_Renewal",
         type: "POST",
-        data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry+"&etp="+etp,
-        success:function() {
-          window.location.replace("<?php echo URL?>/main");
+        data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry,
+        success:function(response) {
+          //window.location.replace("<?php echo URL?>/main");
+          if(response==1) {
+            $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
+          } else {
+            alert("Transaction not accepted, SNAP refused payment");
+          }
         }
       });
     }
