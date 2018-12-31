@@ -112,6 +112,7 @@
       $nav .=    '<li data-toggle="modal" id="AddANPRModal" data-target="#ANPR_AddModal"><i class="fa fa-plus"></i></li>';
       $nav .=    '<li onClick="ANPR_Barrier(1)" title="Toggle Entry Barrier"><i class="fa fa-arrow-right"></i></li>';
       $nav .=    '<li onClick="ANPR_Barrier(0)" title="Toggle Exit Barrier"><i class="fa fa-arrow-left"></i></li>';
+      $nav .=    '<li onClick="ANPR_Exit_Log()" title="Exit History Log"><i class="fa fa-list-ul"></i></li>';
       $nav .=  '</ul>';
       $nav .='</nav>';
 
@@ -388,6 +389,48 @@
       }
       $this->mysql = null;
       $this->user = null;
+    }
+    function PM_ExitList() {
+      global $_CONFIG;
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->mssql = new MSSQL;
+
+      $anpr = $this->mssql->dbc->prepare("SELECT TOP 100 * FROM ANPR_REX WHERE Lane_ID = 2 ORDER BY Capture_Date DESC");
+      $anpr->execute();
+      $html = '<table class="table table-bordered">
+                <thead>
+                  <th>Plate</th>
+                  <th>Capture Date</th>
+                  <th><i class="fa fa-cog"></i></th>
+                </thead>
+                <tbody>';
+      foreach($anpr->fetchAll() as $row) {
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_exit_log WHERE exit_anpr_key = ?");
+        $stmt->bindParam(1, $row['Uniqueref']);
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if($row['Uniqueref'] === $result['exit_anpr_key']) {
+          $html .= '<tr class="table-success">';
+          // $style = 'class="table-success"';
+        } else {
+          $html .= '<tr class="table-danger">';
+          // $style = 'class="table-danger"';
+        }
+        $html .= '<td>'.$row['Plate'].'</td>';
+        $html .= '<td>'.$row['Capture_Date'].'</td>';
+        $html .= '<td><button class="btn btn-primary"><i class="fa fa-camera"></i></button></td>';
+        $html .= '</tr>';
+      }
+      $html .= '<tbody>
+              </table>';
+
+      echo $html;
+
+
+      $this->mysql = null;
+      $this->user = null;
+      $this->mssql = null;
     }
   }
 ?>

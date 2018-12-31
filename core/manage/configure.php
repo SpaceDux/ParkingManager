@@ -62,7 +62,9 @@
   $_CONFIG['pm']['timezone'] = 'Europe/London'; //PM: Set Timezone
   $_CONFIG['pm']['ticket_printer_holyhead'] = 'pdholyhead'; //Name of the local printer via shared-network
   $_CONFIG['pm']['ticket_printer_cannock'] = 'CITIZEN-PD-Holy'; //Name of the local printer via shared-network
+
   //ETP Settings
+  $_CONFIG['etp_api']['base_uri'] = "https://test.etpcp.com/etp/";
   //Holyhead
   $_CONFIG['etp_api']['user-holyhead'] = "Po5r9023";
   $_CONFIG['etp_api']['pass-holyhead'] = "a9(K)LK_ee_47$$2";

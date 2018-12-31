@@ -12,4 +12,6 @@
   echo $cardno."<br>";
   echo $expiry_m."/20".$expiry_yr;
 
+  $background->Automation_Exit();
+
  ?>

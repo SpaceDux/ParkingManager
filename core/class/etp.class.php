@@ -6,9 +6,10 @@
 
   class ETP {
     function SNAP_ListServices() {
+      global $_CONFIG;
       $this->user = new User;
       //Begin API client
-      $client = new Client(['base_uri' => 'https://test.etpcp.com/etp/']);
+      $client = new Client(['base_uri' => $_CONFIG['etp_api']['base_uri']]);
 
       $response = $client->post('services/list', [
           'auth' => array('Po5r9023', 'a9(K)LK_ee_47$$2'),
@@ -58,7 +59,7 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $client = new Client(['base_uri' => 'https://test.etpcp.com/etp/']);
+      $client = new Client(['base_uri' => $_CONFIG['etp_api']['base_uri']]);
       if($campus == 1 OR $campus == 0) {
         //Begin API client
         $response = $client->post('transaction/add', [

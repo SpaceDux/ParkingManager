@@ -417,6 +417,11 @@ table {
   height: 200px;
   width: 200px;
 }
+.TopBar-Log {
+  height: 400px;
+  width: 220px;
+  background: #fff;
+}
 footer {
   height: auto;
   width: 100%;

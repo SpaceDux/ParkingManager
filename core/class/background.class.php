@@ -21,6 +21,7 @@
       foreach ($anpr->fetchAll() as $row) {
         $plate = $row['Plate'];
         $anpr_key = $row['Uniqueref'];
+        $date = $row['Capture_Date'];
         echo '<br>'.$plate;
         $parking = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate = ? AND parked_column = 1 AND parked_campus = ? ORDER BY parked_timein DESC");
         $parking->bindParam(1, $plate);
@@ -44,12 +45,13 @@
 
             $query2 = $this->mysql->dbc->prepare("INSERT INTO pm_exit_log (exit_id, exit_time, exit_anpr_key, exit_site) VALUES (?, ?, ?, ?)");
             $query2->bindParam(1, $id);
-            $query2->bindParam(2, $date);
+            $query2->bindParam(2, $expiry);
             $query2->bindParam(3, $anpr_key);
             $query2->bindParam(4, $campus);
-            if($query2->execute()) {
-              $this->pm->PM_Notification_Create("ParkingManager has automatically EXIT the vehicle $plate");
-            }
+            $query2->execute();
+            // if($query2->execute()) {
+            //   $this->pm->PM_Notification_Create("ParkingManager has automatically EXIT the vehicle $plate");
+            // }
           } else {
             //do nothing
           }
@@ -57,6 +59,10 @@
           echo " FALSE ";
         }
       }
+      $this->mssql = null;
+      $this->mysql = null;
+      $this->user = null;
+      $this->pm = null;
     }
   }
 ?>

@@ -206,6 +206,11 @@
       data: {id:id}
     })
   }
+  //ANPR Exit Log
+  function ANPR_Exit_Log() {
+    event.preventDefault();
+    $('#ANPR_Exit_Log').modal('toggle');
+  }
   //Search Functions
   $(document).ready(function() {
     //ANPR Search

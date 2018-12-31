@@ -833,6 +833,28 @@
     </div>
   </div>
 </div>
+<!-- USER PW CHANGE -->
+<div class="modal fade" id="User_Change_PW" tabindex="-1" role="dialog" aria-labelledby="User_Change_PW" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="User_Change_PW_Title">Update Password</h5>
+      </div>
+      <form class="form-group" id="User_Change_PW_Form" method="post">
+        <div class="modal-body">
+            <input type="hidden" name="User_ID" id="User_ID_ChangePW">
+            <label>New Password</label>
+            <input type="password" class="form-control" name="User_Password" id="User_New_Password" placeholder="Password" autofocus>
+            <label>Confirm new password</label>
+            <input type="password" class="form-control" id="User_New_Password_Confirm" placeholder="Password">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" id="User_Change_PW_Confirm">Confirm Change</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 <!-- Print Ticket modal -->
 <div class="modal fade" id="Print_Ticket_Modal" tabindex="-1" role="dialog" aria-labelledby="Print_Ticket_Modal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -850,28 +872,6 @@
     </div>
   </div>
 </div>
-<!-- USER PW CHANGE -->
-<div class="modal fade" id="User_Change_PW" tabindex="-1" role="dialog" aria-labelledby="User_Change_PW" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="User_Change_PW_Title">Update Password</h5>
-      </div>
-      <form class="form-group" id="User_Change_PW_Form" method="post">
-        <div class="modal-body">
-            <input type="hidden" name="User_ID" id="User_ID_ChangePW">
-            <label>New Password</label>
-            <input type="password" class="form-control" name="User_Password" autofocus id="User_New_Password" placeholder="Password">
-            <label>Confirm new password</label>
-            <input type="password" class="form-control" id="User_New_Password_Confirm" value="" placeholder="Password">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success" autofocus id="User_Change_PW_Confirm">Confirm Change</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 <!-- ANPR Filter Search -->
 <div class="modal fade" id="ANPR_FilterSearchModal" tabindex="-1" role="dialog" aria-labelledby="ANPR_FilterSearchModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog modal-lg" role="document">
@@ -886,6 +886,22 @@
         <div id="ANPR_FilterResult">
 
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ANPR Exit -->
+<div class="modal fade" id="ANPR_Exit_Log" tabindex="-1" role="dialog" aria-labelledby="ANPR_Exit_Log" aria-hidden="true">
+  <div class="modal-dialog modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ANPR_Exit_Log">ANPR Exit Feed</h5>
+      </div>
+      <div class="modal-body">
+        <?php $pm->PM_ExitList() ?>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
