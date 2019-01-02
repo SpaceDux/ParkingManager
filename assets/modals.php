@@ -657,8 +657,12 @@
           <div class="col">
             <div class="form-group">
               <label>Account Name</label>
-              <input type="hidden" id="Update_Account_ID" class="form-control" autofocus>
+              <input type="hidden" id="Update_Account_ID" class="form-control">
               <input type="text" class="form-control" id="Update_Account_Name" placeholder="Company Name" autofocus>
+            </div>
+            <label>Short name (used as company name on parking record)</label>
+            <div class="form-group">
+              <input type="text" class="form-control" id="Update_Account_Name_Short" placeholder="Short Name">
             </div>
           </div>
           <div class="col">
@@ -707,7 +711,7 @@
     </div>
   </div>
 </div>
-<!-- Update Account Info -->
+<!-- New Account Info -->
 <div class="modal fade" id="New_AccountModal" tabindex="-1" role="dialog" aria-labelledby="New_AccountModal" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -723,6 +727,10 @@
             <div class="form-group">
               <label>Account Name</label>
               <input type="text" class="form-control" id="New_Account_Name" placeholder="Company Name" autofocus>
+            </div>
+            <label>Short name (used as company name on parking record)</label>
+            <div class="form-group">
+              <input type="text" class="form-control" id="New_Account_Name_Short" placeholder="Short Name">
             </div>
           </div>
           <div class="col">

@@ -1038,6 +1038,7 @@
       dataType: "json",
       success:function(data) {
         $('#Update_Account_ID').val(data.id);
+        $('#Update_Account_Name_Short').val(data.account_shortName);
         $('#Update_Account_Name').val(data.account_name);
         $('#Update_Account_Tel').val(data.account_contact_no);
         $('#Update_Account_Email').val(data.account_contact_email);
@@ -1053,6 +1054,7 @@
     event.preventDefault();
     var Account_ID = $('#Update_Account_ID').val();
     var Name = $('#Update_Account_Name').val();
+    var Short = $('#Update_Account_Name_Short').val();
     var Tel = $('#Update_Account_Tel').val();
     var Email = $('#Update_Account_Email').val();
     var Billing = $('#Update_Account_Billing_Email').val();
@@ -1061,7 +1063,7 @@
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Account_Update_Save",
         type: "POST",
-        data: "Acc_ID="+Account_ID+"&Name="+Name+"&Tel="+Tel+"&Email="+Email+"&Billing="+Billing+"&Site="+Campus+"&Share="+Share,
+        data: "Acc_ID="+Account_ID+"&Name="+Name+"&Tel="+Tel+"&Email="+Email+"&Billing="+Billing+"&Site="+Campus+"&Share="+Share+"&short="+Short,
         success:function() {
           $('#Update_AccountModal').modal('toggle');
       }
@@ -1086,6 +1088,7 @@
   $(document).on('click', '#New_Account_Save', function(){
     event.preventDefault();
     var name = $('#New_Account_Name').val();
+    var short = $('#New_Account_Name_Short').val();
     var tel = $('#New_Account_Tel').val();
     var email = $('#New_Account_Email').val();
     var billing = $('#New_Account_Billing_Email').val();
@@ -1094,7 +1097,7 @@
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Account_Register",
       type: "POST",
-      data: "name="+name+"&tel="+tel+"&email="+email+"&billing="+billing+"&site="+site+"&shared="+shared,
+      data: "name="+name+"&tel="+tel+"&email="+email+"&billing="+billing+"&site="+site+"&shared="+shared+"&short="+short,
       success:function() {
         document.getElementById("New_AccountModalForm").reset();
         $('#New_AccountModal').modal('toggle');

@@ -390,6 +390,7 @@
       $this->mysql = null;
       $this->user = null;
     }
+    //Exit log
     function PM_ExitList() {
       global $_CONFIG;
       $this->mysql = new MySQL;
@@ -410,7 +411,7 @@
         $stmt->bindParam(1, $row['Uniqueref']);
         $stmt->execute();
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        if($row['Uniqueref'] === $result['exit_anpr_key']) {
+        if($row['Uniqueref'] == $result['exit_anpr_key']) {
           $html .= '<tr class="table-success">';
           // $style = 'class="table-success"';
         } else {

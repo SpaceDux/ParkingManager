@@ -71,7 +71,7 @@
   } else if($handler == "Automation_Exit") {
     $background->Automation_Exit(); //Automate the exit reads
   } else if($handler == "Account_Update_Save") {
-    $account->Account_Update_Save($_POST['Acc_ID'], $_POST['Name'], $_POST['Tel'], $_POST['Email'], $_POST['Billing'], $_POST['Site'], $_POST['Share']);
+    $account->Account_Update_Save($_POST['Acc_ID'], $_POST['Name'], $_POST['Short'], $_POST['Tel'], $_POST['Email'], $_POST['Billing'], $_POST['Site'], $_POST['Share']);
   } else if($handler == "Account_Update_Get") {
     $account->Account_Update_Get($_POST['Acc_ID']);
   } else if($handler == "Account_Fleet_Update_Get") {
@@ -84,8 +84,6 @@
     $account->Account_Suspend($_POST['Key']);
   } else if($handler == "Account_Delete") {
     $account->Account_Delete($_POST['Key']);
-  } else if($handler == "Account_New") {
-    $account->Account_New($_POST['Name'], $_POST['Contact_no'], $_POST['Contact_Email'], $_POST['Billing_Email'], $_POST['Campus'], $_POST['Share']);
   } else if($handler == "Payment_Service_SNAP_Dropdown_Get") {
     $payment->Payment_ServiceSelect_SNAP($_POST['vehicle_type']);
   } else if($handler == "Payment_Service_Fuel_Dropdown_Get") {
@@ -99,7 +97,7 @@
   } else if($handler == "Transaction_Proccess_Fuel_Renewal") {
     $payment->Transaction_Proccess_Fuel_Renewal($_POST['LogID'], $_POST['ANPRKey'], $_POST['PayRef'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service'], $_POST['Expiry'], $_POST['etp']);
   } else if($handler == "Account_Register") {
-    $account->Account_Register($_POST['name'], $_POST['tel'], $_POST['email'], $_POST['billing'], $_POST['site'], $_POST['shared']);
+    $account->Account_Register($_POST['name'], $_POST['tel'], $_POST['short'], $_POST['email'], $_POST['billing'], $_POST['site'], $_POST['shared']);
   } else if($handler == "Payment_Delete") {
     $payment->Payment_Delete($_POST['Pay_ID'], $_POST['Comment']);
   } else if ($handler == "NT_Print_Ticket") {

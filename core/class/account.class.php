@@ -111,7 +111,7 @@
       $this->mysql = null;
     }
     //Update Account Information Modal PHP
-    function Account_Update_Save($key, $name, $tel, $email, $billing, $site, $share) {
+    function Account_Update_Save($key, $name, $short, $tel, $email, $billing, $site, $share) {
       $this->mysql = new MySQL;
       $this->pm = new PM;
       $this->user = new User;
@@ -120,15 +120,16 @@
 
       $date = date("Y-m-d H:i:s");
 
-      $query = $this->mysql->dbc->prepare("UPDATE pm_accounts SET account_name = ?, account_contact_no = ?, account_contact_email = ?, account_billing_email = ?, account_updated = ?, campus = ?, account_shared = ? WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("UPDATE pm_accounts SET account_name = ?, account_shortName = ?, account_contact_no = ?, account_contact_email = ?, account_billing_email = ?, account_updated = ?, campus = ?, account_shared = ? WHERE id = ?");
       $query->bindParam(1, $name);
-      $query->bindParam(2, $tel);
-      $query->bindParam(3, $email);
-      $query->bindParam(4, $billing);
-      $query->bindParam(5, $date);
-      $query->bindParam(6, $site);
-      $query->bindParam(7, $share);
-      $query->bindParam(8, $key);
+      $query->bindParam(2, $short);
+      $query->bindParam(3, $tel);
+      $query->bindParam(4, $email);
+      $query->bindParam(5, $billing);
+      $query->bindParam(6, $date);
+      $query->bindParam(7, $site);
+      $query->bindParam(8, $share);
+      $query->bindParam(9, $key);
       if($query->execute()) {
         $this->pm->PM_Notification_Create("$user has successfully updated $name's information.", "0");
       }
@@ -325,20 +326,21 @@
       $this->mysql = null;
     }
     //Account registration
-    function Account_Register($name, $tel, $email, $billing, $site, $shared) {
+    function Account_Register($name, $tel, $short, $email, $billing, $site, $shared) {
       $this->mysql = new MySQL;
       $this->pm = new PM;
 
       $date = date("Y-m-d H:i:s");
 
-      $query = $this->mysql->dbc->prepare("INSERT INTO pm_accounts (account_name, account_shared, account_contact_no, account_contact_email, account_billing_email, account_suspended, account_deleted, account_updated, campus) VALUES (?, ?, ?, ?, ?, '0', '0', ?, ?)");
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_accounts (account_name, account_shortName, account_shared, account_contact_no, account_contact_email, account_billing_email, account_suspended, account_deleted, account_updated, campus) VALUES (?, ?, ?, ?, ?, ?, '0', '0', ?, ?)");
       $query->bindParam(1, $name);
-      $query->bindParam(2, $shared);
-      $query->bindParam(3, $tel);
-      $query->bindParam(4, $email);
-      $query->bindParam(5, $billing);
-      $query->bindParam(6, $date);
-      $query->bindParam(7, $site);
+      $query->bindParam(2, $short);
+      $query->bindParam(3, $shared);
+      $query->bindParam(4, $tel);
+      $query->bindParam(5, $email);
+      $query->bindParam(6, $billing);
+      $query->bindParam(7, $date);
+      $query->bindParam(8, $site);
       if($query->execute()) {
         $this->pm->PM_Notification_Create('A new account has been added to PM - '.$name.'', 0);
       }

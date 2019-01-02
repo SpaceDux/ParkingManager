@@ -851,7 +851,7 @@
         $sql_anprTbl->bindParam(1, $expiry);
         $sql_anprTbl->bindParam(2, $ANPRKey);
         if($sql_anprTbl->execute()) {
-          $this->vehicles->Parking_Log_Expiry_Update($ANPRKey, $expiry);
+          $this->vehicles->Parking_Log_Expiry_Update($PayRef, $expiry);
         }
 
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -905,7 +905,7 @@
         $sql_anprTbl->bindParam(1, $expiry);
         $sql_anprTbl->bindParam(2, $ANPRKey);
         if($sql_anprTbl->execute()) {
-          $this->vehicles->Parking_Log_Expiry_Update($ANPRKey, $expiry);
+          $this->vehicles->Parking_Log_Expiry_Update($PayRef, $expiry);
         }
 
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -960,7 +960,7 @@
         $sql_anprTbl->bindParam(1, $expiry);
         $sql_anprTbl->bindParam(2, $ANPRKey);
         if($sql_anprTbl->execute()) {
-          $this->vehicles->Parking_Log_Expiry_Update($ANPRKey, $expiry);
+          $this->vehicles->Parking_Log_Expiry_Update($PayRef, $expiry);
         }
 
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -975,7 +975,7 @@
         //ignore
       }
     }
-    //Transaction for SNAP
+    //Transaction for SNAP (w/ API)
     function Transaction_Proccess_SNAP_Renewal($LogID, $ANPRKey, $PayRef, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $Expiry) {
       if(!empty($ANPRKey)) {
         $this->mssql = new MSSQL;
@@ -1017,7 +1017,7 @@
           $sql_anprTbl->bindParam(1, $expiry);
           $sql_anprTbl->bindParam(2, $ANPRKey);
           if($sql_anprTbl->execute()) {
-            $this->vehicles->Parking_Log_Expiry_Update($ANPRKey, $expiry);
+            $this->vehicles->Parking_Log_Expiry_Update($PayRef, $expiry);
           }
           $pay_id = $this->PaymentInfo($Plate, "id");
 
@@ -1081,6 +1081,7 @@
     //     //ignore
     //   }
     // }
+
     //Transaction for Fuel
     function Transaction_Proccess_Fuel_Renewal($LogID, $ANPRKey, $PayRef, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $Expiry, $etp) {
       if(!empty($ANPRKey)) {
@@ -1117,7 +1118,7 @@
         $sql_anprTbl->bindParam(1, $expiry);
         $sql_anprTbl->bindParam(2, $ANPRKey);
         if($sql_anprTbl->execute()) {
-          $this->vehicles->Parking_Log_Expiry_Update($ANPRKey, $expiry);
+          $this->vehicles->Parking_Log_Expiry_Update($PayRef, $expiry);
         }
 
         $this->mssql = null;
@@ -1319,11 +1320,12 @@
 
       $user = $this->user->userInfo("first_name");
       $service = $this->PaymentInfo($key, "payment_service_id");
+      $ref = $this->PaymentInfo($key, "payment_ref");
       $anprkey = $this->PaymentInfo($key, "payment_anprkey");
 
       $service_expiry = $this->Payment_ServiceInfo($service, "service_expiry");
-      $q = $this->mysql->dbc->prepare("SELECT parked_expiry FROM pm_parking_log WHERE parked_anprkey = ?");
-      $q->bindParam(1, $anprkey);
+      $q = $this->mysql->dbc->prepare("SELECT parked_expiry FROM pm_parking_log WHERE payment_ref = ?");
+      $q->bindParam(1, $ref);
       $q->execute();
 
       $return = $q->fetch(\PDO::FETCH_ASSOC);
@@ -1335,7 +1337,7 @@
       $query->bindParam(2, $key);
       if($query->execute()) {
         $this->anpr->ANPR_Expiry_Set($anprkey, $new_expiry);
-        $this->vehicles->Parking_Log_Expiry_Update($anprkey, $new_expiry);
+        $this->vehicles->Parking_Log_Expiry_Update($ref, $new_expiry);
         $this->pm->PM_Notification_Create("$user has successfully deleted a transaction. ID: $key", 1);
       }
 

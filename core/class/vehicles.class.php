@@ -503,7 +503,7 @@
     //Set Expiry after Payment
     function Parking_Log_Expiry_Update($key, $time) {
       $this->mysql = new MySQL;
-      $sql_parkedLog = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_expiry = ? WHERE parked_anprkey = ?");
+      $sql_parkedLog = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_expiry = ? WHERE payment_ref = ?");
       $sql_parkedLog->bindParam(1, $time);
       $sql_parkedLog->bindParam(2, $key);
       $sql_parkedLog->execute();
@@ -517,6 +517,22 @@
       $stmt->bindParam(1, $type);
       $stmt->bindParam(2, $id);
       $stmt->execute();
+
+      $this->mysql = null;
+    }
+    //Check duplicate
+    function Vehicle_IsDup($plate) {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate = ? AND parked_deleted = 0 AND parked_column = 1");
+      $stmt->bindParam(1, $plate);
+      $stmt->execute();
+
+      if($stmt->rowCount() > 0) {
+        return TRUE;
+      } else {
+        return FALSE;
+      }
 
       $this->mysql = null;
     }
