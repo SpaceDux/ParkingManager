@@ -319,7 +319,7 @@
       $this->user = new User;
       $this->vehicles = new Vehicles;
       $this->campus = $this->user->userInfo("campus");
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate LIKE ? OR parked_trailer LIKE ? OR parked_company LIKE ? AND parked_campus = ? ORDER BY parked_timein DESC LIMIT 200");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate LIKE ? OR parked_trailer LIKE ? OR parked_company LIKE ? AND parked_campus = ? ORDER BY parked_timein DESC LIMIT 100");
       $stmt->bindParam(1, $string);
       $stmt->bindParam(2, $string);
       $stmt->bindParam(3, $string);

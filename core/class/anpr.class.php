@@ -15,7 +15,7 @@
         $string = '%'.$key.'%';
         $html = '';
         $this->mssql = new MSSQL;
-        $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Plate LIKE ? OR Original_Plate LIKE ? OR Uniqueref LIKE ? ORDER BY Capture_Date DESC");
+        $stmt = $this->mssql->dbc->prepare("SELECT TOP 50 * FROM ANPR_REX WHERE Plate LIKE ? OR Original_Plate LIKE ? OR Uniqueref LIKE ? ORDER BY Capture_Date DESC");
         $stmt->bindParam(1, $string);
         $stmt->bindParam(2, $string);
         $stmt->bindParam(3, $string);
@@ -87,7 +87,7 @@
       $this->mssql = null;
     }
     //ANPR Update Details
-    function ANPR_Update($key, $plate, $time) {
+    function ANPR_Update_Save($key, $plate, $time) {
       $this->mssql = new MSSQL;
       $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ?, Capture_Date = ? WHERE Uniqueref = ?");
       $stmt->bindParam(1, strtoupper($plate));
@@ -98,7 +98,7 @@
       $this->mssql = null;
     }
     //ANPR Add Vehicle
-    function ANPR_Add($plate, $time) {
+    function ANPR_AddPlate($plate, $time) {
       //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID, BarcodeExpression)
       $this->mssql = new MSSQL;
 
@@ -141,6 +141,7 @@
         curl_close($ch);
       }
     }
+    //ANPR Images
     function ANPR_GetImage($id) {
       global $_CONFIG;
       $this->mssql = new MSSQL;
@@ -174,7 +175,7 @@
       $this->user = null;
     }
     //Get ANPR rec
-    function getANPR_Record($key) {
+    function ANPR_GetRecord($key) {
       global $_CONFIG;
       //Prep Class'
       $this->mssql = new MSSQL;

@@ -524,16 +524,42 @@
     //Check duplicate
     function Vehicle_IsDup($plate) {
       $this->mysql = new MySQL;
+      $this->user = new User;
+      $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate = ? AND parked_deleted = 0 AND parked_column = 1");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate = ? AND parked_column = 1 AND parked_deleted = 0 AND parked_campus = ? ORDER BY id DESC LIMIT 1");
       $stmt->bindParam(1, $plate);
+      $stmt->bindParam(2, $campus);
       $stmt->execute();
+      $res = $stmt->fetchAll();
 
-      if($stmt->rowCount() > 0) {
+      if(count($res) > 0) {
         return TRUE;
       } else {
         return FALSE;
       }
+
+      $this->mysql = null;
+      $this->user = null;
+    }
+    //Add new Parking Record
+    function Vehicles_Parking_New($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey) {
+      $this->mysql = new MySQL;
+      //SQL for Parking Log 15
+      $Trailer = strtoupper($Trailer);
+      $sql_parkedLog = $this->mysql->dbc->prepare("INSERT INTO pm_parking_log (parked_anprkey, payment_ref, parked_plate, parked_trailer, parked_type, parked_company, parked_column, parked_timein, parked_timeout, parked_expiry, parked_flag, parked_deleted, parked_account_id, parked_author, parked_campus, parked_comment, parked_exitKey) VALUES (:ANPRKey, :PayRef, :Plate, :Trailer, :Vehicle_Type, :Company, '1', :TimeIN, '', :Expiry, '0', '0', null, :Name, :Campus, '', :ExitKey)");
+      $sql_parkedLog->bindParam(':ANPRKey', $ANPRKey);
+      $sql_parkedLog->bindParam(':PayRef', $ref);
+      $sql_parkedLog->bindParam(':Plate', $Plate);
+      $sql_parkedLog->bindParam(':Trailer', $Trailer);
+      $sql_parkedLog->bindParam(':Vehicle_Type', $Vehicle_Type);
+      $sql_parkedLog->bindParam(':Company', $Company);
+      $sql_parkedLog->bindParam(':TimeIN', $ANPR_Date);
+      $sql_parkedLog->bindParam(':Expiry', $expiry);
+      $sql_parkedLog->bindParam(':Name', $name);
+      $sql_parkedLog->bindParam(':Campus', $campus);
+      $sql_parkedLog->bindParam(':ExitKey', $exitKey);
+      $sql_parkedLog->execute();
 
       $this->mysql = null;
     }

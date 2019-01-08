@@ -2,7 +2,7 @@
   require(__DIR__.'/global.php');
   $ANPRKey = $_GET['Uniqueref'];
   //Get ANPR Details
-  $anpr_rec = $anpr->getANPR_Record($ANPRKey);
+  $anpr_rec = $anpr->ANPR_GetRecord($ANPRKey);
   $date = date("Y-m-d H:i:s", strtotime($anpr_rec['Capture_Date']));
 ?>
 <!DOCTYPE html>

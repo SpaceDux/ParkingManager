@@ -1176,7 +1176,7 @@
       type: "POST",
       data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Date="+DateIN+"&Company="+Company,
       success:function() {
-        // window.location.replace("<?php echo URL?>/main");
+        window.location.replace("<?php echo URL?>/main");
       }
     });
   });

@@ -19,17 +19,17 @@
   } else if($handler == "ANPR_Update_Get") {
     $anpr->ANPR_Update_Get($_POST['anpr_id']);
   } else if($handler == "ANPR_Update") {
-    $anpr->ANPR_Update($_POST['anpr_id'], $_POST['Plate'], $_POST['Capture_Date']);
+    $anpr->ANPR_Update_Save($_POST['anpr_id'], $_POST['Plate'], $_POST['Capture_Date']);
   } else if($handler == "ANPR_Add") {
-    $anpr->ANPR_Add($_POST['Plate'], $_POST['Date']);
+    $anpr->ANPR_AddPlate($_POST['Plate'], $_POST['Date']);
   } else if($handler == "PM_Search") {
     $pm->PM_Search($_POST['PMKey']);
   } else if($handler == "ANPR_Barrier") {
     $anpr->ToggleBarrier($_POST['barrier']);
   } else if($handler == "Payment_Add_Service") {
-    $payment->Add_Service($_POST['Service_Name'], $_POST['Service_Ticket'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal_Amount'], $_POST['Service_Shower_Amount'], $_POST['Service_Group'], $_POST['Service_Vehicles'], $_POST['Service_Vehicles_Any'], $_POST['Service_ETPID']);
+    $payment->Payment_Services_New($_POST['Service_Name'], $_POST['Service_Ticket'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal_Amount'], $_POST['Service_Shower_Amount'], $_POST['Service_Group'], $_POST['Service_Vehicles'], $_POST['Service_Vehicles_Any'], $_POST['Service_ETPID']);
   } else if($handler == "Payment_Service_Delete") {
-    $payment->DeleteService($_POST['Service']);
+    $payment->Payment_Services_Delete($_POST['Service']);
   } else if($handler == "Payment_Service_Update_Get") {
     $payment->Payment_Service_Update_Get($_POST['service_id']);
   } else if($handler == "Payment_Service_Update") {

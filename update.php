@@ -74,7 +74,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <?php $payment->getTransactions($row['payment_ref'])?>
+                  <?php $payment->Payment_GetTransactions($row['payment_ref'])?>
                 </tbody>
               </table>
               <div class="form-group">

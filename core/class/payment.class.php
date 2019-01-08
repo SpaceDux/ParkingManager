@@ -14,7 +14,7 @@
     private $anpr;
 
     //Get All transactions for the logged vehicle
-    function getTransactions($key) {
+    function Payment_GetTransactions($key) {
       //Prep Class
       $this->mysql = new MySQL;
       $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0 ORDER BY payment_date DESC");
@@ -50,7 +50,7 @@
       echo $html;
     }
     //List all services
-    function list_services($site) {
+    function Payment_Services_List($site) {
       $this->mysql = new MySQL;
       $this->pm = new PM;
       $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_campus = ? ORDER BY service_price_gross ASC");
@@ -122,7 +122,7 @@
       $this->pm = null;
     }
     //Add services
-    function Add_Service($name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_amount, $shower_amount, $group, $vehicles, $any, $etpid) {
+    function Payment_Services_New($name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_amount, $shower_amount, $group, $vehicles, $any, $etpid) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $date = date("Y-m-d H:i");
@@ -158,8 +158,24 @@
       $this->mysql = null;
       $this->user = null;
     }
+    //Payment Service Groups
+    function Payment_Service_Group_Dropdown() {
+      $this->mysql = new MySQL;
+
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services_groups");
+      $query->execute();
+
+      $html = '<option value="unchecked">-- Please choose a group --</option>';
+      foreach ($query->fetchAll() as $row) {
+        $html .= '<option value="'.$row['id'].'">'.$row['group_name'].'</option>';
+      }
+
+      echo $html;
+
+      $this->mysql = null;
+    }
     //Delete services
-    function DeleteService($key) {
+    function Payment_Services_Delete($key) {
       $this->mysql = new MySQL;
 
       $query = $this->mysql->dbc->prepare("DELETE FROM pm_services WHERE id = ?");
@@ -169,7 +185,7 @@
       $this->mysql = null;
     }
     //Add Transaction
-    function Payment_ProcessNew($ANPRKey, $plate, $company, $pay_type, $service, $service_name, $gross, $net, $author, $date, $account, $campus, $ref, $etp, $group, $vehicle_type) {
+    function Payment_Transaction_Add($ANPRKey, $plate, $company, $pay_type, $service, $service_name, $gross, $net, $author, $date, $account, $campus, $ref, $etp, $group, $vehicle_type) {
       $this->mysql = new MySQL;
       $this->pm = new PM;
 
@@ -207,24 +223,6 @@
       }
       $this->mysql = null;
       $this->pm = null;
-    }
-    //Add Vehicle to parking log
-    function Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey) {
-      //SQL for Parking Log 15
-      $Trailer = strtoupper($Trailer);
-      $sql_parkedLog = $this->mysql->dbc->prepare("INSERT INTO pm_parking_log (parked_anprkey, payment_ref, parked_plate, parked_trailer, parked_type, parked_company, parked_column, parked_timein, parked_timeout, parked_expiry, parked_flag, parked_deleted, parked_account_id, parked_author, parked_campus, parked_comment, parked_exitKey) VALUES (:ANPRKey, :PayRef, :Plate, :Trailer, :Vehicle_Type, :Company, '1', :TimeIN, '', :Expiry, '0', '0', null, :Name, :Campus, '', :ExitKey)");
-      $sql_parkedLog->bindParam(':ANPRKey', $ANPRKey);
-      $sql_parkedLog->bindParam(':PayRef', $ref);
-      $sql_parkedLog->bindParam(':Plate', $Plate);
-      $sql_parkedLog->bindParam(':Trailer', $Trailer);
-      $sql_parkedLog->bindParam(':Vehicle_Type', $Vehicle_Type);
-      $sql_parkedLog->bindParam(':Company', $Company);
-      $sql_parkedLog->bindParam(':TimeIN', $ANPR_Date);
-      $sql_parkedLog->bindParam(':Expiry', $expiry);
-      $sql_parkedLog->bindParam(':Name', $name);
-      $sql_parkedLog->bindParam(':Campus', $campus);
-      $sql_parkedLog->bindParam(':ExitKey', $exitKey);
-      $sql_parkedLog->execute();
     }
     //Gather payment information & vehicle info
     function Payment_Ticket_Info($tid, $ticket_printed, $processed, $date, $expiry) {
@@ -517,12 +515,13 @@
         $this->anpr = new ANPR;
         $this->user = new User;
         $this->pm = new PM;
+        $this->vehicles = new Vehicles;
         //Misc dets
         $current_date = date("Y-m-d H:i:s");
         $Company = strtoupper($Company);
         $Plate = strtoupper($Plate);
         //ANPR Dets
-        $anprInfo = $this->anpr->getANPR_Record($ANPRKey);
+        $anprInfo = $this->anpr->ANPR_GetRecord($ANPRKey);
         $ANPR_Date = $anprInfo['Capture_Date'];
         //User Details
         $name = $this->user->userInfo("first_name");
@@ -544,7 +543,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Insert Payment data
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -557,7 +556,7 @@
 
 
         //Create new parking log information.
-        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
+        $this->vehicles->Vehicles_Parking_New($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
 
         $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
@@ -583,7 +582,7 @@
         $Company = strtoupper($Company);
         $Plate = strtoupper($Plate);
         //ANPR Dets
-        $anprInfo = $this->anpr->getANPR_Record($ANPRKey);
+        $anprInfo = $this->anpr->ANPR_GetRecord($ANPRKey);
         $ANPR_Date = $anprInfo['Capture_Date'];
         //User Details
         $name = $this->user->userInfo("first_name");
@@ -605,7 +604,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Insert Payment data
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -618,7 +617,7 @@
 
 
         //Create new parking log information.
-        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
+        $this->vehicles->Vehicles_Parking_New($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
 
         $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
@@ -644,7 +643,7 @@
         $Company = strtoupper($Company);
         $Plate = strtoupper($Plate);
         //ANPR Dets
-        $anprInfo = $this->anpr->getANPR_Record($ANPRKey);
+        $anprInfo = $this->anpr->ANPR_GetRecord($ANPRKey);
         $ANPR_Date = $anprInfo['Capture_Date'];
         //User Details
         $name = $this->user->userInfo("first_name");
@@ -666,7 +665,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Insert Payment data
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account_ID, $campus, $payment_ref, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account_ID, $campus, $payment_ref, null, $group, $Vehicle_Type);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -679,7 +678,7 @@
 
 
         //Create new parking log information.
-        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
+        $this->vehicles->Vehicles_Parking_New($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
 
         $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
@@ -706,7 +705,7 @@
         $Company = strtoupper($Company);
         $Plate = strtoupper($Plate);
         //ANPR Dets
-        $anprInfo = $this->anpr->getANPR_Record($ANPRKey);
+        $anprInfo = $this->anpr->ANPR_GetRecord($ANPRKey);
         $ANPR_Date = $anprInfo['Capture_Date'];
         //User Details
         $name = $this->user->userInfo("first_name");
@@ -733,7 +732,7 @@
           echo 0;
         } else {
           //Insert Payment data
-          $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $return, $group, $Vehicle_Type);
+          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $return, $group, $Vehicle_Type);
 
           $ref = $this->PaymentInfo($Plate, "payment_ref");
           $pay_id = $this->PaymentInfo($Plate, "id");
@@ -745,7 +744,7 @@
           $sql_anprTbl->execute();
 
           //Create new parking log information.
-          $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
+          $this->vehicles->Vehicles_Parking_New($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
 
           $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
           echo 1;
@@ -774,7 +773,7 @@
         $Company = strtoupper($Company);
         $Plate = strtoupper($Plate);
         //ANPR Dets
-        $anprInfo = $this->anpr->getANPR_Record($ANPRKey);
+        $anprInfo = $this->anpr->ANPR_GetRecord($ANPRKey);
         $ANPR_Date = $anprInfo['Capture_Date'];
         //User Details
         $name = $this->user->userInfo("first_name");
@@ -796,7 +795,7 @@
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
         //Insert Payment data
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $etp, $group, $Vehicle_Type);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -809,7 +808,7 @@
 
 
         //Create new parking log information.
-        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
+        $this->vehicles->Vehicles_Parking_New($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
 
         $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
@@ -856,7 +855,7 @@
         $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group, $Vehicle_Type);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -910,7 +909,7 @@
         $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group, $Vehicle_Type);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -965,7 +964,7 @@
         $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account, $campus, $PayRef, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account, $campus, $PayRef, null, $group, $Vehicle_Type);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -1022,7 +1021,7 @@
           //echo "TRANSACTION NOT ADDED";
         } else {
           //SQL Payment
-          $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $return, $group, $Vehicle_Type);
+          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $return, $group, $Vehicle_Type);
           //ANPR DB SQL
           $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
           $sql_anprTbl->bindParam(1, $expiry);
@@ -1075,7 +1074,7 @@
     //
     //
     //     //SQL Payment
-    //     $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp, $group, $Vehicle_Type);
+    //     $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp, $group, $Vehicle_Type);
     //     //ANPR DB SQL
     //     $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
     //     $sql_anprTbl->bindParam(1, $expiry);
@@ -1122,7 +1121,7 @@
 
 
         //SQL Payment
-        $this->Payment_ProcessNew($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $etp, $group, $Vehicle_Type);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -1413,7 +1412,7 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->campus = $this->user->userInfo("campus");
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_vehicle_plate LIKE ? OR id LIKE ? OR payment_etp_id LIKE ? AND payment_campus = ? ORDER BY payment_date DESC LIMIT 200");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_vehicle_plate LIKE ? OR id LIKE ? OR payment_etp_id LIKE ? AND payment_campus = ? ORDER BY payment_date DESC LIMIT 100");
       $stmt->bindParam(1, $string);
       $stmt->bindParam(2, $string);
       $stmt->bindParam(3, $string);
@@ -1458,22 +1457,6 @@
       $this->mysql = null;
       $this->user = null;
       $this->campus = null;
-    }
-    //Payment Service Groups
-    function Payment_Service_Group_Dropdown() {
-      $this->mysql = new MySQL;
-
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services_groups");
-      $query->execute();
-
-      $html = '<option value="unchecked">-- Please choose a group --</option>';
-      foreach ($query->fetchAll() as $row) {
-        $html .= '<option value="'.$row['id'].'">'.$row['group_name'].'</option>';
-      }
-
-      echo $html;
-
-      $this->mysql = null;
     }
     //Count payments
     function Payment_Count($id, $paid, $date1, $date2) {

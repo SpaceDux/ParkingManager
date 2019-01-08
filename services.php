@@ -39,7 +39,7 @@
                 <a class="nav-link" id="2-tab" data-toggle="tab" href="#hollies" role="tab" aria-controls="2" aria-selected="false">Roadking: Hollies</a>
               </li>
             </ul>
-            <div class="tab-content" id="Payment_Service_TabContent">
+            <div class="tab-content" id="dev">
               <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="dev">
                 <table class="table table-hover table-bordered">
                   <thead class="thead-dark">
@@ -61,7 +61,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php $payment->list_services(0);?>
+                    <?php $payment->Payment_Services_List(0);?>
                   </tbody>
                 </table>
               </div>
@@ -86,7 +86,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php $payment->list_services(1);?>
+                    <?php $payment->Payment_Services_List(1);?>
                   </tbody>
                 </table>
               </div>
@@ -111,7 +111,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php $payment->list_services(2);?>
+                    <?php $payment->Payment_Services_List(2);?>
                   </tbody>
                 </table>
               </div>

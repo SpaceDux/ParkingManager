@@ -5,6 +5,7 @@
   use GuzzleHttp\Psr7\Request;
 
   class ETP {
+    //Add SNAP transaction
     function SNAP_ListServices() {
       global $_CONFIG;
       $this->user = new User;
@@ -53,7 +54,16 @@
       echo $html;
       $this->user = null;
     }
-    //Add SNAP transaction
+    //String Preperation
+    public function Fuel_String_Prepare($string, $start, $end) {
+      $string = ' ' . $string;
+      $ini = strpos($string, $start);
+      if ($ini == 0) return '';
+      $ini += strlen($start);
+      $len = strpos($string, $end, $ini) - $ini;
+      return substr($string, $ini, $len);
+    }
+    //Process SNAP transaction
     function Proccess_Transaction_SNAP($etpid, $plate, $name) {
       global $_CONFIG;
       $this->user = new User;
@@ -98,14 +108,7 @@
       }
       $this->user = null;
     }
-    public function Fuel_String_Prepare($string, $start, $end) {
-      $string = ' ' . $string;
-      $ini = strpos($string, $start);
-      if ($ini == 0) return '';
-      $ini += strlen($start);
-      $len = strpos($string, $end, $ini) - $ini;
-      return substr($string, $ini, $len);
-    }
+    //Process Fuelcard Transaction
     public function Proccess_Transaction_Fuel($etpid, $plate, $name, $fuel_string) {
       global $_CONFIG;
       $this->user = new User;
