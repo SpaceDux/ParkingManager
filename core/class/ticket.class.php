@@ -20,18 +20,19 @@
       }
       return implode($allLines, "\n") . "\n";
     }
-    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group) {
+    //Determine Ticket
+    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey) {
       if($group == 1) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey);
       } else if ($group == 2) {
         $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type);
       } else if ($group == 3) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey);
       }
     }
     //Begin Tickets
     //Print parking ticket
-    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count) {
+    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey) {
       $this->user = new User;
       $this->pm = new PM;
       $campus = $this->user->userInfo("campus");
@@ -39,7 +40,7 @@
       $vat_rate = "20";
       $vat_pay = ($gross - $net);
       $vatnum = $this->pm->PM_SiteInfo($campus, "site_vat");
-      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/assets/img/printer/".$campus;
       //Printer Connection
       if($campus == 1) {
         //Holyhead
@@ -47,7 +48,7 @@
       } else if ($campus == 2) {
         //Cannock
         $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
-      } else if ($campus == 3) {
+      } else if ($campus == 0) {
         //Developer
         $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
       }
@@ -99,9 +100,15 @@
         $printer -> setTextSize(1, 1);
         $printer -> text("Expiry Date: ".$expiry."\n");
         $printer -> text("Payment Type: ".$payment_type."\n");
-        $printer -> feed(2);
+        $printer -> feed(1);
         //Address Details
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> setReverseColors(TRUE);
+        $printer -> setTextSize(2, 2);
+        $printer -> text(" Exit Code: #".$exitKey." ");
+        $printer -> setReverseColors(FALSE);
+        $printer -> selectPrintMode();
+        $printer -> feed(1);
         $printer -> graphics($address);
         $printer -> feed(1);
         $printer -> text("VAT No: ".$vatnum);
@@ -544,6 +551,7 @@
     //   $this->payment = null;
     // }
     //Working
+
     function Printer_9PM() {
       $this->mysql = new MySQL;
       $this->user = new User;

@@ -74,10 +74,38 @@
                  ?>
                  <nav>
                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                     <a class="nav-item nav-link" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>
+                     <a class="nav-item nav-link" id="nav-card-tab" tabindex="-1" data-toggle="tab" href="#nav-card" role="tab" aria-controls="nav-card" aria-selected="false"><i class="far fa-credit-card"></i> Card</a>
                      <a class="nav-item nav-link active" id="nav-account-tab" tabindex="-1" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="false"><i class="fas fa-id-card"></i> Account</a>
+                     <a class="nav-item nav-link" id="nav-snap-tab" tabindex="-1" data-toggle="tab" href="#nav-snap" role="tab" aria-controls="nav-snap" aria-selected="false"> SNAP</a>
+                     <a class="nav-item nav-link" id="nav-fuel-tab" tabindex="-1" data-toggle="tab" href="#nav-fuel" role="tab" aria-controls="nav-fuel" aria-selected="false"> Fuel Card</a>
                    </div>
                  </nav>
                  <div class="tab-content" id="nav-tabContent">
+                   <div class="tab-pane fade" id="nav-cash" role="tabpanel" aria-labelledby="nav-cash-tab">
+                     <div class="form-group">
+                       <label>Select a Cash Service</label>
+                       <div id="Cash_Dropdown">
+
+                       </div>
+                       <small class="form-text text-muted"> Ensure this is correct! </small>
+                       <div class="form-group" style="margin-top: 130px;">
+                         <input type="submit" id="T_Process_Cash" name="T_Process_Cash" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                       </div>
+                     </div>
+                   </div>
+                   <div class="tab-pane fade" id="nav-card" role="tabpanel" aria-labelledby="nav-card-tab">
+                     <div class="form-group">
+                       <label>Select a Card Service</label>
+                       <div id="Card_Dropdown">
+
+                       </div>
+                       <small class="form-text text-muted"> Ensure this is correct! </small>
+                     </div>
+                     <div class="form-group" style="margin-top: 130px;">
+                       <input type="submit" name="T_Process_Card" id="T_Process_Card" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                     </div>
+                   </div>
                    <div class="tab-pane fade show active" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
                      <div class="form-group">
                        <label>Select a Account Service</label>
@@ -90,8 +118,36 @@
                        <label>Select an account</label>
                        <?php $account->Account_List_Dropdown_Set($acc_id); ?>
                      </div>
-                     <div class="form-group" style="margin-top: 100px;">
+                     <div class="form-group" style="margin-top: 130px;">
                        <input type="submit" name="T_Process_Account" id="T_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                     </div>
+                   </div>
+                   <div class="tab-pane fade" id="nav-snap" role="tabpanel" aria-labelledby="nav-snap-tab">
+                     <div class="form-group">
+                       <label>Select a SNAP Service</label>
+                       <div id="SNAP_Dropdown">
+
+                       </div>
+                       <small class="form-text text-muted"> Ensure this is correct! </small>
+                     </div>
+                     <div class="form-group" style="margin-top: 130px;">
+                       <input type="submit" name="T_Process_SNAP" id="T_Process_SNAP" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                     </div>
+                   </div>
+                   <div class="tab-pane fade" id="nav-fuel" role="tabpanel" aria-labelledby="nav-fuel-tab">
+                     <div class="form-group">
+                       <label>Select a Fuel Service</label>
+                       <div id="Fuel_Dropdown">
+
+                       </div>
+                       <small class="form-text text-muted"> Ensure this is correct! </small>
+                     </div>
+                     <div class="form-group">
+                       <label>ETP Ticket ID number</label>
+                       <input type="number" class="form-control" name="T_Process_Fuel_TID" id="T_Process_Fuel_TID" value="" placeholder="ETP Ticket ID">
+                     </div>
+                     <div class="form-group" style="margin-top: 130px;">
+                       <input type="submit" name="T_Process_Fuel" id="T_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
                  </div>

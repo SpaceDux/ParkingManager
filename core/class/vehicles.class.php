@@ -262,8 +262,9 @@
       //Prep Class'
       $this->mysql = new MySQL;
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE id = ? OR payment_ref = ?");
       $query->bindParam(1, $id);
+      $query->bindParam(2, $id);
       $query->execute();
       $result = $query->fetch(\PDO::FETCH_ASSOC);
       return $result[$what];

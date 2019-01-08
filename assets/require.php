@@ -731,6 +731,8 @@
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
     } else {
+      //temp until response written
+      jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Cash",
         type: "POST",
@@ -759,6 +761,8 @@
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
     } else {
+      //temp until response written
+      jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Card",
         type: "POST",
@@ -788,6 +792,8 @@
     } else if (Account_ID === "unchecked") {
       alert("Please select an Account");
     } else {
+      //temp until response written
+      jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Account",
         type: "POST",
@@ -817,6 +823,8 @@
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
     } else {
+      //temp until response written
+      jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_SNAP",
         type: "POST",
@@ -853,6 +861,8 @@
     } else if (etp === "") {
       alert("Please enter the ETP's Ticket ID");
     } else {
+      //temp until response written
+      jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Fuel",
         type: "POST",
@@ -885,6 +895,7 @@
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
     } else {
+      jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Cash_Renewal",
         type: "POST",
@@ -916,6 +927,7 @@
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
     } else {
+      jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Card_Renewal",
         type: "POST",
@@ -948,6 +960,8 @@
     } else if (Account_ID === "unchecked") {
       alert("Please select an Account");
     } else {
+      //Temp
+      jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Account_Renewal",
         type: "POST",
@@ -979,6 +993,8 @@
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
     } else {
+      //temp
+      jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_SNAP_Renewal",
         type: "POST",
@@ -1018,6 +1034,8 @@
     } else if (etp === "") {
       alert("Please enter the ETP Ticket ID");
     } else {
+      //temp
+      jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Fuel_Renewal",
         type: "POST",
@@ -1158,7 +1176,7 @@
       type: "POST",
       data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Date="+DateIN+"&Company="+Company,
       success:function() {
-        window.location.replace("<?php echo URL?>/main");
+        // window.location.replace("<?php echo URL?>/main");
       }
     });
   });

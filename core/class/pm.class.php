@@ -397,7 +397,7 @@
       $this->user = new User;
       $this->mssql = new MSSQL;
 
-      $anpr = $this->mssql->dbc->prepare("SELECT TOP 100 * FROM ANPR_REX WHERE Lane_ID = 2 ORDER BY Capture_Date DESC");
+      $anpr = $this->mssql->dbc->prepare("SELECT TOP 60 * FROM ANPR_REX WHERE Lane_ID = 2 ORDER BY Capture_Date DESC");
       $anpr->execute();
       $html = '<table class="table table-bordered">
                 <thead>

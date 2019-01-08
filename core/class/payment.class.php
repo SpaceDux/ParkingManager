@@ -209,10 +209,10 @@
       $this->pm = null;
     }
     //Add Vehicle to parking log
-    function Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus) {
+    function Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey) {
       //SQL for Parking Log 15
       $Trailer = strtoupper($Trailer);
-      $sql_parkedLog = $this->mysql->dbc->prepare("INSERT INTO pm_parking_log (parked_anprkey, payment_ref, parked_plate, parked_trailer, parked_type, parked_company, parked_column, parked_timein, parked_timeout, parked_expiry, parked_flag, parked_deleted, parked_account_id, parked_author, parked_campus, parked_comment) VALUES (:ANPRKey, :PayRef, :Plate, :Trailer, :Vehicle_Type, :Company, '1', :TimeIN, '', :Expiry, '0', '0', null, :Name, :Campus, '')");
+      $sql_parkedLog = $this->mysql->dbc->prepare("INSERT INTO pm_parking_log (parked_anprkey, payment_ref, parked_plate, parked_trailer, parked_type, parked_company, parked_column, parked_timein, parked_timeout, parked_expiry, parked_flag, parked_deleted, parked_account_id, parked_author, parked_campus, parked_comment, parked_exitKey) VALUES (:ANPRKey, :PayRef, :Plate, :Trailer, :Vehicle_Type, :Company, '1', :TimeIN, '', :Expiry, '0', '0', null, :Name, :Campus, '', :ExitKey)");
       $sql_parkedLog->bindParam(':ANPRKey', $ANPRKey);
       $sql_parkedLog->bindParam(':PayRef', $ref);
       $sql_parkedLog->bindParam(':Plate', $Plate);
@@ -223,6 +223,7 @@
       $sql_parkedLog->bindParam(':Expiry', $expiry);
       $sql_parkedLog->bindParam(':Name', $name);
       $sql_parkedLog->bindParam(':Campus', $campus);
+      $sql_parkedLog->bindParam(':ExitKey', $exitKey);
       $sql_parkedLog->execute();
     }
     //Gather payment information & vehicle info
@@ -470,12 +471,15 @@
       $this->user = new User;
       $this->pm = new PM;
       $this->ticket = new Ticket;
+      $this->vehicles = new Vehicles;
 
       $service = $this->PaymentInfo($plate, "payment_service_id");
 
       $ticket_name = $this->Payment_ServiceInfo($service, "service_ticket_name");
       $expiryHrs = $this->Payment_ServiceInfo($service, "service_expiry");
 
+      $payref = $this->PaymentInfo($plate, "payment_ref");
+      $exitKey = $this->vehicles->vehInfo("parked_exitKey", $payref);
       $gross = $this->PaymentInfo($plate, "payment_price_gross");
       $tid = $this->PaymentInfo($plate, "id");
       $type = $this->PaymentInfo($plate, "payment_type");
@@ -484,6 +488,8 @@
       $shower_count = $this->Payment_ServiceInfo($service, "service_shower_amount");
       $group = $this->Payment_ServiceInfo($service, "service_group");
       $expiry = date("Y-m-d H:i:s", strtotime($date.' +'.$expiryHrs.' hours'));
+
+      echo $exitKey;
       //$payment_type
       if($type == 1) {
         $payment_type = "Cash";
@@ -497,7 +503,7 @@
         $payment_type = "Fuel Card";
       }
       //Finally, print ticket
-      $this->ticket->Direction($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group);
+      $this->ticket->Direction($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey);
       //die("PRINTED?");
       $this->user = null;
       $this->pm = null;
@@ -527,8 +533,9 @@
         $price_gross = $this->Payment_ServiceInfo($Service, "service_price_gross");
         $price_net = $this->Payment_ServiceInfo($Service, "service_price_net");
         $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
-        $random_number = mt_rand(1, 9999);
+        $random_number = mt_rand(111111, 999999);
         $payment_ref = $Plate."-".$random_number;
+        $exitKey = mt_rand(111111, 999999);
         //Ticket Info
         $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
@@ -550,7 +557,7 @@
 
 
         //Create new parking log information.
-        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
+        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
 
         $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
@@ -588,8 +595,9 @@
         $price_net = $this->Payment_ServiceInfo($Service, "service_price_net");
         $group = $this->Payment_ServiceInfo($Service, "service_group");
         $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
-        $random_number = mt_rand(1, 9999);
+        $random_number = mt_rand(111111, 999999);
         $payment_ref = $Plate."-".$random_number;
+        $exitKey = mt_rand(111111, 999999);
         //Ticket Info
         $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
@@ -610,7 +618,7 @@
 
 
         //Create new parking log information.
-        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
+        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
 
         $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
@@ -648,8 +656,9 @@
         $price_net = $this->Payment_ServiceInfo($Service, "service_price_net");
         $group = $this->Payment_ServiceInfo($Service, "service_group");
         $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
-        $random_number = mt_rand(1, 9999);
+        $random_number = mt_rand(111111, 999999);
         $payment_ref = $Plate."-".$random_number;
+        $exitKey = mt_rand(111111, 999999);
         //Ticket Info
         $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
@@ -670,7 +679,7 @@
 
 
         //Create new parking log information.
-        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
+        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
 
         $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
@@ -709,8 +718,9 @@
         $price_net = $this->Payment_ServiceInfo($Service, "service_price_net");
         $group = $this->Payment_ServiceInfo($Service, "service_group");
         $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
-        $random_number = mt_rand(1, 9999);
+        $random_number = mt_rand(111111, 999999);
         $payment_ref = $Plate."-".$random_number;
+        $exitKey = mt_rand(111111, 999999);
         //Ticket Info
         $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
@@ -735,7 +745,7 @@
           $sql_anprTbl->execute();
 
           //Create new parking log information.
-          $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
+          $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
 
           $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
           echo 1;
@@ -776,8 +786,9 @@
         $price_net = $this->Payment_ServiceInfo($Service, "service_price_net");
         $group = $this->Payment_ServiceInfo($Service, "service_group");
         $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
-        $random_number = mt_rand(1, 9999);
+        $random_number = mt_rand(111111, 999999);
         $payment_ref = $Plate."-".$random_number;
+        $random_number = mt_rand(111111, 999999);
         //Ticket Info
         $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
@@ -798,7 +809,7 @@
 
 
         //Create new parking log information.
-        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus);
+        $this->Payment_Parking_LogNew($ANPRKey, $ref, $Plate, $Trailer, $Vehicle_Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
 
         $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
 
@@ -1081,7 +1092,6 @@
     //     //ignore
     //   }
     // }
-
     //Transaction for Fuel
     function Transaction_Proccess_Fuel_Renewal($LogID, $ANPRKey, $PayRef, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $Expiry, $etp) {
       if(!empty($ANPRKey)) {
@@ -1361,6 +1371,8 @@
         $TicketInfo->execute();
         $Ticket_Result = $TicketInfo->fetch(\PDO::FETCH_ASSOC);
 
+        $payref = $this->PaymentInfo($pay_id, "payment_ref");
+        $exitKey = $this->vehicles->vehInfo("parked_exitKey", $payref);
         $service_id = $this->PaymentInfo($pay_id, "payment_service_id");
         $paid = $this->PaymentInfo($pay_id, "payment_type");
         $Plate = $this->PaymentInfo($pay_id, "payment_vehicle_plate");
@@ -1385,7 +1397,7 @@
         } else if ($paid == 5) {
           $payment_type = "Fuel Card";
         }
-        $this->ticket->Direction($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count, $group);
+        $this->ticket->Direction($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey);
 
       }
 
