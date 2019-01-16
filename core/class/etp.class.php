@@ -73,7 +73,7 @@
       if($campus == 1 OR $campus == 0) {
         //Begin API client
         $response = $client->post('transaction/add', [
-          'auth' => array($_CONFIG['etp_api']['user-holyhead'], $_CONFIG['etp_api']['pass-holyhead']),
+          'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
           'json' => [
             'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
             'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
@@ -90,7 +90,7 @@
         }
       } else if ($campus == 2) {
         $response = $client->post('transaction/add', [
-          'auth' => array($_CONFIG['etp_api']['user-holyhead'], $_CONFIG['etp_api']['pass-holyhead']),
+          'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
           'json' => [
             'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
             'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
@@ -127,7 +127,7 @@
           //DKV
           if($rc == "90") {
             $response = $client->post('transaction/add', [
-              'auth' => array($_CONFIG['etp_api']['user-holyhead'], $_CONFIG['etp_api']['pass-holyhead']),
+              'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
               'json' => [
                 'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
                 'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
@@ -145,12 +145,12 @@
               return "FALSE";
             }
           } else {
-            return FALSE;
+            return "FALSE";
           }
         } else if(substr($cardno, "0", "6") === "707821") {
           //Key fuels
           $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user-holyhead'], $_CONFIG['etp_api']['pass-holyhead']),
+            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
             'json' => [
               'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
               'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
@@ -170,7 +170,7 @@
         } else if(substr($cardno, "0", "6") === "789666") {
           //Key fuels
           $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user-holyhead'], $_CONFIG['etp_api']['pass-holyhead']),
+            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
             'json' => [
               'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
               'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
@@ -190,7 +190,7 @@
         } else if(substr($cardno, "0", "6") === "706000") {
           //UTA
           $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user-holyhead'], $_CONFIG['etp_api']['pass-holyhead']),
+            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
             'json' => [
               'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
               'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
@@ -210,7 +210,7 @@
         } else if(substr($cardno, "0", "6") === "700048") {
           //MORGAN
           $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user-holyhead'], $_CONFIG['etp_api']['pass-holyhead']),
+            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
             'json' => [
               'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
               'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
@@ -230,7 +230,7 @@
         } else if(substr($cardno, "0", "6") === "708284") {
           //MORGAN
           $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user-holyhead'], $_CONFIG['etp_api']['pass-holyhead']),
+            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
             'json' => [
               'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
               'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
@@ -250,7 +250,7 @@
         } else if(substr($cardno, "0", "6") === "700676") {
           //BP
           $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user-holyhead'], $_CONFIG['etp_api']['pass-holyhead']),
+            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
             'json' => [
               'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
               'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
@@ -267,8 +267,38 @@
           } else {
             return "FALSE";
           }
+        } else {
+          return "FALSE";
         }
       }
     }
+    //check is SNAP
+    public function Check_SNAP($Plate) {
+      global $_CONFIG;
+      $this->user = new User;
+      $campus = $this->user->userInfo("campus");
+      $client = new Client(['base_uri' => $_CONFIG['etp_api']['base_uri']]);
+      //Begin API client
+      $response = $client->post('transaction/add', [
+        'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
+        'json' => [
+          'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
+          'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
+          'serviceid' => "4439",
+          'regno' => $Plate,
+          'drivername' => "ISITSNAP",
+          'committransaction' => '0'
+        ]
+      ]);
+      $return = json_decode($response->getBody(), true);
+      if($return['outputstatus'] > 0) {
+        $html = '<i style="color: green;" class="fas fa-dot-circle"></i>';
+      } else {
+        $html = '<i style="color: red;" class="fas fa-dot-circle"></i>';
+      }
+
+      return $html;
+    }
+
   }
 ?>

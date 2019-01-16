@@ -63,16 +63,15 @@
   $_CONFIG['pm']['ticket_printer_holyhead'] = 'pdholyhead'; //Name of the local printer via shared-network
   $_CONFIG['pm']['ticket_printer_cannock'] = 'CITIZEN-PD-Holy'; //Name of the local printer via shared-network
 
-  //ETP Settings
-  $_CONFIG['etp_api']['base_uri'] = "https://test.etpcp.com/etp/";
+  //ETP API Settings
+  $_CONFIG['etp_api']['base_uri'] = "https://api.etpcp.com/trx/";
   //Holyhead
-  $_CONFIG['etp_api']['user-holyhead'] = "Po5r9023";
-  $_CONFIG['etp_api']['pass-holyhead'] = "a9(K)LK_ee_47$$2";
+  $_CONFIG['etp_api']['user'] = "sm394_34lll2345Ae";
+  $_CONFIG['etp_api']['pass'] = "P2002laeif[3234JklmNo1A@344_12Qq";
+
   $_CONFIG['etp_api']['location_user-holyhead'] = "holyhead";
   $_CONFIG['etp_api']['location_pass-holyhead'] = "2hst36sg";
   //Cannock
-  $_CONFIG['etp_api']['user-cannock'] = "Po5r9023";
-  $_CONFIG['etp_api']['pass-cannock'] = "a9(K)LK_ee_47$$2";
-  $_CONFIG['etp_api']['location_user-cannock'] = "holyhead";
-  $_CONFIG['etp_api']['location_pass-cannock'] = "2hst36sg";
+  $_CONFIG['etp_api']['location_user-cannock'] = "hollies";
+  $_CONFIG['etp_api']['location_pass-cannock'] = "hollies";
 ?>

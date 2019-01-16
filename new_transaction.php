@@ -4,6 +4,8 @@
   //Get ANPR Details
   $anpr_rec = $anpr->ANPR_GetRecord($ANPRKey);
   $date = date("Y-m-d H:i:s", strtotime($anpr_rec['Capture_Date']));
+
+  $result = $etp->Check_SNAP($anpr_rec['Plate']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,7 +76,7 @@
                      <a class="nav-item nav-link" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>
                      <a class="nav-item nav-link" id="nav-card-tab" tabindex="-1" data-toggle="tab" href="#nav-card" role="tab" aria-controls="nav-card" aria-selected="false"><i class="far fa-credit-card"></i> Card</a>
                      <a class="nav-item nav-link active" id="nav-account-tab" tabindex="-1" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="false"><i class="fas fa-id-card"></i> Account</a>
-                     <a class="nav-item nav-link" id="nav-snap-tab" tabindex="-1" data-toggle="tab" href="#nav-snap" role="tab" aria-controls="nav-snap" aria-selected="false"> SNAP</a>
+                     <a class="nav-item nav-link" id="nav-snap-tab" tabindex="-1" data-toggle="tab" href="#nav-snap" role="tab" aria-controls="nav-snap" aria-selected="false"><?php echo $result ?> SNAP</a>
                      <a class="nav-item nav-link" id="nav-fuel-tab" tabindex="-1" data-toggle="tab" href="#nav-fuel" role="tab" aria-controls="nav-fuel" aria-selected="false"> Fuel Card</a>
                    </div>
                  </nav>
@@ -140,8 +142,8 @@
                        <small class="form-text text-muted"> Ensure this is correct! </small>
                      </div>
                      <div class="form-group">
-                       <label>ETP Ticket ID number</label>
-                       <input type="number" class="form-control" name="NT_Process_Fuel_TID" id="NT_Process_Fuel_TID" value="" placeholder="ETP Ticket ID">
+                       <label>Swipe Fuel Card</label>
+                       <input type="password" class="form-control" name="NT_Process_FuelStrip" id="NT_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
                      </div>
                      <div class="form-group" style="margin-top: 130px;">
                        <input type="submit" name="NT_Process_Fuel" id="NT_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
@@ -154,7 +156,7 @@
                      <a class="nav-item nav-link active" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>
                      <a class="nav-item nav-link" id="nav-card-tab" tabindex="-1" data-toggle="tab" href="#nav-card" role="tab" aria-controls="nav-card" aria-selected="false"><i class="far fa-credit-card"></i> Card</a>
                      <a class="nav-item nav-link" id="nav-account-tab" tabindex="-1" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="false"><i class="fas fa-id-card"></i> Account</a>
-                     <a class="nav-item nav-link" id="nav-snap-tab" tabindex="-1" data-toggle="tab" href="#nav-snap" role="tab" aria-controls="nav-snap" aria-selected="false"> SNAP</a>
+                     <a class="nav-item nav-link" id="nav-snap-tab" tabindex="-1" data-toggle="tab" href="#nav-snap" role="tab" aria-controls="nav-snap" aria-selected="false"><?php echo $result ?> SNAP</a>
                      <a class="nav-item nav-link" id="nav-fuel-tab" tabindex="-1" data-toggle="tab" href="#nav-fuel" role="tab" aria-controls="nav-fuel" aria-selected="false"> Fuel Card</a>
                    </div>
                  </nav>
@@ -220,8 +222,8 @@
                        <small class="form-text text-muted"> Ensure this is correct! </small>
                      </div>
                      <div class="form-group">
-                       <label>ETP Ticket ID number</label>
-                       <input type="number" class="form-control" name="NT_Process_Fuel_TID" id="NT_Process_Fuel_TID" value="" placeholder="ETP Ticket ID">
+                       <label>Swipe Fuel Card</label>
+                       <input type="password" class="form-control form-control-lg" name="NT_Process_FuelStrip" id="NT_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
                      </div>
                      <div class="form-group" style="margin-top: 130px;">
                        <input type="submit" name="NT_Process_Fuel" id="NT_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">

@@ -813,7 +813,6 @@
     var Trailer = $('#NT_Vehicle_Trailer').val();
     var Type = $('#NT_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_SNAP').val();
-    var etp = $('#NT_Process_SNAP_TID').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
     } else if(Company == "") {
@@ -830,11 +829,12 @@
         type: "POST",
         data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service,
         success:function(response) {
-          //window.location.replace("<?php echo URL?>/main");
           if(response==1) {
             $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
           } else {
-            alert("Transaction not accepted, SNAP refused payment.");
+            $('#WarningModal').modal({backdrop: 'static', keyboard: true, focus: true, show: true});
+            $('#WarningInfo').html("SNAP have refused the transaction, please ensure all information is correct and try again, or seek alternative payment method.");
+            $("#DONE").attr("id","NT_Process_SNAP");
           }
         }
       });
@@ -849,7 +849,7 @@
     var Trailer = $('#NT_Vehicle_Trailer').val();
     var Type = $('#NT_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_Fuel').val();
-    var etp = $('#NT_Process_Fuel_TID').val();
+    var FuelCard = $('#NT_Process_FuelStrip').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
     } else if(Company == "") {
@@ -858,17 +858,23 @@
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
-    } else if (etp === "") {
-      alert("Please enter the ETP's Ticket ID");
+    } else if (FuelCard === "") {
+      alert("Please Swipe a Fuel Card");
     } else {
       //temp until response written
       jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Fuel",
         type: "POST",
-        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&etp="+etp,
-        success:function() {
-          window.location.replace("<?php echo URL?>/main");
+        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&FuelCard="+FuelCard,
+        success:function(response) {
+          if(response==1) {
+            $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
+          } else {
+            $('#WarningModal').modal({backdrop: 'static', keyboard: true, focus: true, show: true});
+            $('#WarningInfo').html("SNAP have refused the transaction, please ensure all information is correct and try again, or seek alternative payment method.");
+            $("#DONE").attr("id","NT_Process_Fuel");
+          }
         }
       });
     }
@@ -1000,11 +1006,12 @@
         type: "POST",
         data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry,
         success:function(response) {
-          //window.location.replace("<?php echo URL?>/main");
           if(response==1) {
             $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
           } else {
-            alert("Transaction not accepted, SNAP refused payment");
+            $('#WarningModal').modal({backdrop: 'static', keyboard: true, focus: true, show: true});
+            $('#WarningInfo').html("SNAP have refused the transaction, please ensure all information is correct and try again, or seek alternative payment method.");
+            $("#DONE").attr("id","NT_Process_SNAP");
           }
         }
       });
@@ -1022,7 +1029,7 @@
     var Type = $('#T_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_Fuel').val();
     var Expiry = $('#T_Expiry').val();
-    var etp = $('#T_Process_Fuel_TID').val();
+    var FuelCard = $('#T_Process_FuelStrip').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
     } else if(Company == "") {
@@ -1031,17 +1038,23 @@
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
-    } else if (etp === "") {
-      alert("Please enter the ETP Ticket ID");
+    } else if (FuelCard === "") {
+      alert("Please swipe a fuelcard");
     } else {
       //temp
       jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Fuel_Renewal",
         type: "POST",
-        data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry+"&etp="+etp,
-        success:function() {
-          window.location.replace("<?php echo URL?>/main");
+        data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry+"&FuelCard="+FuelCard,
+        success:function(response) {
+          if(response==1) {
+            $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
+          } else {
+            $('#WarningModal').modal({backdrop: 'static', keyboard: true, focus: true, show: true});
+            $('#WarningInfo').html("SNAP have refused the transaction, please ensure all information is correct and try again, or seek alternative payment method.");
+            $("#DONE").attr("id","NT_Process_SNAP");
+          }
         }
       });
     }
