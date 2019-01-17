@@ -32,7 +32,7 @@
       </div>
       <div class="updateContent">
         <div class="container">
-          <form action="transaction.php" method="post">
+          <!-- <form action="transaction.php" method="post"> -->
             <div class="row">
                <div class="col-md-5">
                  <div class="form-group">
@@ -147,7 +147,7 @@
                        <input type="password" class="form-control" name="NT_Process_FuelStrip" id="T_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
                      </div>
                      <div class="form-group" style="margin-top: 130px;">
-                       <input type="submit" name="T_Process_Fuel" id="T_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                       <input name="T_Process_Fuel" id="T_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
                  </div>
@@ -224,17 +224,17 @@
                      </div>
                      <div class="form-group">
                        <label>Swipe Fuel Card</label>
-                       <input type="password" class="form-control" name="T_Process_FuelStrip" id="T_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
+                       <input type="password" class="form-control form-control-lg" name="T_Process_FuelStrip" id="T_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
                      </div>
                      <div class="form-group" style="margin-top: 130px;">
-                       <input type="submit" name="T_Process_Fuel" id="T_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                       <input name="T_Process_Fuel" id="T_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
                  </div>
               <?php } ?>
                </div>
             </div>
-          </form>
+          <!-- </form> -->
         </div>
       </div>
       <footer>

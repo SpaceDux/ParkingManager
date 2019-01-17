@@ -577,6 +577,8 @@
         $this->anpr = new ANPR;
         $this->user = new User;
         $this->pm = new PM;
+        $this->vehicles = new Vehicles;
+
         //Misc dets
         $current_date = date("Y-m-d H:i:s");
         $Company = strtoupper($Company);
@@ -626,6 +628,7 @@
         $this->anpr = null;
         $this->user = null;
         $this->pm = null;
+        $this->vehicles = null;
       } else {
         //ignore
       }
@@ -638,6 +641,8 @@
         $this->anpr = new ANPR;
         $this->user = new User;
         $this->pm = new PM;
+        $this->vehicles = new Vehicles;
+
         //Misc dets
         $current_date = date("Y-m-d H:i:s");
         $Company = strtoupper($Company);
@@ -687,6 +692,7 @@
         $this->anpr = null;
         $this->user = null;
         $this->pm = null;
+        $this->vehicles = null;
       } else {
         //ignore
       }

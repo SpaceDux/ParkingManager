@@ -32,7 +32,7 @@
       </div>
       <div class="updateContent">
         <div class="container">
-          <form action="new_transaction.php" method="post">
+          <!-- <form action="new_transaction.php" method="post"> -->
             <div class="row">
                <div class="col-md-5">
                  <?php if($vehicles->Vehicle_IsDup($anpr_rec['Plate']) == TRUE) {
@@ -226,14 +226,14 @@
                        <input type="password" class="form-control form-control-lg" name="NT_Process_FuelStrip" id="NT_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
                      </div>
                      <div class="form-group" style="margin-top: 130px;">
-                       <input type="submit" name="NT_Process_Fuel" id="NT_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                       <input name="NT_Process_Fuel" id="NT_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
                  </div>
               <?php } ?>
                </div>
             </div>
-          </form>
+          <!-- </form> -->
         </div>
       </div>
       <footer>
