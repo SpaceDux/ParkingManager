@@ -143,8 +143,20 @@
                      </div>
                      <div class="form-group">
                        <label>Swipe Fuel Card</label>
-                       <input type="password" class="form-control" name="NT_Process_FuelStrip" id="NT_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
+                       <input type="password" class="form-control form-control-lg" name="NT_Process_FuelStrip" id="NT_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
                      </div>
+                     <hr>
+                     <div class="form-row">
+                       <div class="col-8">
+                         <label>Fuel Card Number</label>
+                         <input type="text" class="form-control" placeholder="Fuel Card Number" id="NT_FuelCard_Number" value="">
+                       </div>
+                       <div class="col">
+                         <label>Expiration Date</label>
+                         <input type="text" class="form-control" placeholder="Expiry (02/2020)" id="NT_FuelCard_Date" value="">
+                       </div>
+                     </div>
+                     <small class="form-text text-muted"> Ensure this is correct! </small>
                      <div class="form-group" style="margin-top: 130px;">
                        <input type="submit" name="NT_Process_Fuel" id="NT_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
@@ -225,8 +237,20 @@
                        <label>Swipe Fuel Card</label>
                        <input type="password" class="form-control form-control-lg" name="NT_Process_FuelStrip" id="NT_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
                      </div>
+                     <hr>
+                     <div class="form-row">
+                       <div class="col-8">
+                         <label>Fuel Card Number</label>
+                         <input type="text" class="form-control" placeholder="Fuel Card Number" id="NT_FuelCard_Number" value="">
+                       </div>
+                       <div class="col">
+                         <label>Expiration Date</label>
+                         <input type="text" class="form-control" placeholder="Expiry (02/2020)" id="NT_FuelCard_Date" value="">
+                       </div>
+                     </div>
+                     <small class="form-text text-muted"> Ensure this is correct! </small>
                      <div class="form-group" style="margin-top: 130px;">
-                       <input name="NT_Process_Fuel" id="NT_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                       <input type="submit" name="NT_Process_Fuel" id="NT_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
                  </div>

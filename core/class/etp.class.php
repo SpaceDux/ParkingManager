@@ -109,21 +109,14 @@
       $this->user = null;
     }
     //Process Fuelcard Transaction
-    public function Proccess_Transaction_Fuel($etpid, $plate, $name, $fuel_string) {
+    public function Proccess_Transaction_Fuel($etpid, $plate, $name, $Card, $Expiry) {
       global $_CONFIG;
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
-      //Dissect Card
-      $cardno = $this->Fuel_String_Prepare($fuel_string, ";", "=");
-      $expiry = $this->Fuel_String_Prepare($fuel_string, "=", "?");
-      $expiry_yr = substr($expiry, "0", "2");
-      $expiry_m = substr($expiry, "2", "2");
-      $rc = substr($expiry, "6", "2");
-      $expiry = $expiry_m."/20".$expiry_yr;
 
       $client = new Client(['base_uri' => $_CONFIG['etp_api']['base_uri']]);
       if($campus == 1 OR $campus == 0) {
-        if(substr($cardno, "0", "6") === "704310") {
+        if(substr($Card, "0", "6") === "704310") {
           //DKV
           if($rc == "90") {
             $response = $client->post('transaction/add', [
@@ -134,8 +127,8 @@
                 'serviceid' => $etpid,
                 'regno' => $plate,
                 'drivername' => $name,
-                'cardno' => $cardno,
-                'cardexpiry' => $expiry
+                'cardno' => $Card,
+                'cardexpiry' => $Expiry
               ]
             ]);
             $return = json_decode($response->getBody(), true);
@@ -147,7 +140,7 @@
           } else {
             return "FALSE";
           }
-        } else if(substr($cardno, "0", "6") === "707821") {
+        } else if(substr($Card, "0", "6") === "707821") {
           //Key fuels
           $response = $client->post('transaction/add', [
             'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
@@ -157,8 +150,8 @@
               'serviceid' => $etpid,
               'regno' => $plate,
               'drivername' => $name,
-              'cardno' => $cardno,
-              'cardexpiry' => $expiry
+              'cardno' => $Card,
+              'cardexpiry' => $Expiry
             ]
           ]);
           $return = json_decode($response->getBody(), true);
@@ -167,7 +160,7 @@
           } else {
             return "FALSE";
           }
-        } else if(substr($cardno, "0", "6") === "789666") {
+        } else if(substr($Card, "0", "6") === "789666") {
           //Key fuels
           $response = $client->post('transaction/add', [
             'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
@@ -177,8 +170,8 @@
               'serviceid' => $etpid,
               'regno' => $plate,
               'drivername' => $name,
-              'cardno' => $cardno,
-              'cardexpiry' => $expiry
+              'cardno' => $Card,
+              'cardexpiry' => $Expiry
             ]
           ]);
           $return = json_decode($response->getBody(), true);
@@ -187,7 +180,7 @@
           } else {
             return "FALSE";
           }
-        } else if(substr($cardno, "0", "6") === "706000") {
+        } else if(substr($Card, "0", "6") === "706000") {
           //UTA
           $response = $client->post('transaction/add', [
             'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
@@ -197,8 +190,8 @@
               'serviceid' => $etpid,
               'regno' => $plate,
               'drivername' => $name,
-              'cardno' => $cardno,
-              'cardexpiry' => $expiry
+              'cardno' => $Card,
+              'cardexpiry' => $Expiry
             ]
           ]);
           $return = json_decode($response->getBody(), true);
@@ -207,7 +200,7 @@
           } else {
             return "FALSE";
           }
-        } else if(substr($cardno, "0", "6") === "700048") {
+        } else if(substr($Card, "0", "6") === "700048") {
           //MORGAN
           $response = $client->post('transaction/add', [
             'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
@@ -217,8 +210,8 @@
               'serviceid' => $etpid,
               'regno' => $plate,
               'drivername' => $name,
-              'cardno' => $cardno,
-              'cardexpiry' => $expiry
+              'cardno' => $Card,
+              'cardexpiry' => $Expiry
             ]
           ]);
           $return = json_decode($response->getBody(), true);
@@ -227,7 +220,7 @@
           } else {
             return "FALSE";
           }
-        } else if(substr($cardno, "0", "6") === "708284") {
+        } else if(substr($Card, "0", "6") === "708284") {
           //MORGAN
           $response = $client->post('transaction/add', [
             'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
@@ -237,8 +230,8 @@
               'serviceid' => $etpid,
               'regno' => $plate,
               'drivername' => $name,
-              'cardno' => $cardno,
-              'cardexpiry' => $expiry
+              'cardno' => $Card,
+              'cardexpiry' => $Expiry
             ]
           ]);
           $return = json_decode($response->getBody(), true);
@@ -247,7 +240,7 @@
           } else {
             return "FALSE";
           }
-        } else if(substr($cardno, "0", "6") === "700676") {
+        } else if(substr($Card, "0", "6") === "700676") {
           //BP
           $response = $client->post('transaction/add', [
             'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
@@ -257,8 +250,8 @@
               'serviceid' => $etpid,
               'regno' => $plate,
               'drivername' => $name,
-              'cardno' => $cardno,
-              'cardexpiry' => $expiry
+              'cardno' => $Card,
+              'cardexpiry' => $Expiry
             ]
           ]);
           $return = json_decode($response->getBody(), true);
@@ -299,6 +292,21 @@
 
       return $html;
     }
+    //BreakUpCard
+    function ETP_CardBreak($string) {
+      $Card = $this->Fuel_String_Prepare($string, ";", "=");
+      $expiry = $this->Fuel_String_Prepare($string, "=", "?");
+      $expiry_yr = substr($expiry, "0", "2");
+      $expiry_m = substr($expiry, "2", "2");
+      $rc = substr($expiry, "6", "2");
+      $expiry = $expiry_m."/20".$expiry_yr;
 
+      $result = [
+        'cardno' => $Card,
+        'expiry' => $expiry,
+      ];
+
+      echo json_encode($result);
+    }
   }
 ?>

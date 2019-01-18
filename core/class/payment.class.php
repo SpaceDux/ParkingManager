@@ -769,7 +769,7 @@
       }
     }
     //Transaction for Fuel
-    function Transaction_Proccess_Fuel($ANPRKey, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $FuelCard) {
+    function Transaction_Proccess_Fuel($ANPRKey, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $FuelCardno, $CardExpiry) {
       if(!empty($ANPRKey)) {
         $this->mysql = new MySQL;
         $this->mssql = new MSSQL;
@@ -805,7 +805,7 @@
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
 
-        if($result = $this->etp->Proccess_Transaction_Fuel($etpid, $Plate, $Company, $FuelCard) != "FALSE") {
+        if($result = $this->etp->Proccess_Transaction_Fuel($etpid, $Plate, $Company, $FuelCardno, $CardExpiry) != "FALSE") {
           //Insert Payment data
           $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $result, $group, $Vehicle_Type);
 
@@ -1062,12 +1062,13 @@
       }
     }
     //Transaction for Fuel
-    function Transaction_Proccess_Fuel_Renewal($LogID, $ANPRKey, $PayRef, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $Expiry, $FuelCard) {
+    function Transaction_Proccess_Fuel_Renewal($LogID, $ANPRKey, $PayRef, $Plate, $Company, $Trailer, $Vehicle_Type, $Service, $Expiry, $FuelCard, $CardExpiry) {
       if(!empty($ANPRKey)) {
         $this->mssql = new MSSQL;
         $this->user = new User;
         $this->pm = new PM;
         $this->vehicles = new Vehicles;
+        $this->etp = new ETP;
         //Misc dets
         $current_date = date("Y-m-d H:i:s");
         $Company = strtoupper($Company);
@@ -1086,19 +1087,12 @@
         $price_net = $this->Payment_ServiceInfo($Service, "service_price_net");
         $expiry = date("Y-m-d H:i:s", strtotime($Expiry.'+ '.$service_expiry.' hours'));
         $group = $this->Payment_ServiceInfo($Service, "service_group");
-
-        $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
-
         $etpid = $this->Payment_ServiceInfo($Service, "service_etpid");
 
-        $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
-
-        $return = $this->etp->Proccess_Transaction_Fuel($etpid, $Plate, $Company, $FuelCard);
-        if($return == FALSE) {
-          echo 0;
-        } else {
+        if($result = $this->etp->Proccess_Transaction_Fuel($etpid, $Plate, $Company, $FuelCardno, $CardExpiry) != "FALSE") {
+          $Vehicle_Type = $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
           //SQL Payment
-          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $return, $group, $Vehicle_Type);
+          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $result, $group, $Vehicle_Type);
           //ANPR DB SQL
           $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
           $sql_anprTbl->bindParam(1, $expiry);
@@ -1110,6 +1104,8 @@
 
           $this->Payment_Ticket_Info($pay_id, "0", $current_date, $ANPR_Date, $expiry);
           echo 1;
+        } else {
+          echo 0;
         }
       }
     }

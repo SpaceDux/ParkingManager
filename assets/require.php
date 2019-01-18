@@ -849,7 +849,8 @@
     var Trailer = $('#NT_Vehicle_Trailer').val();
     var Type = $('#NT_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_Fuel').val();
-    var FuelCard = $('#NT_Process_FuelStrip').val();
+    var FuelCardNo = $('#NT_FuelCard_Number').val();
+    var CardExpiry = $('#NT_FuelCard_Date').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
     } else if(Company == "") {
@@ -858,15 +859,17 @@
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
-    } else if (FuelCard === "") {
-      alert("Please Swipe a Fuel Card");
+    } else if (FuelCardNo === "") {
+      alert("Please provide a valid card number");
+    } else if (CardExpiry === "") {
+      alert("Please provide a valid Expiry");
     } else {
       //temp until response written
       jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Fuel",
         type: "POST",
-        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&FuelCard="+FuelCard,
+        data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&FuelCardNo="+FuelCardNo+"&CardExpiry="+CardExpiry,
         success:function(response) {
           if(response==1) {
             $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
@@ -1029,7 +1032,8 @@
     var Type = $('#T_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_Fuel').val();
     var Expiry = $('#T_Expiry').val();
-    var FuelCard = $('#T_Process_FuelStrip').val();
+    var FuelCardNo = $('#NT_FuelCard_Number').val();
+    var CardExpiry = $('#NT_FuelCard_Date').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
     } else if(Company == "") {
@@ -1038,22 +1042,24 @@
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
       alert("Payment Service is required!");
-    } else if (FuelCard === "") {
-      alert("Please swipe a fuelcard");
+    } else if (FuelCardNo === "") {
+      alert("Please provide a valid card number");
+    } else if (CardExpiry === "") {
+      alert("Please provide a valid Expiry");
     } else {
       //temp
       jQuery(this).attr("id","DONE");
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Transaction_Proccess_Fuel_Renewal",
         type: "POST",
-        data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry+"&FuelCard="+FuelCard,
+        data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry+"&FuelCardNo="+FuelCardNo+"&CardExpiry="+CardExpiry,
         success:function(response) {
           if(response==1) {
             $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
           } else {
             $('#WarningModal').modal({backdrop: 'static', keyboard: true, focus: true, show: true});
             $('#WarningInfo').html("SNAP have refused the transaction, please ensure all information is correct and try again, or seek alternative payment method.");
-            $("#DONE").attr("id","NT_Process_SNAP");
+            $("#DONE").attr("id","NT_Process_Fuel");
           }
         }
       });
@@ -1112,6 +1118,20 @@
       success:function(data) {
         $('#fleets').html(data);
         $('#Update_Account_FleetModal').modal('toggle');
+      }
+    })
+  });
+  //String Breakup for fuel card
+  $(document).on('keyup', '#NT_Process_FuelStrip', function() {
+    var FuelString = $(this).val();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=ETP_CardBreak",
+      type: "POST",
+      data: {FuelString:FuelString},
+      dataType: "json",
+      success:function(data) {
+        $("#NT_FuelCard_Number").val(data.cardno);
+        $("#NT_FuelCard_Date").val(data.expiry);
       }
     })
   });

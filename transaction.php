@@ -42,10 +42,10 @@
                    <input type="hidden" class="form-control" name="T_ANPRKey" id="T_ANPRKey" value="<?php echo $record['parked_anprkey'] ?>">
                    <input type="hidden" class="form-control" name="T_PayRef" id="T_PayRef" value="<?php echo $record['payment_ref'] ?>">
                    <input type="hidden" class="form-control" name="T_Expiry" id="T_Expiry" value="<?php echo $record['parked_expiry'] ?>">
-                   <input type="hidden" class="form-control" name="NT_Date" id="NT_Date" value="<?php echo $date ?>">
-                   <input type="hidden" class="form-control" name="NT_Vehicle_Plate" id="NT_Vehicle_Plate" value="<?php echo $record['parked_plate'] ?>">
-                   <input type="hidden" class="form-control" name="NT_Company_Name" id="NT_Company_Name" value="<?php echo $record['parked_company'] ?>">
-                   <input type="hidden" class="form-control" name="NT_ANPRKey" id="NT_ANPRKey" value="<?php echo $record['parked_anprkey'] ?>">
+                   <input type="hidden" class="form-control" name="T_Date" id="T_Date" value="<?php echo $date ?>">
+                   <input type="hidden" class="form-control" name="T_Vehicle_Plate" id="T_Vehicle_Plate" value="<?php echo $record['parked_plate'] ?>">
+                   <input type="hidden" class="form-control" name="T_Company_Name" id="T_Company_Name" value="<?php echo $record['parked_company'] ?>">
+                   <input type="hidden" class="form-control" name="T_ANPRKey" id="T_ANPRKey" value="<?php echo $record['parked_anprkey'] ?>">
                  </div>
                  <div class="form-group">
                    <label for="NT_Vehicle_Type">Company Name</label>
@@ -144,10 +144,22 @@
                      </div>
                      <div class="form-group">
                        <label>Swipe Fuel Card</label>
-                       <input type="password" class="form-control" name="NT_Process_FuelStrip" id="T_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
+                       <input type="password" class="form-control form-control-lg" name="NT_Process_FuelStrip" id="NT_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
                      </div>
+                     <hr>
+                     <div class="form-row">
+                       <div class="col-8">
+                         <label>Fuel Card Number</label>
+                         <input type="text" class="form-control" placeholder="Fuel Card Number" id="NT_FuelCard_Number" value="">
+                       </div>
+                       <div class="col">
+                         <label>Expiration Date</label>
+                         <input type="text" class="form-control" placeholder="Expiry (02/2020)" id="NT_FuelCard_Date" value="">
+                       </div>
+                     </div>
+                     <small class="form-text text-muted"> Ensure this is correct! </small>
                      <div class="form-group" style="margin-top: 130px;">
-                       <input name="T_Process_Fuel" id="T_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                       <input type="submit" name="T_Process_Fuel" id="T_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
                  </div>
@@ -224,10 +236,22 @@
                      </div>
                      <div class="form-group">
                        <label>Swipe Fuel Card</label>
-                       <input type="password" class="form-control form-control-lg" name="T_Process_FuelStrip" id="T_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
+                       <input type="password" class="form-control form-control-lg" name="NT_Process_FuelStrip" id="NT_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
                      </div>
+                     <hr>
+                     <div class="form-row">
+                       <div class="col-8">
+                         <label>Fuel Card Number</label>
+                         <input type="text" class="form-control" placeholder="Fuel Card Number" id="NT_FuelCard_Number" value="">
+                       </div>
+                       <div class="col">
+                         <label>Expiration Date</label>
+                         <input type="text" class="form-control" placeholder="Expiry (02/2020)" id="NT_FuelCard_Date" value="">
+                       </div>
+                     </div>
+                     <small class="form-text text-muted"> Ensure this is correct! </small>
                      <div class="form-group" style="margin-top: 130px;">
-                       <input name="T_Process_Fuel" id="T_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                       <input type="submit" name="T_Process_Fuel" id="T_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
                  </div>
