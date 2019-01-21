@@ -886,15 +886,15 @@
   //Cash
   $(document).on('click', '#T_Process_Cash', function(){
     event.preventDefault();
-    var LogID = $('#T_LogID').val();
-    var ANPRKey = $('#T_ANPRKey').val();
-    var PayRef = $('#T_PayRef').val();
-    var Plate = $('#T_Vehicle_Plate').val();
-    var Company = $('#T_Company_Name').val();
-    var Trailer = $('#T_Vehicle_Trailer').val();
-    var Type = $('#T_Vehicle_Type').val();
+    var LogID = $('#NT_LogID').val();
+    var ANPRKey = $('#NT_ANPRKey').val();
+    var PayRef = $('#NT_PayRef').val();
+    var Plate = $('#NT_Vehicle_Plate').val();
+    var Company = $('#NT_Company_Name').val();
+    var Trailer = $('#NT_Vehicle_Trailer').val();
+    var Type = $('#NT_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_Cash').val();
-    var Expiry = $('#T_Expiry').val();
+    var Expiry = $('#NT_Expiry').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
     } else if(Company == "") {
@@ -918,15 +918,15 @@
   //Card
   $(document).on('click', '#T_Process_Card', function(){
     event.preventDefault();
-    var LogID = $('#T_LogID').val();
-    var ANPRKey = $('#T_ANPRKey').val();
-    var PayRef = $('#T_PayRef').val();
-    var Plate = $('#T_Vehicle_Plate').val();
-    var Company = $('#T_Company_Name').val();
-    var Trailer = $('#T_Vehicle_Trailer').val();
-    var Type = $('#T_Vehicle_Type').val();
+    var LogID = $('#NT_LogID').val();
+    var ANPRKey = $('#NT_ANPRKey').val();
+    var PayRef = $('#NT_PayRef').val();
+    var Plate = $('#NT_Vehicle_Plate').val();
+    var Company = $('#NT_Company_Name').val();
+    var Trailer = $('#NT_Vehicle_Trailer').val();
+    var Type = $('#NT_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_Card').val();
-    var Expiry = $('#T_Expiry').val();
+    var Expiry = $('#NT_Expiry').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
     } else if(Company == "") {
@@ -950,16 +950,16 @@
   //Account
   $(document).on('click', '#T_Process_Account', function(){
     event.preventDefault();
-    var LogID = $('#T_LogID').val();
-    var ANPRKey = $('#T_ANPRKey').val();
-    var PayRef = $('#T_PayRef').val();
-    var Plate = $('#T_Vehicle_Plate').val();
-    var Company = $('#T_Company_Name').val();
-    var Trailer = $('#T_Vehicle_Trailer').val();
-    var Type = $('#T_Vehicle_Type').val();
+    var LogID = $('#NT_LogID').val();
+    var ANPRKey = $('#NT_ANPRKey').val();
+    var PayRef = $('#NT_PayRef').val();
+    var Plate = $('#NT_Vehicle_Plate').val();
+    var Company = $('#NT_Company_Name').val();
+    var Trailer = $('#NT_Vehicle_Trailer').val();
+    var Type = $('#NT_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_Account').val();
     var Account_ID = $('#PM_Account_Select').val();
-    var Expiry = $('#T_Expiry').val();
+    var Expiry = $('#NT_Expiry').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
     } else if(Type === "unchecked") {
@@ -984,15 +984,15 @@
   //Snap
   $(document).on('click', '#T_Process_SNAP', function(){
     event.preventDefault();
-    var LogID = $('#T_LogID').val();
-    var ANPRKey = $('#T_ANPRKey').val();
-    var PayRef = $('#T_PayRef').val();
-    var Plate = $('#T_Vehicle_Plate').val();
-    var Company = $('#T_Company_Name').val();
-    var Trailer = $('#T_Vehicle_Trailer').val();
-    var Type = $('#T_Vehicle_Type').val();
+    var LogID = $('#NT_LogID').val();
+    var ANPRKey = $('#NT_ANPRKey').val();
+    var PayRef = $('#NT_PayRef').val();
+    var Plate = $('#NT_Vehicle_Plate').val();
+    var Company = $('#NT_Company_Name').val();
+    var Trailer = $('#NT_Vehicle_Trailer').val();
+    var Type = $('#NT_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_SNAP').val();
-    var Expiry = $('#T_Expiry').val();
+    var Expiry = $('#NT_Expiry').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
     } else if(Company == "") {
@@ -1023,15 +1023,15 @@
   //Fuel
   $(document).on('click', '#T_Process_Fuel', function(){
     event.preventDefault();
-    var LogID = $('#T_LogID').val();
-    var ANPRKey = $('#T_ANPRKey').val();
-    var PayRef = $('#T_PayRef').val();
-    var Plate = $('#T_Vehicle_Plate').val();
-    var Company = $('#T_Company_Name').val();
-    var Trailer = $('#T_Vehicle_Trailer').val();
-    var Type = $('#T_Vehicle_Type').val();
+    var LogID = $('#NT_LogID').val();
+    var ANPRKey = $('#NT_ANPRKey').val();
+    var PayRef = $('#NT_PayRef').val();
+    var Plate = $('#NT_Vehicle_Plate').val();
+    var Company = $('#NT_Company_Name').val();
+    var Trailer = $('#NT_Vehicle_Trailer').val();
+    var Type = $('#NT_Vehicle_Type').val();
     var Service = $('#NT_Payment_Service_Fuel').val();
-    var Expiry = $('#T_Expiry').val();
+    var Expiry = $('#NT_Expiry').val();
     var FuelCardNo = $('#NT_FuelCard_Number').val();
     var CardExpiry = $('#NT_FuelCard_Date').val();
     if(Plate == "") {
