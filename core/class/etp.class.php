@@ -92,8 +92,8 @@
         $response = $client->post('transaction/add', [
           'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
           'json' => [
-            'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-            'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
+            'locationusername' => $_CONFIG['etp_api']['location_user-cannock'],
+            'locationpassword' => $_CONFIG['etp_api']['location_pass-cannock'],
             'serviceid' => $etpid,
             'regno' => $plate,
             'drivername' => $name
@@ -115,154 +115,38 @@
       $campus = $this->user->userInfo("campus");
 
       $client = new Client(['base_uri' => $_CONFIG['etp_api']['base_uri']]);
-      if($campus == 1 OR $campus == 0) {
-        if(substr($Card, "0", "6") === "704310") {
-          //DKV
-          if($rc == "90") {
-            $response = $client->post('transaction/add', [
-              'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
-              'json' => [
-                'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-                'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
-                'serviceid' => $etpid,
-                'regno' => $plate,
-                'drivername' => $name,
-                'cardno' => $Card,
-                'cardexpiry' => $Expiry
-              ]
-            ]);
-            $return = json_decode($response->getBody(), true);
-            if($return['outputstatus'] == 1) {
-              return $return['outputtransactionid'];
-            } else {
-              return "FALSE";
-            }
-          } else {
-            return "FALSE";
-          }
-        } else if(substr($Card, "0", "6") === "707821") {
-          //Key fuels
-          $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
-            'json' => [
-              'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-              'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
-              'serviceid' => $etpid,
-              'regno' => $plate,
-              'drivername' => $name,
-              'cardno' => $Card,
-              'cardexpiry' => $Expiry
-            ]
-          ]);
-          $return = json_decode($response->getBody(), true);
-          if($return['outputstatus'] == 1) {
-            return $return['outputtransactionid'];
-          } else {
-            return "FALSE";
-          }
-        } else if(substr($Card, "0", "6") === "789666") {
-          //Key fuels
-          $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
-            'json' => [
-              'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-              'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
-              'serviceid' => $etpid,
-              'regno' => $plate,
-              'drivername' => $name,
-              'cardno' => $Card,
-              'cardexpiry' => $Expiry
-            ]
-          ]);
-          $return = json_decode($response->getBody(), true);
-          if($return['outputstatus'] == 1) {
-            return $return['outputtransactionid'];
-          } else {
-            return "FALSE";
-          }
-        } else if(substr($Card, "0", "6") === "706000") {
-          //UTA
-          $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
-            'json' => [
-              'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-              'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
-              'serviceid' => $etpid,
-              'regno' => $plate,
-              'drivername' => $name,
-              'cardno' => $Card,
-              'cardexpiry' => $Expiry
-            ]
-          ]);
-          $return = json_decode($response->getBody(), true);
-          if($return['outputstatus'] == 1) {
-            return $return['outputtransactionid'];
-          } else {
-            return "FALSE";
-          }
-        } else if(substr($Card, "0", "6") === "700048") {
-          //MORGAN
-          $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
-            'json' => [
-              'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-              'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
-              'serviceid' => $etpid,
-              'regno' => $plate,
-              'drivername' => $name,
-              'cardno' => $Card,
-              'cardexpiry' => $Expiry
-            ]
-          ]);
-          $return = json_decode($response->getBody(), true);
-          if($return['outputstatus'] == 1) {
-            return $return['outputtransactionid'];
-          } else {
-            return "FALSE";
-          }
-        } else if(substr($Card, "0", "6") === "708284") {
-          //MORGAN
-          $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
-            'json' => [
-              'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-              'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
-              'serviceid' => $etpid,
-              'regno' => $plate,
-              'drivername' => $name,
-              'cardno' => $Card,
-              'cardexpiry' => $Expiry
-            ]
-          ]);
-          $return = json_decode($response->getBody(), true);
-          if($return['outputstatus'] == 1) {
-            return $return['outputtransactionid'];
-          } else {
-            return "FALSE";
-          }
-        } else if(substr($Card, "0", "6") === "700676") {
-          //BP
-          $response = $client->post('transaction/add', [
-            'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
-            'json' => [
-              'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-              'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
-              'serviceid' => $etpid,
-              'regno' => $plate,
-              'drivername' => $name,
-              'cardno' => $Card,
-              'cardexpiry' => $Expiry
-            ]
-          ]);
-          $return = json_decode($response->getBody(), true);
-          if($return['outputstatus'] == 1) {
-            return $return['outputtransactionid'];
-          } else {
-            return "FALSE";
-          }
+      if ($campus == 1 OR $campus == 0) {
+        $response = $client->post('transaction/add', [
+          'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
+          'json' => [
+            'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
+            'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
+            'serviceid' => $etpid,
+            'regno' => $plate,
+            'drivername' => $name,
+            'cardno' => $Card,
+            'cardexpiry' => $Expiry
+          ]
+        ]);
+        $return = json_decode($response->getBody(), true);
+        if($return['outputstatus'] == 1) {
+          return $return['outputtransactionid'];
         } else {
-          return "FALSE";
+          return FALSE;
         }
+      } else if ($campus == 2) {
+        $response = $client->post('transaction/add', [
+          'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
+          'json' => [
+            'locationusername' => $_CONFIG['etp_api']['location_user-cannock'],
+            'locationpassword' => $_CONFIG['etp_api']['location_pass-cannock'],
+            'serviceid' => $etpid,
+            'regno' => $plate,
+            'drivername' => $name,
+            'cardno' => $Card,
+            'cardexpiry' => $Expiry
+          ]
+        ]);
       }
     }
     //check is SNAP

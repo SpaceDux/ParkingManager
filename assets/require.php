@@ -1014,7 +1014,7 @@
           } else {
             $('#WarningModal').modal({backdrop: 'static', keyboard: true, focus: true, show: true});
             $('#WarningInfo').html("SNAP have refused the transaction, please ensure all information is correct and try again, or seek alternative payment method.");
-            $("#DONE").attr("id","NT_Process_SNAP");
+            $("#DONE").attr("id","T_Process_SNAP");
           }
         }
       });
@@ -1059,7 +1059,7 @@
           } else {
             $('#WarningModal').modal({backdrop: 'static', keyboard: true, focus: true, show: true});
             $('#WarningInfo').html("SNAP have refused the transaction, please ensure all information is correct and try again, or seek alternative payment method.");
-            $("#DONE").attr("id","NT_Process_Fuel");
+            $("#DONE").attr("id","T_Process_Fuel");
           }
         }
       });

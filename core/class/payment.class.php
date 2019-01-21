@@ -804,8 +804,8 @@
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
-
-        if($result = $this->etp->Proccess_Transaction_Fuel($etpid, $Plate, $Company, $FuelCardno, $CardExpiry) != "FALSE") {
+        $result = $this->etp->Proccess_Transaction_Fuel($etpid, $Plate, $Company, $FuelCardno, $CardExpiry);
+        if($result != FALSE) {
           //Insert Payment data
           $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $result, $group, $Vehicle_Type);
 
@@ -1089,7 +1089,8 @@
         $group = $this->Payment_ServiceInfo($Service, "service_group");
         $etpid = $this->Payment_ServiceInfo($Service, "service_etpid");
 
-        if($result = $this->etp->Proccess_Transaction_Fuel($etpid, $Plate, $Company, $FuelCardno, $CardExpiry) != "FALSE") {
+        $result = $this->etp->Proccess_Transaction_Fuel($etpid, $Plate, $Company, $FuelCard, $CardExpiry);
+        if($result != FALSE) {
           $Vehicle_Type = $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
           //SQL Payment
           $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $result, $group, $Vehicle_Type);
@@ -1108,6 +1109,11 @@
           echo 0;
         }
       }
+      $this->mssql = null;
+      $this->user = null;
+      $this->pm = null;
+      $this->vehicles = null;
+      $this->etp = null;
     }
     //List all payments
     function Transaction_Log($date1, $date2, $cash, $card, $account, $snap, $fuel, $group) {
@@ -1343,6 +1349,8 @@
 
         $payref = $this->PaymentInfo($pay_id, "payment_ref");
         $exitKey = $this->vehicles->vehInfo("parked_exitKey", $payref);
+
+        die($exitKey);
         $service_id = $this->PaymentInfo($pay_id, "payment_service_id");
         $paid = $this->PaymentInfo($pay_id, "payment_type");
         $Plate = $this->PaymentInfo($pay_id, "payment_vehicle_plate");
