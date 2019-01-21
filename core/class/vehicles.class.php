@@ -262,7 +262,7 @@
       //Prep Class'
       $this->mysql = new MySQL;
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE id = ? OR payment_ref = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE id = ? OR parked_anprkey = ?");
       $query->bindParam(1, $id);
       $query->bindParam(2, $id);
       $query->execute();
@@ -320,6 +320,9 @@
       $stmt->bindParam(':id', $key);
       if($stmt->execute()) {
         $this->pm->PM_Notification_Create("$vehicle has been successfully marked EXIT by $name", "0");
+        echo "DONE";
+      } else {
+        echo "NEY";
       }
 
       $this->mysql = null;

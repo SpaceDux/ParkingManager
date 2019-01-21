@@ -476,8 +476,7 @@
       $ticket_name = $this->Payment_ServiceInfo($service, "service_ticket_name");
       $expiryHrs = $this->Payment_ServiceInfo($service, "service_expiry");
 
-      $payref = $this->PaymentInfo($plate, "payment_ref");
-      $exitKey = $this->vehicles->vehInfo("parked_exitKey", $payref);
+      $exitKey = $this->vehicles->vehInfo("parked_exitKey", $key);
       $gross = $this->PaymentInfo($plate, "payment_price_gross");
       $tid = $this->PaymentInfo($plate, "id");
       $type = $this->PaymentInfo($plate, "payment_type");
@@ -487,8 +486,6 @@
       $group = $this->Payment_ServiceInfo($service, "service_group");
       $expiry = date("Y-m-d H:i:s", strtotime($date.' +'.$expiryHrs.' hours'));
 
-      echo $exitKey;
-      //$payment_type
       if($type == 1) {
         $payment_type = "Cash";
       } else if ($type == 2) {
@@ -1347,10 +1344,9 @@
         $TicketInfo->execute();
         $Ticket_Result = $TicketInfo->fetch(\PDO::FETCH_ASSOC);
 
-        $payref = $this->PaymentInfo($pay_id, "payment_ref");
-        $exitKey = $this->vehicles->vehInfo("parked_exitKey", $payref);
+        $anpr = $this->PaymentInfo($pay_id, "payment_anprkey");
+        $exitKey = $this->vehicles->vehInfo("parked_exitKey", $anpr);
 
-        die($exitKey);
         $service_id = $this->PaymentInfo($pay_id, "payment_service_id");
         $paid = $this->PaymentInfo($pay_id, "payment_type");
         $Plate = $this->PaymentInfo($pay_id, "payment_vehicle_plate");

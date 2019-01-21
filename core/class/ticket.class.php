@@ -64,9 +64,9 @@
       $company = substr($company, 0, 9);
 
       //Sorting column data
-      $line_one = $this->Printer_Columns("Company: ".$company, "Reg: ".$reg, 18, 24, 2);
+      $line_one = $this->Printer_Columns("Company: ".strtoupper($company), "Reg: ".strtoupper($reg), 18, 24, 2);
       $line_two = $this->Printer_Columns("ID: ".$tid, "Date: ".$date, 18, 24, 2);
-      $line_info = $this->Printer_Columns("Reg: ".$reg, "Exp: ".$expiry, 18, 24, 2);
+      $line_info = $this->Printer_Columns("Reg: ".strtoupper($reg), "Exp: ".$expiry, 18, 24, 2);
       //Begin print
       //Ticket Code
       try {
@@ -105,7 +105,7 @@
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
         $printer -> setReverseColors(TRUE);
         $printer -> setTextSize(2, 2);
-        $printer -> text(" Exit Code: #".$exitKey." ");
+        $printer -> text(" Exit Code: ".$exitKey." ");
         $printer -> setReverseColors(FALSE);
         $printer -> selectPrintMode();
         $printer -> feed(1);

@@ -433,5 +433,36 @@
       $this->user = null;
       $this->mssql = null;
     }
+    function PM_ExitKeyPad($string) {
+      $this->mysql = new MySQL;
+      $this->anpr = new ANPR;
+
+      $current = date("Y-m-d H:i:s", strtotime('+ 2 hours'));
+      $time = date("Y-m-d H:i:s");
+
+      if(strlen($string) == 6) {
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_exitKey = ? AND parked_column = 1 ORDER BY id DESC LIMIT 1");
+        $stmt->bindParam(1, $string);
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $id = $result['id'];
+        $site = $result['parked_campus'];
+        if($current <= $result['parked_expiry']) {
+          $exit = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_column = '2', parked_timeout = ? WHERE id = ?");
+          $exit->bindParam(1, $time);
+          $exit->bindParam(2, $id);
+          if($exit->execute()) {
+            $this->anpr->Barrier_Controller($site, "EX");
+            $this->PM_Notification_Create($result['parked_plate']." has been exit via keypad", "0");
+            echo 1;
+          }
+        } else {
+          echo 0;
+        }
+      }
+
+      $this->mysql = null;
+      $this->anpr = null;
+    }
   }
 ?>

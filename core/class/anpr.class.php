@@ -141,6 +141,39 @@
         curl_close($ch);
       }
     }
+    //Toggle Exit Barrier via keypad
+    function Barrier_Controller($site, $barrier) {
+      global $_CONFIG;
+      if($site == 1) {
+        if($barrier == "EN") {
+          $barrier = $_CONFIG['gate_holyhead']['in'];
+        } else if ($barrier == "EX") {
+          $barrier = $_CONFIG['gate_holyhead']['out'];
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $barrier);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
+        }
+        curl_close($ch);
+      } else if ($site == 2) {
+        if($barrier == "EN") {
+          $barrier = $_CONFIG['gate_cannock']['in'];
+        } else if ($barrier == "EX") {
+          $barrier = $_CONFIG['gate_cannock']['out'];
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $barrier);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
+        }
+        curl_close($ch);
+      }
+    }
     //ANPR Images
     function ANPR_GetImage($id) {
       global $_CONFIG;

@@ -1312,7 +1312,31 @@
     } else {
       alert("Are you sure those passwords match? Try again");
     }
-  })
+  });
+  //Exit Keypad
+  $(document).on('keyup', '#PM_ExitCode', function() {
+    Code = $(this).val();
+    if(Code.length == 6) {
+      $.ajax({
+        url: "<?php echo URL?>/core/ajax/pm.ajax.php?handler=ExitKeypad",
+        type: "POST",
+        data: {Code:Code},
+        success:function(data) {
+          if(data == "1") {
+            $('#ExitForm')[0].reset();
+          } else {
+            $('#ExitForm')[0].reset();
+          }
+        }
+      })
+    } else if (Code.length > 6) {
+      $('#ExitForm')[0].reset();
+    } else if (Code != "") {
+      setTimeout(function() {
+        $('#ExitForm')[0].reset();
+      }, 15000);
+    }
+  });
   //Update Exit
   $('#exitButton').click(function(){
     window.location.reload();
