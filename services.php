@@ -1,7 +1,5 @@
 <?php
   require(__DIR__.'/global.php');
-  $pm->CheckAuth(1);
-
   $user->redirectRank(2);
   if(isset($_POST['addVehicleTypeName'])) {
     $pm->addVehicleType($_POST['addVehicleTypeName'], $_POST['addVehicleTypeShort'], $_POST['addVehicleTypeURL']);

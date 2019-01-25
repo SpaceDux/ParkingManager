@@ -1,7 +1,5 @@
 <?php
   require(__DIR__.'/global.php');
-  $pm->CheckAuth(1);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,6 +79,7 @@
           </div> -->
         </div>
       </div>
+      <div id="tables">
       <div class="row">
         <div class="col-md-7">
           <?php $pm->displayNotice(); ?>
@@ -93,8 +92,20 @@
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ANPR_FilterSearchModal"><i class="fa fa-search"></i></button>
               </div>
             </div>
-            <div id="ANPR_Feed">
-
+            <div id="anpr">
+              <table class="table table-dark table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Registration</th>
+                    <th scope="col">Time IN</th>
+                    <th scope="col">Patch</th>
+                    <th scope="col"><i class="fa fa-cog"></i></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php $vehicles->get_anprFeed() ?>
+                </tbody>
+              </table>
             </div>
           </div>
           <!-- Paid Vehicles Table -->
@@ -164,14 +175,79 @@
         <?php echo Footer ?>
       </footer>
     </div>
+    </div>
     <?php require(__DIR__.'/assets/modals.php');?>
     <!-- javascript Files -->
     <script src="<?php echo URL?>/assets/js/jquery.min.js"></script>
     <script src="<?php echo URL?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
+    <!-- <script src="<?php echo URL?>/assets/js/Chart.bundle.min.js"></script> -->
     <?php require(__DIR__.'/assets/require.php');?>
-    <?php require(__DIR__.'/core/ajax-js/vehicles.js.php');?>
+    <!-- Chart JS -->
+    <!-- <script type="text/javascript">
+    var ctx = document.getElementById("lastChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            datasets: [{
+                label: 'This week',
+                data: [190, 122, 221, 120, 200, 222, 170],
+                borderWidth: [0],
+                backgroundColor: [
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)',
+                    'rgba(255, 255, 255, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)'
+                ],
+            },
+            {
+              label: 'Last week',
+              data: [90, 177, 221, 123, 229, 222, 122],
+              borderWidth: [0],
+              backgroundColor: [
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)',
+                  'rgba(104,104,104, 0.6)'
+              ],
+              borderColor: [
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)',
+                  'rgba(104,104,104, 1)'
+              ]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    }); -->
     <script type="text/javascript">
     //Tab Key opens "AddVehicleModal" Modal
       Mousetrap.bind('tab', function() {

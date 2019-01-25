@@ -1,7 +1,5 @@
 <?php
   require(__DIR__.'/global.php');
-  $pm->CheckAuth(1);
-
 
   if(isset($_POST['add_notice_short'])) {
     $pm->newNotice($_POST['add_notice_short'], $_POST['add_notice_body'], $_POST['add_notice_type']);

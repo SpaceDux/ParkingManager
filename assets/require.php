@@ -31,12 +31,9 @@
   //AJAX for Exit
   function EOD_SettlementToggle() {
     event.preventDefault();
-    var Date1 = $('#TL_DateStart').val();
-    var Date2 = $('#TL_DateEnd').val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=EOD_Settlement",
-      type: "POST",
-      data: "Date1="+Date1+"&Date2="+Date2
+      type: "POST"
     })
   }
   //Change USer PW

@@ -1,6 +1,5 @@
 <?php
   require(__DIR__.'/global.php');
-  $pm->CheckAuth();
 
   if(!empty($_POST['PM_Account_Select']) AND !empty($_POST['ReportStart']) AND !empty($_POST['ReportEnd'])) {
     $reports->WriteExcel($_POST['PM_Account_Select'], $_POST['ReportStart'], $_POST['ReportEnd']);

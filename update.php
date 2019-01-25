@@ -1,7 +1,5 @@
 <?php
   require(__DIR__.'/global.php');
-  $pm->CheckAuth(1);
-
   $key = $_GET['id'];
   $row = $vehicles->getVehicle($key);
   //Call on updateVehicle() Function

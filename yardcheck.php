@@ -1,7 +1,5 @@
 <?php
   require(__DIR__.'/global.php');
-  $pm->CheckAuth(1);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

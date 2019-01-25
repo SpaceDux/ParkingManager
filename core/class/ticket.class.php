@@ -266,14 +266,13 @@
       $this->user = null;
       $this->pm = null;
     }
-    //End of dat settlement
-    function Printer_9PM($date1, $date2) {
+    function Printer_9PM() {
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->payment = new Payment;
       $campus = $this->user->userInfo("campus");
-      $date1 = date("Y-m-d 21:00:00", strtotime($date1));
-      $date2 = date("Y-m-d 21:00:00", strtotime($date2));
+      $date1 = date("Y-m-d 21:00:00");
+      $date2 = date("Y-m-d 21:00:00", strtotime("-1 day"));
       //Query
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_deleted = 0 AND payment_campus = ? AND payment_date BETWEEN ? AND ?");
       $stmt->bindParam(1, $campus);

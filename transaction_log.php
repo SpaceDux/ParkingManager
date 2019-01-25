@@ -1,7 +1,5 @@
 <?php
   require(__DIR__.'/global.php');
-  $pm->CheckAuth(1);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +36,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                       </div>
-                      <input type="text" class="form-control" name="TL_DateStart" placeholder="Start Date" data-toggle="datepicker" id="TL_DateStart" value="<?php echo date("d-m-Y", strtotime('-1 day')); ?>" autocomplete="off">
+                      <input type="text" class="form-control" name="TL_DateStart" placeholder="Start Date" data-toggle="datepicker" id="TL_DateStart" value="<?php echo date("d-m-Y"); ?>" autocomplete="off">
                     </div>
                   </div>
                   <div class="col">
@@ -76,11 +74,6 @@
                       <!-- <input type="hidden" name="TL_Fuel" value="0"> -->
                       <input class="form-check-input" type="checkbox" name="TL_Fuel" id="TL_Fuel" value="1" checked>
                       <label class="form-check-label" for="TL_Fuel">Fuel Card</label>
-                    </div>
-                    <div class="form-check">
-                      <!-- <input type="hidden" name="TL_Fuel" value="0"> -->
-                      <input class="form-check-input" type="checkbox" name="TL_9PM" id="TL_9PM" value="1">
-                      <label class="form-check-label" for="TL_9PM">9pm to 9pm</label>
                     </div>
                   </div>
                   <div class="col">

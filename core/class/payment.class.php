@@ -1113,20 +1113,15 @@
       $this->etp = null;
     }
     //List all payments
-    function Transaction_Log($date1, $date2, $cash, $card, $account, $snap, $fuel, $group, $pm9) {
+    function Transaction_Log($date1, $date2, $cash, $card, $account, $snap, $fuel, $group) {
       $this->user = new User;
       $this->mysql = new MySQL;
       $this->account = new Account;
       // $this->account = new Account;
       $campus = $this->user->userInfo("campus");
 
-      if($pm9 > 0) {
-        $date1 = date("Y-m-d 21:00:00", strtotime($date1));
-        $date2 = date("Y-m-d 21:00:00", strtotime($date2));
-      } else {
-        $date1 = date("Y-m-d 00:00:00", strtotime($date1));
-        $date2 = date("Y-m-d 23:59:59", strtotime($date2));
-      }
+      $date1 = date("Y-m-d 00:00:00", strtotime($date1));
+      $date2 = date("Y-m-d 23:59:59", strtotime($date2));
       $html = '';
 
       if($group == 0) {
