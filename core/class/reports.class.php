@@ -11,6 +11,7 @@
       $this->user = new User;
       $this->vehicle = new Vehicles;
       $this->payment = new Payment;
+      $this->account = new Account;
       $campus = $this->user->userInfo("campus");
       $date1 = date("Y-m-d 00:00:00", strtotime($dateStart));
       $date2 = date("Y-m-d 23:59:59", strtotime($dateEnd));
@@ -77,6 +78,11 @@
         $query2->bindParam(1, $key);
         $query2->execute();
         foreach ($query2->fetchAll() as $row) {
+			if($row['parked_deleted'] == 1) {
+				$class = 'class="table-danger"';
+			} else {
+				$class = 'class="table-primary"';
+			}
           if(isset($row['parked_timeout']) AND $row['parked_timeout'] == "") {
             $timeout = "";
           } else {
@@ -89,7 +95,7 @@
           $h = $h + ($int->days*24);
 
           $key2 = $row['payment_ref'];
-          $html .= '<tr class="table-primary" style="color: #000;">';
+          $html .= '<tr '.$class.' style="color: #000;">';
           $html .= '<td>'.$row['parked_plate'].'</td>';
           $html .= '<td>'.$row['parked_trailer'].'</td>';
           $html .= '<td>'.$this->vehicle->Vehicle_Type_Info($row['parked_type'], "type_shortName").'</td>';
@@ -105,13 +111,18 @@
             $priceGross += $row['payment_price_gross'];
             $priceNet += $row['payment_price_net'];
             $totalTransactions++;
+			if($row['payment_account_id'] != $account) {
+			    $html .= '<tr class="table-warning">';
+			} else {
+				$html .= '<tr>';
+			}
             $html .= '<tr>';
             $html .= '<td>T.ID: '.$row['id'].'</td>';
             $html .= '<td colspan="2">'.$row['payment_service_name'].'</td>';
             $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>';
             $html .= '<td> £'.$row['payment_price_gross'].'</td>';
             $html .= '<td> £'.$row['payment_price_net'].'</td>';
-            $html .= '<td></td>';
+            $html .= '<td>Account: '.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'.</td>';
             $html .= '</tr>';
           }
         }

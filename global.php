@@ -29,7 +29,7 @@
   require(__DIR__ . V . '/autoload.php');
   //Define CONFIG settings
   define('URL', $_CONFIG['pm']['url']);
-  define('VER', "3.2.1");
+  define('VER', "3.2.4");
   define('Footer', 'ParkingManager (PM) &copy; 2019 | Designed, developed & owned by <a href="mailto:ryan@roadkingcafe.uk"><b>Ryan. W</b></a> with Roadking Truckstops &copy;');
 
 
@@ -52,13 +52,6 @@
     $etp = new PM\ETP;
   }
 
-  //Checks
-  //Redirect for auth
-  if(!isset($_SESSION['id']) && basename($_SERVER['PHP_SELF']) != "index.php") {
-    header('Location: index');
-  } else if (isset($_SESSION['id']) && basename($_SERVER['PHP_SELF']) == "index.php") {
-      header('Location: main');
-  }
   #Check a session hasn't remotely been cut
   $user->forceLogout();
 

@@ -1,5 +1,6 @@
 <?php
   require(__DIR__.'/global.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -1,5 +1,7 @@
 <?php
   require(__DIR__.'/global.php');
+  $pm->CheckAuth(1);
+
   $key = $_GET['id'];
 
   $record = $vehicles->getVehicle($key);

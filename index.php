@@ -1,5 +1,8 @@
 <?php
   require(__DIR__.'/global.php');
+  if(isset($_SESSION['id'])) {
+    header('Location: main');
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
