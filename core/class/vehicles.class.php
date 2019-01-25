@@ -23,6 +23,16 @@
         $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
         $query->execute();
         $result = $query->fetchAll();
+        $table = '<table class="table table-dark table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Registration</th>
+            <th scope="col">Time IN</th>
+            <th scope="col">Patch</th>
+            <th scope="col"><i class="fa fa-cog"></i></th>
+          </tr>
+          </thead>
+        <tbody>';
         foreach ($result as $row) {
           //Get The right Path now.
           if($this->user->userInfo("campus") == 1) {
@@ -39,9 +49,8 @@
           } else if ($number >= 4) {
             $style = "table-danger";
           }
-
           //Begin Table.
-          $table = '<tr class="'.$style.'">';
+          $table .= '<tr class="'.$style.'">';
           $table .= '<td>'.$row['Plate'].'</td>';
           $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
           $table .= '<td><img style="max-width: 140px; max-height: 50px;" src="'.$patch.'"></img></td>';
@@ -53,10 +62,11 @@
                       </div>
                     </td>';
           $table .= '</tr>';
-
-          echo $table;
         }
+        $table .= '</tbody>
+                </table>';
 
+        echo $table;
 
         $this->mssql = null;
         $this->pm = null;
@@ -433,7 +443,6 @@
     }
     //Yard Check
     function yardCheck() {
-
       $this->mysql = new MySQL;
       $this->user = new User;
       $campus = $this->user->userInfo("campus");

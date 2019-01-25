@@ -1,5 +1,7 @@
 <?php
   require(__DIR__.'/global.php');
+  $pm->CheckAuth(1);
+
   $ANPRKey = $_GET['Uniqueref'];
   //Get ANPR Details
   $anpr_rec = $anpr->ANPR_GetRecord($ANPRKey);

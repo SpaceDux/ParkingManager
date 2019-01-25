@@ -464,5 +464,11 @@
       $this->mysql = null;
       $this->anpr = null;
     }
+    //Run checks if auth is required
+    function CheckAuth() {
+      if(!isset($_SESSION['id']) && basename($_SERVER['PHP_SELF']) != "index.php") {
+        header('Location: index');
+      }
+    }
   }
 ?>

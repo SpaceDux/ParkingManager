@@ -129,11 +129,14 @@
     if(!isset($_POST['TL_Fuel'])) {
       $_POST['TL_Fuel'] = 0;
     }
-    $payment->Transaction_Log($_POST['TL_DateStart'], $_POST['TL_DateEnd'], $_POST['TL_Cash'], $_POST['TL_Card'], $_POST['TL_Account'], $_POST['TL_SNAP'], $_POST['TL_Fuel'], $_POST['TL_Group']);
+    if(!isset($_POST['TL_9PM'])) {
+      $_POST['TL_9PM'] = 0;
+    }
+    $payment->Transaction_Log($_POST['TL_DateStart'], $_POST['TL_DateEnd'], $_POST['TL_Cash'], $_POST['TL_Card'], $_POST['TL_Account'], $_POST['TL_SNAP'], $_POST['TL_Fuel'], $_POST['TL_Group'], $_POST['TL_9PM']);
   } else if($handler == "Change_User_Password") {
     $user->adminChangePW($_POST['User_ID'], $_POST['User_Password']);
   } else if($handler == "EOD_Settlement") {
-    $ticket->Printer_9PM();
+    $ticket->Printer_9PM($_POST['Date1'], $_POST['Date2']);
   } else if($handler == "ETP_CardBreak") {
     $etp->ETP_CardBreak($_POST['FuelString']);
   }

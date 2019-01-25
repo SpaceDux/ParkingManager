@@ -52,13 +52,6 @@
     $etp = new PM\ETP;
   }
 
-  //Checks
-  //Redirect for auth
-  if(!isset($_SESSION['id']) && basename($_SERVER['PHP_SELF']) != "index.php") {
-    header('Location: index');
-  } else if (isset($_SESSION['id']) && basename($_SERVER['PHP_SELF']) == "index.php") {
-      header('Location: main');
-  }
   #Check a session hasn't remotely been cut
   $user->forceLogout();
 
