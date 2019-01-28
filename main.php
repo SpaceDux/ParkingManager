@@ -102,21 +102,9 @@
             <div class="title">
               Paid Vehicles
             </div>
-            <table class="table table-hover table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">Company</th>
-                  <th scope="col">Registration</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Time IN</th>
-                  <th scope="col">T.ID</th>
-                  <th scope="col float"><i class="fa fa-cog"></i></th>
-                </tr>
-              </thead>
-              <tbody>
-                  <?php $vehicles->get_paidFeed()?>
-              </tbody>
-            </table>
+            <div id="PAID_Feed">
+
+            </div>
           </div>
         </div>
         <div class="col-md-5">
@@ -124,39 +112,17 @@
             <div class="title">
               Renewals
             </div>
-            <table class="table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">Company</th>
-                  <th scope="col">Registration</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Time IN</th>
-                  <th scope="col"><i class="fa fa-cog"></i></th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php $vehicles->get_renewalFeed() ?>
-              </tbody>
-            </table>
+            <div id="RENEWAL_Feed">
+
+            </div>
           </div>
           <div class="content">
             <div class="title">
               Recently Exit Vehicles
             </div>
-            <table class="table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">Company</th>
-                  <th scope="col">Registration</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Time OUT</th>
-                  <th scope="col"><i class="fa fa-cog"></i></th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php $vehicles->get_exitFeed() ?>
-              </tbody>
-            </table>
+            <div id="EXIT_Feed">
+
+            </div>
           </div>
         </div>
       </div>
@@ -171,7 +137,6 @@
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
     <?php require(__DIR__.'/assets/require.php');?>
-    <?php require(__DIR__.'/core/ajax-js/vehicles.js.php');?>
     <script type="text/javascript">
     //Tab Key opens "AddVehicleModal" Modal
       Mousetrap.bind('tab', function() {

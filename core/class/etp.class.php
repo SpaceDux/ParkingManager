@@ -13,10 +13,10 @@
       $client = new Client(['base_uri' => $_CONFIG['etp_api']['base_uri']]);
 
       $response = $client->post('services/list', [
-          'auth' => array('Po5r9023', 'a9(K)LK_ee_47$$2'),
-          'json' => [
-              'locationusername' => 'holyhead',
-              'locationpassword' => '2hst36sg'
+        'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
+        'json' => [
+          'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
+          'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead']
           ]
       ]);
 

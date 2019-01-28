@@ -4,8 +4,6 @@
 
   if($handler == "exit") { //Exit Vehicle from PM
     $vehicles->Vehicle_Exit($_POST['veh_id']);
-  } else if($handler == "markRenewal") { //Mark Vehicle for Renewal
-    $vehicles->Vehicle_MarkRenewal($_POST['veh_id']);
   } else if($handler == "setFlag") {
     $vehicles->Vehicle_Flag($_POST['veh_id']);
   } else if($handler == "deleteVehicle") {

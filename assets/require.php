@@ -1,3 +1,8 @@
+<?php
+  //Pull all together
+  //Vehicles CLASS
+  require(__DIR__."..\../core/ajax-js/vehicles.js.php");
+?>
 <script type="text/javascript">
   //Menu JS
   function menuHide() {
@@ -16,17 +21,6 @@
         wrapper.style.paddingLeft = "0px";
         wrapper.style.transition = "0.2s ease-in-out";
     }
-  }
-  //AJAX for Exit
-  function exit(str) {
-    event.preventDefault();
-    var veh_id = str;
-    $.ajax({
-      url: "<?php echo URL?>/ajax-handler.php?handler=exit",
-      type: "POST",
-      data: "veh_id="+veh_id
-    })
-    $('#tables').load(' #tables');
   }
   //AJAX for Exit
   function EOD_SettlementToggle() {
@@ -81,17 +75,6 @@
         $('#tables').load(' #tables');
       }
     })
-  }
-  //Ajax mark Renewal function
-  function markRenewal(str) {
-    event.preventDefault();
-    var veh_id = str;
-    $.ajax({
-      url: "<?php echo URL?>/ajax-handler.php?handler=markRenewal",
-      type: "POST",
-      data: "veh_id="+veh_id
-    })
-    $('#tables').load(' #tables');
   }
   //Ajax setFlag Function
   function setFlag(str) {
@@ -270,24 +253,6 @@
         })
       }
     });
-    //ANPR Search Filter
-    $('#ANPR_Filter').keyup(function(){
-      var Filter = $(this).val();
-      if(Filter == '') {
-        $('#ANPR_FilterResult').empty();
-      } else {
-        $('#ANPR_FilterResult').html('');
-        $.ajax({
-          url: "<?php echo URL?>/ajax-handler.php?handler=ANPR_FilterSearch",
-          type: "POST",
-          data: {Filter:Filter},
-          dataType: "text",
-          success:function(data) {
-            $('#ANPR_FilterResult').html(data);
-          }
-        })
-      }
-    })
   });
   //ANPR Edit Record Display
   $(document).on('click', '#ANPR_Edit', function() {
@@ -1351,10 +1316,6 @@
   //Update Delete
   $('#deleteButton').click(function(){
     window.location.reload();
-  })
-  //Refresh ANPR (Blue button)
-  $('#refreshANPR').click(function(){
-    $('#anpr').load(' #anpr');
   })
 //Modal autofocus
   $('.modal').on('shown.bs.modal', function() {

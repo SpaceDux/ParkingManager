@@ -88,6 +88,18 @@
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
+      $table = '<table class="table table-hover table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Company</th>
+                        <th scope="col">Registration</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Time IN</th>
+                        <th scope="col">T.ID</th>
+                        <th scope="col float"><i class="fa fa-cog"></i></th>
+                      </tr>
+                    </thead>
+                    <tbody>';
       foreach ($key as $result) {
         if($result['parked_flag'] == 1) {
           $flag = '<i class="fa fa-flag" style="color: red;"></i> ';
@@ -95,7 +107,7 @@
           $flag = '';
         }
         //Begin Table content
-        $table = '<tr>';
+        $table .= '<tr>';
         $table .= '<td>'.$flag.$result['parked_company'].'</td>';
         $table .= '<td>'.$result['parked_plate'].'</td>';
         $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
@@ -118,8 +130,10 @@
             </div>
           </div>
         </td>';
-        echo $table;
       }
+      $table .= '  </tbody>
+                </table>';
+      echo $table;
       $this->mysql = null;
       $this->user = null;
       $this->payment = null;
@@ -138,6 +152,17 @@
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
+      $table = '<table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Company</th>
+                        <th scope="col">Registration</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Time IN</th>
+                        <th scope="col"><i class="fa fa-cog"></i></th>
+                      </tr>
+                    </thead>
+                    <tbody>';
       foreach ($key as $result) {
         $number = $this->findHour($result['parked_expiry'], "");
         $style = "";
@@ -152,7 +177,7 @@
           $flag = '';
         }
         //Begin Table content
-        $table = '<tr class="'.$style.'">';
+        $table .= '<tr class="'.$style.'">';
         $table .= '<td>'.$flag.$result['parked_company'].'</td>';
         $table .= '<td>'.$result['parked_plate'].'</td>';
         $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
@@ -174,8 +199,11 @@
             </div>
           </div>
         </td>';
-        echo $table;
       }
+      $table .= '   </tbody>
+                  </table>';
+
+      echo $table;
       $this->mysql = null;
       $this->user = null;
       $this->campus = null;
@@ -193,6 +221,17 @@
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
+      $table = '<table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Company</th>
+                      <th scope="col">Registration</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Time OUT</th>
+                      <th scope="col"><i class="fa fa-cog"></i></th>
+                    </tr>
+                  </thead>
+                  <tbody>';
       foreach ($key as $result) {
         if($result['parked_flag'] == 1) {
           $flag = '<i class="fa fa-flag" style="color: red;"></i> ';
@@ -200,7 +239,7 @@
           $flag = '';
         }
         //Begin Table content
-        $table = '<tr>';
+        $table .= '<tr>';
         $table .= '<td>'.$flag.$result['parked_company'].'</td>';
         $table .= '<td>'.$result['parked_plate'].'</td>';
         $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
@@ -209,9 +248,12 @@
                       <div class="btn-group" role="group" aria-label="Options">
                         <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
                       </div>
-                    </td>';
-        echo $table;
+                    </td></tr>';
       }
+      $table .= '</tbody>
+              </table>';
+              
+      echo $table;
       $this->mysql = null;
       $this->user = null;
       $this->campus = null;
