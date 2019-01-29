@@ -64,7 +64,7 @@
       return substr($string, $ini, $len);
     }
     //Process SNAP transaction
-    function Proccess_Transaction_SNAP($etpid, $plate, $name) {
+    public function Proccess_Transaction_SNAP($etpid, $plate, $name) {
       global $_CONFIG;
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
@@ -169,12 +169,10 @@
       ]);
       $return = json_decode($response->getBody(), true);
       if($return['outputstatus'] > 0) {
-        $html = '<i style="color: green;" class="fas fa-dot-circle"></i>';
+        return TRUE;
       } else {
-        $html = '<i style="color: red;" class="fas fa-dot-circle"></i>';
+        return FALSE;
       }
-
-      return $html;
     }
     //BreakUpCard
     function ETP_CardBreak($string) {

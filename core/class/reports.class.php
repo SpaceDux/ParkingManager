@@ -104,8 +104,10 @@
           $html .= '<td>'.$row['payment_ref'].'</td>';
           $html .= '<td>'.$h.' hours & '.$int->format('%i').' minutes</td>';
           $html .= '</tr>';
-          $query3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0 AND payment_type = 3 ORDER BY payment_date ASC");
+          $query3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0 AND payment_type = 3 AND payment_date BETWEEN ? AND ? ORDER BY payment_date ASC");
           $query3->bindParam(1, $key2);
+          $query3->bindParam(2, $date1);
+          $query3->bindParam(3, $date2);
           $query3->execute();
           foreach($query3->fetchAll() as $row) {
             $priceGross += $row['payment_price_gross'];
@@ -352,8 +354,10 @@
             $sheet->setCellValue('G'.$rows, $h.' hours & '.$int->format('%i').' minutes');
             $rows++;
             //Each payment listed
-            $query3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0 AND payment_type = 3 ORDER BY payment_date ASC");
+            $query3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0 AND payment_type = 3 AND payment_date BETWEEN ? AND ? ORDER BY payment_date ASC");
             $query3->bindParam(1, $key2);
+            $query3->bindParam(2, $date1);
+            $query3->bindParam(3, $date2);
             $query3->execute();
             foreach($query3->fetchAll() as $row) {
               $totalTransactions++;

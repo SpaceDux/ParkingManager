@@ -8,6 +8,11 @@
   $date = date("Y-m-d H:i:s", strtotime($anpr_rec['Capture_Date']));
 
   $result = $etp->Check_SNAP($anpr_rec['Plate']);
+  if($result == TRUE) {
+    $snap = '<i style="color: green;" class="fas fa-dot-circle"></i>';
+  } else {
+    $snap = '<i style="color: red;" class="fas fa-dot-circle"></i>';
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +83,7 @@
                      <a class="nav-item nav-link" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>
                      <a class="nav-item nav-link" id="nav-card-tab" tabindex="-1" data-toggle="tab" href="#nav-card" role="tab" aria-controls="nav-card" aria-selected="false"><i class="far fa-credit-card"></i> Card</a>
                      <a class="nav-item nav-link active" id="nav-account-tab" tabindex="-1" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="false"><i class="fas fa-id-card"></i> Account</a>
-                     <a class="nav-item nav-link" id="nav-snap-tab" tabindex="-1" data-toggle="tab" href="#nav-snap" role="tab" aria-controls="nav-snap" aria-selected="false"><?php echo $result ?> SNAP</a>
+                     <a class="nav-item nav-link" id="nav-snap-tab" tabindex="-1" data-toggle="tab" href="#nav-snap" role="tab" aria-controls="nav-snap" aria-selected="false"><?php echo $snap ?> SNAP</a>
                      <a class="nav-item nav-link" id="nav-fuel-tab" tabindex="-1" data-toggle="tab" href="#nav-fuel" role="tab" aria-controls="nav-fuel" aria-selected="false"> Fuel Card</a>
                    </div>
                  </nav>
@@ -164,18 +169,18 @@
                      </div>
                    </div>
                  </div>
-               <?php } else {  //NON ACCOUNT?>
+               <?php } else if($result == TRUE) {  //NON ACCOUNT?>
                  <nav>
                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                     <a class="nav-item nav-link active" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>
+                     <a class="nav-item nav-link" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>
                      <a class="nav-item nav-link" id="nav-card-tab" tabindex="-1" data-toggle="tab" href="#nav-card" role="tab" aria-controls="nav-card" aria-selected="false"><i class="far fa-credit-card"></i> Card</a>
                      <a class="nav-item nav-link" id="nav-account-tab" tabindex="-1" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="false"><i class="fas fa-id-card"></i> Account</a>
-                     <a class="nav-item nav-link" id="nav-snap-tab" tabindex="-1" data-toggle="tab" href="#nav-snap" role="tab" aria-controls="nav-snap" aria-selected="false"><?php echo $result ?> SNAP</a>
+                     <a class="nav-item nav-link active" id="nav-snap-tab" tabindex="-1" data-toggle="tab" href="#nav-snap" role="tab" aria-controls="nav-snap" aria-selected="false"><?php echo $snap ?> SNAP</a>
                      <a class="nav-item nav-link" id="nav-fuel-tab" tabindex="-1" data-toggle="tab" href="#nav-fuel" role="tab" aria-controls="nav-fuel" aria-selected="false"> Fuel Card</a>
                    </div>
                  </nav>
                  <div class="tab-content" id="nav-tabContent">
-                   <div class="tab-pane fade show active" id="nav-cash" role="tabpanel" aria-labelledby="nav-cash-tab">
+                   <div class="tab-pane fade" id="nav-cash" role="tabpanel" aria-labelledby="nav-cash-tab">
                      <div class="form-group">
                        <label>Select a Cash Service</label>
                        <div id="Cash_Dropdown">
@@ -215,7 +220,7 @@
                        <input type="submit" name="NT_Process_Account" id="NT_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
                      </div>
                    </div>
-                   <div class="tab-pane fade" id="nav-snap" role="tabpanel" aria-labelledby="nav-snap-tab">
+                   <div class="tab-pane fade show active" id="nav-snap" role="tabpanel" aria-labelledby="nav-snap-tab">
                      <div class="form-group">
                        <label>Select a SNAP Service</label>
                        <div id="SNAP_Dropdown">
@@ -256,6 +261,98 @@
                      </div>
                    </div>
                  </div>
+              <?php } else { ?>
+                <nav>
+                  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>
+                    <a class="nav-item nav-link" id="nav-card-tab" tabindex="-1" data-toggle="tab" href="#nav-card" role="tab" aria-controls="nav-card" aria-selected="false"><i class="far fa-credit-card"></i> Card</a>
+                    <a class="nav-item nav-link" id="nav-account-tab" tabindex="-1" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="false"><i class="fas fa-id-card"></i> Account</a>
+                    <a class="nav-item nav-link" id="nav-snap-tab" tabindex="-1" data-toggle="tab" href="#nav-snap" role="tab" aria-controls="nav-snap" aria-selected="false"><?php echo $snap ?> SNAP</a>
+                    <a class="nav-item nav-link" id="nav-fuel-tab" tabindex="-1" data-toggle="tab" href="#nav-fuel" role="tab" aria-controls="nav-fuel" aria-selected="false"> Fuel Card</a>
+                  </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                  <div class="tab-pane fade show active" id="nav-cash" role="tabpanel" aria-labelledby="nav-cash-tab">
+                    <div class="form-group">
+                      <label>Select a Cash Service</label>
+                      <div id="Cash_Dropdown">
+
+                      </div>
+                      <small class="form-text text-muted"> Ensure this is correct! </small>
+                      <div class="form-group" style="margin-top: 130px;">
+                        <input type="submit" id="NT_Process_Cash" name="NT_Process_Cash" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="nav-card" role="tabpanel" aria-labelledby="nav-card-tab">
+                    <div class="form-group">
+                      <label>Select a Card Service</label>
+                      <div id="Card_Dropdown">
+
+                      </div>
+                      <small class="form-text text-muted"> Ensure this is correct! </small>
+                    </div>
+                    <div class="form-group" style="margin-top: 130px;">
+                      <input type="submit" name="NT_Process_Card" id="NT_Process_Card" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
+                    <div class="form-group">
+                      <label>Select a Account Service</label>
+                      <div id="Account_Dropdown">
+
+                      </div>
+                      <small class="form-text text-muted"> Ensure this is correct! </small>
+                    </div>
+                    <div class="form-group">
+                      <label>Select an account</label>
+                      <?php $account->Account_List_Dropdown(); ?>
+                    </div>
+                    <div class="form-group" style="margin-top: 130px;">
+                      <input type="submit" name="NT_Process_Account" id="NT_Process_Account" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="nav-snap" role="tabpanel" aria-labelledby="nav-snap-tab">
+                    <div class="form-group">
+                      <label>Select a SNAP Service</label>
+                      <div id="SNAP_Dropdown">
+
+                      </div>
+                      <small class="form-text text-muted"> Ensure this is correct! </small>
+                    </div>
+                    <div class="form-group" style="margin-top: 130px;">
+                      <input type="submit" name="NT_Process_SNAP" id="NT_Process_SNAP" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="nav-fuel" role="tabpanel" aria-labelledby="nav-fuel-tab">
+                    <div class="form-group">
+                      <label>Select a Fuel Service</label>
+                      <div id="Fuel_Dropdown">
+
+                      </div>
+                      <small class="form-text text-muted"> Ensure this is correct! </small>
+                    </div>
+                    <div class="form-group">
+                      <label>Swipe Fuel Card</label>
+                      <input type="password" class="form-control form-control-lg" name="NT_Process_FuelStrip" id="NT_Process_FuelStrip" value="" placeholder="Swipe Fuel Card">
+                    </div>
+                    <hr>
+                    <div class="form-row">
+                      <div class="col-8">
+                        <label>Fuel Card Number</label>
+                        <input type="text" class="form-control" placeholder="Fuel Card Number" id="NT_FuelCard_Number" value="">
+                      </div>
+                      <div class="col">
+                        <label>Expiration Date</label>
+                        <input type="text" class="form-control" placeholder="Expiry (02/2020)" id="NT_FuelCard_Date" value="">
+                      </div>
+                    </div>
+                    <small class="form-text text-muted"> Ensure this is correct! </small>
+                    <div class="form-group" style="margin-top: 130px;">
+                      <input type="submit" name="NT_Process_Fuel" id="NT_Process_Fuel" class="btn btn-outline-success btn-lg btn-block" value="Process Transaction">
+                    </div>
+                  </div>
+                </div>
               <?php } ?>
                </div>
             </div>

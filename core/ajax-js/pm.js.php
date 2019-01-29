@@ -1,0 +1,30 @@
+<script type="text/javascript">
+//Exit Keypad
+$(document).on('keyup', '#PM_ExitCode', function() {
+  event.preventDefault();
+  Code = $(this).val();
+
+  if (Code.includes("*")) {
+    $('#ExitForm')[0].reset();
+  }
+
+  if(Code.includes("£") || Code.includes("#")) {
+    $.ajax({
+      url: "<?php echo URL?>/core/ajax/pm.ajax.php?handler=ExitKeypad",
+      type: "POST",
+      data: {Code:Code},
+      success:function(data) {
+        if(data == "1") {
+          $('#ExitForm')[0].reset();
+        } else {
+          $('#ExitForm')[0].reset();
+        }
+      }
+    })
+  } else if (Code != "") {
+    setTimeout(function() {
+      $('#ExitForm')[0].reset();
+    }, 15000);
+  }
+});
+</script>

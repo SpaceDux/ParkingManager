@@ -312,7 +312,7 @@
           $printer -> text("END OF DAY PARKING SETTLEMENT\n");
           $printer -> setTextSize(1, 1);
           $printer -> setFont(Printer::FONT_A);
-          $printer -> text(date("d/m/y H:i", strtotime($date2))." - ".date("d/m/y H:i", strtotime($date1)));
+          $printer -> text(date("d/m/y H:i", strtotime($date1))." - ".date("d/m/y H:i", strtotime($date2)));
           $printer -> feed(2);
           $printer -> selectPrintMode();
           $£3Cash = 0;

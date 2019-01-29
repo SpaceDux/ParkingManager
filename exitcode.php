@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/fontawesome-all.min.css">
   </head>
   <body>
-    <form id="ExitForm" method="post">
+    <form id="ExitForm">
       <input type="text" class="form-control" id="PM_ExitCode" autofocus>
     </form>
     <!-- javascript Files -->
@@ -23,5 +23,11 @@
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
     <?php require(__DIR__."/assets/require.php");?>
+    <script type="text/javascript">
+
+      // Mousetrap.bind('*', function() {
+      //   $('#ExitForm')[0].reset();
+      // });
+    </script>
   </body>
 </html>
