@@ -87,12 +87,13 @@
       $this->mssql = null;
     }
     //ANPR Update Details
-    function ANPR_Update_Save($key, $plate, $time) {
+    function ANPR_Update_Save($key, $plate, $time, $trl) {
       $this->mssql = new MSSQL;
-      $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ?, Capture_Date = ? WHERE Uniqueref = ?");
+      $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ?, Capture_Date = ?, Notes = ? WHERE Uniqueref = ?");
       $stmt->bindParam(1, strtoupper($plate));
       $stmt->bindParam(2, $time);
-      $stmt->bindParam(3, $key);
+      $stmt->bindParam(3, $trl);
+      $stmt->bindParam(4, $key);
       $stmt->execute();
 
       $this->mssql = null;

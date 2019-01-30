@@ -54,6 +54,10 @@
               <input type="text" style="text-transform: uppercase;" id="ANPR_Update_Plate" class="form-control" autofocus>
             </div>
             <div class="col">
+              <label>Update Trailer Number</label>
+              <input type="text" style="text-transform: uppercase;" id="ANPR_Update_Trl" class="form-control" placeholder="NT646E...">
+            </div>
+            <div class="col">
               <label>Update ANPR Date & Time</label>
               <input type="text" style="text-transform: uppercase;" id="ANPR_Update_Date" class="form-control">
             </div>

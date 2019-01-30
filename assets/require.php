@@ -268,6 +268,7 @@
         $('#ANPR_Update_ID').val(data.Uniqueref);
         $('#ANPR_Update_Plate').val(data.Plate);
         $('#ANPR_Update_Date').val(data.Capture_Date);
+        $('#ANPR_Update_Trl').val(data.Notes);
         $('#ANPR_UpdateModal').modal('toggle');
       }
     })
@@ -277,10 +278,11 @@
     var anpr_id = $('#ANPR_Update_ID').val();
     var Plate = $('#ANPR_Update_Plate').val();
     var Capture_Date = $('#ANPR_Update_Date').val();
+    var Trl = $('#ANPR_Update_Trl').val();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=ANPR_Update",
       type: "POST",
-      data: "anpr_id="+anpr_id+"&Plate="+Plate+"&Capture_Date="+Capture_Date
+      data: "anpr_id="+anpr_id+"&Plate="+Plate+"&Capture_Date="+Capture_Date+"&Trl="+Trl
     });
     event.preventDefault();
     $('#anpr').load(' #anpr');
@@ -1070,7 +1072,7 @@
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Account_Update_Save",
         type: "POST",
-        data: "Acc_ID="+Account_ID+"&Name="+Name+"&Tel="+Tel+"&Email="+Email+"&Billing="+Billing+"&Site="+Campus+"&Share="+Share+"&short="+Short,
+        data: "Acc_ID="+Account_ID+"&Name="+Name+"&Tel="+Tel+"&Email="+Email+"&Billing="+Billing+"&Site="+Campus+"&Share="+Share+"&Short="+Short,
         success:function() {
           $('#Update_AccountModal').modal('toggle');
       }

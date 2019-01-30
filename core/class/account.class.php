@@ -342,7 +342,7 @@
       $query->bindParam(7, $date);
       $query->bindParam(8, $site);
       if($query->execute()) {
-        $this->pm->PM_Notification_Create('A new account has been added to PM - '.$name.'', 0);
+        $this->pm->PM_Notification_Create('A new account has been added to ParkingManager - '.$name.'', 0);
       }
 
       $this->mysql = null;

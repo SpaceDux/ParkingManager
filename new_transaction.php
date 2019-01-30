@@ -59,7 +59,7 @@
                  </div>
                  <div class="form-group">
                    <label for="NT_Vehicle_Type">Trailer Number</label>
-                   <input type="text" class="form-control" name="NT_Vehicle_Trailer" id="NT_Vehicle_Trailer" placeholder="Trailer Number" style="text-transform: uppercase;">
+                   <input type="text" class="form-control" name="NT_Vehicle_Trailer" id="NT_Vehicle_Trailer" placeholder="Trailer Number" style="text-transform: uppercase;" value="<?php echo $anpr_rec['Notes']?>">
                  </div>
                  <div class="form-group">
                    <label for="NT_Vehicle_Type">Vehicle Type</label>
