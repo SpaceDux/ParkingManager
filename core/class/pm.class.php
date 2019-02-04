@@ -318,12 +318,14 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->vehicles = new Vehicles;
-      $this->campus = $this->user->userInfo("campus");
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate LIKE ? OR parked_trailer LIKE ? OR parked_company LIKE ? AND parked_campus = ? ORDER BY parked_timein DESC LIMIT 100");
-      $stmt->bindParam(1, $string);
+      $site = $this->user->userInfo("campus");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_campus = ? AND parked_plate LIKE ? OR parked_campus = ? AND parked_company LIKE ? OR parked_campus = ? AND parked_trailer LIKE ? ORDER BY parked_timein DESC LIMIT 100");
+      $stmt->bindParam(1, $site);
       $stmt->bindParam(2, $string);
-      $stmt->bindParam(3, $string);
-      $stmt->bindParam(4, $this->campus);
+      $stmt->bindParam(3, $site);
+      $stmt->bindParam(4, $string);
+      $stmt->bindParam(5, $site);
+      $stmt->bindParam(6, $string);
       $stmt->execute();
       $result = $stmt->fetchAll();
 
@@ -433,12 +435,15 @@
       $this->user = null;
       $this->mssql = null;
     }
+    //Exit Keypad
     function PM_ExitKeyPad($string) {
       $this->mysql = new MySQL;
       $this->anpr = new ANPR;
 
-      $current = date("Y-m-d H:i:s", strtotime('+ 2 hours'));
+      // $current = date("Y-m-d H:i:s", strtotime('+ 2 hours'));
       $time = date("Y-m-d H:i:s");
+
+      $string = str_replace("£", "", $string);
 
       if(strlen($string) == 6) {
         $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_exitKey = ? AND parked_column = 1 ORDER BY id DESC LIMIT 1");
@@ -447,7 +452,8 @@
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         $id = $result['id'];
         $site = $result['parked_campus'];
-        if($current <= $result['parked_expiry']) {
+        $expiry = date("Y-m-d H:i:s", strtotime($result['parked_expiry'].'+ 2 hours'));
+        if($expiry >= $time) {
           $exit = $this->mysql->dbc->prepare("UPDATE pm_parking_log SET parked_column = '2', parked_timeout = ? WHERE id = ?");
           $exit->bindParam(1, $time);
           $exit->bindParam(2, $id);
@@ -459,6 +465,9 @@
         } else {
           echo 0;
         }
+      } else if($string == "6868") {
+        $this->anpr->Barrier_Controller("1", "EX");
+        $this->PM_Notification_Create("Override code has been used at the barrier keypad", "0");
       }
 
       $this->mysql = null;

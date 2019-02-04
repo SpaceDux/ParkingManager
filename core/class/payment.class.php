@@ -1392,11 +1392,13 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->campus = $this->user->userInfo("campus");
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_vehicle_plate LIKE ? OR id LIKE ? OR payment_etp_id LIKE ? AND payment_campus = ? ORDER BY payment_date DESC LIMIT 100");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_vehicle_plate LIKE ? AND payment_campus = ? OR id LIKE ? AND payment_campus = ? OR payment_etp_id LIKE ? AND payment_campus = ? ORDER BY payment_date DESC LIMIT 100");
       $stmt->bindParam(1, $string);
-      $stmt->bindParam(2, $string);
+      $stmt->bindParam(2, $this->campus);
       $stmt->bindParam(3, $string);
       $stmt->bindParam(4, $this->campus);
+      $stmt->bindParam(5, $string);
+      $stmt->bindParam(6, $this->campus);
       $stmt->execute();
       $result = $stmt->fetchAll();
 

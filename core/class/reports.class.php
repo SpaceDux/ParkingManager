@@ -54,7 +54,7 @@
       foreach($query->fetchAll() as $row) {
         $key = $row['payment_service_id'];
         $count = $this->Payment_Count_Account($account, $campus, $key, $date1, $date2);
-        $net = $this->payment->Payment_ServiceInfo($key, "service_price_net") * $count;
+          $net = $this->payment->Payment_ServiceInfo($key, "service_price_net") * $count;
         $gross = $this->payment->Payment_ServiceInfo($key, "service_price_gross") * $count;
 
         $stat .= '<tr>';
