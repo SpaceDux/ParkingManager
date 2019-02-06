@@ -105,7 +105,7 @@
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
         $printer -> setReverseColors(TRUE);
         $printer -> setTextSize(2, 2);
-        $printer -> text(" Exit Code: ".$exitKey." ");
+        $printer -> text(" Exit Code: *".$exitKey."# ");
         $printer -> setReverseColors(FALSE);
         $printer -> selectPrintMode();
         $printer -> feed(1);

@@ -181,6 +181,8 @@
       $this->pm = new PM;
       $this->user = new User;
 
+      $plate = str_replace(" ", "", $plate);
+
       $user = $this->user->userInfo("first_name");
 
       $account = $this->Account_GetInfo($key, "account_name");
