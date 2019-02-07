@@ -15,7 +15,7 @@
         $string = '%'.$key.'%';
         $html = '';
         $this->mssql = new MSSQL;
-        $stmt = $this->mssql->dbc->prepare("SELECT TOP 50 * FROM ANPR_REX WHERE Plate LIKE ? OR Original_Plate LIKE ? OR Uniqueref LIKE ? ORDER BY Capture_Date DESC");
+        $stmt = $this->mssql->dbc->prepare("SELECT TOP 20 * FROM ANPR_REX WHERE Plate LIKE ? OR Original_Plate LIKE ? OR Uniqueref LIKE ? ORDER BY Capture_Date DESC");
         $stmt->bindParam(1, $string);
         $stmt->bindParam(2, $string);
         $stmt->bindParam(3, $string);
@@ -101,23 +101,40 @@
     //ANPR Add Vehicle
     function ANPR_AddPlate($plate, $time) {
       //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID, BarcodeExpression)
+      $this->user = new User;
       $this->mssql = new MSSQL;
 
       $plate = strtoupper($plate);
 
-      if(!empty($plate)) {
-        $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane 01', :capDate, null, 'RoadKing - Parc Cybi Holyhead', '0', null, '0', :plate2, null, null, :capDate2, null, '')");
-        $stmt->bindParam(':plate', $plate);
-        $stmt->bindParam(':capDate', $time);
-        $stmt->bindParam(':plate2', $plate);
-        $stmt->bindParam(':capDate2', $time);
-        $stmt->execute();
-      } else {
-        die("Must contain a valid plate");
+      if($this->user->userInfo("campus") == 1) {
+        if(!empty($plate)) {
+          $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane 01', :capDate, null, 'RoadKing - Parc Cybi Holyhead', '0', null, '0', :plate2, null, null, :capDate2, null, '')");
+          $stmt->bindParam(':plate', $plate);
+          $stmt->bindParam(':capDate', $time);
+          $stmt->bindParam(':plate2', $plate);
+          $stmt->bindParam(':capDate2', $time);
+          $stmt->execute();
+        } else {
+          die("Must contain a valid plate");
+        }
+      } else if($this->user->userInfo("campus") == 2) {
+        if(!empty($plate)) {
+          //Includes latest anpr update.
+          $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane 01', :capDate, :createdDate, null, 'RoadKing - The New Hollies', '0', null, '0', :plate2, null, null, :capDate2, null, '', '', '')");
+          $stmt->bindParam(':plate', $plate);
+          $stmt->bindParam(':capDate', $time);
+          $stmt->bindParam(':createdDate', $time);
+          $stmt->bindParam(':plate2', $plate);
+          $stmt->bindParam(':capDate2', $time);
+          $stmt->execute();
+        } else {
+          die("Must contain a valid plate");
+        }
       }
 
 
       $this->mssql = null;
+      $this->user = null;
     }
     //Toggle Barrier
     function ToggleBarrier($key) {
@@ -245,7 +262,7 @@
         $this->mssql = new MSSQL;
         $this->pm = new PM;
         $this->vehicles = new Vehicles;
-        $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Plate LIKE ? AND Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+        $query = $this->mssql->dbc->prepare("SELECT TOP 5 * FROM ANPR_REX WHERE Plate LIKE ? AND Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
         $query->bindParam(1, $key);
         $query->execute();
         $result = $query->fetchAll();
