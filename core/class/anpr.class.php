@@ -139,24 +139,48 @@
     //Toggle Barrier
     function ToggleBarrier($key) {
       global $_CONFIG;
-      if($key == 1) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_holyhead']['in']);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-          echo 'Error:' . curl_error($ch);
+      $this->user = new User;
+      $site = $this->user->userInfo("campus");
+      if($site == 1) {
+        if($key == 1) {
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_holyhead']['in']);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+          $result = curl_exec($ch);
+          if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+          }
+          curl_close($ch);
+        } else if ($key == 0) {
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_holyhead']['out']);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+          $result = curl_exec($ch);
+          if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+          }
+          curl_close($ch);
         }
-        curl_close($ch);
-      } else if ($key == 0) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_holyhead']['out']);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-          echo 'Error:' . curl_error($ch);
+      } else if($campus == 2) {
+        if($key == 1) {
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_cannock']['in']);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+          $result = curl_exec($ch);
+          if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+          }
+          curl_close($ch);
+        } else if ($key == 0) {
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_cannock']['out']);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+          $result = curl_exec($ch);
+          if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+          }
+          curl_close($ch);
         }
-        curl_close($ch);
       }
     }
     //Toggle Exit Barrier via keypad

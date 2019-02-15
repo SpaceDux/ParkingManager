@@ -4,6 +4,8 @@
   require(__DIR__."..\../core/ajax-js/vehicles.js.php");
   //PM
   require(__DIR__."..\../core/ajax-js/pm.js.php");
+  //Payments
+  require(__DIR__."..\../core/ajax-js/payment.js.php");
 ?>
 <script type="text/javascript">
   //Menu JS
@@ -304,104 +306,7 @@
     $('#anpr').load(' #anpr');
     $('#ANPR_AddModal').modal('toggle');
   });
-  //Payment Add Service
-  $(document).on('click', '#Payment_Service_Save', function() {
-    var Service_Name = $("#Service_Name").val();
-    var Service_Price_Gross = $("#Service_Price_Gross").val();
-    var Service_Price_Net = $("#Service_Price_Net").val();
-    var Service_Expiry = $("#Service_Expiry").val();
-    var Service_Cash = $("#Service_Cash").val();
-    var Service_Card = $("#Service_Card").val();
-    var Service_Account = $("#Service_Account").val();
-    var Service_Snap = $("#Service_SNAP").val();
-    var Service_Fuel = $("#Service_Fuel").val();
-    var Service_Campus = $("#Service_Campus").val();
-    var Service_Ticket = $("#Service_Ticket_Name").val();
-    var Service_Meal_Amount = $("#Service_Meal_Amount").val();
-    var Service_Shower_Amount = $("#Service_Shower_Amount").val();
-    var Service_Group = $("#Service_Group").val();
-    var Service_Vehicles = $("#Service_Vehicles").val();
-    var Service_Vehicles_Any = $("#Service_Vehicles_Any").val();
-    var Service_ETPID = $("#Service_ETPID").val();
-    $.ajax({
-      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Add_Service",
-      type: "POST",
-      data: "Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Group="+Service_Group+"&Service_Vehicles="+Service_Vehicles+"&Service_Vehicles_Any="+Service_Vehicles_Any+"&Service_ETPID="+Service_ETPID,
-      success:function() {
-        $('#Payment_Service_AddModal').modal('toggle');
-        $('#tables').load(' #tables');
-        $('#Payment_Service_AddForm')[0].reset();
-      }
-    });
-    event.preventDefault();
-    return false;
-  });
-  //Payment Service Update GET
-  $(document).on('click', '#Payment_Service_Update_Modal', function() {
-    var service_id = $(this).data('id');
-    $.ajax({
-      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Update_Get",
-      type: "POST",
-      data: {service_id:service_id},
-      dataType: "json",
-      success:function(data) {
-        $('#Service_ID_Update').val(data.id);
-        $('#Service_Name_Update').val(data.service_name);
-        $('#Service_Ticket_Name_Update').val(data.service_ticket_name);
-        $('#Service_Price_Gross_Update').val(data.service_price_gross);
-        $('#Service_Price_Net_Update').val(data.service_price_net);
-        $('#Service_Expiry_Update').val(data.service_expiry);
-        $('#Service_Cash_Update').val(data.service_cash);
-        $('#Service_Card_Update').val(data.service_card);
-        $('#Service_Account_Update').val(data.service_account);
-        $('#Service_SNAP_Update').val(data.service_snap);
-        $('#Service_Fuel_Update').val(data.service_fuel);
-        $('#Service_Campus_Update').val(data.service_campus);
-        $('#Service_Vehicles_Update').val(data.service_vehicles);
-        $('#Service_Meal_Amount_Update').val(data.service_meal_amount);
-        $('#Service_Shower_Amount_Update').val(data.service_shower_amount);
-        $('#Service_Vehicles_Update').val(data.service_vehicles);
-        $('#Service_Vehicles_Any_Update').val(data.service_anyvehicle);
-        $('#Service_Group_Update').val(data.service_group);
-        $('#Service_ETPID_Update').val(data.service_etpid);
-        $('#Payment_Service_UpdateModal').modal('toggle');
-      }
-    })
-  });
-  //Payment Service Record Update
-  $(document).on('click', '#Payment_Service_Update', function(){
-    $('#Service_Vehicles_Update_Hidden').val($('#Service_Vehicles_Update').val());
-    var Service_ID = $('#Service_ID_Update').val();
-    var Service_Name = $("#Service_Name_Update").val();
-    var Service_Price_Gross = $("#Service_Price_Gross_Update").val();
-    var Service_Price_Net = $("#Service_Price_Net_Update").val();
-    var Service_Expiry = $("#Service_Expiry_Update").val();
-    var Service_Cash = $("#Service_Cash_Update").val();
-    var Service_Card = $("#Service_Card_Update").val();
-    var Service_Account = $("#Service_Account_Update").val();
-    var Service_Snap = $("#Service_SNAP_Update").val();
-    var Service_Fuel = $("#Service_Fuel_Update").val();
-    var Service_Campus = $("#Service_Campus_Update").val();
-    var Service_Vehicles = $("#Service_Vehicles_Update").val();
-    var Service_Meal_Amount = $("#Service_Meal_Amount_Update").val();
-    var Service_Shower_Amount = $("#Service_Shower_Amount_Update").val();
-    var Service_Ticket = $("#Service_Ticket_Name_Update").val();
-    var Service_Any = $("#Service_Vehicles_Any_Update").val();
-    var Service_Group = $("#Service_Group_Update").val();
-    var Service_ETPID = $("#Service_ETPID_Update").val();
-    $.ajax({
-      url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Update",
-      type: "POST",
-      data:"Service_ID="+Service_ID+"&Service_Name="+Service_Name+"&Service_Ticket="+Service_Ticket+"&Service_Price_Gross="+Service_Price_Gross+"&Service_Price_Net="+Service_Price_Net+"&Service_Expiry="+Service_Expiry+"&Service_Cash="+Service_Cash+"&Service_Card="+Service_Card+"&Service_Account="+Service_Account+"&Service_Snap="+Service_Snap+"&Service_Fuel="+Service_Fuel+"&Service_Campus="+Service_Campus+"&Service_Vehicles="+Service_Vehicles+"&Service_Meal_Amount="+Service_Meal_Amount+"&Service_Shower_Amount="+Service_Shower_Amount+"&Service_Any="+Service_Any+"&Service_Group="+Service_Group+"&Service_ETPID="+Service_ETPID,
-      success: function(){
-        $('#tables').load(' #tables');
-        $('#Payment_Service_UpdateModal').modal('toggle');
-        $('#Payment_Service_UpdateForm')[0].reset();
-      }
-    });
-    event.preventDefault();
-    return false;
-  });
+
   //Vehicle Type Update GET
   $(document).on('click', '#Update_Vehicle_TypeBtn', function() {
     var type_id = $(this).data('id');
@@ -1181,6 +1086,7 @@
       type: "POST",
       data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Date="+DateIN+"&Company="+Company,
       success:function() {
+        $(this).attr("id", "DONE");
         window.location.replace("<?php echo URL?>/main");
       }
     });

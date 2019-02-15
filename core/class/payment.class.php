@@ -53,55 +53,56 @@
     function Payment_Services_List($site) {
       $this->mysql = new MySQL;
       $this->pm = new PM;
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_campus = ? ORDER BY service_price_gross ASC");
-      $query->bindParam(1, $site);
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types ORDER BY id ASC");
       $query->execute();
       $result = $query->fetchAll();
-
-      foreach ($result as $row) {
-        $table = "<tr>";
-        $table .= "<td>".$row['service_name']."</td>";
-        $table .= "<td>".$row['service_price_gross']."</td>";
-        $table .= "<td>".$row['service_price_net']."</td>";
-        $table .= "<td>".$row['service_expiry']."</td>";
-        if($row['service_meal_amount'] > 0) {
-          $table .= '<td class="table-success">'.$row['service_meal_amount'].'</td>';
-        } else {
-          $table .= '<td class="table-danger">No</td>';
-        }
-        if($row['service_shower_amount'] > 0) {
-          $table .= '<td class="table-success">'.$row['service_shower_amount'].'</td>';
-        } else {
-          $table .= '<td class="table-danger">No</td>';
-        }
+      $html = '';
+      //Misc
+      $html .= '<tr class="table table-primary"><td colspan="15">Misc (All Vehicles)</td></tr>';
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_vehicles = 0 AND service_campus = ? ORDER BY service_expiry, service_active ASC");
+      $query->bindParam(1, $site);
+      $query->execute();
+      foreach($query->fetchAll() as $row) {
+        $html .= '<tr class="">';
+        $html .= '<td>'.$row['service_name'].'</td>';
+        $html .= '<td>£'.$row['service_price_gross'].'</td>';
+        $html .= '<td>£'.$row['service_price_net'].'</td>';
         if($row['service_cash'] == 1) {
-          $table .= '<td class="table-success">Yes</td>';
+          $html .= '<td class="table-success">YES</td>';
         } else {
-          $table .= '<td class="table-danger">No</td>';
+          $html .= '<td class="table-danger">NO</td>';
         }
         if($row['service_card'] == 1) {
-          $table .= '<td class="table-success">Yes</td>';
+          $html .= '<td class="table-success">YES</td>';
         } else {
-          $table .= '<td class="table-danger">No</td>';
+          $html .= '<td class="table-danger">NO</td>';
         }
         if($row['service_account'] == 1) {
-          $table .= '<td class="table-success">Yes</td>';
+          $html .= '<td class="table-success">YES</td>';
         } else {
-          $table .= '<td class="table-danger">No</td>';
+          $html .= '<td class="table-danger">NO</td>';
         }
         if($row['service_snap'] == 1) {
-          $table .= '<td class="table-success">Yes</td>';
+          $html .= '<td class="table-success">YES</td>';
         } else {
-          $table .= '<td class="table-danger">No</td>';
+          $html .= '<td class="table-danger">NO</td>';
         }
         if($row['service_fuel'] == 1) {
-          $table .= '<td class="table-success">Yes</td>';
+          $html .= '<td class="table-success">YES</td>';
         } else {
-          $table .= '<td class="table-danger">No</td>';
+          $html .= '<td class="table-danger">NO</td>';
         }
-        $table .= "<td>".$row['service_update_author']."</td>";
-        $table .= "<td>".$this->pm->PM_SiteInfo($row['service_campus'], "site_name")."</td>";
-        $table .= '<td>
+        $html .= '<td class="">'.$row['service_meal_amount'].'</td>';
+        $html .= '<td class="">'.$row['service_shower_amount'].'</td>';
+        $html .= '<td class="">'.$row['service_discount_amount'].'</td>';
+        $html .= '<td class="">'.$row['service_wifi_amount'].'</td>';
+        $html .= '<td class="">'.$row['service_etpid'].'</td>';
+        if($row['service_active'] == 1) {
+          $html .= '<td class="table-success">YES</td>';
+        } else {
+          $html .= '<td class="table-danger">NO</td>';
+        }
+        $html .= '<td>
           <div class="btn-group" role="group" aria-label="Options">
             <button type="button" id="Payment_Service_Update_Modal" data-id="'.$row['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></button>
 
@@ -114,21 +115,86 @@
             </div>
           </div>
         </td>';
-        $table .= "</tr>";
-
-        echo $table;
+        $html .= '</tr>';
       }
+
+      //Query types
+      foreach($result as $type) {
+        $id = $type['id'];
+        $html .= '<tr class="table table-primary"><td colspan="15">'.$type['type_name'].'</td></tr>';
+        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_vehicles = ? AND service_campus = ? ORDER BY service_expiry ASC");
+        $query->bindParam(1, $id);
+        $query->bindParam(2, $site);
+        $query->execute();
+        foreach($query->fetchAll() as $row) {
+          $html .= '<tr class="">';
+          $html .= '<td>'.$row['service_name'].'</td>';
+          $html .= '<td>£'.$row['service_price_gross'].'</td>';
+          $html .= '<td>£'.$row['service_price_net'].'</td>';
+          if($row['service_cash'] == 1) {
+            $html .= '<td class="table-success">YES</td>';
+          } else {
+            $html .= '<td class="table-danger">NO</td>';
+          }
+          if($row['service_card'] == 1) {
+            $html .= '<td class="table-success">YES</td>';
+          } else {
+            $html .= '<td class="table-danger">NO</td>';
+          }
+          if($row['service_account'] == 1) {
+            $html .= '<td class="table-success">YES</td>';
+          } else {
+            $html .= '<td class="table-danger">NO</td>';
+          }
+          if($row['service_snap'] == 1) {
+            $html .= '<td class="table-success">YES</td>';
+          } else {
+            $html .= '<td class="table-danger">NO</td>';
+          }
+          if($row['service_fuel'] == 1) {
+            $html .= '<td class="table-success">YES</td>';
+          } else {
+            $html .= '<td class="table-danger">NO</td>';
+          }
+          $html .= '<td class="">'.$row['service_meal_amount'].'</td>';
+          $html .= '<td class="">'.$row['service_shower_amount'].'</td>';
+          $html .= '<td class="">'.$row['service_discount_amount'].'</td>';
+          $html .= '<td class="">'.$row['service_wifi_amount'].'</td>';
+          $html .= '<td class="">'.$row['service_etpid'].'</td>';
+          if($row['service_active'] == 1) {
+            $html .= '<td class="table-success">YES</td>';
+          } else {
+            $html .= '<td class="table-danger">NO</td>';
+          }
+          $html .= '<td>
+            <div class="btn-group" role="group" aria-label="Options">
+              <button type="button" id="Payment_Service_Update_Modal" data-id="'.$row['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="OptionsDrop">
+                  <a class="dropdown-item" onClick="Payment_Service_Delete('.$row['id'].')" href="#">Delete Service</a>
+                </div>
+              </div>
+            </div>
+          </td>';
+          $html .= '</tr>';
+        }
+      }
+
+      echo $html;
       $this->mysql = null;
       $this->pm = null;
     }
     //Add services
-    function Payment_Services_New($name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_amount, $shower_amount, $group, $vehicles, $any, $etpid) {
+    function Payment_Services_New($name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $meal_amount, $shower_amount, $group, $vehicles, $etpid, $active, $wifi_amount, $discount_amount) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $date = date("Y-m-d H:i");
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services (service_name, service_ticket_name, service_price_gross, service_price_net, service_expiry, service_cash, service_card, service_account, service_snap, service_fuel, service_author, service_created, service_update_author, service_campus, service_meal_amount, service_shower_amount, service_vehicles, service_anyvehicle, service_group, service_etpid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      $query = $this->mysql->dbc->prepare("INSERT INTO pm_services (service_name, service_ticket_name, service_price_gross, service_price_net, service_expiry, service_cash, service_card, service_account, service_snap, service_fuel, service_author, service_created, service_update_author, service_campus, service_meal_amount, service_shower_amount, service_vehicles, service_group, service_etpid, service_active, service_wifi_amount, service_discount_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       $query->bindParam(1, $name);
       $query->bindParam(2, $ticket_name);
       $query->bindParam(3, $price_gross);
@@ -145,10 +211,12 @@
       $query->bindParam(14, $campus);
       $query->bindParam(15, $meal_amount);
       $query->bindParam(16, $shower_amount);
-      $query->bindParam(17, $vehicle);
-      $query->bindParam(18, $any);
-      $query->bindParam(19, $group);
-      $query->bindParam(20, $etpid);
+      $query->bindParam(17, $vehicles);
+      $query->bindParam(18, $group);
+      $query->bindParam(19, $etpid);
+      $query->bindParam(20, $active);
+      $query->bindParam(21, $wifi_amount);
+      $query->bindParam(22, $discount_amount);
       if($query->execute()) {
         echo "Executed successfully";
       } else {
@@ -251,12 +319,12 @@
       $this->mysql = null;
     }
     //Payment service update
-    function Payment_Service_Update($id, $name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $types, $meal_amount, $shower_amount, $any, $group, $etpid) {
+    function Payment_Service_Update($id, $name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $types, $meal_amount, $shower_amount, $group, $etpid, $active, $wifi_amount, $discount_amount) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ?, service_vehicles = ?, service_ticket_name = ?, service_meal_amount = ?, service_shower_amount = ?, service_anyvehicle = ?, service_group = ?, service_etpid = ? WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ?, service_vehicles = ?, service_ticket_name = ?, service_meal_amount = ?, service_shower_amount = ?, service_group = ?, service_etpid = ?, service_active = ?, service_wifi_amount = ?, service_discount_amount = ? WHERE id = ?");
       $query->bindParam(1, $name);
       $query->bindParam(2, $price_gross);
       $query->bindParam(3, $price_net);
@@ -272,10 +340,12 @@
       $query->bindParam(13, $ticket_name);
       $query->bindParam(14, $meal_amount);
       $query->bindParam(15, $shower_amount);
-      $query->bindParam(16, $any);
-      $query->bindParam(17, $group);
-      $query->bindParam(18, $etpid);
-      $query->bindParam(19, $id);
+      $query->bindParam(16, $group);
+      $query->bindParam(17, $etpid);
+      $query->bindParam(18, $active);
+      $query->bindParam(19, $wifi_amount);
+      $query->bindParam(20, $discount_amount);
+      $query->bindParam(21, $id);
       if($query->execute()) {
         echo "Successful";
       } else {
@@ -291,12 +361,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_campus = ? AND service_vehicles = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
@@ -322,12 +392,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_campus = ? AND service_vehicles = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
@@ -353,12 +423,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_campus = ? AND service_vehicles = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_anyvehicle = 1 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
@@ -384,12 +454,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_campus = ? AND service_vehicles = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
@@ -415,12 +485,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_campus = ? AND service_vehicles = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_anyvehicle = 1 AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
@@ -1113,7 +1183,7 @@
       $this->etp = null;
     }
     //List all payments
-    function Transaction_Log($date1, $date2, $cash, $card, $account, $snap, $fuel, $group, $pm9) {
+    function Transaction_Log($date1, $date2, $cash, $card, $account, $snap, $fuel, $group, $pm9, $price_filter) {
       $this->user = new User;
       $this->mysql = new MySQL;
       $this->account = new Account;
@@ -1121,15 +1191,25 @@
       $campus = $this->user->userInfo("campus");
 
       if($pm9 > 0) {
-        $date1 = date("Y-m-d 21:00:00", strtotime($date1));
-        $date2 = date("Y-m-d 21:00:00", strtotime($date2));
+        if($campus == 2) {
+          $date1 = date("Y-m-d 21:30:00", strtotime($date1));
+          $date2 = date("Y-m-d 21:30:00", strtotime($date2));
+        } else {
+          $date1 = date("Y-m-d 21:00:00", strtotime($date1));
+          $date2 = date("Y-m-d 21:00:00", strtotime($date2));
+        }
       } else {
         $date1 = date("Y-m-d 00:00:00", strtotime($date1));
         $date2 = date("Y-m-d 23:59:59", strtotime($date2));
       }
       $html = '';
-
-      if($group == 0) {
+      if($price_filter != "0.00") {
+        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_price_gross = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date, payment_type DESC");
+        $query->bindParam(1, $campus);
+        $query->bindParam(2, $price_filter);
+        $query->bindParam(3, $date1);
+        $query->bindParam(4, $date2);
+      } else if($group == 0) {
         $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date, payment_type DESC");
         $query->bindParam(1, $campus);
         $query->bindParam(2, $date1);
@@ -1209,7 +1289,7 @@
         } else if($row['payment_type'] == 2 AND $card == 1) {
           $html .= '<tr class="'.$style.'">';
           $html .= '<td>'.$row['id'].'</td>';
-          $html .= '<td>'.$row['payment_company_name'].'</td>';
+          $html .= '<td>'.$row['payment_company_name']." ".$comment.'</td>';
           $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
           $html .= '<td>'.$row['payment_service_name'].'</td>';
           $html .= '<td>'.$payment_type.'</td>';
@@ -1228,7 +1308,7 @@
         } else if($row['payment_type'] == 3 AND $account == 1) {
           $html .= '<tr class="'.$style.'">';
           $html .= '<td>'.$row['id'].'</td>';
-          $html .= '<td>'.$row['payment_company_name'].'</td>';
+          $html .= '<td>'.$row['payment_company_name']." ".$comment.'</td>';
           $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
           $html .= '<td>'.$row['payment_service_name'].'</td>';
           $html .= '<td>'.$payment_type.'</td>';
@@ -1247,7 +1327,7 @@
         } else if($row['payment_type'] == 4 AND $snap == 1) {
           $html .= '<tr class="'.$style.'">';
           $html .= '<td>'.$row['id'].'</td>';
-          $html .= '<td>'.$row['payment_company_name'].'</td>';
+          $html .= '<td>'.$row['payment_company_name']." ".$comment.'</td>';
           $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
           $html .= '<td>'.$row['payment_service_name'].'</td>';
           $html .= '<td>'.$payment_type.'</td>';
@@ -1266,7 +1346,7 @@
         } else if($row['payment_type'] == 5 AND $fuel == 1) {
           $html .= '<tr class="'.$style.'">';
           $html .= '<td>'.$row['id'].'</td>';
-          $html .= '<td>'.$row['payment_company_name'].'</td>';
+          $html .= '<td>'.$row['payment_company_name']." ".$comment.'</td>';
           $html .= '<td>'.$row['payment_vehicle_plate'].'</td>';
           $html .= '<td>'.$row['payment_service_name'].'</td>';
           $html .= '<td>'.$payment_type.'</td>';

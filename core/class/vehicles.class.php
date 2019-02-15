@@ -82,57 +82,60 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->payment = new Payment;
+
+      $current_timestamp = date("Y-m-d H:i:s");
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry > CURRENT_TIMESTAMP");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 ORDER BY parked_expiry ASC");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
-      $table = '<table class="table table-hover table-bordered">
-                    <thead>
-                      <tr>
-                        <th scope="col">Company</th>
-                        <th scope="col">Registration</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Time IN</th>
-                        <th scope="col">T.ID</th>
-                        <th scope="col float"><i class="fa fa-cog"></i></th>
-                      </tr>
-                    </thead>
-                    <tbody>';
-      foreach ($key as $result) {
-        if($result['parked_flag'] == 1) {
-          $flag = '<i class="fa fa-flag" style="color: red;"></i> ';
-        } else {
-          $flag = '';
-        }
-        //Begin Table content
-        $table .= '<tr>';
-        $table .= '<td>'.$flag.$result['parked_company'].'</td>';
-        $table .= '<td>'.$result['parked_plate'].'</td>';
-        $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
-        $table .= '<td>'.date("d/H:i", strtotime($result['parked_timein'])).'</td>';
-        $table .= '<td>'.$this->payment->PaymentInfo($result['payment_ref'], "id").'</td>';
-        $table .= '<td>
-          <div class="btn-group" role="group" aria-label="Options">
-            <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
-            <button type="button" class="btn btn-danger" onClick="exit('.$result['id'].')"><i class="fa fa-times"></i></button>
+        $table = '<table class="table table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th scope="col">Company</th>
+                          <th scope="col">Registration</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Time IN</th>
+                          <th scope="col float"><i class="fa fa-cog"></i></th>
+                        </tr>
+                      </thead>
+                      <tbody>';
+        foreach ($key as $result) {
+          if($result['parked_flag'] == 1) {
+            $flag = '<i class="fa fa-flag" style="color: red;"></i> ';
+          } else {
+            $flag = '';
+          }
+          if($result['parked_expiry'] > $current_timestamp) {
+            //Begin Table content
+            $table .= '<tr>';
+            $table .= '<td>'.$flag.$result['parked_company'].'</td>';
+            $table .= '<td>'.$result['parked_plate'].'</td>';
+            $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
+            $table .= '<td>'.date("d/H:i", strtotime($result['parked_timein'])).'</td>';
+            $table .= '<td>'.$this->payment->PaymentInfo($result['payment_ref'], "id").'</td>';
+            $table .= '<td>
+              <div class="btn-group" role="group" aria-label="Options">
+                <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
+                <button type="button" class="btn btn-danger" onClick="exit('.$result['id'].')"><i class="fa fa-times"></i></button>
 
-            <div class="btn-group" role="group">
-              <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="btn-group" role="group">
+                  <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-              </button>
-              <div class="dropdown-menu" aria-labelledby="OptionsDrop">
-                <a id="exit" class="dropdown-item" onClick="exit('.$result['id'].')" href="#">Exit Vehicle</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" onClick="setFlag('.$result['id'].')" href="#">Flag Vehicle</a>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="OptionsDrop">
+                    <a id="exit" class="dropdown-item" onClick="exit('.$result['id'].')" href="#">Exit Vehicle</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" onClick="setFlag('.$result['id'].')" href="#">Flag Vehicle</a>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </td>';
+            </td>';
+        }
       }
       $table .= '  </tbody>
-                </table>';
+      </table>';
       echo $table;
       $this->mysql = null;
       $this->user = null;
@@ -147,8 +150,9 @@
       $this->user = new User;
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
+      $current_timestamp = date("Y-m-d H:i:s");
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry < CURRENT_TIMESTAMP ORDER BY parked_expiry ASC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 ORDER BY parked_expiry ASC");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -252,7 +256,7 @@
       }
       $table .= '</tbody>
               </table>';
-              
+
       echo $table;
       $this->mysql = null;
       $this->user = null;
@@ -534,7 +538,7 @@
         if($this->user->userInfo("campus") == 1) {
           $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $row['Patch']);
         } else if($this->user->userInfo("campus") == 2) {
-          $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
+          $patch = str_replace("F:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
         } else if ($this->user->userInfo("campus") == 0) {
           $patch = "";
         }

@@ -89,6 +89,12 @@
                         <?php $payment->Payment_Service_Group_Dropdown() ?>
                       </select>
                     </div>
+                    <div class="input-group input-group-lg mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-pound-sign"></i></span>
+                      </div>
+                      <input type="text" class="form-control" name="TL_Price_Filter" placeholder="End Date" id="TL_Price_Filter" value="0.00" autocomplete="off">
+                    </div>
                   </div>
                   <div class="col-md-2">
                     <div class="btn-group" role="group" aria-label="View Sales">

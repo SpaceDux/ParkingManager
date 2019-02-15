@@ -115,6 +115,7 @@
       $campus = $this->user->userInfo("campus");
 
       $client = new Client(['base_uri' => $_CONFIG['etp_api']['base_uri']]);
+
       if ($campus == 1 OR $campus == 0) {
         $response = $client->post('transaction/add', [
           'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
@@ -147,6 +148,12 @@
             'cardexpiry' => $Expiry
           ]
         ]);
+        $return = json_decode($response->getBody(), true);
+        if($return['outputstatus'] == 1) {
+          return $return['outputtransactionid'];
+        } else {
+          return FALSE;
+        }
       }
     }
     //check is SNAP

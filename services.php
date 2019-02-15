@@ -32,7 +32,7 @@
           <div class="container">
             <ul class="nav nav-tabs" id="Payment_Service_Tabs" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="0-tab" data-toggle="tab" href="#dev" role="tab" aria-controls="0" aria-selected="true">Roadking: Development</a>
+                <a class="nav-link active" id="0-tab" data-toggle="tab" href="#dev" role="tab" aria-controls="0" aria-selected="false">Roadking: Development</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="1-tab" data-toggle="tab" href="#holyhead" role="tab" aria-controls="1" aria-selected="false">Roadking: Holyhead</a>
@@ -41,24 +41,25 @@
                 <a class="nav-link" id="2-tab" data-toggle="tab" href="#hollies" role="tab" aria-controls="2" aria-selected="false">Roadking: Hollies</a>
               </li>
             </ul>
-            <div class="tab-content" id="dev">
-              <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="dev">
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="dev" role="tabpanel" aria-labelledby="dev">
                 <table class="table table-hover table-bordered">
                   <thead class="thead-dark">
                     <tr>
                       <th>Service Name</th>
-                      <th>Service Price (Gross)</th>
-                      <th>Service Price (Net)</th>
-                      <th>Service Expiry (Hours)</th>
-                      <th>Service Meal</th>
-                      <th>Service Shower</th>
-                      <th>Service Cash</th>
-                      <th>Service Card</th>
-                      <th>Service Account</th>
-                      <th>Service SNAP</th>
-                      <th>Service Fuel</th>
-                      <th>Updated By</th>
-                      <th>Service Site</th>
+                      <th>Price (Gross)</th>
+                      <th>Price (Net)</th>
+                      <th>Cash</th>
+                      <th>Card</th>
+                      <th>Account</th>
+                      <th>SNAP</th>
+                      <th>Fuel Card</th>
+                      <th>Meal Voucher</th>
+                      <th>Shower Voucher</th>
+                      <th>Discount Voucher</th>
+                      <th>WiFi Voucher</th>
+                      <th>SNAP API</th>
+                      <th>Active</th>
                       <th><button data-toggle="modal" data-target="#Payment_Service_AddModal" type="button" class="btn btn-danger"><i class="fa fa-plus"></i></button></th>
                     </tr>
                   </thead>
@@ -72,18 +73,19 @@
                   <thead class="thead-dark">
                     <tr>
                       <th>Service Name</th>
-                      <th>Service Price (Gross)</th>
-                      <th>Service Price (Net)</th>
-                      <th>Service Expiry (Hours)</th>
-                      <th>Service Meal</th>
-                      <th>Service Shower</th>
-                      <th>Service Cash</th>
-                      <th>Service Card</th>
-                      <th>Service Account</th>
-                      <th>Service SNAP</th>
-                      <th>Service Fuel</th>
-                      <th>Updated By</th>
-                      <th>Service Site</th>
+                      <th>Price (Gross)</th>
+                      <th>Price (Net)</th>
+                      <th>Cash</th>
+                      <th>Card</th>
+                      <th>Account</th>
+                      <th>SNAP</th>
+                      <th>Fuel Card</th>
+                      <th>Meal Voucher</th>
+                      <th>Shower Voucher</th>
+                      <th>Discount Voucher</th>
+                      <th>WiFi Voucher</th>
+                      <th>SNAP API</th>
+                      <th>Active</th>
                       <th><button data-toggle="modal" data-target="#Payment_Service_AddModal" type="button" class="btn btn-danger"><i class="fa fa-plus"></i></button></th>
                     </tr>
                   </thead>
@@ -97,18 +99,19 @@
                   <thead class="thead-dark">
                     <tr>
                       <th>Service Name</th>
-                      <th>Service Price (Gross)</th>
-                      <th>Service Price (Net)</th>
-                      <th>Service Expiry (Hours)</th>
-                      <th>Service Meal</th>
-                      <th>Service Shower</th>
-                      <th>Service Cash</th>
-                      <th>Service Card</th>
-                      <th>Service Account</th>
-                      <th>Service SNAP</th>
-                      <th>Service Fuel</th>
-                      <th>Updated By</th>
-                      <th>Service Site</th>
+                      <th>Price (Gross)</th>
+                      <th>Price (Net)</th>
+                      <th>Cash</th>
+                      <th>Card</th>
+                      <th>Account</th>
+                      <th>SNAP</th>
+                      <th>Fuel Card</th>
+                      <th>Meal Voucher</th>
+                      <th>Shower Voucher</th>
+                      <th>Discount Voucher</th>
+                      <th>WiFi Voucher</th>
+                      <th>SNAP API</th>
+                      <th>Active</th>
                       <th><button data-toggle="modal" data-target="#Payment_Service_AddModal" type="button" class="btn btn-danger"><i class="fa fa-plus"></i></button></th>
                     </tr>
                   </thead>

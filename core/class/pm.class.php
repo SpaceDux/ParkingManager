@@ -443,7 +443,9 @@
       // $current = date("Y-m-d H:i:s", strtotime('+ 2 hours'));
       $time = date("Y-m-d H:i:s");
 
+      //Alter string
       $string = str_replace("£", "", $string);
+      $string = str_replace("#", "", $string);
 
       if(strlen($string) == 6) {
         $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_exitKey = ? AND parked_column = 1 ORDER BY id DESC LIMIT 1");

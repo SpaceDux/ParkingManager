@@ -24,8 +24,6 @@
     $pm->PM_Search($_POST['PMKey']);
   } else if($handler == "ANPR_Barrier") {
     $anpr->ToggleBarrier($_POST['barrier']);
-  } else if($handler == "Payment_Add_Service") {
-    $payment->Payment_Services_New($_POST['Service_Name'], $_POST['Service_Ticket'], $_POST['Service_Price_Gross'], $_POST['Service_Price_Net'], $_POST['Service_Expiry'], $_POST['Service_Cash'], $_POST['Service_Card'], $_POST['Service_Account'], $_POST['Service_Snap'], $_POST['Service_Fuel'], $_POST['Service_Campus'], $_POST['Service_Meal_Amount'], $_POST['Service_Shower_Amount'], $_POST['Service_Group'], $_POST['Service_Vehicles'], $_POST['Service_Vehicles_Any'], $_POST['Service_ETPID']);
   } else if($handler == "Payment_Service_Delete") {
     $payment->Payment_Services_Delete($_POST['Service']);
   } else if($handler == "Payment_Service_Update_Get") {
@@ -130,7 +128,7 @@
     if(!isset($_POST['TL_9PM'])) {
       $_POST['TL_9PM'] = 0;
     }
-    $payment->Transaction_Log($_POST['TL_DateStart'], $_POST['TL_DateEnd'], $_POST['TL_Cash'], $_POST['TL_Card'], $_POST['TL_Account'], $_POST['TL_SNAP'], $_POST['TL_Fuel'], $_POST['TL_Group'], $_POST['TL_9PM']);
+    $payment->Transaction_Log($_POST['TL_DateStart'], $_POST['TL_DateEnd'], $_POST['TL_Cash'], $_POST['TL_Card'], $_POST['TL_Account'], $_POST['TL_SNAP'], $_POST['TL_Fuel'], $_POST['TL_Group'], $_POST['TL_9PM'], $_POST['TL_Price_Filter']);
   } else if($handler == "Change_User_Password") {
     $user->adminChangePW($_POST['User_ID'], $_POST['User_Password']);
   } else if($handler == "EOD_Settlement") {
