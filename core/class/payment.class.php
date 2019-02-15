@@ -428,7 +428,7 @@
       $stmt->bindParam(2, $vehicle);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_anyvehicle = 1 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
@@ -553,6 +553,8 @@
       $net = $this->PaymentInfo($plate, "payment_price_net");
       $meal_count = $this->Payment_ServiceInfo($service, "service_meal_amount");
       $shower_count = $this->Payment_ServiceInfo($service, "service_shower_amount");
+      $discount_count = $this->Payment_ServiceInfo($service, "service_discount_amount");
+      $wifi_count = $this->Payment_ServiceInfo($service, "service_discount_amount");
       $group = $this->Payment_ServiceInfo($service, "service_group");
       $expiry = date("Y-m-d H:i:s", strtotime($date.' +'.$expiryHrs.' hours'));
 
@@ -568,7 +570,7 @@
         $payment_type = "Fuel Card";
       }
       //Finally, print ticket
-      $this->ticket->Direction($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey);
+      $this->ticket->Direction($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count);
       //die("PRINTED?");
       $this->user = null;
       $this->pm = null;
@@ -1456,7 +1458,7 @@
         } else if ($paid == 5) {
           $payment_type = "Fuel Card";
         }
-        $this->ticket->Direction($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey);
+        $this->ticket->Direction($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count);
 
       }
 

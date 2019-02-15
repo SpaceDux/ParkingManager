@@ -20,7 +20,7 @@
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
         $this->pm = new PM;
-        $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+        $query = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
         $query->execute();
         $result = $query->fetchAll();
         $table = '<table class="table table-dark table-bordered table-hover">
@@ -86,7 +86,7 @@
       $current_timestamp = date("Y-m-d H:i:s");
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 ORDER BY parked_expiry ASC");
+      $query = $this->mysql->dbc->prepare("SELECT id, parked_company, parked_plate, parked_type, parked_timein, parked_expiry, payment_ref, parked_flag FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 ORDER BY parked_expiry ASC");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -97,6 +97,7 @@
                           <th scope="col">Registration</th>
                           <th scope="col">Type</th>
                           <th scope="col">Time IN</th>
+                          <th scope="col">T.ID</th>
                           <th scope="col float"><i class="fa fa-cog"></i></th>
                         </tr>
                       </thead>
@@ -152,7 +153,7 @@
       $this->campus = $this->user->userInfo('campus');
       $current_timestamp = date("Y-m-d H:i:s");
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 ORDER BY parked_expiry ASC");
+      $query = $this->mysql->dbc->prepare("SELECT id, parked_company, parked_plate, parked_flag, parked_expiry, parked_timein, parked_type FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 ORDER BY parked_expiry ASC");
       $query->bindParam(1, $this->campus);
       $query->execute();
       $key = $query->fetchAll();
@@ -168,41 +169,43 @@
                     </thead>
                     <tbody>';
       foreach ($key as $result) {
-        $number = $this->findHour($result['parked_expiry'], "");
-        $style = "";
-        if($number >= 2 && $number < 4) {
-          $style = "table-warning";
-        } else if ($number >= 4) {
-          $style = "table-danger";
-        }
-        if($result['parked_flag'] == 1) {
-          $flag = '<i class="fa fa-flag" style="color: red;"></i> ';
-        } else {
-          $flag = '';
-        }
-        //Begin Table content
-        $table .= '<tr class="'.$style.'">';
-        $table .= '<td>'.$flag.$result['parked_company'].'</td>';
-        $table .= '<td>'.$result['parked_plate'].'</td>';
-        $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
-        $table .= '<td>'.date("d/H:i", strtotime($result['parked_timein'])).'</td>';
-        $table .= '<td>
-          <div class="btn-group" role="group" aria-label="Options">
-          <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
-          <a href="'.$_CONFIG['pm']['url']."/transaction/".$result['id'].'" class="btn btn-danger"><i class="fa fa-pound-sign"></i></a>
+        if($result['parked_expiry'] < $current_timestamp) {
+          $number = $this->findHour($result['parked_expiry'], "");
+          $style = "";
+          if($number >= 2 && $number < 4) {
+            $style = "table-warning";
+          } else if ($number >= 4) {
+            $style = "table-danger";
+          }
+          if($result['parked_flag'] == 1) {
+            $flag = '<i class="fa fa-flag" style="color: red;"></i> ';
+          } else {
+            $flag = '';
+          }
+          //Begin Table content
+          $table .= '<tr class="'.$style.'">';
+          $table .= '<td>'.$flag.$result['parked_company'].'</td>';
+          $table .= '<td>'.$result['parked_plate'].'</td>';
+          $table .= '<td>'.$this->Vehicle_Type_Info($result['parked_type'], "type_shortName").'</td>';
+          $table .= '<td>'.date("d/H:i", strtotime($result['parked_timein'])).'</td>';
+          $table .= '<td>
+            <div class="btn-group" role="group" aria-label="Options">
+            <a href="'.$_CONFIG['pm']['url']."/update/".$result['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
+            <a href="'.$_CONFIG['pm']['url']."/transaction/".$result['id'].'" class="btn btn-danger"><i class="fa fa-pound-sign"></i></a>
 
-            <div class="btn-group" role="group">
-              <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-              </button>
-              <div class="dropdown-menu" aria-labelledby="OptionsDrop">
-                <a id="exit" class="dropdown-item" onClick="exit('.$result['id'].')" href="#">Exit Vehicle</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" onClick="setFlag('.$result['id'].')" href="#">Flag Vehicle</a>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="OptionsDrop">
+                  <a id="exit" class="dropdown-item" onClick="exit('.$result['id'].')" href="#">Exit Vehicle</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" onClick="setFlag('.$result['id'].')" href="#">Flag Vehicle</a>
+                </div>
               </div>
             </div>
-          </div>
-        </td>';
+          </td>';
+        }
       }
       $table .= '   </tbody>
                   </table>';
@@ -267,7 +270,7 @@
       $this->user = new User;
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
-        $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
+        $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
         $this->anprCount->execute();
         return count($this->anprCount->fetchAll());
 
@@ -286,7 +289,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column < 2 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry > CURRENT_TIMESTAMP");
+      $query = $this->mysql->dbc->prepare("SELECT id FROM pm_parking_log WHERE parked_column < 2 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry > CURRENT_TIMESTAMP");
       $query->bindParam(1, $this->campus);
       $query->execute();
 
@@ -304,7 +307,7 @@
       //Set Campus.
       $this->campus = $this->user->userInfo('campus');
       //Query
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry < CURRENT_TIMESTAMP");
+      $query = $this->mysql->dbc->prepare("SELECT id FROM pm_parking_log WHERE parked_column = 1 AND parked_campus = ? AND parked_deleted < 1 AND parked_expiry < CURRENT_TIMESTAMP");
       $query->bindParam(1, $this->campus);
       $query->execute();
       return $query->rowCount();

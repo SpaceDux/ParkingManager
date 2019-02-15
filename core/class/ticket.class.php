@@ -21,7 +21,7 @@
       return implode($allLines, "\n") . "\n";
     }
     //Determine Ticket
-    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey) {
+    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count) {
       if($group == 1) {
         $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey);
       } else if ($group == 2) {
@@ -32,7 +32,7 @@
     }
     //Begin Tickets
     //Print parking ticket
-    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey) {
+    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count) {
       $this->user = new User;
       $this->pm = new PM;
       $campus = $this->user->userInfo("campus");
@@ -57,6 +57,7 @@
       $address = EscposImage::load($img_dir."/address.png", false);
       $shower_img = EscposImage::load($img_dir."/shower.jpg", false);
       $meal_img = EscposImage::load($img_dir."/meal.jpg", false);
+      $discount_img = EscposImage::load($img_dir."/meal.jpg", false);
       $date = date("d/m/Y H:i", strtotime($date));
       $expiry = date("d/m/Y H:i", strtotime($expiry));
 
@@ -157,6 +158,19 @@
     				$printer -> graphics($meal_img);
     			} else {
     				$printer -> bitImage($meal_img);
+    			}
+          $printer -> text("\n".$line_info);
+          $printer -> feed();
+          //End Ticket
+          $printer -> cut(Printer::CUT_PARTIAL);
+        }
+        while ($i++ <= $discount_count) {
+          //Meal Ticket
+          $printer -> setJustification(Printer::JUSTIFY_CENTER);
+    			if($campus == 1) {
+    				$printer -> graphics($discount_img);
+    			} else {
+    				$printer -> bitImage($discount_img);
     			}
           $printer -> text("\n".$line_info);
           $printer -> feed();
