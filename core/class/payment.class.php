@@ -556,6 +556,7 @@
       $discount_count = $this->Payment_ServiceInfo($service, "service_discount_amount");
       $wifi_count = $this->Payment_ServiceInfo($service, "service_discount_amount");
       $group = $this->Payment_ServiceInfo($service, "service_group");
+      $discount_count = $this->Payment_ServiceInfo($service, "service_discount_amount");
       $expiry = date("Y-m-d H:i:s", strtotime($date.' +'.$expiryHrs.' hours'));
 
       if($type == 1) {
@@ -1446,6 +1447,7 @@
         $meal_count = $this->Payment_ServiceInfo($service_id, "service_meal_amount");
         $ticket_name = $this->Payment_ServiceInfo($service_id, "service_ticket_name");
         $group = $this->Payment_ServiceInfo($service_id, "service_group");
+        $discount_count = $this->Payment_ServiceInfo($service_id, "service_discount_amount");
 
         if($paid == 1) {
           $payment_type = "Cash";

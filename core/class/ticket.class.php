@@ -23,11 +23,11 @@
     //Determine Ticket
     function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count) {
       if($group == 1) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count);
       } else if ($group == 2) {
         $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type);
       } else if ($group == 3) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count);
       }
     }
     //Begin Tickets
@@ -40,7 +40,7 @@
       $vat_rate = "20";
       $vat_pay = ($gross - $net);
       $vatnum = $this->pm->PM_SiteInfo($campus, "site_vat");
-      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/assets/img/printer/".$campus;
       //Printer Connection
       if($campus == 1) {
         //Holyhead
@@ -57,7 +57,7 @@
       $address = EscposImage::load($img_dir."/address.png", false);
       $shower_img = EscposImage::load($img_dir."/shower.jpg", false);
       $meal_img = EscposImage::load($img_dir."/meal.jpg", false);
-      $discount_img = EscposImage::load($img_dir."/meal.jpg", false);
+      $discount_img = EscposImage::load($img_dir."/discount.jpg", false);
       $date = date("d/m/Y H:i", strtotime($date));
       $expiry = date("d/m/Y H:i", strtotime($expiry));
 
@@ -89,14 +89,18 @@
         $printer -> feed(2);
         $printer -> selectPrintMode();
         //Gross Price Value
-        $printer -> setTextSize(2, 2);
-        $printer -> text("£".$gross."\n");
-        $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
-        $printer -> setTextSize(1, 1);
-        $printer -> feed();
-        $printer -> text("VAT @ 20%: Net £".$net." - £".number_format($vat_pay, 2));
-        $printer -> feed(2);
-        $printer -> selectPrintMode();
+        if($payment_type != "Account") {
+          $printer -> setTextSize(2, 2);
+          $printer -> text("£".$gross."\n");
+          $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
+          $printer -> setTextSize(1, 1);
+          $printer -> feed();
+          $printer -> text("VAT @ 20%: Net £".$net." - £".number_format($vat_pay, 2));
+          $printer -> feed(2);
+          $printer -> selectPrintMode();
+        } else {
+          //Ignore price
+        }
         //Vehicle Details
         $printer -> setJustification(Printer::JUSTIFY_LEFT);
         $printer -> setTextSize(1, 1);
@@ -127,12 +131,7 @@
         $printer -> feed(2);
         $printer -> text("Thank you for staying with us!\n");
         $printer -> text("www.rktruckstops.co.uk");
-        // $printer -> feed();
-        // if($charge != "Account") {
-        //   $printer -> setBarcodeHeight(40);
-        //   $printer -> setBarcodeWidth(3);
-        //   $printer -> barcode("000000002170", Printer::BARCODE_JAN13);
-        // }
+        $printer -> feed();
         $printer -> feed(1);
         //End Parking ticket
         $printer -> cut(Printer::CUT_PARTIAL);
@@ -160,10 +159,16 @@
     				$printer -> bitImage($meal_img);
     			}
           $printer -> text("\n".$line_info);
-          $printer -> feed();
+          $printer -> setBarcodeHeight(42);
+          $printer -> setBarcodeWidth(2);
+          //£8 barcode
+          $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
+          $printer -> barcode("6359579593081", Printer::BARCODE_JAN13);
+          $printer->selectPrintMode();
           //End Ticket
           $printer -> cut(Printer::CUT_PARTIAL);
         }
+        $i = 1;
         while ($i++ <= $discount_count) {
           //Meal Ticket
           $printer -> setJustification(Printer::JUSTIFY_CENTER);
@@ -174,6 +179,12 @@
     			}
           $printer -> text("\n".$line_info);
           $printer -> feed();
+          $printer -> setBarcodeHeight(42);
+          $printer -> setBarcodeWidth(2);
+          //£2 barcode
+          $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
+          $printer -> barcode("6359579593021", Printer::BARCODE_JAN13);
+          $printer->selectPrintMode();
           //End Ticket
           $printer -> cut(Printer::CUT_PARTIAL);
         }

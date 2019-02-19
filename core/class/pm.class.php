@@ -347,16 +347,20 @@
           ';
           $html .= '<tbody>';
           foreach($result as $row) {
-            $html .= '
-              <tr>
+            $timeout = $row['parked_timeout'];
+            $html .= '<tr>
                 <td>'.$row['parked_company'].'</td>
                 <td>'.$row['parked_plate'].'</td>
                 <td>'.$row['parked_trailer'].'</td>
                 <td>'.$this->vehicles->Vehicle_Type_Info($row['parked_type'], "type_shortName").'</td>
                 <td>'.date("d/m/y H:i:s", strtotime($row['parked_timein'])).'</td>
-                <td>'.date("d/m/y H:i:s", strtotime($row['parked_expiry'])).'</td>
-                <td>'.date("d/m/y H:i:s", strtotime($row['parked_timeout'])).'</td>
-                <td>
+                <td>'.date("d/m/y H:i:s", strtotime($row['parked_expiry'])).'</td>';
+                if($timeout != "") {
+                  $html .= '<td>'.date("d/m/y H:i:s", strtotime($timeout)).'</td>';
+                } else {
+                  $html .= '<td></td>';
+                }
+                $html .= '<td>
                   <div class="btn-group" role="group" aria-label="Options">
                     <a href="'.URL."/update/".$row['id'].'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
                   </div>

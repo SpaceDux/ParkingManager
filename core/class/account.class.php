@@ -291,7 +291,7 @@
       $campus = $this->user->userInfo("campus");
 
       $list = '';
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE campus = ? OR account_shared = 1 AND account_deleted = 0 ORDER BY account_name ASC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE campus = ? AND account_deleted = 0 OR account_shared = 1 AND account_deleted = 0 ORDER BY account_name ASC");
       $query->bindParam(1, $campus);
       $query->execute();
       $result = $query->fetchAll();
