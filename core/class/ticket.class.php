@@ -40,7 +40,7 @@
       $vat_rate = "20";
       $vat_pay = ($gross - $net);
       $vatnum = $this->pm->PM_SiteInfo($campus, "site_vat");
-      $img_dir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/assets/img/printer/".$campus;
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
       //Printer Connection
       if($campus == 1) {
         //Holyhead
