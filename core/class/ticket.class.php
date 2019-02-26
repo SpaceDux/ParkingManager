@@ -56,7 +56,7 @@
       $logo = EscposImage::load($img_dir."/logo.png", false);
       $address = EscposImage::load($img_dir."/address.png", false);
       $shower_img = EscposImage::load($img_dir."/shower.jpg", false);
-      $meal_img = EscposImage::load($img_dir."/meal.jpg", false);
+      $meal_img = EscposImage::load($img_dir."/meal4.jpg", false);
       $discount_img = EscposImage::load($img_dir."/discount.jpg", false);
       $date = date("d/m/Y H:i", strtotime($date));
       $expiry = date("d/m/Y H:i", strtotime($expiry));
@@ -100,6 +100,7 @@
           $printer -> selectPrintMode();
         } else {
           //Ignore price
+
         }
         //Vehicle Details
         $printer -> setJustification(Printer::JUSTIFY_LEFT);
@@ -136,6 +137,7 @@
         //End Parking ticket
         $printer -> cut(Printer::CUT_PARTIAL);
         $i = 1;
+        //Shower
         while ($i++ <= $shower_count) {
           //Shower Ticket
           $printer -> setJustification(Printer::JUSTIFY_CENTER);
@@ -150,6 +152,7 @@
           $printer -> cut(Printer::CUT_PARTIAL);
         }
         $i = 1;
+        //Meal
         while ($i++ <= $meal_count) {
           //Meal Ticket
           $printer -> setJustification(Printer::JUSTIFY_CENTER);
@@ -161,14 +164,29 @@
           $printer -> text("\n".$line_info);
           $printer -> setBarcodeHeight(42);
           $printer -> setBarcodeWidth(2);
-          //£8 barcode
+          //£4 barcode
           $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
-          $printer -> barcode("6359579593081", Printer::BARCODE_JAN13);
+          $printer -> barcode("635957959341", Printer::BARCODE_JAN13);
+          $printer->selectPrintMode();
+          //End Ticket
+          $printer -> cut(Printer::CUT_PARTIAL);
+    			if($campus == 1) {
+    				$printer -> graphics($meal_img);
+    			} else {
+    				$printer -> bitImage($meal_img);
+    			}
+          $printer -> text("\n".$line_info);
+          $printer -> setBarcodeHeight(42);
+          $printer -> setBarcodeWidth(2);
+          //£4 barcode
+          $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
+          $printer -> barcode("635957959341", Printer::BARCODE_JAN13);
           $printer->selectPrintMode();
           //End Ticket
           $printer -> cut(Printer::CUT_PARTIAL);
         }
         $i = 1;
+        //Discount
         while ($i++ <= $discount_count) {
           //Meal Ticket
           $printer -> setJustification(Printer::JUSTIFY_CENTER);
@@ -178,12 +196,13 @@
     				$printer -> bitImage($discount_img);
     			}
           $printer -> text("\n".$line_info);
+          $printer -> text("\n MINIMUM SPEND £3");
           $printer -> feed();
           $printer -> setBarcodeHeight(42);
           $printer -> setBarcodeWidth(2);
           //£2 barcode
           $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
-          $printer -> barcode("6359579593021", Printer::BARCODE_JAN13);
+          $printer -> barcode("635957959321", Printer::BARCODE_JAN13);
           $printer->selectPrintMode();
           //End Ticket
           $printer -> cut(Printer::CUT_PARTIAL);
@@ -312,18 +331,18 @@
       $this->user = null;
       $this->pm = null;
     }
-    //End of dat settlement
+    //End of day settlement
     function Printer_9PM($date1, $date2) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->payment = new Payment;
       $campus = $this->user->userInfo("campus");
       if($campus == 2) {
-        $date1 = date("Y-m-d 21:00:00", strtotime($date1));
-        $date2 = date("Y-m-d 21:00:00", strtotime($date2));
-      } else {
         $date1 = date("Y-m-d 21:30:00", strtotime($date1));
         $date2 = date("Y-m-d 21:30:00", strtotime($date2));
+      } else {
+        $date1 = date("Y-m-d 21:00:00", strtotime($date1));
+        $date2 = date("Y-m-d 21:00:00", strtotime($date2));
       }
       //Query
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_deleted = 0 AND payment_campus = ? AND payment_date BETWEEN ? AND ?");
@@ -893,20 +912,20 @@
                 $£30Cash++;
               } else if ($row['payment_price_gross'] == '32.00' AND $row['payment_vehicle_type'] != 2) {
                 //48hr CT
-                $£16Cash=+2;
+                $£16Cash+=2;
               } else if ($row['payment_price_gross'] == '44.00' AND $row['payment_vehicle_type'] != 2) {
                 //
-                $£22Cash=+2;
+                $£22Cash+=2;
               } else if ($row['payment_price_gross'] == '48.00' AND $row['payment_vehicle_type'] != 2) {
                 //48hr CT Meal
-                $£24Cash=+2;
+                $£24Cash+=2;
               } else if ($row['payment_price_gross'] == '12.00' AND $row['payment_vehicle_type'] == 6) {
                 //48hr CT Meal
-                $£6Cash=+2;
+                $£6Cash+=2;
                 //// CABS
               } else if ($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 6) {
                 //48hr CT Meal
-                $£6Cash=+3;
+                $£6Cash+=3;
                 //// CABS
               } else if ($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
                 //Unit only
@@ -959,20 +978,20 @@
                 $£30Card++;
               } else if ($row['payment_price_gross'] == '32.00' AND $row['payment_vehicle_type'] != 2) {
                 //48hr CT
-                $£16Card=+2;
+                $£16Card+=2;
               } else if ($row['payment_price_gross'] == '44.00' AND $row['payment_vehicle_type'] != 2) {
                 //
-                $£22Card=+2;
+                $£22Card+=2;
               } else if ($row['payment_price_gross'] == '48.00' AND $row['payment_vehicle_type'] != 2) {
                 //48hr CT Meal
-                $£24Card=+2;
+                $£24Card+=2;
               } else if ($row['payment_price_gross'] == '12.00' AND $row['payment_vehicle_type'] == 6) {
                 //48hr CT Meal
-                $£6Card=+2;
+                $£6Card+=2;
                 //// CABS
               } else if ($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 6) {
                 //48hr CT Meal
-                $£6Card=+3;
+                $£6Card+=3;
                 //// CABS
               } else if ($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
                 //Unit only
@@ -1025,20 +1044,20 @@
                 $£30Acc++;
               } else if ($row['payment_price_gross'] == '32.00' AND $row['payment_vehicle_type'] != 2) {
                 //48hr CT
-                $£16Acc=+2;
+                $£16Acc+=2;
               } else if ($row['payment_price_gross'] == '44.00' AND $row['payment_vehicle_type'] != 2) {
                 //
-                $£22Acc=+2;
+                $£22Acc+=2;
               } else if ($row['payment_price_gross'] == '48.00' AND $row['payment_vehicle_type'] != 2) {
                 //48hr CT Meal
-                $£24Acc=+2;
+                $£24Acc+=2;
               } else if ($row['payment_price_gross'] == '12.00' AND $row['payment_vehicle_type'] == 6) {
                 //48hr CT Meal
-                $£6Acc=+2;
+                $£6Acc+=2;
                 //// CABS
               } else if ($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 6) {
                 //72hr CAR
-                $£6Acc=+3;
+                $£6Acc+=3;
                 //// CABS
               } else if ($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
                 //Unit only
@@ -1091,20 +1110,20 @@
                 $£30SNAP++;
               } else if ($row['payment_price_gross'] == '32.00' AND $row['payment_vehicle_type'] != 2) {
                 //48hr CT
-                $£16SNAP=+2;
+                $£16SNAP+=2;
               } else if ($row['payment_price_gross'] == '44.00' AND $row['payment_vehicle_type'] != 2) {
                 //
-                $£22SNAP=+2;
+                $£22SNAP+=2;
               } else if ($row['payment_price_gross'] == '48.00' AND $row['payment_vehicle_type'] != 2) {
                 //48hr CT Meal
-                $£24SNAP=+2;
+                $£24SNAP+=2;
               } else if ($row['payment_price_gross'] == '12.00' AND $row['payment_vehicle_type'] == 6) {
                 //48hr CT Meal
-                $£6SNAP=+2;
+                $£6SNAP+=2;
                 //// CABS
               } else if ($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 6) {
                 //72hr CAR
-                $£6SNAP=+3;
+                $£6SNAP+=3;
                 //// CABS
               } else if ($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
                 //Unit only
@@ -1157,20 +1176,20 @@
                 $£30Fuel++;
               } else if ($row['payment_price_gross'] == '32.00' AND $row['payment_vehicle_type'] != 2) {
                 //48hr CT
-                $£16Fuel=+2;
+                $£16Fuel+=2;
               } else if ($row['payment_price_gross'] == '44.00' AND $row['payment_vehicle_type'] != 2) {
                 //
-                $£22Fuel=+2;
+                $£22Fuel+=2;
               } else if ($row['payment_price_gross'] == '48.00' AND $row['payment_vehicle_type'] != 2) {
                 //48hr CT Meal
-                $£24Fuel=+2;
+                $£24Fuel+=2;
               } else if ($row['payment_price_gross'] == '12.00' AND $row['payment_vehicle_type'] == 6) {
                 //48hr CT Meal
-                $£6Fuel=+2;
+                $£6Fuel+=2;
                 //// CABS
               } else if ($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] == 6) {
                 //72hr CAR
-                $£6Fuel=+3;
+                $£6Fuel+=3;
                 //// CABS
               } else if ($row['payment_price_gross'] == '10.00' AND $row['payment_vehicle_type'] == 2) {
                 //Unit only
@@ -1187,6 +1206,7 @@
               }
             }
           }
+          echo $£16SNAP.' Fuel '.$£16Fuel;
           //Cash
           $line_one = $this->Printer_Columns("Loyalty - £1", $£1Cash, 30, 10, 4);
           $line_two = $this->Printer_Columns("WiFi - £2", $£2Cash, 30, 10, 4);
@@ -1290,21 +1310,21 @@
           $printer -> text($line_twelve);
           $printer -> feed(2);
           //SNAP&Fuel
-          $line_one = $this->Printer_Columns("Loyalty - £1", $£1SNAP+$£1Fuel, 30, 10, 4);
-          $line_two = $this->Printer_Columns("WiFi - £2", $£2SNAP+$£2FUEL, 30, 10, 4);
-          $line_three = $this->Printer_Columns("Shower - £3", $£3SNAP+$£3Fuel, 30, 10, 4);
-          $line_four = $this->Printer_Columns("Car / C/O - £6", $£6SNAP+$£6Fuel, 30, 10, 4);
-          $line_five = $this->Printer_Columns("Cab Only - £10", $£10SNAPCAB+$£10FuelCAB, 30, 10, 4);
-          $line_cabmeal = $this->Printer_Columns("Cab Only + Meal - £18", $£18SNAPCAB+$£18FuelCAB, 30, 10, 4);
-          $line_ctr20 = $this->Printer_Columns("CTR - £20", $£20SNAPCAB+$£20FuelCAB, 30, 10, 4);
-          $line_six = $this->Printer_Columns("Cab Only + Sep - £22", $£22SNAPCAB+$£22FuelCAB, 30, 10, 4);
-          $line_ctr28 = $this->Printer_Columns("CTR - £20", $£28SNAPCAB+$£28FuelCAB, 30, 10, 4);
-          $line_seven = $this->Printer_Columns("Cab Only + Sep/Meal - £30", $£30SNAPCAB+$£30FuelCAB, 30, 10, 4);
-          $line_eight = $this->Printer_Columns("C/T - £16", $£16SNAP+$£16Fuel, 30, 10, 4);
-          $line_nine = $this->Printer_Columns("C/T w/ WiFi - £18", $£18SNAP+$£18Fuel, 30, 10, 4);
-          $line_ten = $this->Printer_Columns("C/T HS/OS - £22", $£22SNAP+$£22Fuel, 30, 10, 4);
-          $line_eleven = $this->Printer_Columns("C/T w/ Meal - £24", $£24SNAP+$£24Fuel, 30, 10, 4);
-          $line_twelve = $this->Printer_Columns("C/T HS w/ Meal - £30", $£30SNAP+$£30Fuel, 30, 10, 4);
+          $line_one = $this->Printer_Columns("Loyalty - £1", $£1SNAP + $£1Fuel, 30, 10, 4);
+          $line_two = $this->Printer_Columns("WiFi - £2", $£2SNAP + $£2Fuel, 30, 10, 4);
+          $line_three = $this->Printer_Columns("Shower - £3", $£3SNAP + $£3Fuel, 30, 10, 4);
+          $line_four = $this->Printer_Columns("Car / C/O - £6", $£6SNAP + $£6Fuel, 30, 10, 4);
+          $line_five = $this->Printer_Columns("Cab Only - £10", $£10SNAPCAB + $£10FuelCAB, 30, 10, 4);
+          $line_cabmeal = $this->Printer_Columns("Cab Only + Meal - £18", $£18SNAPCAB + $£18FuelCAB, 30, 10, 4);
+          $line_ctr20 = $this->Printer_Columns("CTR - £20", $£20SNAP + $£20Fuel, 30, 10, 4);
+          $line_six = $this->Printer_Columns("Cab Only + Sep - £22", $£22SNAPCAB + $£22FuelCAB, 30, 10, 4);
+          $line_ctr28 = $this->Printer_Columns("CTR w/ Meal - £28", $£28SNAP + $£28Fuel, 30, 10, 4);
+          $line_seven = $this->Printer_Columns("Cab Only + Sep/Meal - £30", $£30SNAPCAB + $£30FuelCAB, 30, 10, 4);
+          $line_eight = $this->Printer_Columns("C/T - £16", $£16SNAP + $£16Fuel, 30, 10, 4);
+          $line_nine = $this->Printer_Columns("C/T w/ WiFi - £18", $£18SNAP + $£18Fuel, 30, 10, 4);
+          $line_ten = $this->Printer_Columns("C/T HS/OS - £22", $£22SNAP + $£22Fuel, 30, 10, 4);
+          $line_eleven = $this->Printer_Columns("C/T w/ Meal - £24", $£24SNAP + $£24Fuel, 30, 10, 4);
+          $line_twelve = $this->Printer_Columns("C/T HS w/ Meal - £30", $£30SNAP + $£30Fuel, 30, 10, 4);
           $printer -> text("SNAP & Fuel Sales");
           $printer -> feed();
           $printer -> text($line_one);

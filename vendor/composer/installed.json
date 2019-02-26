@@ -1,5 +1,54 @@
 [
     {
+        "name": "art-of-wifi/unifi-api-client",
+        "version": "v1.1.40",
+        "version_normalized": "1.1.40.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Art-of-WiFi/UniFi-API-client.git",
+            "reference": "55867197e3465cbf4477f4159ddb188be222d5f6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Art-of-WiFi/UniFi-API-client/zipball/55867197e3465cbf4477f4159ddb188be222d5f6",
+            "reference": "55867197e3465cbf4477f4159ddb188be222d5f6",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=5.4.0"
+        },
+        "time": "2019-01-21T08:41:47+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "UniFi_API\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Art of WiFi",
+                "email": "info@artofowifi.net",
+                "homepage": "http://artofwifi.net"
+            }
+        ],
+        "description": "API client class for use with Ubiquiti's UniFi controller",
+        "homepage": "https://github.com/Art-of-WiFi/UniFi-API-client",
+        "keywords": [
+            "UBNT",
+            "api",
+            "client",
+            "controller",
+            "ubiquiti",
+            "unifi"
+        ]
+    },
+    {
         "name": "guzzlehttp/guzzle",
         "version": "6.3.3",
         "version_normalized": "6.3.3.0",

@@ -56,6 +56,10 @@ class ComposerStaticInitb82bc892df62c990aeea491bf6beb920
     );
 
     public static $prefixLengthsPsr4 = array (
+        'U' => 
+        array (
+            'UniFi_API\\' => 10,
+        ),
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
@@ -79,6 +83,10 @@ class ComposerStaticInitb82bc892df62c990aeea491bf6beb920
     );
 
     public static $prefixDirsPsr4 = array (
+        'UniFi_API\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/art-of-wifi/unifi-api-client/src',
+        ),
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',

@@ -65,4 +65,18 @@
     event.preventDefault();
     return false;
   });
+  //Work VAT @ 1.2
+  $(document).on('keyup', '#Service_Price_Gross', function() {
+    var Gross = $(this).val();
+    var value = Gross / 1.2;
+    var result = parseInt(value*100)/100;
+    $('#Service_Price_Net').val(result);
+  });
+  $(document).on('keyup', '#Service_Price_Gross_Update', function() {
+    var Gross = $(this).val();
+    var value = Gross / 1.2;
+    var result = parseInt(value*100)/100;
+    $('#Service_Price_Net_Update').val(result);
+  });
+  
 </script>

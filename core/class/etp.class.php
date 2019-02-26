@@ -15,8 +15,8 @@
       $response = $client->post('services/list', [
         'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
         'json' => [
-          'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-          'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead']
+          'locationusername' => $_CONFIG['etp_api']['location_user-cannock'],
+          'locationpassword' => $_CONFIG['etp_api']['location_pass-cannock']
           ]
       ]);
 
