@@ -474,6 +474,9 @@
       } else if($string == "6868") {
         $this->anpr->Barrier_Controller("1", "EX");
         $this->PM_Notification_Create("Override code has been used at the barrier keypad", "0");
+      } else if($string == "2784") {
+        $this->anpr->Barrier_Controller("1", "EX");
+        $this->PM_Notification_Create("DU code has been used at the barrier keypad", "0");
       }
 
       $this->mysql = null;
