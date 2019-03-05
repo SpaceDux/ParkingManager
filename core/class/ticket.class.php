@@ -21,13 +21,15 @@
       return implode($allLines, "\n") . "\n";
     }
     //Determine Ticket
-    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count) {
+    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count) {
       if($group == 1) {
         $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count);
       } else if ($group == 2) {
         $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type);
       } else if ($group == 3) {
         $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count);
+      } else if ($group == 4) {
+        $this->Printer_Misc($shower_count, $wifi_count);
       }
     }
     //Begin Tickets
@@ -176,11 +178,11 @@
     				$printer -> bitImage($meal_img);
     			}
           $printer -> text("\n".$line_info);
-          $printer -> setBarcodeHeight(42);
-          $printer -> setBarcodeWidth(2);
-          //£4 barcode
-          $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
-          $printer -> barcode("635957959341", Printer::BARCODE_JAN13);
+          // $printer -> setBarcodeHeight(42);
+          // $printer -> setBarcodeWidth(2);
+          // //£4 barcode
+          // $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
+          // $printer -> barcode("635957959341", Printer::BARCODE_JAN13);
           $printer->selectPrintMode();
           //End Ticket
           $printer -> cut(Printer::CUT_PARTIAL);
@@ -198,11 +200,11 @@
           $printer -> text("\n".$line_info);
           $printer -> text("\n MINIMUM SPEND £3");
           $printer -> feed();
-          $printer -> setBarcodeHeight(42);
-          $printer -> setBarcodeWidth(2);
-          //£2 barcode
-          $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
-          $printer -> barcode("635957959321", Printer::BARCODE_JAN13);
+          // $printer -> setBarcodeHeight(42);
+          // $printer -> setBarcodeWidth(2);
+          // //£2 barcode
+          // $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
+          // $printer -> barcode("635957959321", Printer::BARCODE_JAN13);
           $printer->selectPrintMode();
           //End Ticket
           $printer -> cut(Printer::CUT_PARTIAL);
@@ -330,8 +332,73 @@
       $this->user = null;
       $this->pm = null;
     }
+    // Wifi & Shower
+    function Printer_Misc($shower_count, $wifi_count) {
+      $this->user = new User;
+      $this->pm = new PM;
+      $campus = $this->user->userInfo("campus");
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
+      try {
+        //Printer Connection
+        if($campus == 1) {
+          //Holyhead
+          $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
+        } else if ($campus == 2) {
+          //Cannock
+          $connector = new WindowsPrintConnector("smb://security:pd@192.168.1.68/pdhollies");
+        } else if($campus == 0){
+          //Developer
+          $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
+        }
+        $printer = new Printer($connector);
+        $wifi = EscposImage::load($img_dir."/wifi.jpg", false);
+        $shower  = EscposImage::load($img_dir."/shower.jpg", false);
+
+        $i = 1;
+        //Shower
+        while ($i++ <= $wifi_count) {
+          // Generate Voucher
+          $code = $this->pm->Create_WiFi_Voucher($campus);
+          //Shower Ticket
+          $printer -> setJustification(Printer::JUSTIFY_CENTER);
+          if($campus == 1) {
+            $printer -> graphics($wifi);
+          } else {
+            $printer -> bitImage($wifi);
+          }
+          $printer -> setTextSize(2, 2);
+          $printer -> text('WiFi Code: '.$code);
+          $printer -> feed();
+          $printer -> setTextSize(1, 1);
+          $printer -> text("Please connect to; Parc-Cybi-Car-Park");
+          $printer -> feed();
+          //End Ticket
+          $printer -> cut(Printer::CUT_PARTIAL);
+        }
+
+        $i = 1;
+        //Shower
+        while ($i++ <= $shower_count) {
+          //Shower Ticket
+          $printer -> setJustification(Printer::JUSTIFY_CENTER);
+          if($campus == 1) {
+            $printer -> graphics($shower);
+          } else {
+            $printer -> bitImage($shower);
+          }
+          $printer -> text("\n".$line_info);
+          $printer -> feed();
+          //End Ticket
+          $printer -> cut(Printer::CUT_PARTIAL);
+        }
+      } finally {
+        $printer -> close();
+      }
+      $this->user = null;
+      $this->pm = null;
+    }
     //End of day settlement
-    function EOD_Settlement($date1, $date2) {
+    function Printer_9PM($date1, $date2) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->payment = new Payment;
@@ -358,7 +425,7 @@
       } else if ($campus == 2) {
         //Cannock
         $connector = new WindowsPrintConnector("smb://security:pd@192.168.1.68/pdhollies");
-      } else if($campus == 3) {
+      } else if($campus == 0) {
         //Developer
         $connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
       }
@@ -367,6 +434,7 @@
 
       if($campus == 1) {
         //Cash
+        $£2Cash = 0;
         $£3Cash = 0;
         $£6Cash = 0;
         $£12CashCAB = 0;
@@ -374,6 +442,7 @@
         $£18Cash = 0;
         $£24Cash = 0;
         //Card
+        $£2Card = 0;
         $£3Card = 0;
         $£6Card = 0;
         $£12CardCAB = 0;
@@ -412,8 +481,11 @@
         foreach($stmt->fetchAll() as $row) {
           //Cash
           if($row['payment_type'] == 1 AND $row['payment_service_group'] != 2) {
-            if($row['payment_price_gross'] == '3.00') {
-              //1Hr + Car Parking (Driver)
+            if($row['payment_price_gross'] == '2.00') {
+              //Wifi
+              $£2Cash++;
+            } else if ($row['payment_price_gross'] == '3.00') {
+              //2hr + Car Parking & C/O
               $£3Cash++;
             } else if ($row['payment_price_gross'] == '6.00') {
               //2hr + Car Parking & C/O
@@ -460,8 +532,11 @@
           }
           //Card
           if($row['payment_type'] == 2 AND $row['payment_service_group'] != 2) {
-            if($row['payment_price_gross'] == '3.00') {
+            if($row['payment_price_gross'] == '2.00') {
               //1Hr + Car Parking (Driver)
+              $£2Card++;
+            } else if ($row['payment_price_gross'] == '3.00') {
+              //2hr + Car Parking & C/O
               $£3Card++;
             } else if ($row['payment_price_gross'] == '6.00') {
               //2hr + Car Parking & C/O
@@ -622,6 +697,7 @@
           $printer -> feed(2);
           $printer -> selectPrintMode();
           //Cash
+          $line_0 = $this->Printer_Columns("WiFi - £2", $£2Cash, 30, 10, 4);
           $line_1 = $this->Printer_Columns("3hr + Car* - £3", $£3Cash, 30, 10, 4);
           $line_2 = $this->Printer_Columns("4hr + C/O + Car - £6", $£6Cash, 30, 10, 4);
           $line_3 = $this->Printer_Columns("Cab Parking - £12", $£12CashCAB, 30, 10, 4);
@@ -632,6 +708,7 @@
           $line_8 = $this->Printer_Columns("20min Wash - £12", $Wash20Cash, 30, 10, 4);
           $printer -> text("Cash Sales");
           $printer -> feed();
+          $printer -> text($line_0);
           $printer -> text($line_1);
           $printer -> text($line_2);
           $printer -> text($line_3);
@@ -642,6 +719,7 @@
           $printer -> text($line_8);
           $printer -> feed(2);
           //Card
+          $line_0 = $this->Printer_Columns("WiFi - £2", $£2Card, 30, 10, 4);
           $line_1 = $this->Printer_Columns("3hr + Car* - £3", $£3Card, 30, 10, 4);
           $line_2 = $this->Printer_Columns("4hr + C/O + Car - £6", $£6Card, 30, 10, 4);
           $line_3 = $this->Printer_Columns("Cab Parking - £12", $£12CardCAB, 30, 10, 4);
@@ -652,6 +730,7 @@
           $line_8 = $this->Printer_Columns("20min Wash - £12", $Wash20Card, 30, 10, 4);
           $printer -> text("Card Sales");
           $printer -> feed();
+          $printer -> text($line_0);
           $printer -> text($line_1);
           $printer -> text($line_2);
           $printer -> text($line_3);
@@ -1111,7 +1190,7 @@
       $this->user = null;
       $this->payment = null;
     }
-    function Printer_9PM($date1, $date2) {
+    function Printer_9PM_OLD($date1, $date2) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->payment = new Payment;

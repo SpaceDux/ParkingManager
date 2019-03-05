@@ -59,7 +59,7 @@
       $html = '';
       //Misc
       $html .= '<tr class="table table-primary"><td colspan="15">Misc (All Vehicles)</td></tr>';
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_vehicles = 0 AND service_campus = ? ORDER BY service_expiry, service_active ASC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_vehicles = 0 AND service_campus = ? AND service_deleted = 0 ORDER BY service_expiry, service_active ASC");
       $query->bindParam(1, $site);
       $query->execute();
       foreach($query->fetchAll() as $row) {
@@ -246,7 +246,7 @@
     function Payment_Services_Delete($key) {
       $this->mysql = new MySQL;
 
-      $query = $this->mysql->dbc->prepare("DELETE FROM pm_services WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_deleted = 1 WHERE id = ?");
       $query->bindParam(1, $key);
       $query->execute();
 
@@ -361,12 +361,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
@@ -392,12 +392,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
@@ -423,12 +423,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
@@ -454,12 +454,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
@@ -485,12 +485,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt->bindParam(1, $campus);
       $stmt->bindParam(2, $vehicle);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 ORDER BY service_expiry, service_price_gross ASC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
 
@@ -557,6 +557,7 @@
       $wifi_count = $this->Payment_ServiceInfo($service, "service_discount_amount");
       $group = $this->Payment_ServiceInfo($service, "service_group");
       $discount_count = $this->Payment_ServiceInfo($service, "service_discount_amount");
+      $wifi_count = $this->Payment_ServiceInfo($service, "service_wifi_amount");
       $expiry = date("Y-m-d H:i:s", strtotime($date.' +'.$expiryHrs.' hours'));
 
       if($type == 1) {
@@ -571,7 +572,7 @@
         $payment_type = "Fuel Card";
       }
       //Finally, print ticket
-      $this->ticket->Direction($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count);
+      $this->ticket->Direction($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count);
       //die("PRINTED?");
       $this->user = null;
       $this->pm = null;
@@ -1477,6 +1478,7 @@
         $ticket_name = $this->Payment_ServiceInfo($service_id, "service_ticket_name");
         $group = $this->Payment_ServiceInfo($service_id, "service_group");
         $discount_count = $this->Payment_ServiceInfo($service_id, "service_discount_amount");
+        $wifi_count = $this->Payment_ServiceInfo($service, "service_wifi_amount");
 
         if($paid == 1) {
           $payment_type = "Cash";
@@ -1489,7 +1491,7 @@
         } else if ($paid == 5) {
           $payment_type = "Fuel Card";
         }
-        $this->ticket->Direction($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count);
+        $this->ticket->Direction($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count);
 
       }
 
