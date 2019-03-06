@@ -499,96 +499,6 @@
     }
   });
   //Renewal
-  //Payment Service CASH Dropdown
-  $(document).on('change', '#T_Vehicle_Type', function(){
-    var veh_id = $(this).val();
-    if(veh_id == 'unselected') {
-      $('#Cash_Dropdown').empty();
-    } else {
-      $('#Cash_Dropdown').html('');
-      $.ajax({
-        url: "<?php echo URL ?>/ajax-handler.php?handler=Payment_Service_Cash_Dropdown_Get",
-        type: "POST",
-        data: {vehicle_type:veh_id},
-        dataType: "text",
-        success:function(data) {
-          $('#Cash_Dropdown').html(data);
-        }
-      })
-    }
-  });
-  //Payment Service CARD Dropdown
-  $(document).on('change', '#T_Vehicle_Type', function(){
-    var veh_id = $(this).val();
-    if(veh_id == 'unselected') {
-      $('#Card_Dropdown').empty();
-    } else {
-      $('#Card_Dropdown').html('');
-      $.ajax({
-        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Card_Dropdown_Get",
-        type: "POST",
-        data: {vehicle_type:veh_id},
-        dataType: "text",
-        success:function(data) {
-          $('#Card_Dropdown').html(data);
-        }
-      })
-    }
-  });
-  //Payment Service ACCOUNT Dropdown
-  $(document).on('change', '#T_Vehicle_Type', function(){
-    var veh_id = $(this).val();
-    if(veh_id == 'unselected') {
-      $('#Account_Dropdown').empty();
-    } else {
-      $('#Account_Dropdown').html('');
-      $.ajax({
-        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Account_Dropdown_Get",
-        type: "POST",
-        data: {vehicle_type:veh_id},
-        dataType: "text",
-        success:function(data) {
-          $('#Account_Dropdown').html(data);
-        }
-      })
-    }
-  });
-  //Payment Service SNAP Dropdown
-  $(document).on('change', '#T_Vehicle_Type', function(){
-    var veh_id = $(this).val();
-    if(veh_id == 'unselected') {
-      $('#SNAP_Dropdown').empty();
-    } else {
-      $('#SNAP_Dropdown').html('');
-      $.ajax({
-        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_SNAP_Dropdown_Get",
-        type: "POST",
-        data: {vehicle_type:veh_id},
-        dataType: "text",
-        success:function(data) {
-          $('#SNAP_Dropdown').html(data);
-        }
-      })
-    }
-  });
-  //Payment Service Fuel Dropdown
-  $(document).on('change', '#T_Vehicle_Type', function(){
-    var veh_id = $(this).val();
-    if(veh_id == 'unselected') {
-      $('#Fuel_Dropdown').empty();
-    } else {
-      $('#Fuel_Dropdown').html('');
-      $.ajax({
-        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Fuel_Dropdown_Get",
-        type: "POST",
-        data: {vehicle_type:veh_id},
-        dataType: "text",
-        success:function(data) {
-          $('#Fuel_Dropdown').html(data);
-        }
-      })
-    }
-  });
   //Process Payments
   //Cash
   $(document).on('click', '#NT_Process_Cash', function(){
@@ -774,8 +684,6 @@
     var Expiry = $('#NT_Expiry').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
-    } else if(Company == "") {
-      alert("Company Name is required!");
     } else if(Type === "unchecked") {
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
@@ -806,8 +714,6 @@
     var Expiry = $('#NT_Expiry').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
-    } else if(Company == "") {
-      alert("Company Name is required!");
     } else if(Type === "unchecked") {
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
@@ -872,8 +778,6 @@
     var Expiry = $('#NT_Expiry').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
-    } else if(Company == "") {
-      alert("Company Name is required!");
     } else if(Type === "unchecked") {
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {
@@ -913,8 +817,6 @@
     var CardExpiry = $('#NT_FuelCard_Date').val();
     if(Plate == "") {
       alert("A Vehicle registration is required!");
-    } else if(Company == "") {
-      alert("Company Name is required!");
     } else if(Type === "unchecked") {
       alert("Vehicle Type is required!");
     } else if (Service === "unchecked") {

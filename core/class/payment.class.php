@@ -1478,7 +1478,7 @@
         $ticket_name = $this->Payment_ServiceInfo($service_id, "service_ticket_name");
         $group = $this->Payment_ServiceInfo($service_id, "service_group");
         $discount_count = $this->Payment_ServiceInfo($service_id, "service_discount_amount");
-        $wifi_count = $this->Payment_ServiceInfo($service, "service_wifi_amount");
+        $wifi_count = $this->Payment_ServiceInfo($service_id, "service_wifi_amount");
 
         if($paid == 1) {
           $payment_type = "Cash";

@@ -43,27 +43,25 @@
              <div class="col-md-5">
                <div class="form-group">
                  <label for="NT_Vehicle_Plate">Vehicle Registration</label>
-                 <input type="text" class="form-control" name="T_Vehicle_Plate" id="NT_Vehicle_Plate" placeholder="Vehicle Registration" value="<?php echo $record['parked_plate']?>" style="text-transform: uppercase;" readonly>
-                 <input type="hidden" class="form-control" name="T_LogID" id="NT_LogID" value="<?php echo $key  ?>">
-                 <input type="hidden" class="form-control" name="T_ANPRKey" id="NT_ANPRKey" value="<?php echo $record['parked_anprkey'] ?>">
-                 <input type="hidden" class="form-control" name="T_PayRef" id="NT_PayRef" value="<?php echo $record['payment_ref'] ?>">
-                 <input type="hidden" class="form-control" name="T_Expiry" id="NT_Expiry" value="<?php echo $record['parked_expiry'] ?>">
-                 <input type="hidden" class="form-control" name="T_Date" id="NT_Date" value="<?php echo $date ?>">
-                 <input type="hidden" class="form-control" name="T_Vehicle_Plate" id="NT_Vehicle_Plate" value="<?php echo $record['parked_plate'] ?>">
-                 <input type="hidden" class="form-control" name="T_Company_Name" id="NT_Company_Name" value="<?php echo $record['parked_company'] ?>">
-                 <input type="hidden" class="form-control" name="T_ANPRKey" id="NT_ANPRKey" value="<?php echo $record['parked_anprkey'] ?>">
+                 <input type="text" class="form-control" name="NT_Vehicle_Plate" id="NT_Vehicle_Plate" placeholder="Vehicle Registration" value="<?php echo $record['parked_plate']?>" style="text-transform: uppercase;" readonly>
+                 <input type="hidden" class="form-control" name="NT_LogID" id="NT_LogID" value="<?php echo $key  ?>">
+                 <input type="hidden" class="form-control" name="NT_ANPRKey" id="NT_ANPRKey" value="<?php echo $record['parked_anprkey'] ?>">
+                 <input type="hidden" class="form-control" name="NT_PayRef" id="NT_PayRef" value="<?php echo $record['payment_ref'] ?>">
+                 <input type="hidden" class="form-control" name="NT_Expiry" id="NT_Expiry" value="<?php echo $record['parked_expiry'] ?>">
+                 <input type="hidden" class="form-control" name="NT_Date" id="NT_Date" value="<?php echo $date ?>">
+                 <input type="hidden" class="form-control" name="NT_ANPRKey" id="NT_ANPRKey" value="<?php echo $record['parked_anprkey'] ?>">
                </div>
                <div class="form-group">
                  <label for="NT_Vehicle_Type">Company Name</label>
-                 <input type="text" class="form-control" name="T_Company_Name" id="NT_Company_Name" placeholder="Company Name" value="<?php echo $record['parked_company']?>" style="text-transform: uppercase;" required autofocus>
+                 <input type="text" class="form-control" name="NT_Company_Name" id="NT_Company_Name" placeholder="Company Name" value="<?php echo $record['parked_company']?>" style="text-transform: uppercase;" required autofocus>
                </div>
                <div class="form-group">
                  <label for="NT_Vehicle_Type">Trailer Number</label>
-                 <input type="text" class="form-control" name="T_Vehicle_Trailer" id="NT_Vehicle_Trailer" <?php echo $record['parked_trailer']?> placeholder="Trailer Number" style="text-transform: uppercase;">
+                 <input type="text" class="form-control" name="NT_Vehicle_Trailer" id="NT_Vehicle_Trailer" <?php echo $record['parked_trailer']?> placeholder="Trailer Number" style="text-transform: uppercase;">
                </div>
                <div class="form-group">
                  <label for="T_Vehicle_Type">Vehicle Type</label>
-                 <select class="form-control" name="T_Vehicle_Type" id="NT_Vehicle_Type">
+                 <select class="form-control" name="NT_Vehicle_Type" id="NT_Vehicle_Type">
                    <option value="unchecked">-- Please choose a vehicle type --</option>
                    <?php $pm->PM_VehicleTypes_Dropdown(); ?>
                   </select>
