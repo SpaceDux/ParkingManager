@@ -362,23 +362,18 @@
         $("#User_Campus_Update").val(data.campus);
         $("#User_ANPR_Update").val(data.anpr);
         $("#User_Rank_Update").val(data.rank);
+        $("#User_Printer_Update").val(data.printer);
         $('#User_UpdateModal').modal('toggle');
       }
     });
   })
   //User Record Update
   $(document).on('click', '#User_Save_Update', function(){
-    var User_ID = $('#User_ID').val();
-    var User_Firstname_Update = $("#User_Firstname_Update").val();
-    var User_Lastname_Update = $("#User_Lastname_Update").val();
-    var User_Email_Update = $("#User_Email_Update").val();
-    var User_Campus_Update = $("#User_Campus_Update option:selected").val();
-    var User_ANPR_Update = $("#User_ANPR_Update option:selected").val();
-    var User_Rank_Update = $("#User_Rank_Update option:selected").val();
+    var Data = $('#User_UpdateForm').serialize();
     $.ajax({
       url: "<?php echo URL?>/ajax-handler.php?handler=Update_User",
       type: "POST",
-      data: "User_ID="+User_ID+"&User_Firstname_Update="+User_Firstname_Update+"&User_Lastname_Update="+User_Lastname_Update+"&User_Email_Update="+User_Email_Update+"&User_Campus_Update="+User_Campus_Update+"&User_ANPR_Update="+User_ANPR_Update+"&User_Rank_Update="+User_Rank_Update,
+      data: Data,
       success:function() {
         event.preventDefault();
         $('#User_UpdateModal').modal('toggle');

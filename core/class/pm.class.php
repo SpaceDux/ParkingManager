@@ -492,32 +492,18 @@
     //Generate WiFi voucher.
     function Create_WiFi_Voucher($site) {
       //Minutes
-      if($campus = 1 OR $campus = 0) {
-        $controlleruser = 'Admin';
-        $controllerpassword = 'parc-cybi-2015';
+      $controllerurl = $this->PM_SiteInfo($site, "site_unifi_ip");
+      $controlleruser = $this->PM_SiteInfo($site, "site_unifi_user");
+      $controllerpassword = $this->PM_SiteInfo($site, "site_unifi_pass");
+      $site_id = $this->PM_SiteInfo($site, "site_unifi_site");
+      $controllerversion = $this->PM_SiteInfo($site, "site_unifi_ver");
 
-        $controllerurl = 'https://192.168.2.12:8443';
-        $controllerversion = '5.7.20';
-
-        $voucher_expiration = 1440;
-        $voucher_count = 1;
-        $site_id = 'default';
-      } else if ($campus = 2){
-        $controlleruser = 'Admin';
-        $controllerpassword = 'parc-cybi-2015';
-
-        $controllerurl = 'https://192.168.2.12:8443';
-        $controllerversion = '5.7.20';
-
-        $voucher_expiration = 1440;
-        $voucher_count = 1;
-        $site_id = 'default';
-      }
+      $voucher_expiration = 1440;
       //Unifi creds
       $unifi_connection = new UniFi_API\Client($controlleruser, $controllerpassword, $controllerurl, $site_id, $controllerversion);
       $loginresults = $unifi_connection->login();
       //Make Voucher
-      $voucher_result = $unifi_connection->create_voucher($voucher_expiration, $voucher_count, 1, 'PM Generated '.date("d/m/y H:i"), '512', '2048');
+      $voucher_result = $unifi_connection->create_voucher($voucher_expiration, 1, 1, 'PM Generated '.date("d/m/y H:i"), '512', '2048');
       $vouchers = $unifi_connection->stat_voucher($voucher_result[0]->create_time);
       $vouchers = json_encode($vouchers);
       $code = json_decode($vouchers, true);
@@ -525,6 +511,35 @@
       foreach($code as $row) {
         return $row['code'];
       }
+    }
+    //
+    function ChoosePrinter_Dropdown() {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_printers WHERE printer_deleted = 0");
+      $stmt->execute();
+
+      $html = '';
+
+      foreach($stmt->fetchAll() as $row) {
+        $html .= '<option value="'.$row['id'].'">'.$row['printer_displayName'].'</option>';
+      }
+
+      echo $html;
+
+      $this->mysql = null;
+    }
+    function PM_PrinterInfo($printer, $what) {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_printers WHERE id = ?");
+      $stmt->bindParam(1, $printer);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      return $result[$what];
+
+      $this->mysql = null;
     }
   }
 ?>

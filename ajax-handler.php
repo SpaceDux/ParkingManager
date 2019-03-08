@@ -33,9 +33,9 @@
   } else if($handler == "Update_User_Get") {
     $user->Update_User_Get($_POST['User_ID']);
   } else if($handler == "Update_User") {
-    $user->Update_User($_POST['User_ID'], $_POST['User_Firstname_Update'], $_POST['User_Lastname_Update'], $_POST['User_Email_Update'], $_POST['User_Campus_Update'], $_POST['User_ANPR_Update'], $_POST['User_Rank_Update']);
+    $user->Update_User($_POST['User_ID'], $_POST['User_Firstname_Update'], $_POST['User_Lastname_Update'], $_POST['User_Email_Update'], $_POST['User_Campus_Update'], $_POST['User_ANPR_Update'], $_POST['User_Rank_Update'], $_POST['User_Printer_Update']);
   } else if ($handler == "User_Add") {
-    $user->Register_User($_POST['User_Firstname_New'], $_POST['User_Lastname_New'], $_POST['User_Email_New'], $_POST['User_Password_New'], $_POST['User_ANPR_New'], $_POST['User_Rank_New'], $_POST['User_Campus_New']);
+    $user->Register_User($_POST['User_Firstname_New'], $_POST['User_Lastname_New'], $_POST['User_Email_New'], $_POST['User_Password_New'], $_POST['User_ANPR_New'], $_POST['User_Rank_New'], $_POST['User_Campus_New'], $_POST['User_Printer_New']);
   } else if($handler == "User_Delete") {
     $user->User_Delete($_POST['User_ID']);
   } else if($handler == "Force_Logout") {

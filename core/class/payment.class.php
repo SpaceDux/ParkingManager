@@ -59,11 +59,11 @@
       $html = '';
       //Misc
       $html .= '<tr class="table table-primary"><td colspan="15">Misc (All Vehicles)</td></tr>';
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_vehicles = 0 AND service_campus = ? AND service_deleted = 0 ORDER BY service_expiry, service_active ASC");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_vehicles = 0 AND service_campus = ? AND service_deleted < 1 ORDER BY service_expiry, service_active ASC");
       $query->bindParam(1, $site);
       $query->execute();
       foreach($query->fetchAll() as $row) {
-        $html .= '<tr class="">';
+        $html .= '<tr>';
         $html .= '<td>'.$row['service_name'].'</td>';
         $html .= '<td>£'.$row['service_price_gross'].'</td>';
         $html .= '<td>£'.$row['service_price_net'].'</td>';

@@ -160,20 +160,20 @@
       $this->mysql = null;
     }
     //Update User Details
-    function Update_User($id, $first_name, $last_name, $email, $campus, $anpr, $rank) {
+    function Update_User($id, $first_name, $last_name, $email, $campus, $anpr, $rank, $printer) {
       $this->mysql = new MySQL;
       if(isset($id)) {
-        $query = $this->mysql->dbc->prepare("UPDATE pm_users SET first_name = ?, last_name = ?, email = ?, campus = ?, anpr = ?, rank = ? WHERE id = ?");
+        $query = $this->mysql->dbc->prepare("UPDATE pm_users SET first_name = ?, last_name = ?, email = ?, campus = ?, anpr = ?, rank = ?, printer = ? WHERE id = ?");
         $query->bindParam(1, $first_name);
         $query->bindParam(2, $last_name);
         $query->bindParam(3, $email);
         $query->bindParam(4, $campus);
         $query->bindParam(5, $anpr);
         $query->bindParam(6, $rank);
-        $query->bindParam(7, $id);
+        $query->bindParam(7, $printer);
+        $query->bindParam(8, $id);
         $query->execute();
       }
-
       $this->mysql = null;
     }
     //Register User
@@ -213,6 +213,7 @@
 
       $this->mysql = null;
     }
+    //Admin change users pw
     function adminChangePW($id, $pw) {
       $this->mysql = new MySQL;
 

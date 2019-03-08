@@ -537,6 +537,15 @@
                 <small class="form-text text-muted">Caution when selecting a rank!</small>
               </div>
             </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Choose a Printer</label>
+                <select class="form-control" name="User_Printer_Update">
+                  <?php $pm->ChoosePrinter_Dropdown() ?>
+                </select>
+                <small class="form-text text-muted">Choose a network printer</small>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-body">

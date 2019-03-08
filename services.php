@@ -169,7 +169,6 @@
     <script src="<?php echo URL?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
-    <script src="<?php echo URL?>/assets/js/jquery.lwMultiSelect.min.js"></script>
     <?php require(__DIR__."/assets/require.php");?>
   </body>
 </html>

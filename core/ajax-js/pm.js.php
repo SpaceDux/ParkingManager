@@ -21,10 +21,6 @@ $(document).on('keyup', '#PM_ExitCode', function() {
         }
       }
     })
-  } else if (Code != "") {
-    setTimeout(function() {
-      $('#ExitForm')[0].reset();
-    }, 15000);
   }
 });
 </script>
