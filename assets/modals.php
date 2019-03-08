@@ -540,7 +540,7 @@
             <div class="col">
               <div class="form-group">
                 <label>Choose a Printer</label>
-                <select class="form-control" name="User_Printer_Update">
+                <select class="form-control" name="User_Printer_Update" id="User_Printer_Update">
                   <?php $pm->ChoosePrinter_Dropdown() ?>
                 </select>
                 <small class="form-text text-muted">Choose a network printer</small>
