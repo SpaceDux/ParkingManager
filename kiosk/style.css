@@ -1,0 +1,95 @@
+body {
+  width: 1080px;
+  height: 1920px;
+  max-height: 1920px;
+  max-width: 1080px;
+  background: #303030;
+  margin: 0;
+  padding: 0;
+}
+.TopBar {
+  width: 100%;
+  height: 50px;
+  background: #262626;
+}
+.TopBar > .Time {
+  color: #f2f2f2;
+  width: 200px;
+  height: 100%;
+  font-size: 20px;
+  font-family: 'Segoe UI Light';
+  line-height: 50px;
+  float: right;
+  margin-right: 50px;
+}
+.TopBar > .WhereAmI {
+  color: #f2f2f2;
+  width: 400px;
+  height: 100%;
+  margin-left: 50px;
+  font-size: 20px;
+  font-family: 'Segoe UI Light';
+  line-height: 50px;
+  float: left;
+}
+.Wrapper {
+  margin: 0 auto;
+  width: 100%;
+}
+.Logo {
+  max-width: 200px;
+  max-height: 200px;
+  margin: 0 auto;
+}
+.WhereToBegin {
+  font-size: 28px;
+  font-family: 'Segoe UI Light';
+  color: #fff;
+  text-align: center;
+}
+.BoxSelection {
+  margin-top: 20px;
+  display: inline-block;
+  width: 350px;
+  height: 300px;
+  margin-left: 5px;
+  border-radius: 10px;
+}
+.BoxSelection img {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+  display: block;
+  padding: 4px;
+  position: relative;
+}
+.red {
+  background: #a20808;
+}
+.green {
+  background: #138808;
+}
+.dark {
+  background: #444444;
+}
+.blue {
+  background: #0000ad;
+}
+.Title {
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Segoe UI Light';
+  margin: 0;
+  color: #f2f2f2;
+}
+.Body {
+  text-align: center;
+  font-size: 18px;
+  font-family: 'Segoe UI Light';
+  margin: 0;
+  color: #f2f2f2;
+  overflow: hidden;
+  max-height: 50px;
+  margin-top: 10px;
+  border-top: 1px solid rgba(14, 14, 14, 0.18);
+}

@@ -1191,6 +1191,7 @@
       $this->user = new User;
       $this->mysql = new MySQL;
       $this->account = new Account;
+      $this->vehicles = new Vehicles;
       // $this->account = new Account;
       $campus = $this->user->userInfo("campus");
 
@@ -1220,18 +1221,18 @@
       $html2 = '';
 
       if($price_filter != "0.00") {
-        $query = $this->mysql->dbc->prepare("SELECT id, payment_company_name, payment_vehicle_plate, payment_service_name, payment_type, payment_price_gross, payment_price_net, payment_date, payment_ref, payment_account_id, payment_author, payment_deleted, payment_deleted_comment FROM pm_payments WHERE payment_campus = ? AND payment_price_gross = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date, payment_type DESC");
+        $query = $this->mysql->dbc->prepare("SELECT id, payment_company_name, payment_anprkey, payment_vehicle_plate, payment_service_name, payment_type, payment_price_gross, payment_price_net, payment_date, payment_ref, payment_account_id, payment_author, payment_deleted, payment_deleted_comment FROM pm_payments WHERE payment_campus = ? AND payment_price_gross = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date, payment_type DESC");
         $query->bindParam(1, $campus);
         $query->bindParam(2, $price_filter);
         $query->bindParam(3, $date1);
         $query->bindParam(4, $date2);
       } else if($group == 0) {
-        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date, payment_type DESC");
+        $query = $this->mysql->dbc->prepare("SELECT id, payment_company_name, payment_anprkey, payment_vehicle_plate, payment_service_name, payment_type, payment_price_gross, payment_price_net, payment_date, payment_ref, payment_account_id, payment_author, payment_deleted, payment_deleted_comment FROM pm_payments WHERE payment_campus = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date, payment_type DESC");
         $query->bindParam(1, $campus);
         $query->bindParam(2, $date1);
         $query->bindParam(3, $date2);
       } else {
-        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_service_group = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date, payment_type DESC");
+        $query = $this->mysql->dbc->prepare("SELECT id, payment_company_name, payment_anprkey, payment_vehicle_plate, payment_service_name, payment_type, payment_price_gross, payment_price_net, payment_date, payment_ref, payment_account_id, payment_author, payment_deleted, payment_deleted_comment FROM pm_payments WHERE payment_campus = ? AND payment_service_group = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date, payment_type DESC");
         $query->bindParam(1, $campus);
         $query->bindParam(2, $group);
         $query->bindParam(3, $date1);
@@ -1299,6 +1300,7 @@
           $html2 .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
           $html2 .= '<td>'.$row['payment_author'].'</td>';
           $html2 .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                      <a href="'.URL.'/update/'.$this->vehicles->vehInfo("id", $row['payment_anprkey']).'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
                       <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
                       <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                       </div>
@@ -1319,6 +1321,7 @@
           $html2 .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
           $html2 .= '<td>'.$row['payment_author'].'</td>';
           $html2 .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                      <a href="'.URL.'/update/'.$this->vehicles->vehInfo("id", $row['payment_anprkey']).'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
                       <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
                       <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                       </div>
@@ -1339,6 +1342,7 @@
           $html2 .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
           $html2 .= '<td>'.$row['payment_author'].'</td>';
           $html2 .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                      <a href="'.URL.'/update/'.$this->vehicles->vehInfo("id", $row['payment_anprkey']).'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
                       <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
                       <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                       </div>
@@ -1359,6 +1363,7 @@
           $html2 .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
           $html2 .= '<td>'.$row['payment_author'].'</td>';
           $html2 .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                      <a href="'.URL.'/update/'.$this->vehicles->vehInfo("id", $row['payment_anprkey']).'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
                       <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
                       <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                       </div>
@@ -1379,6 +1384,7 @@
           $html2 .= '<td>'.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'</td>';
           $html2 .= '<td>'.$row['payment_author'].'</td>';
           $html2 .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
+                      <a href="'.URL.'/update/'.$this->vehicles->vehInfo("id", $row['payment_anprkey']).'" class="btn btn-danger"><i class="fa fa-cog"></i></a>
                       <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
                       <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                       </div>
@@ -1409,6 +1415,7 @@
       $this->user = null;
       $this->mysql = null;
       $this->account = null;
+      $this->vehicle = null;
     }
     //Delete Transaction
     function Payment_Delete($key, $comment) {

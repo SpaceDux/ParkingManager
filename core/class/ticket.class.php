@@ -1098,9 +1098,9 @@
           $line_5 = $this->Printer_Columns("Cab Parking + Meal - £18", $£18CashCAB, 30, 10, 4);
           $line_6 = $this->Printer_Columns("C/T Parking - £18", $£18Cash, 30, 10, 4);
           $line_7 = $this->Printer_Columns("C/T Parking + Meal - £24", $£24Cash, 30, 10, 4);
-          $line_SEP = $this->Printer_Columns("CAB SEP - £24", $£24CardSEP, 30, 10, 4);
+          $line_SEP = $this->Printer_Columns("C/T SEP - £24", $£24CardSEP, 30, 10, 4);
           $line_SEP2 = $this->Printer_Columns("C/T SEP + MEAL - £30", $£30CardSEP, 30, 10, 4);
-          $line_8 = $this->Printer_Columns("Hi-Sec / OS + Meal - £24", $£24CashHSO, 30, 10, 4);
+          $line_8 = $this->Printer_Columns("Hi-Sec / OS - £24", $£24CashHSO, 30, 10, 4);
           $line_9 = $this->Printer_Columns("Hi-Sec / OS + Meal - £30", $£30CashHSO, 30, 10, 4);
           $line_10 = $this->Printer_Columns("CTR - £22", $£22CashCTR, 30, 10, 4);
           $line_11 = $this->Printer_Columns("CTR + Meal - £28", $£28CashCTR, 30, 10, 4);
@@ -1126,9 +1126,9 @@
           $line_5 = $this->Printer_Columns("Cab Parking + Meal - £18", $£18CardCAB, 30, 10, 4);
           $line_6 = $this->Printer_Columns("C/T Parking - £18", $£18Card, 30, 10, 4);
           $line_7 = $this->Printer_Columns("C/T Parking + Meal - £24", $£24Card, 30, 10, 4);
-          $line_SEP = $this->Printer_Columns("CAB SEP - £24", $£24CardSEP, 30, 10, 4);
+          $line_SEP = $this->Printer_Columns("C/T SEP - £24", $£24CardSEP, 30, 10, 4);
           $line_SEP2 = $this->Printer_Columns("C/T SEP + MEAL - £30", $£30CardSEP, 30, 10, 4);
-          $line_8 = $this->Printer_Columns("Hi-Sec / OS + Meal - £24", $£24CardHSO, 30, 10, 4);
+          $line_8 = $this->Printer_Columns("Hi-Sec / OS - £24", $£24CardHSO, 30, 10, 4);
           $line_9 = $this->Printer_Columns("Hi-Sec / OS + Meal - £30", $£30CardHSO, 30, 10, 4);
           $line_10 = $this->Printer_Columns("CTR - £22", $£22CardCTR, 30, 10, 4);
           $line_11 = $this->Printer_Columns("CTR + Meal - £28", $£28CardCTR, 30, 10, 4);
@@ -1154,9 +1154,9 @@
           $line_5 = $this->Printer_Columns("Cab Parking + Meal - £18", $£18AccCAB, 30, 10, 4);
           $line_6 = $this->Printer_Columns("C/T Parking - £18", $£18Acc, 30, 10, 4);
           $line_7 = $this->Printer_Columns("C/T Parking + Meal - £24", $£24Acc, 30, 10, 4);
-          $line_SEP = $this->Printer_Columns("CAB SEP - £24", $£24AccSEP, 30, 10, 4);
+          $line_SEP = $this->Printer_Columns("C/T SEP - £24", $£24AccSEP, 30, 10, 4);
           $line_SEP2 = $this->Printer_Columns("C/T SEP + MEAL - £30", $£30AccSEP, 30, 10, 4);
-          $line_8 = $this->Printer_Columns("Hi-Sec / OS + Meal - £24", $£24AccHSO, 30, 10, 4);
+          $line_8 = $this->Printer_Columns("Hi-Sec / OS - £24", $£24AccHSO, 30, 10, 4);
           $line_9 = $this->Printer_Columns("Hi-Sec / OS + Meal - £30", $£30AccHSO, 30, 10, 4);
           $line_10 = $this->Printer_Columns("CTR - £22", $£22AccCTR, 30, 10, 4);
           $line_11 = $this->Printer_Columns("CTR + Meal - £28", $£28AccCTR, 30, 10, 4);
@@ -1182,9 +1182,9 @@
           $line_5 = $this->Printer_Columns("Cab Parking + Meal - £18", $£18ETPCAB, 30, 10, 4);
           $line_6 = $this->Printer_Columns("C/T Parking - £18", $£18ETP, 30, 10, 4);
           $line_7 = $this->Printer_Columns("C/T Parking + Meal - £24", $£24ETP, 30, 10, 4);
-          $line_SEP = $this->Printer_Columns("CAB SEP - £24", $£24ETPSEP, 30, 10, 4);
+          $line_SEP = $this->Printer_Columns("C/T SEP - £24", $£24ETPSEP, 30, 10, 4);
           $line_SEP2 = $this->Printer_Columns("C/T SEP + MEAL - £30", $£30ETPSEP, 30, 10, 4);
-          $line_8 = $this->Printer_Columns("Hi-Sec / OS + Meal - £24", $£24ETPHSO, 30, 10, 4);
+          $line_8 = $this->Printer_Columns("Hi-Sec / OS - £24", $£24ETPHSO, 30, 10, 4);
           $line_9 = $this->Printer_Columns("Hi-Sec / OS + Meal - £30", $£30ETPHSO, 30, 10, 4);
           $line_10 = $this->Printer_Columns("CTR Parking - £22", $£22ETPCTR, 30, 10, 4);
           $line_11 = $this->Printer_Columns("CTR Parking + Meal - £28", $£28ETPCTR, 30, 10, 4);
