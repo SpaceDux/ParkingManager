@@ -135,6 +135,8 @@
     $ticket->Printer_9PM($_POST['Date1'], $_POST['Date2']);
   } else if($handler == "ETP_CardBreak") {
     $etp->ETP_CardBreak($_POST['FuelString']);
+  } else if ($handler == "Kiosk_Parking") {
+    $kiosk->GetParkingPage();
   }
 
 ?>

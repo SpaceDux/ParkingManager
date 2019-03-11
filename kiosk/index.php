@@ -15,43 +15,63 @@
         <i style="padding-right: 10px;" class="fa fa-clock"></i> 21/02/19 21:22
       </div>
       <div class="WhereAmI">
-        <i style="padding-right: 10px;" class="fa fa-location-arrow"></i> You are parked at Roadking: Holyhead
+        <i style="padding-right: 10px;" class="fa fa-location-arrow"></i> You are parked at RoadKing: Holyhead
       </div>
     </div>
-    <div class="Logo">
-      <img src="<?php echo URL ?>/kiosk/roadkinglogo.png" alt="">
-    </div>
-    <div class="Wrapper">
-      <div class="WhereToBegin">
-        Welcome to RoadKing... Please choose a service to begin
-      </div>
-      <div class="BoxSelection blue">
+    <div class="Wrapper" id="Wrapper">
+      <div class="BoxSelection blue" id="Parking_Tile">
         <img src="<?php echo URL ?>/kiosk/parking_icon.png" alt="">
         <div class="Title">
           Pay for Parking
         </div>
         <div class="Body">
-          Pay for your Parking here... We accept SNAP & Fuel Card!
+          Pay for your Parking here... We accept Cash, Card, SNAP & Fuel Card + Accounts!
         </div>
       </div>
-      <div class="BoxSelection green">
+      <div class="BoxSelection green" id="Wash_Tile">
         <img src="<?php echo URL ?>/kiosk/truckwash_icon.png" alt="">
         <div class="Title">
-          Truck Wash
+          Truck Wash Tokens
         </div>
         <div class="Body">
           Purchase wash tokens for our truckwash from this kiosk!
         </div>
       </div>
-      <div class="BoxSelection red">
+      <div class="BoxSelection red" id="Exchange_Tile">
         <img src="<?php echo URL ?>/kiosk/change_convert.png" alt="">
         <div class="Title">
           Exchange
         </div>
         <div class="Body">
-          Swap your *££* notes for coins for our laundrette.
+          Swap your *££* notes for coins to use in our laundrette.
         </div>
       </div>
     </div>
+    <div id="Page">
+      
+    </div>
+    <script src="<?php echo URL ?>/assets/js/jquery.min.js"></script>
+    <script type="text/javascript">
+    //Parking
+    $(document).on('click', '#Parking_Tile', function() {
+      $('#Wrapper').addClass("Hide");
+      $.ajax({
+        url: "<?php echo URL?>/core/ajax/kiosk.ajax.php?handler=Kiosk_ParkingPage",
+        type: "POST",
+        success:function(data) {
+          $('#Page').html(data);
+        }
+      })
+    });
+    //Wash
+    $(document).on('click', '#Wash_Tile', function() {
+      alert("YOU CLICKED WASH");
+    });
+    //Exchange
+    $(document).on('click', '#Exchange_Tile', function() {
+      alert("YOU CLICKED EXCHANGE");
+    });
+    </script>
+
   </body>
 </html>

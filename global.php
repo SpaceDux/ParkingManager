@@ -24,6 +24,7 @@
   require(__DIR__ . C . F . '/reports.class.php');
   require(__DIR__ . C . F . '/ticket.class.php');
   require(__DIR__ . C . F . '/etp.class.php');
+  require(__DIR__ . C . F . '/kiosk.class.php');
     //Caution
   require(__DIR__ . C . F . '/background.class.php');
   require(__DIR__ . V . '/autoload.php');
@@ -51,6 +52,7 @@
     $ticket = new PM\Ticket;
     $etp = new PM\ETP;
   }
+  $kiosk = new PM\Kiosk;
 
   #Check a session hasn't remotely been cut
   $user->forceLogout();

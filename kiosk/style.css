@@ -12,6 +12,12 @@ body {
   height: 50px;
   background: #262626;
 }
+.BottomBar {
+  width: 100%;
+  height: 50px;
+  background: #262626;
+  display: block;
+}
 .TopBar > .Time {
   color: #f2f2f2;
   width: 200px;
@@ -33,7 +39,7 @@ body {
   float: left;
 }
 .Wrapper {
-  margin: 0 auto;
+  margin: 200px auto;
   width: 100%;
 }
 .Logo {
@@ -53,7 +59,7 @@ body {
   width: 350px;
   height: 300px;
   margin-left: 5px;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 .BoxSelection img {
   width: 160px;
@@ -93,3 +99,39 @@ body {
   margin-top: 10px;
   border-top: 1px solid rgba(14, 14, 14, 0.18);
 }
+.Hide {
+  display: none;
+}
+.Show {
+  display: block;
+}
+
+.content {
+  margin-top: 0;
+  width: 1080px;
+  background: #3c3c3c;
+  height: 1920px;
+  position: absolute;
+}
+.page_content {
+  width: 80%;
+  margin: 20px auto;
+}
+.licenseplate {
+  color: #3e3e3e;
+  background-color: #d7b600;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 100px;
+  line-height: 110px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  padding-left: 60px;
+  padding-bottom: 10px;
+  width: 750px;
+  border: 5px solid #686868;
+  border-radius: 15px;
+  outline: none;
+  &::placeholder {
+    color: #eee;
+  }
