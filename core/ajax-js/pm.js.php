@@ -26,7 +26,10 @@ $(document).on('keyup', '#PM_ExitCode', function() {
 function PM_SwitchSite() {
   $.ajax({
     url: "<?php echo URL?>/core/ajax/pm.ajax.php?handler=PM_SiteSwap",
-    type: "POST"
+    type: "POST",
+    success:function() {
+      window.location.replace("<?php echo URL?>/main");
+    }
   })
 }
 </script>

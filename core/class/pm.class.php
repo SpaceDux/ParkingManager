@@ -99,6 +99,8 @@
     //PM Navigation
     function PM_Nav() {
       $this->user = new User;
+      $this->pm = new PM;
+      $site = $this->user->userInfo("campus");
 
       //Top Bar
       $nav ='<nav class="topBar">';
@@ -114,7 +116,7 @@
       $nav .=    '<li onClick="ANPR_Barrier(1)" title="Toggle Entry Barrier"><i class="fa fa-arrow-right"></i></li>';
       $nav .=    '<li onClick="ANPR_Barrier(0)" title="Toggle Exit Barrier"><i class="fa fa-arrow-left"></i></li>';
       $nav .=    '<li onClick="ANPR_Exit_Log()" title="Exit History Log"><i class="fa fa-list-ul"></i></li>';
-      $nav .=    '<li onClick="PM_SwitchSite()" title="Switch Site"><i class="fa fa-recycle"></i></li>';
+      $nav .=    '<li onClick="PM_SwitchSite()" title="Switch Site"><i class="fa fa-recycle"></i> '.$this->pm->PM_SiteInfo($site, "site_name").'</li>';
       $nav .=  '</ul>';
       $nav .='</nav>';
 
@@ -174,6 +176,7 @@
       echo $nav;
 
       $this->user = null;
+      $this->pm = null;
     }
     //Dropdown menu for Campus
     function PM_Sites_Dropdown() {
@@ -552,7 +555,6 @@
       } else if ($campus == 2) {
         $this->user->User_FastUpdate($id, "campus", 1);
       }
-
       $this->user = null;
     }
   }
