@@ -138,83 +138,46 @@
     }
     //Toggle Barrier
     function ToggleBarrier($key) {
-      global $_CONFIG;
       $this->user = new User;
+      $this->pm = new PM;
       $site = $this->user->userInfo("campus");
-      if($site == 1) {
-        if($key == 1) {
-          $ch = curl_init();
-          curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_holyhead']['in']);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-          $result = curl_exec($ch);
-          if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-          }
-          curl_close($ch);
-        } else if ($key == 0) {
-          $ch = curl_init();
-          curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_holyhead']['out']);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-          $result = curl_exec($ch);
-          if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-          }
-          curl_close($ch);
+      if($key == 1) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->pm->PM_SiteInfo($site, "site_barrier_in"));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
         }
-      } else if($campus == 2) {
-        if($key == 1) {
-          $ch = curl_init();
-          curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_cannock']['in']);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-          $result = curl_exec($ch);
-          if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-          }
-          curl_close($ch);
-        } else if ($key == 0) {
-          $ch = curl_init();
-          curl_setopt($ch, CURLOPT_URL, $_CONFIG['gate_cannock']['out']);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-          $result = curl_exec($ch);
-          if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-          }
-          curl_close($ch);
+        curl_close($ch);
+      } else if ($key == 0) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->pm->PM_SiteInfo($site, "site_barrier_out"));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
         }
+        curl_close($ch);
       }
+      $this->user = null;
+      $this->pm = null;
     }
     //Toggle Exit Barrier via keypad
     function Barrier_Controller($site, $barrier) {
-      global $_CONFIG;
-      if($site == 1) {
-        if($barrier == "EN") {
-          $barrier = $_CONFIG['gate_holyhead']['in'];
-        } else if ($barrier == "EX") {
-          $barrier = $_CONFIG['gate_holyhead']['out'];
-        }
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $barrier);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-          echo 'Error:' . curl_error($ch);
-        }
-        curl_close($ch);
-      } else if ($site == 2) {
-        if($barrier == "EN") {
-          $barrier = $_CONFIG['gate_cannock']['in'];
-        } else if ($barrier == "EX") {
-          $barrier = $_CONFIG['gate_cannock']['out'];
-        }
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $barrier);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-          echo 'Error:' . curl_error($ch);
-        }
-        curl_close($ch);
+      if($barrier == "EN") {
+        $barrier = $this->pm->PM_SiteInfo($site, "site_barrier_in");
+      } else if ($barrier == "EX") {
+        $barrier = $this->pm->PM_SiteInfo($site, "site_barrier_out");
       }
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $barrier);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      $result = curl_exec($ch);
+      if (curl_errno($ch)) {
+        echo 'Error:' . curl_error($ch);
+      }
+      curl_close($ch);
     }
     //ANPR Images
     function ANPR_GetImage($id) {
