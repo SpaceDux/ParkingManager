@@ -1,14 +1,7 @@
 <script type="text/javascript">
 //Parking
 $(document).on('click', '#Parking_Tile', function() {
-  $('#Wrapper').addClass("Hide");
-  $.ajax({
-    url: "<?php echo URL?>/ajax-handler.php?handler=Kiosk_Parking",
-    type: "POST",
-    success:function(data) {
-      $('#Page').html(data);
-    }
-  })
+  $('#Parking_Stage1').removeClass("Hide");
 });
 //Wash
 $(document).on('click', '#Wash_Tile', function() {

@@ -114,6 +114,7 @@
       $nav .=    '<li onClick="ANPR_Barrier(1)" title="Toggle Entry Barrier"><i class="fa fa-arrow-right"></i></li>';
       $nav .=    '<li onClick="ANPR_Barrier(0)" title="Toggle Exit Barrier"><i class="fa fa-arrow-left"></i></li>';
       $nav .=    '<li onClick="ANPR_Exit_Log()" title="Exit History Log"><i class="fa fa-list-ul"></i></li>';
+      $nav .=    '<li onClick="PM_SwitchSite()" title="Switch Site"><i class="fa fa-recycle"></i></li>';
       $nav .=  '</ul>';
       $nav .='</nav>';
 
@@ -540,6 +541,19 @@
       return $result[$what];
 
       $this->mysql = null;
+    }
+    function PM_SiteSwap() {
+      $this->user = new User;
+      $id = $this->user->userInfo("id");
+      $campus = $this->user->userInfo("campus");
+
+      if($campus == 1) {
+        $this->user->User_FastUpdate($id, "campus", 2);
+      } else if ($campus == 2) {
+        $this->user->User_FastUpdate($id, "campus", 1);
+      }
+
+      $this->user = null;
     }
   }
 ?>

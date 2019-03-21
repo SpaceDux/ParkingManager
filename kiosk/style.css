@@ -3,7 +3,7 @@ body {
   height: 1920px;
   max-height: 1920px;
   max-width: 1080px;
-  background: #303030;
+  background: #efefef;
   margin: 0;
   padding: 0;
 }
@@ -11,12 +11,6 @@ body {
   width: 100%;
   height: 50px;
   background: #262626;
-}
-.BottomBar {
-  width: 100%;
-  height: 50px;
-  background: #262626;
-  display: block;
 }
 .TopBar > .Time {
   color: #f2f2f2;
@@ -38,86 +32,47 @@ body {
   line-height: 50px;
   float: left;
 }
+.TopBar i {
+  padding-right: 5px;
+}
 .Wrapper {
   margin: 200px auto;
-  width: 100%;
-}
-.Logo {
-  max-width: 200px;
-  max-height: 200px;
-  margin: 0 auto;
-}
-.WhereToBegin {
-  font-size: 28px;
-  font-family: 'Segoe UI Light';
-  color: #fff;
-  text-align: center;
-}
-.BoxSelection {
-  margin-top: 20px;
-  display: inline-block;
-  width: 350px;
-  height: 300px;
-  margin-left: 5px;
-  border-radius: 5px;
-}
-.BoxSelection img {
-  width: 160px;
-  height: 160px;
-  margin: 0 auto;
-  display: block;
-  padding: 4px;
-  position: relative;
-}
-.red {
-  background: #a20808;
-}
-.green {
-  background: #138808;
-}
-.dark {
-  background: #444444;
-}
-.blue {
-  background: #0000ad;
-}
-.Title {
-  text-align: center;
-  font-size: 30px;
-  font-family: 'Segoe UI Light';
-  margin: 0;
-  color: #f2f2f2;
-}
-.Body {
-  text-align: center;
-  font-size: 18px;
-  font-family: 'Segoe UI Light';
-  margin: 0;
-  color: #f2f2f2;
-  overflow: hidden;
-  max-height: 50px;
-  margin-top: 10px;
-  border-top: 1px solid rgba(14, 14, 14, 0.18);
-}
-.Hide {
-  display: none;
-}
-.Show {
-  display: block;
-}
-
-.content {
-  margin-top: 0;
-  width: 1080px;
-  background: #3c3c3c;
-  height: 1920px;
-  position: absolute;
-}
-.page_content {
   width: 80%;
-  margin: 20px auto;
 }
-.licenseplate {
+.Tiles {
+  margin: 10px auto;
+  width: 500px;
+  height: 500px;
+  background: inherit;
+  display: block;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 5px 5px 5px 5px
+}
+.Tiles img {
+  display: block;
+  margin: 0 auto;
+  width: 300px;
+  height: auto;
+}
+.Tiles p {
+  font-family: 'Segoe UI Light';
+  font-size: 20px;
+  border-top: 2px solid #fff;
+  margin-top: 40px;
+  color: #fff;
+}
+/* Special */
+.Blue {
+  background: blue;
+}
+.Green {
+  background: green;
+}
+.Red {
+  background: red;
+}
+.Kiosk_Plate_Input {
   color: #3e3e3e;
   background-color: #d7b600;
   font-family: 'Segoe UI', Arial, sans-serif;
@@ -134,4 +89,5 @@ body {
   outline: none;
   &::placeholder {
     color: #eee;
-  }
+  display: block;
+}

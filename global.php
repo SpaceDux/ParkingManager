@@ -30,7 +30,7 @@
   require(__DIR__ . V . '/autoload.php');
   //Define CONFIG settings
   define('URL', $_CONFIG['pm']['url']);
-  define('VER', "3.2.16");
+  define('VER', "3.2.20");
   define('Footer', 'ParkingManager (PM) &copy; 2019 | Designed, developed & owned by <a href="mailto:ryan@roadkingcafe.uk"><b>Ryan. W</b></a> with Roadking Truckstops &copy;');
 
 

@@ -221,17 +221,18 @@
       global $_CONFIG;
       $this->mssql = new MSSQL;
       $this->user = new User;
+      $this->pm = new PM;
 
       $stmt = $this->mssql->dbc->prepare("SELECT Patch, Overview FROM ANPR_REX WHERE Uniqueref = ?");
       $stmt->bindParam(1, $id);
       $stmt->execute();
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
       if($this->user->userInfo("campus") == 1) {
-        $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $result['Patch']);
-        $patch2 = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $result['Overview']);
+        $patch = str_replace("D:\ETP ANPR\images", $this->pm->PM_SiteInfo("1", 'site_anpr_img'), $result['Patch']);
+        $patch2 = str_replace("D:\ETP ANPR\images", $this->pm->PM_SiteInfo("1", 'site_anpr_img'), $result['Overview']);
       } else if($this->user->userInfo("campus") == 2) {
-        $patch = str_replace("F:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $result['Patch']);
-        $patch2 = str_replace("F:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $result['Overview']);
+        $patch = str_replace("F:\ETP ANPR\images", $this->pm->PM_SiteInfo("2", 'site_anpr_img'), $result['Patch']);
+        $patch2 = str_replace("F:\ETP ANPR\images", $this->pm->PM_SiteInfo("2", 'site_anpr_img'), $result['Overview']);
       } else if ($this->user->userInfo("campus") == 0) {
         $patch = "";
         $patch2 = "";
@@ -248,6 +249,7 @@
 
       $this->mssql = null;
       $this->user = null;
+      $this->pm = null;
     }
     //Get ANPR rec
     function ANPR_GetRecord($key) {

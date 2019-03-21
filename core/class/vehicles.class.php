@@ -15,8 +15,8 @@
     //ANPR Feed
     function get_anprFeed() {
       //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
-      global $_CONFIG;
       $this->user = new User;
+      $campus = $this->user->userInfo("campus");
       if($this->user->userInfo("anpr") == 1) {
         $this->mssql = new MSSQL;
         $this->pm = new PM;
@@ -36,9 +36,9 @@
         foreach ($result as $row) {
           //Get The right Path now.
           if($this->user->userInfo("campus") == 1) {
-            $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $row['Patch']);
+            $patch = str_replace("D:\ETP ANPR\images", $this->pm->PM_SiteInfo($campus, 'site_anpr_img'), $row['Patch']);
           } else if($this->user->userInfo("campus") == 2) {
-            $patch = str_replace("F:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
+            $patch = str_replace("F:\ETP ANPR\images", $this->pm->PM_SiteInfo($campus, 'site_anpr_img'), $row['Patch']);
           } else if ($this->user->userInfo("campus") == 0) {
             $patch = "";
           }

@@ -226,5 +226,13 @@
 
       $this->mysql = null;
     }
+    function User_FastUpdate($id, $what, $value) {
+      $this->mysql = new MySQL;
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_users SET $what = ? WHERE id = ?");
+        $stmt->bindParam(1, $value);
+        $stmt->bindParam(2, $id);
+        $stmt->execute();
+      $this->mysql = null;
+    }
   }
 ?>
