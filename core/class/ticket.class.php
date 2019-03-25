@@ -156,12 +156,6 @@
     				$printer -> bitImage($meal_img);
     			}
           $printer -> text("\n".$line_info);
-          $printer -> setBarcodeHeight(42);
-          $printer -> setBarcodeWidth(2);
-          //£4 barcode
-          $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
-          $printer -> barcode("635957959341", Printer::BARCODE_JAN13);
-          $printer->selectPrintMode();
           //End Ticket
           $printer -> cut(Printer::CUT_PARTIAL);
     			if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
@@ -170,11 +164,6 @@
     				$printer -> bitImage($meal_img);
     			}
           $printer -> text("\n".$line_info);
-          // $printer -> setBarcodeHeight(42);
-          // $printer -> setBarcodeWidth(2);
-          // //£4 barcode
-          // $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
-          // $printer -> barcode("635957959341", Printer::BARCODE_JAN13);
           $printer->selectPrintMode();
           //End Ticket
           $printer -> cut(Printer::CUT_PARTIAL);
@@ -192,11 +181,6 @@
           $printer -> text("\n".$line_info);
           $printer -> text("\n MINIMUM SPEND £3");
           $printer -> feed();
-          // $printer -> setBarcodeHeight(42);
-          // $printer -> setBarcodeWidth(2);
-          // //£2 barcode
-          // $printer -> setBarcodeTextPosition(Printer::BARCODE_TEXT_BELOW);
-          // $printer -> barcode("635957959321", Printer::BARCODE_JAN13);
           $printer->selectPrintMode();
           //End Ticket
           $printer -> cut(Printer::CUT_PARTIAL);
@@ -342,10 +326,14 @@
         //WIFI
         while ($i++ <= $wifi_count) {
           // Generate Voucher
-          $code = $this->pm->Create_WiFi_Voucher($campus);
+          if($campus == 2) {
+            $code = "";
+          } else {
+            $code = $this->pm->Create_WiFi_Voucher($campus);
+          }
           //Shower Ticket
           $printer -> setJustification(Printer::JUSTIFY_CENTER);
-          if($this->pm->PM_PrinterInfo($printer_id, "printer_user") == 0) {
+          if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
             $printer -> graphics($wifi);
           } else {
             $printer -> bitImage($wifi);
@@ -353,11 +341,16 @@
               $printer -> pulse(0, 120, 240);
             }
           }
+          $printer -> feed();
           $printer -> setTextSize(2, 2);
           $printer -> text('WiFi Code: '.$code);
           $printer -> feed();
           $printer -> setTextSize(1, 1);
-          $printer -> text("Please connect to; Parc-Cybi-Car-Park");
+          if($campus != 1) {
+            $printer -> text("Please connect to; Customer Lorry Park");
+          } else {
+            $printer -> text("Please connect to; Parc-Cybi-Car-Park");
+          }
           $printer -> feed(1);
           $printer -> text("TID: ".$tid);
           $printer -> feed();
@@ -415,7 +408,11 @@
       $logo = EscposImage::load($img_dir."/logo.png", false);
       //Settlement
       $printer -> setJustification(Printer::JUSTIFY_CENTER);
-      $printer -> graphics($logo);
+      if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
+        $printer -> graphics($logo);
+      } else {
+        $printer -> bitImage($logo);
+      }
       $printer -> feed();
       $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
       $printer -> setTextSize(1, 1);

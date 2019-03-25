@@ -3,9 +3,10 @@ body {
   height: 1920px;
   max-height: 1920px;
   max-width: 1080px;
-  background: #efefef;
+  background: #030303!important;
   margin: 0;
   padding: 0;
+  /* overflow-y: hidden; */
 }
 .TopBar {
   width: 100%;
@@ -36,8 +37,18 @@ body {
   padding-right: 5px;
 }
 .Wrapper {
-  margin: 200px auto;
+  margin-top: 100px;
   width: 80%;
+  height: 1770px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+.BottomWrapper {
+  height: 170px;
+  width: 80%;
+  position: fixed;
+  bottom: 0;
 }
 .Tiles {
   margin: 10px auto;
@@ -62,7 +73,27 @@ body {
   margin-top: 40px;
   color: #fff;
 }
+
+.Small_Tiles {
+  width: 45%;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.Small_Tiles img {
+  max-width: 100%;
+  height: auto;
+}
 /* Special */
+.Box {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #1c1c1c;
+  padding: 15px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
 .Blue {
   background: blue;
 }
@@ -71,6 +102,9 @@ body {
 }
 .Red {
   background: red;
+}
+.Warning {
+  border-color: red !important;
 }
 .Kiosk_Plate_Input {
   color: #3e3e3e;
@@ -83,11 +117,75 @@ body {
   text-align: center;
   padding-left: 60px;
   padding-bottom: 10px;
-  width: 750px;
   border: 5px solid #686868;
   border-radius: 15px;
   outline: none;
+  width: 100%;
   &::placeholder {
     color: #eee;
+  }
+}
+.Hide {
+  display: none;
+}
+.Title {
+  font-family: 'Segoe UI Light';
+  font-size: 30px;
+  padding-bottom: 20px;
+  text-align: center;
+  color: #f2f2f2;
+}
+.Button {
+  height: 70px;
+  width: 49%;
+  display: inline-block;
+  box-sizing: border-box;
+  border: 1px solid #efefef;
+  text-align: center;
+  color: #fff;
+  line-height: 70px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 3px;
+  margin-left: 0.7%;
+  cursor: pointer;
+  font-size: 30px;
+  font-family: 'Segoe UI Light';
+}
+.Radios {
+  width: 100%;
+  height: auto;
   display: block;
+  margin: 0 auto;
+  padding-left: 10px;
+}
+label img {
+  margin: 0 auto;
+  display: inline-block;
+  width: 245px;
+  height: auto;
+  padding: 2px;
+  box-sizing: border-box;
+  border-radius: 10px 10px 10px 10px;
+  border: 5px solid #efefef;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  background: #efefef;
+  z-index: 2;
+}
+.Label {
+  width: 250px;
+  display: inline-block;
+  color: #f6f6f6;
+  text-align: center;
+  font-size: 22px;
+  margin: 0 auto;
+  margin-left: 15px;
+}
+input[type="radio"] {
+  visibility: hidden;
+  padding: 0;
+}
+input[type="radio"]:checked + label img {
+  border-color: green !important;
 }

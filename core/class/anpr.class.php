@@ -11,7 +11,9 @@
     function ANPR_Search($key) {
       global $_CONFIG;
       $this->user = new User;
+      $this->pm = new PM;
       if($this->user->userInfo("anpr") > 0) {
+        $campus = $this->user->userInfo("campus");
         $string = '%'.$key.'%';
         $html = '';
         $this->mssql = new MSSQL;
@@ -39,9 +41,9 @@
             $html .= '<tbody>';
             foreach($result as $row) {
               if($this->user->userInfo("campus") == 1) {
-                $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $row['Patch']);
+                $patch = str_replace("D:\ETP ANPR\images", $this->pm->PM_SiteInfo($campus, 'site_anpr_img'), $row['Patch']);
               } else if($this->user->userInfo("campus") == 2) {
-                $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
+                $patch = str_replace("D:\ETP ANPR\images", $this->pm->PM_SiteInfo($campus, 'site_anpr_img'), $row['Patch']);
               } else if ($this->user->userInfo("campus") == 0) {
                 $patch = "";
               }
@@ -65,6 +67,7 @@
       }
       $this->user = null;
       $this->mssql = null;
+      $this->pm = null;
     }
     //Delete ANPR (Duplicate)
     function ANPR_Duplicate($key) {

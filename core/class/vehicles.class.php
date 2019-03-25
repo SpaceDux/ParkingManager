@@ -526,22 +526,23 @@
     }
     //Yard Check ANPR
     function yardCheckANPR() {
-      global $_CONFIG;
       $this->mssql = new MSSQL;
       $this->user = new User;
+      $this->pm = new PM;
       $html = "";
 
       $query = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
       $query->execute();
       $result = $query->fetchAll();
 
+      $campus = $this->user->userInfo("campus");
 
       foreach ($result as $row) {
         //Get The right Path now.
         if($this->user->userInfo("campus") == 1) {
-          $patch = str_replace("D:\ETP ANPR\images", $_CONFIG['anpr_holyhead']['imgdir'], $row['Patch']);
+          $patch = str_replace("D:\ETP ANPR\images", $this->pm->PM_SiteInfo($campus, 'site_anpr_img'), $row['Patch']);
         } else if($this->user->userInfo("campus") == 2) {
-          $patch = str_replace("F:\ETP ANPR\images", $_CONFIG['anpr_cannock']['imgdir'], $row['Patch']);
+          $patch = str_replace("F:\ETP ANPR\images", $this->pm->PM_SiteInfo($campus, 'site_anpr_img'), $row['Patch']);
         } else if ($this->user->userInfo("campus") == 0) {
           $patch = "";
         }

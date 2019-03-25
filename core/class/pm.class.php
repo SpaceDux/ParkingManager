@@ -116,7 +116,9 @@
       $nav .=    '<li onClick="ANPR_Barrier(1)" title="Toggle Entry Barrier"><i class="fa fa-arrow-right"></i></li>';
       $nav .=    '<li onClick="ANPR_Barrier(0)" title="Toggle Exit Barrier"><i class="fa fa-arrow-left"></i></li>';
       $nav .=    '<li onClick="ANPR_Exit_Log()" title="Exit History Log"><i class="fa fa-list-ul"></i></li>';
+      if($this->user->userInfo("rank") > 1) {
       $nav .=    '<li onClick="PM_SwitchSite()" title="Switch Site"><i class="fa fa-recycle"></i> '.$this->pm->PM_SiteInfo($site, "site_name").'</li>';
+      }
       $nav .=  '</ul>';
       $nav .='</nav>';
 
