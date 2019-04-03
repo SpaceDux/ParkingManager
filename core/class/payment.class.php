@@ -42,6 +42,7 @@
         $html .= '<td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
                     <button type="button" onClick="Reprint_Ticket('.$row['id'].')" class="btn btn-danger"><i class="fa fa-print"></i></button>
                     <button type="button" onClick="Payment_Delete('.$row['id'].')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                    <button type="button" onClick="Payment_Update('.$row['id'].')" class="btn btn-danger"><i class="fa fa-cog"></i></button>
                     </div>
                   </td>';
         $html .= '<tr>';
@@ -1220,7 +1221,7 @@
       $stat = '';
       $html2 = '';
 
-      if($price_filter != "0.00") {
+      if($price_filter != "0.00" OR "") {
         $query = $this->mysql->dbc->prepare("SELECT id, payment_company_name, payment_anprkey, payment_vehicle_plate, payment_service_name, payment_type, payment_price_gross, payment_price_net, payment_date, payment_ref, payment_account_id, payment_author, payment_deleted, payment_deleted_comment FROM pm_payments WHERE payment_campus = ? AND payment_price_gross = ? AND payment_date BETWEEN ? AND ? ORDER BY payment_date, payment_type DESC");
         $query->bindParam(1, $campus);
         $query->bindParam(2, $price_filter);
@@ -1576,6 +1577,35 @@
       $this->mysql = null;
       $this->user = null;
       $this->campus = null;
+    }
+    // Update Payment
+    function Payment_Upate_GET($id) {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE id = ?");
+      $stmt->bindParam(1, $id);
+      if($stmt->execute()) {
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        echo json_encode($result);
+      } else {
+        echo "0";
+      }
+
+      $this->mysql = null;
+    }
+    function Payment_Upate_POST($id, $date) {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_payments SET payment_date = ? WHERE id = ?");
+      $stmt->bindParam(1, $date);
+      $stmt->bindParam(2, $id);
+      if($stmt->execute()) {
+        echo "1";
+      } else {
+        echo "0";
+      }
+
+      $this->mysql = null;
     }
   }
 ?>

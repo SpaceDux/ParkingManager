@@ -168,6 +168,7 @@
     }
     //Toggle Exit Barrier via keypad
     function Barrier_Controller($site, $barrier) {
+      $this->pm = new PM;
       if($barrier == "EN") {
         $barrier = $this->pm->PM_SiteInfo($site, "site_barrier_in");
       } else if ($barrier == "EX") {
@@ -181,6 +182,7 @@
         echo 'Error:' . curl_error($ch);
       }
       curl_close($ch);
+      $this->pm = null;
     }
     //ANPR Images
     function ANPR_GetImage($id) {

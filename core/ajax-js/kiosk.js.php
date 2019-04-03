@@ -23,6 +23,18 @@ $(document).on('click', '#Cancel_Parking_S4_EN', function() {
   $('#Stage4_EN').addClass("Hide");
   $('#Language_Select').removeClass("Hide");
 });
+$(document).on('click', '#Cancel_Parking_S5_EN', function() {
+  $('#Parking_Form_EN')[0].reset();
+  $('#Parking_Page_EN').addClass("Hide");
+  $('#Stage5_EN').addClass("Hide");
+  $('#Language_Select').removeClass("Hide");
+});
+$(document).on('click', '#Cancel_Parking_S6_EN', function() {
+  $('#Parking_Form_EN')[0].reset();
+  $('#Parking_Page_EN').addClass("Hide");
+  $('#Stage6_EN').addClass("Hide");
+  $('#Language_Select').removeClass("Hide");
+});
 
 //Parking Page NEXT
 $(document).on('click', '#Next_Parking_S1_EN', function() {
@@ -41,6 +53,18 @@ $(document).on('click', '#Next_Parking_S2_EN', function() {
 $(document).on('click', '#Next_Parking_S3_EN', function() {
   $('#Stage3_EN').addClass("Hide");
   $('#Stage4_EN').removeClass("Hide");
+});
+$(document).on('click', '#Next_Parking_S4_EN', function() {
+  $('#Stage4_EN').addClass("Hide");
+  $('#Stage5_EN').removeClass("Hide");
+});
+$(document).on('click', '#Next_Parking_S5_EN', function() {
+  $('#Stage5_EN').addClass("Hide");
+  $('#Stage6_EN').removeClass("Hide");
+});
+$(document).on('click', '#Next_Parking_S6_EN', function() {
+  $('#Stage5_EN').addClass("Hide");
+  $('#Stage6_EN').removeClass("Hide");
 });
 
 //Time
@@ -75,16 +99,48 @@ $(document).on('click', '#Exchange_Tile_EN', function() {
 $('#Parking_Form_EN').on('submit', function() {
   event.preventDefault();
 });
+// }
+
+// Functions {
+
+$('#Kiosk_Plate').on('focus', function() {
+  var Plate = $(this).val();
+  if(Plate.length >= 4) {
+    // $('#Kiosk_Search_Results').html('<img src="<?php echo URL?>/assets/img/loading.gif" style="margin-left: 40%;align: middle;max-width: 20%; max-height: 20%;"></img>');
+    $.ajax({
+      url: '<?php echo URL ?>/core/ajax/kiosk.ajax.php?handler=Kiosk_Plate_Search',
+      method: "POST",
+      data: {Plate:Plate},
+      dataType: "json",
+      success:function(result) {
+        if(result.Type == "ANPR") {
+          var Plate = result.Plate;
+          $('#Kiosk_PM_Key').val("");
+          $('#Kiosk_ANPR_Key').val(result.Uniqueref);
+
+          $('#Kiosk_Search_Results').html('<h1>Success!</h1><p>We have found your vehicle <u><b>'+Plate+'</b></u><br>Press NEXT too continue.');
+        } else if (result.Type == "PM") {
+          var Plate = result.Plate;
+          $('#Kiosk_ANPR_Key').val("");
+          $('#Kiosk_PM_Key').val(result.Uniqueref);
+          $('#Kiosk_Search_Results').html('<h1>Success!</h1><p>We have found your vehicle <u><b>'+Plate+'</b></u><br>Press NEXT too continue.');
+        }
+      }
+    })
+  } else if(Plate.length < 4) {
+    $('#Kiosk_Search_Results').html('');
+  }
+});
 
 // }
 
 //TextBoxes {
 $('#Kiosk_Plate').keyboard({
 	layout:[
-		[['1','1'],['2','2'],['3','3'],['4','4'],['5','5'],['6','6'],['7', '7'],['8','8'],['9','9'],['0','0']],
-		[['A','A'],['B','B'],['C','C'],['D','D'],['E','E'],['F','F'],['G','G'],['H','H'],['I','I'],['J','J']],
-		[['K','K'],['L','L'],['M','M'],['N','N'],['O','O'],['P','P'],['Q','Q'],['R','R'],['S','S'],['T','T']],
-		[['U','U'],['V','V'],['W','W'],['X','X'],['Y','Y'],['Z','Z'],['del', 'DEL']]
+		[['1','1'],['2','2'],['3','3'],['4','4'],['5','5'],['6','6'],['7', '7'],['8','8'],['9','9'],['0','0'],['del','DEL']],
+		[['Q','Q'], ['W','W'], ['E','E'],['R','R'],['T','T'],['Y','Y'],['U','U'],['I','I'],['O','O'],['P','P']],
+		[['A','A'],['S','S'],['D','D'],['F','F'],['G','G'],['H','H'],['J','J'],['K','K'],['L','L']],
+		[['Z','Z'],['X','X'],['C','C'],['V','V'],['B','B'],['N','N'],['M', 'M']]
 	]
 });
 // } end of Textboxes

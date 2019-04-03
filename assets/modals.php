@@ -962,6 +962,29 @@
     </div>
   </div>
 </div>
+<!-- Payment Update Modal -->
+<div class="modal fade" id="Payment_UpdateModal" tabindex="-1" role="dialog" aria-labelledby="Payment_Update" aria-hidden="true">
+  <div class="modal-dialog modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ANPR_Exit_Log">Update Payment</h5>
+      </div>
+      <div class="modal-body">
+        <form id="Payment_Update_Form">
+          <div class="form-group">
+            <input type="hidden" name="Payment_Update_ID" id="Payment_Update_ID">
+            <label for="Payment_DateTime">Change the time of payment</label>
+            <input type="text" class="form-control form-control-lg" name="Payment_Update_DateTime" id="Payment_Update_DateTime">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="Payment_Update_Save" data-dismiss="modal">Save Changes <i class="fa fa-save"></i></button>
+        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Warning Modal -->
 <div class="modal fade" id="WarningModal" tabindex="-1" role="dialog" aria-labelledby="WarningModal" aria-hidden="true">
   <div class="modal-dialog modal-md" role="document">

@@ -1095,8 +1095,8 @@
           $line_5 = $this->Printer_Columns("Cab Parking + Meal - £18", $£18CashCAB, 30, 10, 4);
           $line_6 = $this->Printer_Columns("C/T Parking - £18", $£18Cash, 30, 10, 4);
           $line_7 = $this->Printer_Columns("C/T Parking + Meal - £24", $£24Cash, 30, 10, 4);
-          $line_SEP = $this->Printer_Columns("C/T SEP - £24", $£24CardSEP, 30, 10, 4);
-          $line_SEP2 = $this->Printer_Columns("C/T SEP + MEAL - £30", $£30CardSEP, 30, 10, 4);
+          $line_SEP = $this->Printer_Columns("C/T SEP - £24", $£24CashSEP, 30, 10, 4);
+          $line_SEP2 = $this->Printer_Columns("C/T SEP + MEAL - £30", $£30CashSEP, 30, 10, 4);
           $line_8 = $this->Printer_Columns("Hi-Sec / OS - £24", $£24CashHSO, 30, 10, 4);
           $line_9 = $this->Printer_Columns("Hi-Sec / OS + Meal - £30", $£30CashHSO, 30, 10, 4);
           $line_10 = $this->Printer_Columns("CTR - £22", $£22CashCTR, 30, 10, 4);

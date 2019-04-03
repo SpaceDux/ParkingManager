@@ -189,7 +189,7 @@
         ->setTitle("ParkingManager Account Report")
         ->setSubject("Account - $date1 | $date2")
         ->setDescription("Account transaction and parking history")
-        ->setKeywords("parking manager 3 2018 2019 account reports")
+        ->setKeywords("parking manager 3 2019 account reports")
         ->setCategory("Accounting");
         //header information.
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -234,8 +234,6 @@
         $spreadsheet->getActiveSheet()->getStyle('A'.$rows.':D'.$rows)->getFont()->getColor()->setARGB('FFFFFF');
         $sheet->setCellValue('A'.$rows, 'Service');
         $sheet->setCellValue('B'.$rows, 'No. Transactions');
-        $sheet->setCellValue('C'.$rows, 'Gross Price');
-        $sheet->setCellValue('D'.$rows, 'Net Price');
         $rows++;
         $query = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_type = 3 AND payment_account_id = ? AND payment_deleted = 0 AND payment_campus = ? AND payment_date BETWEEN ? AND ? GROUP BY payment_service_id ORDER BY payment_price_gross ASC");
         $query->bindParam(1, $account);
@@ -250,8 +248,6 @@
           $gross = $this->payment->Payment_ServiceInfo($key, "service_price_gross") * $count;
           $sheet->setCellValue('A'.$rows, $this->payment->Payment_ServiceInfo($key, "service_name"));
           $sheet->setCellValue('B'.$rows, $count);
-          $sheet->setCellValue('C'.$rows, '£'.number_format($gross, 2));
-          $sheet->setCellValue('D'.$rows, '£'.number_format($net, 2));
           $rows++;
         }
         $rows = $rows + 3;
@@ -400,8 +396,6 @@
         $spreadsheet->getActiveSheet()->getStyle('A'.$rows.':G'.$rows)->getFont()->getColor()->setARGB('FFFFFF');
         $sheet->setCellValue('A'.$rows, 'Total Parked: '.$totalParked);
         $sheet->setCellValue('B'.$rows, 'Total Transactions: '.$totalTransactions);
-        $sheet->setCellValue('F'.$rows, 'Total Gross: £'.number_format($total_gross, 2));
-        $sheet->setCellValue('G'.$rows, 'Total Net: £'.number_format($total_net, 2));
 
         //End spreadsheets
         $writer = new Xlsx($spreadsheet);

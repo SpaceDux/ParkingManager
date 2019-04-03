@@ -188,4 +188,51 @@ input[type="radio"] {
 }
 input[type="radio"]:checked + label img {
   border-color: green !important;
+  background:
+     /* top, transparent red */
+     linear-gradient(
+       rgba(93, 255, 25, 0.45),
+       rgba(93, 255, 25, 0.45)
+     );
+}
+input[type="radio"]:disabled + label img {
+  background:
+     /* top, transparent red */
+     linear-gradient(
+       rgba(255, 0, 0, 0.45),
+       rgba(255, 0, 0, 0.45)
+     );
+  border-color: red !important;
+}
+.Services {
+  width: 100%;
+  display: block;
+  height: auto;
+}
+.Services input[type="radio"] {
+  display: block;
+}
+.Services input[type="radio"] + label {
+  color: #f6f6f6;
+  font-size: 22px;
+  margin: 0 auto;
+  border: 5px solid #efefef;
+  width: 80%;
+  text-align: center;
+  border-radius: 10px 10px 10px 10px;
+  box-sizing: border-box;
+  padding: 10px;
+  display: block;
+}
+.Services input[type="radio"]:checked + label {
+  border-color: green !important;
+  background: #efefef;
+  color: #0e0e0e;
+}
+.Results {
+  height: auto;
+  width: 100%;
+  margin: 20px auto;
+  text-align: center;
+  color: #f2f2f2;
 }

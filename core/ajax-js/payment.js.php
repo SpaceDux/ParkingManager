@@ -1,4 +1,34 @@
 <script type="text/javascript">
+
+  function Payment_Update(str) {
+    event.preventDefault();
+    $('#Payment_Update_ID').val(str);
+    $('#Payment_UpdateModal').modal('toggle');
+    var id = str;
+    $.ajax({
+      url: "<?php echo URL?>/core/ajax/payment.ajax.php?handler=Payment_Update_GET",
+      type: "POST",
+      data: {id:id},
+      dataType: "json",
+      success:function(data) {
+        $('#Payment_Update_Type').val(data.payment_type);
+        $('#Payment_Update_DateTime').val(data.payment_date);
+      }
+    })
+  }
+  $(document).on('click', '#Payment_Update_Save', function() {
+    event.preventDefault();
+    var Data = $('#Payment_Update_Form').serialize();
+    $.ajax({
+      url: "<?php echo URL?>/core/ajax/payment.ajax.php?handler=Payment_Update_POST",
+      type: "POST",
+      data: Data,
+      dataType: "json",
+      success:function() {
+        $('#Payment_UpdateModal').modal('toggle');
+      }
+    })
+  })
   //Payment Add Service
   $(document).on('click', '#Payment_Service_Save', function() {
     var Data = $("#Payment_Service_AddForm").serialize();
@@ -78,5 +108,5 @@
     var result = parseInt(value*100)/100;
     $('#Service_Price_Net_Update').val(result);
   });
-  
+
 </script>

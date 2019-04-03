@@ -2,9 +2,8 @@
   require(__DIR__."..\..\../global.php");
   $handler = isset($_GET['handler'])?$_GET['handler']:'';
 
-  if($handler == "Kiosk_ParkingPage") {
-    //Return the parking page with relevant information
-    $kiosk->GetParkingPage();
+  if($handler == "Kiosk_Plate_Search") {
+    $kiosk->Kiosk_Search($_POST['Plate']);
   }
 
 ?>

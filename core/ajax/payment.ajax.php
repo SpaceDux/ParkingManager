@@ -10,6 +10,10 @@
     $payment->Payment_Service_Update_Get($_POST['id']);
   } else if ($handler == "Payment_Service_Update") {
     $payment->Payment_Service_Update($_POST['Service_ID_Update'], $_POST['Service_Name_Update'], $_POST['Service_Ticket_Name_Update'], $_POST['Service_Price_Gross_Update'], $_POST['Service_Price_Net_Update'], $_POST['Service_Expiry_Update'], $_POST['Service_Cash_Update'], $_POST['Service_Card_Update'], $_POST['Service_Account_Update'], $_POST['Service_SNAP_Update'], $_POST['Service_Fuel_Update'], $_POST['Service_Campus_Update'], $_POST['Service_Vehicles_Update'], $_POST['Service_Meal_Amount_Update'], $_POST['Service_Shower_Amount_Update'], $_POST['Service_Group_Update'], $_POST['Service_ETPID_Update'], $_POST['Service_Active_Update'], $_POST['Service_WiFi_Amount_Update'], $_POST['Service_Discount_Amount_Update']);
+  } else if($handler == "Payment_Update_GET") {
+    $payment->Payment_Upate_GET($_POST['id']);
+  } else if($handler == "Payment_Update_POST") {
+    $payment->Payment_Upate_POST($_POST['Payment_Update_ID'], $_POST['Payment_Update_DateTime']);
   }
 
 ?>
