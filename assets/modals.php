@@ -967,21 +967,21 @@
   <div class="modal-dialog modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="ANPR_Exit_Log">Update Payment</h5>
+        <h5 class="modal-title">Update Payment</h5>
       </div>
-      <div class="modal-body">
-        <form id="Payment_Update_Form">
-          <div class="form-group">
-            <input type="hidden" name="Payment_Update_ID" id="Payment_Update_ID">
-            <label for="Payment_DateTime">Change the time of payment</label>
-            <input type="text" class="form-control form-control-lg" name="Payment_Update_DateTime" id="Payment_Update_DateTime">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="Payment_Update_Save" data-dismiss="modal">Save Changes <i class="fa fa-save"></i></button>
-        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
-      </div>
+      <form id="Payment_Update_Form">
+        <div class="modal-body">
+            <div class="form-group">
+              <input type="hidden" name="Payment_Update_ID" id="Payment_Update_ID">
+              <label for="Payment_DateTime">Change the time of payment</label>
+              <input type="text" class="form-control form-control-lg" name="Payment_Update_DateTime" id="Payment_Update_DateTime">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-primary" id="Payment_Update_Save" data-dismiss="modal" value="Save Changes">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

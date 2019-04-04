@@ -17,7 +17,6 @@
     })
   }
   $(document).on('click', '#Payment_Update_Save', function() {
-    event.preventDefault();
     var Data = $('#Payment_Update_Form').serialize();
     $.ajax({
       url: "<?php echo URL?>/core/ajax/payment.ajax.php?handler=Payment_Update_POST",
@@ -28,6 +27,8 @@
         $('#Payment_UpdateModal').modal('toggle');
       }
     })
+    event.preventDefault();
+    return false;
   })
   //Payment Add Service
   $(document).on('click', '#Payment_Service_Save', function() {
