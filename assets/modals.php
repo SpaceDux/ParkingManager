@@ -1003,3 +1003,21 @@
     </div>
   </div>
 </div>
+<!-- Warning Modal -->
+<div class="modal fade" id="DuplicateModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="DuplicateModal" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content bg-danger" style="border: inherit;">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title">Warning: Duplicate Detected!</h5>
+      </div>
+      <div class="modal-body">
+        <div id="WarningInfo">
+          ParkingManager has detected this is a duplicate, <br><br>Please return to the ParkingManager Dashboard and deal with the vehicle record before processing a new one.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="<?php echo URL?>/" class="btn btn-primary">Go Back</a>
+      </div>
+    </div>
+  </div>
+</div>

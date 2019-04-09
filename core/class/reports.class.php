@@ -7,6 +7,7 @@
   {
     //Account payment reports
     function Account_Report($account, $dateStart, $dateEnd) {
+      global $_CONFIG;
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->vehicle = new Vehicles;
@@ -40,6 +41,7 @@
                       <th scope="col">Time DEPARTURE</th>
                       <th scope="col">Payment Ref</th>
                       <th scope="col">Time Stayed</th>
+                      <th scope="col"><i class="fa fa-cog"></i></th>
                     </tr>
                   </thead>
                 <tbody>';
@@ -103,6 +105,7 @@
           $html .= '<td>'.$timeout.'</td>';
           $html .= '<td>'.$row['payment_ref'].'</td>';
           $html .= '<td>'.$h.' hours & '.$int->format('%i').' minutes</td>';
+          $html .= '<td><a href="'.$_CONFIG['pm']['url']."/update/".$row['id'].'" target="_blank" class="btn btn-danger"><i class="fa fa-cog"></i></a></td>';
           $html .= '</tr>';
           $query3 = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0 AND payment_type = 3 AND payment_date BETWEEN ? AND ? ORDER BY payment_date ASC");
           $query3->bindParam(1, $key2);

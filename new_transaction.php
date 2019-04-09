@@ -42,11 +42,6 @@
           <!-- <form action="new_transaction.php" method="post"> -->
             <div class="row">
                <div class="col-md-5">
-                 <?php if($vehicles->Vehicle_IsDup($anpr_rec['Plate']) == TRUE) {
-                   echo '<div class="alert alert-danger" role="alert"><b>DUPLICATE DETECTED!</b> ParkingManager has detected that this vehicle already has a parking record..</div>';
-                 } else {
-                   //Nothing
-                 } ?>
                  <div class="form-group">
                    <label for="NT_Vehicle_Plate">Vehicle Registration</label>
                    <input type="text" class="form-control" name="NT_Vehicle_Plate" id="NT_Vehicle_Plate" placeholder="Vehicle Registration" value="<?php echo $anpr_rec['Plate']?>" style="text-transform: uppercase;" readonly>
@@ -370,5 +365,8 @@
     <script src="<?php echo URL?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URL?>/assets/js/mousetrap.min.js"></script>
     <?php require(__DIR__."/assets/require.php");?>
+    <?php if($vehicles->Vehicle_IsDup($anpr_rec['Plate']) == TRUE) { ?>
+      <script type="text/javascript"> $('#DuplicateModal').modal('show'); </script>
+    <?php } else {} ?>
   </body>
 </html>

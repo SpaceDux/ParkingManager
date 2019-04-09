@@ -72,7 +72,49 @@
       $this->user = null;
       $this->pm = null;
     }
-    //Keypad Exit
+    //Function for vehicles stuck at the barrier.
+    function Operation_Stuck() {
+      $this->mssql = new MSSQL;
+      $this->mysql = new MySQL;
+      $this->anpr = new ANPR;
 
+      $stmt = $this->mssql->dbc->prepare("SELECT TOP 1 * FROM ANPR_REX WHERE Lane_ID = 2 ORDER BY Capture_Date DESC");
+      $stmt->execute();
+      $result = $stmt->fetchAll();
+      foreach($result as $row) {
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_exit_log WHERE exit_anpr_key = ?");
+        $stmt->bindParam(1, $row['Uniqueref']);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if(count($result) > 0) {
+          echo "TRUE";
+        } else {
+          $plate = $row['Plate'];
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_plate = ? ORDER BY parked_timeout DESC");
+          $stmt->bindParam(1, $plate);
+          $stmt->execute();
+          $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+          $id = $result['id'];
+          $time = $row['Capture_Date'];
+          $ref = $row['Uniqueref'];
+          $campus = $result['parked_campus'];
+
+          $stmt2 = $this->mysql->dbc->prepare("INSERT INTO pm_exit_log (exit_id, exit_time, exit_anpr_key, exit_site) VALUES ('', ?, ?, ?, ?)");
+          $stmt2->bindParam(1, $id);
+          $stmt2->bindParam(2, $time);
+          $stmt2->bindParam(3, $ref);
+          $stmt2->bindParam(4, $campus);
+          $stmt2->execute();
+
+          $this->anpr->Barrier_Controller($campus, "EX");
+          echo "Successfully Re-Exitted";
+        }
+      }
+
+      $this->mssql = null;
+      $this->mysql = null;
+      $this->anpr = null;
+    }
   }
 ?>

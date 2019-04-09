@@ -21,20 +21,20 @@
       return implode($allLines, "\n") . "\n";
     }
     //Determine Ticket
-    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count) {
+    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count, $acc_id, $printed) {
       if($group == 1) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed);
       } else if ($group == 2) {
         $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type);
       } else if ($group == 3) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed);
       } else if ($group == 4) {
         $this->Printer_Misc($shower_count, $wifi_count, $tid);
       }
     }
     //Begin Tickets
     //Print parking ticket
-    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count) {
+    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed) {
       $this->user = new User;
       $this->pm = new PM;
       $campus = $this->user->userInfo("campus");
@@ -43,7 +43,7 @@
       $vat_rate = "20";
       $vat_pay = ($gross - $net);
       $vatnum = $this->pm->PM_SiteInfo($campus, "site_vat");
-      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/assets/img/printer/".$campus;
       //Printer connection
       $connector = new WindowsPrintConnector('smb://'.$this->pm->PM_PrinterInfo($printer_id, "printer_user").':'.$this->pm->PM_PrinterInfo($printer_id, "printer_pass").'@'.$this->pm->PM_PrinterInfo($printer_id, "printer_ip").'/'.$this->pm->PM_PrinterInfo($printer_id, "printer_sharedname").'');
       $printer = new Printer($connector);
@@ -130,60 +130,66 @@
         $printer -> feed(1);
         //End Parking ticket
         $printer -> cut(Printer::CUT_PARTIAL);
-        $i = 1;
-        //Shower
-        while ($i++ <= $shower_count) {
-          //Shower Ticket
-          $printer -> setJustification(Printer::JUSTIFY_CENTER);
-    			if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
-    				$printer -> graphics($shower_img);
-    			} else {
-    				$printer -> bitImage($shower_img);
-    			}
-          $printer -> text("\n".$line_info);
-          $printer -> feed();
-          //End Ticket
-          $printer -> cut(Printer::CUT_PARTIAL);
-        }
-        $i = 1;
-        //Meal
-        while ($i++ <= $meal_count) {
-          //Meal Ticket
-          $printer -> setJustification(Printer::JUSTIFY_CENTER);
-    			if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
-    				$printer -> graphics($meal_img);
-    			} else {
-    				$printer -> bitImage($meal_img);
-    			}
-          $printer -> text("\n".$line_info);
-          //End Ticket
-          $printer -> cut(Printer::CUT_PARTIAL);
-    			if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
-    				$printer -> graphics($meal_img);
-    			} else {
-    				$printer -> bitImage($meal_img);
-    			}
-          $printer -> text("\n".$line_info);
-          $printer->selectPrintMode();
-          //End Ticket
-          $printer -> cut(Printer::CUT_PARTIAL);
-        }
-        $i = 1;
-        //Discount
-        while ($i++ <= $discount_count) {
-          //Meal Ticket
-          $printer -> setJustification(Printer::JUSTIFY_CENTER);
-    			if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
-    				$printer -> graphics($discount_img);
-    			} else {
-    				$printer -> bitImage($discount_img);
-    			}
-          $printer -> text("\n".$line_info);
-          $printer -> text("\n MINIMUM SPEND £3");
-          $printer -> feed();
-          $printer->selectPrintMode();
-          //End Ticket
-          $printer -> cut(Printer::CUT_PARTIAL);
+        if($printed < 1) {
+          $i = 1;
+          //Shower
+          while ($i++ <= $shower_count) {
+            //Shower Ticket
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+      			if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
+      				$printer -> graphics($shower_img);
+      			} else {
+      				$printer -> bitImage($shower_img);
+      			}
+            $printer -> text("\n".$line_info);
+            $printer -> feed();
+            //End Ticket
+            $printer -> cut(Printer::CUT_PARTIAL);
+          }
+          $i = 1;
+          //Meal
+          while ($i++ <= $meal_count) {
+            //Meal Ticket
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+      			if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
+      				$printer -> graphics($meal_img);
+      			} else {
+      				$printer -> bitImage($meal_img);
+      			}
+            $printer -> text("\n".$line_info);
+            //End Ticket
+            $printer -> cut(Printer::CUT_PARTIAL);
+      			if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
+      				$printer -> graphics($meal_img);
+      			} else {
+      				$printer -> bitImage($meal_img);
+      			}
+            $printer -> text("\n".$line_info);
+            $printer->selectPrintMode();
+            //End Ticket
+            $printer -> cut(Printer::CUT_PARTIAL);
+          }
+          $i = 1;
+          //Discount
+          while ($i++ <= $discount_count) {
+            if($acc_id == '2' OR $acc_id == '7') {
+              //Do nothing
+            } else {
+              //Meal Ticket
+              $printer -> setJustification(Printer::JUSTIFY_CENTER);
+              if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
+                $printer -> graphics($discount_img);
+              } else {
+                $printer -> bitImage($discount_img);
+              }
+              $printer -> text("\n".$line_info);
+              $printer -> text("\n MINIMUM SPEND £3");
+              $printer -> feed();
+              $printer->selectPrintMode();
+              //End Ticket
+              $printer -> cut(Printer::CUT_PARTIAL);
+            }
+          }
         }
       } finally {
         $printer -> close();
@@ -902,7 +908,7 @@
               } else if ($row['payment_price_gross'] == '12.00' AND $row['payment_vehicle_type'] == 2) {
                 // Cab Parking
                 $£12CardCAB++;
-              } else if ($row['payment_price_gross'] == '24.00' AND $row['payment_vehicle_type'] == 2) {
+              } else if ($row['payment_price_gross'] == '24.00' AND $row['payment_vehicle_type'] == 2 AND $row['payment_service_id'] != '119') {
                 $£12CardCAB+=2;
               } else if ($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
                 $£12CardCAB+=3;
@@ -968,7 +974,7 @@
               } else if ($row['payment_price_gross'] == '12.00' AND $row['payment_vehicle_type'] == 2) {
                 // Cab Parking
                 $£12AccCAB++;
-              } else if ($row['payment_price_gross'] == '24.00' AND $row['payment_vehicle_type'] == 2) {
+              } else if ($row['payment_price_gross'] == '24.00' AND $row['payment_vehicle_type'] == 2 AND $row['payment_service_id'] != '119') {
                 $£12AccCAB+=2;
               } else if ($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
                 $£12AccCAB+=3;
@@ -1034,7 +1040,7 @@
               } else if ($row['payment_price_gross'] == '12.00' AND $row['payment_vehicle_type'] == 2) {
                 // Cab Parking
                 $£12ETPCAB++;
-              } else if ($row['payment_price_gross'] == '24.00' AND $row['payment_vehicle_type'] == 2) {
+              } else if ($row['payment_price_gross'] == '24.00' AND $row['payment_vehicle_type'] == 2 AND $row['payment_service_id'] != '119') {
                 $£12ETPCAB+=2;
               } else if ($row['payment_price_gross'] == '36.00' AND $row['payment_vehicle_type'] == 2) {
                 $£12ETPCAB+=3;
@@ -1045,9 +1051,9 @@
               } else if ($row['payment_price_gross'] == '54.00' AND $row['payment_vehicle_type'] == 2) {
                 $£18ETPCAB+=3;
               } else if ($row['payment_price_gross'] == '24.00' AND $row['payment_vehicle_type'] == 2 AND $row['payment_service_id'] == '119') {
-                $£24CashSEP++;
+                $£24ETPSEP++;
               } else if ($row['payment_price_gross'] == '30.00' AND $row['payment_vehicle_type'] == 2) {
-                $£30CashSEP++;
+                $£30ETPSEP++;
               } else if ($row['payment_price_gross'] == '18.00' AND $row['payment_vehicle_type'] != 2) {
                 //All other vehicles
                 $£18ETP++;
@@ -1210,6 +1216,29 @@
       $this->user = null;
       $this->pm = null;
       $this->payment = null;
+    }
+    //Set Printed
+    function Printed($id, $amount) {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_tickets SET ticket_printed = ? WHERE ticket_tid = ?");
+      $stmt->bindParam(1, $amount);
+      $stmt->bindParam(2, $id);
+      $stmt->execute();
+
+      $this->mysql = null;
+    }
+    function Ticket_Info($id, $what) {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_tickets WHERE ticket_tid = ?");
+      $stmt->bindParam(1, $id);
+      $stmt->execute();
+      $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      return $res[$what];
+
+      $this->mysql = null;
     }
   }
 ?>

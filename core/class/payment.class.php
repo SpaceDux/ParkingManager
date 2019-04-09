@@ -552,6 +552,7 @@
       $tid = $this->PaymentInfo($plate, "id");
       $type = $this->PaymentInfo($plate, "payment_type");
       $net = $this->PaymentInfo($plate, "payment_price_net");
+      $acc_id = $this->PaymentInfo($plate, "payment_account_id");
       $meal_count = $this->Payment_ServiceInfo($service, "service_meal_amount");
       $shower_count = $this->Payment_ServiceInfo($service, "service_shower_amount");
       $discount_count = $this->Payment_ServiceInfo($service, "service_discount_amount");
@@ -573,7 +574,9 @@
         $payment_type = "Fuel Card";
       }
       //Finally, print ticket
-      $this->ticket->Direction($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count);
+      $this->ticket->Direction($ticket_name, $gross, $net, $company, $plate, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count, $acc_id, "0");
+
+      $this->ticket->Printed($tid, "1");
       //die("PRINTED?");
       $this->user = null;
       $this->pm = null;
@@ -1479,8 +1482,10 @@
         $Company = $this->PaymentInfo($pay_id, "payment_company_name");
         $price_gross = $this->PaymentInfo($pay_id, "payment_price_gross");
         $price_net = $this->PaymentInfo($pay_id, "payment_price_net");
+        $acc_id = $this->PaymentInfo($pay_id, "payment_account_id");
         $date = $Ticket_Result['ticket_date'];
         $expiry = $Ticket_Result['ticket_expiry'];
+        $printed = $Ticket_Result['ticket_printed'];
         $shower_count = $this->Payment_ServiceInfo($service_id, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($service_id, "service_meal_amount");
         $ticket_name = $this->Payment_ServiceInfo($service_id, "service_ticket_name");
@@ -1499,7 +1504,11 @@
         } else if ($paid == 5) {
           $payment_type = "Fuel Card";
         }
-        $this->ticket->Direction($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count);
+        $this->ticket->Direction($ticket_name, $price_gross, $price_net, $Company, $Plate, $pay_id, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count, $acc_id, $printed);
+
+        $new_am = $printed + 1;
+
+        $this->ticket->Printed($pay_id, $new_am);
 
       }
 
