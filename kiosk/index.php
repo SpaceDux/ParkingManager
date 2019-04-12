@@ -1,13 +1,18 @@
 <?php
   require("..\global.php");
+  require("config.php");
+  if(!isset($_SESSION['id'])) {
+    $user->Login($user_config['User'], $user_config['Pass']);
+  }
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title>KIOSK</title>
-    <link rel="stylesheet" href="<?php echo URL?>/kiosk/style.css">
-    <link rel="stylesheet" href="<?php echo URL?>/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo URL ?>/kiosk/style.css">
+    <link rel="stylesheet" href="<?php echo URL ?>/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo URL ?>/assets/css/normalize.css">
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="<?php echo URL ?>/assets/css/jqbtk.min.css">
   </head>
@@ -32,11 +37,11 @@
           <img src="<?php echo URL ?>/kiosk/english.png" alt="">
         </div>
       </div>
-      <div class="Small_Tiles" id="Polish">
+      <!-- <div class="Small_Tiles" id="Polish">
         <div class="Box">
           <img src="<?php echo URL ?>/kiosk/polish.png" alt="">
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- English -->
     <div class="Wrapper Hide" id="Tiles_EN">
@@ -44,14 +49,14 @@
         <img src="<?php echo URL?>/kiosk/parking_icon.png" alt="">
         <p>Pay for your HGV Parking here, with Cash, Card, SNAP & Fuel Cards + RK Accounts</p>
       </div>
-      <div class="Tiles Green" id="Wash_Tile_EN">
+      <!-- <div class="Tiles Green" id="Wash_Tile_EN">
         <img src="<?php echo URL?>/kiosk/truckwash_icon.png" alt="">
         <p>Purchase your truckwash tokens from this machine, we accept, Cash, Card & Fuel Cards.</p>
       </div>
       <div class="Tiles Red" id="Exchange_Tile_EN">
         <img src="<?php echo URL?>/kiosk/change_convert.png" alt="">
         <p>Convert your sterling *£* notes to coins for our Coin Op laundrette.</p>
-      </div>
+      </div> -->
     </div>
     <div id="Page_EN">
       <div class="Wrapper Hide" id="Parking_Page_EN">
@@ -72,12 +77,9 @@
               <div class="Title">
               Please enter your vehicle registration...
               </div>
-              <input type="text" name="Kiosk_Plate_Search" id="Kiosk_Plate" class="keyboard Kiosk_Plate_Input" maxlength="16" placeholder="YOUR REG" autocomplete="off"/>
-              <input type="hidden" name="Kiosk_ANPR_Key" id="Kiosk_ANPR_Key">
-              <input type="hidden" name="Kiosk_PM_Key" id="Kiosk_PM_Key">
-              <div class="Results" id="Kiosk_Search_Results">
-
-              </div>
+              <input type="text" name="Kiosk_Plate" id="Kiosk_Plate" class="keyboard Kiosk_Plate_Input" maxlength="16" placeholder="YOUR REG" autocomplete="off"/>
+              <input type="hidden" name="Kiosk_System" id="Kiosk_System" autocomplete="off"/>
+              <input type="hidden" name="Kiosk_ID" id="Kiosk_ID" autocomplete="off"/>
             </div>
             <!-- Buttons -->
             <div class="BottomWrapper">
@@ -99,7 +101,7 @@
           <div id="Stage2_EN" class="Hide">
             <div class="Box">
               <div class="Title">
-              Please choose the type of vehicle you're paying for...
+                Please choose the type of vehicle you're paying for...
               </div>
               <div class="Radios">
                 <div class="Label">
@@ -129,7 +131,7 @@
                 </div>
                 <div class="Label">
                   Car Transporter
-                  <input type="radio" class="RadioButton" name="Kiosk_Type" id="CTR" value="7">
+                  <input type="radio" class="RadioButton" name="Kiosk_Type" id="CTR" value="8">
                   <label for="CTR"><img src="<?php echo URL ?>/kiosk/ctr.png"></img></label>
                 </div>
               </div>
@@ -157,15 +159,15 @@
                 How long would you like to park for?...
               </div>
               <div class="Services">
-                <input type="radio" name="Kiosk_Expiry" id="Kiosk_Expiry_1" value="1" checked>
+                <input type="radio" class="Kiosk_Expiry" name="Kiosk_Expiry" id="Kiosk_Expiry_1" value="24" checked>
                 <label for="Kiosk_Expiry_1">24hr Parking</label>
               </div>
               <div class="Services">
-                <input type="radio" name="Kiosk_Expiry" id="Kiosk_Expiry_2" value="2">
+                <input type="radio" class="Kiosk_Expiry" name="Kiosk_Expiry" id="Kiosk_Expiry_2" value="48">
                 <label for="Kiosk_Expiry_2">48hr Parking</label>
               </div>
               <div class="Services">
-                <input type="radio" name="Kiosk_Expiry" id="Kiosk_Expiry_3" value="3">
+                <input type="radio" class="Kiosk_Expiry" name="Kiosk_Expiry" id="Kiosk_Expiry_3" value="72">
                 <label for="Kiosk_Expiry_3">72hr Parking</label>
               </div>
             </div>
@@ -191,32 +193,8 @@
               <div class="Title">
                 How would you like to pay?...
               </div>
-              <div class="Radios">
-                <div class="Label">
-                  Cash
-                  <input type="radio" class="RadioButton" name="Kiosk_PayType" id="Cash" value="1" checked>
-                  <label for="Cash"><img src="<?php echo URL ?>/kiosk/cash.png"></img></label>
-                </div>
-                <div class="Label">
-                  Card
-                  <input type="radio" class="RadioButton" name="Kiosk_PayType" id="Card" value="2">
-                  <label for="Card"><img src="<?php echo URL ?>/kiosk/card.png"></img></label>
-                </div>
-                <div class="Label">
-                  RK Accounts
-                  <input type="radio" class="RadioButton" name="Kiosk_PayType" id="Account" value="3" disabled>
-                  <label for="Account"><img src="<?php echo URL ?>/kiosk/kingpay.png"></img></label>
-                </div>
-                <div class="Label">
-                  SNAP
-                  <input type="radio" class="RadioButton" name="Kiosk_PayType" id="SNAP" value="4" disabled>
-                  <label for="SNAP"><img src="<?php echo URL ?>/kiosk/snap.png"></img></label>
-                </div>
-                <div class="Label">
-                  Fuel Card
-                  <input type="radio" class="RadioButton" name="Kiosk_PayType" id="Fuel" value="5">
-                  <label for="Fuel"><img src="<?php echo URL ?>/kiosk/fuelcard.png"></img></label>
-                </div>
+              <div id="Payment_Types_EN">
+
               </div>
             </div>
             <!-- Buttons -->
@@ -240,13 +218,15 @@
               <div class="Title">
                 Please choose one of the following services...
               </div>
-              <div class="Services">
+              <div id="Payment_Services_EN">
+              <!-- <div class="Services">
                 <input type="radio" name="Kiosk_Service" id="Kiosk_Service_1" value="1" checked>
                 <label for="Kiosk_Service_1">24hr C/T Parking - £18</label>
               </div>
               <div class="Services">
                 <input type="radio" name="Kiosk_Service" id="Kiosk_Service_2" value="2">
                 <label for="Kiosk_Service_2">24hr C/T Parking with Meal - £24</label>
+              </div> -->
               </div>
             </div>
             <!-- Buttons -->
@@ -284,9 +264,46 @@
               </div>
             </div>
           </div>
+          <!-- Stage 7 -->
+          <!--
+            Stage 6 will be the function taking the payment.
+          -->
+          <div id="Stage7_EN" class="Hide">
+            <div class="Box">
+              <div class="Title">
+                You have already been charged, and are not due to renew for 6 hours and 12 minutes
+              </div>
+              <div class="Results">
+                Please choose one of the following options.
+              </div>
+              <div class="Box">
+                <div class="Button Green" id="sss">
+                  PRINT TICKET
+                </div>
+                <div class="Button Green" id="zzzz">
+                  NEW TRANSACTION
+                </div>
+              </div>
+            </div>
+            <!-- Buttons -->
+            <div class="BottomWrapper">
+              <div class="Box">
+                <div class="Button Red" id="Cancel_Parking_S7_EN">
+                  CANCEL
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $("label img").on("click", function() {
+                $("#" + $(this).parents("label").attr("for")).click();
+            });
+        });
+    </script>
     <script src="<?php echo URL ?>/assets/js/jquery.min.js"></script>
     <script src="<?php echo URL ?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL ?>/assets/js/bootstrap.min.js"></script>

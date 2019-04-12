@@ -23,7 +23,7 @@
             $set->bindParam(1, date("Y-m-d H:i:s"));
             $set->bindParam(2, $_SESSION['id']);
             $set->execute();
-            header('Location: main');
+            header('Location: index');
           } else {
             $this->PM->err = 'your password does not match up with our records, please try again';
             return $this->PM->ErrorHandler();
@@ -228,7 +228,7 @@
     }
     function User_FastUpdate($id, $what, $value) {
       $this->mysql = new MySQL;
-      
+
         $stmt = $this->mysql->dbc->prepare("UPDATE pm_users SET $what = ? WHERE id = ?");
         $stmt->bindParam(1, $value);
         $stmt->bindParam(2, $id);

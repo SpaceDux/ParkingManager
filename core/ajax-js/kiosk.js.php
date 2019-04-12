@@ -42,20 +42,68 @@ $(document).on('click', '#Next_Parking_S1_EN', function() {
   if(Plate == "") {
     $('#Kiosk_Plate').addClass("Warning");
   } else {
-    $('#Stage1_EN').addClass("Hide");
-    $('#Stage2_EN').removeClass("Hide");
+    $.ajax({
+      url: "<?php echo URL ?>/core/ajax/kiosk.ajax.php?handler=Kiosk_Search",
+      type: "POST",
+      data: {Plate:Plate},
+      dataType: "json",
+      success:function(data) {
+        if(data != "FALSE") {
+          // Determines IS ANPR
+          if(data.Type == "1") {
+            console.log(data);
+            $('#Kiosk_System').val(data.Type);
+            $('#Kiosk_ID').val(data.id);
+            $('#Stage1_EN').addClass("Hide");
+            $('#Stage2_EN').removeClass("Hide");
+            $('#Kiosk_Plate').removeClass("Warning");
+          // Determines IS PM
+          } else if(data.Type == "2") {
+            console.log(data);
+            $('#Kiosk_System').val(data.Type);
+            $('#Kiosk_ID').val(data.id);
+            $('#Stage1_EN').addClass("Hide");
+            $('#Stage2_EN').removeClass("Hide");
+            $('#Kiosk_Plate').removeClass("Warning");
+          }
+        }
+      }
+    })
   }
 });
 $(document).on('click', '#Next_Parking_S2_EN', function() {
   $('#Stage2_EN').addClass("Hide");
   $('#Stage3_EN').removeClass("Hide");
+  $('#Kiosk_Plate').removeClass("Warning");
 });
 $(document).on('click', '#Next_Parking_S3_EN', function() {
   $('#Stage3_EN').addClass("Hide");
   $('#Stage4_EN').removeClass("Hide");
+  $('#Payment_Types_EN').html('<img src="<?php echo URL?>/assets/img/loading2.gif" style="width: 300px;margin: 0 auto;display:block;"></img>');
+  var Data = $('#Parking_Form_EN').serialize();
+  $.ajax({
+    url: "<?php echo URL ?>/core/ajax/kiosk.ajax.php?handler=Kiosk_GET_PaymentTypes",
+    type: "POST",
+    data: Data,
+    dataType: "text",
+    success:function(res) {
+      $('#Payment_Types_EN').html(res);
+    }
+  })
 });
 $(document).on('click', '#Next_Parking_S4_EN', function() {
   $('#Stage4_EN').addClass("Hide");
+  $('#Payment_Services_EN').html('<img src="<?php echo URL?>/assets/img/loading2.gif" style="width: 300px;margin: 0 auto;display:block;"></img>');
+  var Data = $('#Parking_Form_EN').serialize();
+  $.ajax({
+    url: "<?php echo URL ?>/core/ajax/kiosk.ajax.php?handler=Kiosk_GET_PaymentServices",
+    type: "POST",
+    data: Data,
+    dataType: "text",
+    success:function(res) {
+      $('#Payment_Services_EN').html(res);
+    }
+  })
   $('#Stage5_EN').removeClass("Hide");
 });
 $(document).on('click', '#Next_Parking_S5_EN', function() {
@@ -103,35 +151,6 @@ $('#Parking_Form_EN').on('submit', function() {
 
 // Functions {
 
-$('#Kiosk_Plate').on('focus', function() {
-  var Plate = $(this).val();
-  if(Plate.length >= 4) {
-    // $('#Kiosk_Search_Results').html('<img src="<?php echo URL?>/assets/img/loading.gif" style="margin-left: 40%;align: middle;max-width: 20%; max-height: 20%;"></img>');
-    $.ajax({
-      url: '<?php echo URL ?>/core/ajax/kiosk.ajax.php?handler=Kiosk_Plate_Search',
-      method: "POST",
-      data: {Plate:Plate},
-      dataType: "json",
-      success:function(result) {
-        if(result.Type == "ANPR") {
-          var Plate = result.Plate;
-          $('#Kiosk_PM_Key').val("");
-          $('#Kiosk_ANPR_Key').val(result.Uniqueref);
-
-          $('#Kiosk_Search_Results').html('<h1>Success!</h1><p>We have found your vehicle <u><b>'+Plate+'</b></u><br>Press NEXT too continue.');
-        } else if (result.Type == "PM") {
-          var Plate = result.Plate;
-          $('#Kiosk_ANPR_Key').val("");
-          $('#Kiosk_PM_Key').val(result.Uniqueref);
-          $('#Kiosk_Search_Results').html('<h1>Success!</h1><p>We have found your vehicle <u><b>'+Plate+'</b></u><br>Press NEXT too continue.');
-        }
-      }
-    })
-  } else if(Plate.length < 4) {
-    $('#Kiosk_Search_Results').html('');
-  }
-});
-
 // }
 
 //TextBoxes {
@@ -143,5 +162,6 @@ $('#Kiosk_Plate').keyboard({
 		[['Z','Z'],['X','X'],['C','C'],['V','V'],['B','B'],['N','N'],['M', 'M']]
 	]
 });
+
 // } end of Textboxes
 </script>

@@ -159,6 +159,9 @@ body {
   margin: 0 auto;
   padding-left: 10px;
 }
+label {
+  display: inline-block;
+}
 label img {
   margin: 0 auto;
   display: inline-block;
@@ -172,6 +175,7 @@ label img {
   margin-bottom: 10px;
   background: #efefef;
   z-index: 2;
+  pointer-events: none;
 }
 .Label {
   width: 250px;
@@ -211,6 +215,7 @@ input[type="radio"]:disabled + label img {
 }
 .Services input[type="radio"] {
   display: block;
+  pointer-events: none;
 }
 .Services input[type="radio"] + label {
   color: #f6f6f6;
@@ -228,6 +233,7 @@ input[type="radio"]:disabled + label img {
   border-color: green !important;
   background: #efefef;
   color: #0e0e0e;
+  pointer-events: none;
 }
 .Results {
   height: auto;
@@ -235,4 +241,5 @@ input[type="radio"]:disabled + label img {
   margin: 20px auto;
   text-align: center;
   color: #f2f2f2;
+  font-size: 23px;
 }
