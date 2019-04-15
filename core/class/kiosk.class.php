@@ -153,5 +153,12 @@
       echo $html;
       $this->mysql = null;
     }
+
+    function Kiosk_ConfirmInfo() {
+
+      $html = '<h1>'.strtoupper($_POST['Kiosk_Plate']).'</h1><br>';
+
+      echo $html;
+    }
   }
 ?>

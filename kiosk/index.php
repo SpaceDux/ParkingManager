@@ -186,12 +186,15 @@
           <!-- Stage 4 -->
           <!--
             Stage 4 is the payment options.
-            It also runs a check to see whether,
+            It also runs a check to see whether the vehicle is eligible for snap/rk pay
           -->
           <div id="Stage4_EN" class="Hide">
             <div class="Box">
               <div class="Title">
                 How would you like to pay?...
+              </div>
+              <div id="Payment_Types_Info_EN">
+
               </div>
               <div id="Payment_Types_EN">
 
@@ -219,7 +222,7 @@
                 Please choose one of the following services...
               </div>
               <div id="Payment_Services_Info">
-                
+
               </div>
               <div id="Payment_Services_EN">
 
@@ -246,7 +249,9 @@
               <div class="Title">
                 Please confirm your vehicle information to begin payment.
               </div>
-
+              <div id="Confirm_EN">
+                
+              </div>
             </div>
             <!-- Buttons -->
             <div class="BottomWrapper">
@@ -255,7 +260,7 @@
                   CANCEL
                 </div>
                 <div class="Button Green" id="Next_Parking_S6_EN">
-                  NEXT
+                  CONFIRM & PAY
                 </div>
               </div>
             </div>
@@ -277,7 +282,7 @@
                   PRINT TICKET
                 </div>
                 <div class="Button Green" id="zzzz">
-                  NEW TRANSACTION
+                  NEW PAYMENT
                 </div>
               </div>
             </div>

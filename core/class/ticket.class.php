@@ -43,7 +43,7 @@
       $vat_rate = "20";
       $vat_pay = ($gross - $net);
       $vatnum = $this->pm->PM_SiteInfo($campus, "site_vat");
-      $img_dir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/assets/img/printer/".$campus;
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
       //Printer connection
       $connector = new WindowsPrintConnector('smb://'.$this->pm->PM_PrinterInfo($printer_id, "printer_user").':'.$this->pm->PM_PrinterInfo($printer_id, "printer_pass").'@'.$this->pm->PM_PrinterInfo($printer_id, "printer_ip").'/'.$this->pm->PM_PrinterInfo($printer_id, "printer_sharedname").'');
       $printer = new Printer($connector);
