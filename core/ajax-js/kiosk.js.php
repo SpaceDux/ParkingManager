@@ -107,8 +107,13 @@ $(document).on('click', '#Next_Parking_S4_EN', function() {
   $('#Stage5_EN').removeClass("Hide");
 });
 $(document).on('click', '#Next_Parking_S5_EN', function() {
-  $('#Stage5_EN').addClass("Hide");
-  $('#Stage6_EN').removeClass("Hide");
+  var radios = $('input[name="Kiosk_Service"]:checked').val();
+  if(radios == null) {
+    $('#Payment_Services_Info').html('<div class="alert alert-danger" role="alert"><b>OOPS: </b>Please select the service you require.</div>');
+  } else {
+    $('#Stage5_EN').addClass("Hide");
+    $('#Stage6_EN').removeClass("Hide");
+  }
 });
 $(document).on('click', '#Next_Parking_S6_EN', function() {
   $('#Stage5_EN').addClass("Hide");

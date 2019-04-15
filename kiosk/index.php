@@ -218,15 +218,11 @@
               <div class="Title">
                 Please choose one of the following services...
               </div>
-              <div id="Payment_Services_EN">
-              <!-- <div class="Services">
-                <input type="radio" name="Kiosk_Service" id="Kiosk_Service_1" value="1" checked>
-                <label for="Kiosk_Service_1">24hr C/T Parking - £18</label>
+              <div id="Payment_Services_Info">
+                
               </div>
-              <div class="Services">
-                <input type="radio" name="Kiosk_Service" id="Kiosk_Service_2" value="2">
-                <label for="Kiosk_Service_2">24hr C/T Parking with Meal - £24</label>
-              </div> -->
+              <div id="Payment_Services_EN">
+
               </div>
             </div>
             <!-- Buttons -->
@@ -266,7 +262,7 @@
           </div>
           <!-- Stage 7 -->
           <!--
-            Stage 6 will be the function taking the payment.
+            Stage 7 will be the deciding print / take payment
           -->
           <div id="Stage7_EN" class="Hide">
             <div class="Box">
@@ -297,13 +293,6 @@
         </form>
       </div>
     </div>
-    <script>
-        $(document).ready(function() {
-            $("label img").on("click", function() {
-                $("#" + $(this).parents("label").attr("for")).click();
-            });
-        });
-    </script>
     <script src="<?php echo URL ?>/assets/js/jquery.min.js"></script>
     <script src="<?php echo URL ?>/assets/js/popper.min.js"></script>
     <script src="<?php echo URL ?>/assets/js/bootstrap.min.js"></script>

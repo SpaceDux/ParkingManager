@@ -124,27 +124,27 @@
       foreach($stmt->fetchAll() as $row) {
         if($pay == 1 AND $row['service_cash'] == 1) {
           $html .= '<div class="Services">
-                      <input type="radio" name="Kiosk_Service" id="'.$row['id'].'" value="'.$row['id'].'">
+                      <input type="radio" name="Kiosk_Service" class="Kiosk_Service" id="'.$row['id'].'" value="'.$row['id'].'">
                       <label for="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</label>
                     </div>';
         } else if($pay == 2 AND $row['service_card'] == 1) {
           $html .= '<div class="Services">
-                      <input type="radio" name="Kiosk_Service" id="'.$row['id'].'" value="'.$row['id'].'">
+                      <input type="radio" name="Kiosk_Service" class="Kiosk_Service" id="'.$row['id'].'" value="'.$row['id'].'">
                       <label for="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</label>
                     </div>';
         } else if($pay == 3 AND $row['service_account'] == 1) {
           $html .= '<div class="Services">
-                      <input type="radio" name="Kiosk_Service" id="'.$row['id'].'" value="'.$row['id'].'">
+                      <input type="radio" name="Kiosk_Service" class="Kiosk_Service" id="'.$row['id'].'" value="'.$row['id'].'">
                       <label for="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</label>
                     </div>';
         } else if($pay == 4 AND $row['service_snap'] == 1) {
           $html .= '<div class="Services">
-                      <input type="radio" name="Kiosk_Service" id="'.$row['id'].'" value="'.$row['id'].'">
+                      <input type="radio" name="Kiosk_Service" class="Kiosk_Service" id="'.$row['id'].'" value="'.$row['id'].'">
                       <label for="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</label>
                     </div>';
         } else if($pay == 5 AND $row['service_fuel'] == 1) {
           $html .= '<div class="Services">
-                      <input type="radio" name="Kiosk_Service" id="'.$row['id'].'" value="'.$row['id'].'">
+                      <input type="radio" name="Kiosk_Service" class="Kiosk_Service" id="'.$row['id'].'" value="'.$row['id'].'">
                       <label for="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</label>
                     </div>';
         }
