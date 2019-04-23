@@ -483,9 +483,15 @@
         foreach($stmt->fetchAll() as $row) {
           //Cash
           if($row['payment_type'] == 1 AND $row['payment_service_group'] != 2) {
-            if($row['payment_price_gross'] == '2.00') {
+            if($row['payment_price_gross'] == '2.00' AND $row['payment_service_group'] == 4) {
               //Wifi
               $£2Cash++;
+            } else if($row['payment_price_gross'] == '4.00' AND $row['payment_service_group'] == 4) {
+              //Wifi
+              $£2Cash+=2;
+            } else if($row['payment_price_gross'] == '6.00' AND $row['payment_service_group'] == 4) {
+              //Wifi
+              $£2Cash+=3;
             } else if ($row['payment_price_gross'] == '3.00') {
               //2hr + Car Parking & C/O
               $£3Cash++;
@@ -534,9 +540,15 @@
           }
           //Card
           if($row['payment_type'] == 2 AND $row['payment_service_group'] != 2) {
-            if($row['payment_price_gross'] == '2.00') {
+            if($row['payment_price_gross'] == '2.00' AND $row['payment_service_group'] == 4) {
               //1Hr + Car Parking (Driver)
               $£2Card++;
+            } else if($row['payment_price_gross'] == '4.00' AND $row['payment_service_group'] == 4) {
+              //1Hr + Car Parking (Driver)
+              $£2Card+=2;
+            } else if($row['payment_price_gross'] == '6.00' AND $row['payment_service_group'] == 4) {
+              //1Hr + Car Parking (Driver)
+              $£2Card+=3;
             } else if ($row['payment_price_gross'] == '3.00') {
               //2hr + Car Parking & C/O
               $£3Card++;

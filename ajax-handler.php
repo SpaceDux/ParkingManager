@@ -47,11 +47,11 @@
   } else if($handler == "Vehicle_Service_Update_Data") {
     $pm->Vehicle_Service_Update($_POST['id'], $_POST['name'], $_POST['short'], $_POST['url'], $_POST['campus']);
   } else if($handler == "Payment_Service_Cash_Dropdown_Get") {
-    $payment->Payment_ServiceSelect_Cash($_POST['vehicle_type']);
+    $payment->Payment_ServiceSelect_Cash($_POST['vehicle_type'], $_POST['Services_Expiry']);
   } else if($handler == "Payment_Service_Card_Dropdown_Get") {
-    $payment->Payment_ServiceSelect_Card($_POST['vehicle_type']);
+    $payment->Payment_ServiceSelect_Card($_POST['vehicle_type'], $_POST['Services_Expiry']);
   } else if($handler == "Payment_Service_Account_Dropdown_Get") {
-    $payment->Payment_ServiceSelect_Account($_POST['vehicle_type']);
+    $payment->Payment_ServiceSelect_Account($_POST['vehicle_type'], $_POST['Services_Expiry']);
   } else if($handler == "Transaction_Proccess_Cash") {
     $payment->Transaction_Proccess_Cash($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service']);
   } else if($handler == "Transaction_Proccess_Card") {
@@ -81,9 +81,9 @@
   } else if($handler == "Account_Delete") {
     $account->Account_Delete($_POST['Key']);
   } else if($handler == "Payment_Service_SNAP_Dropdown_Get") {
-    $payment->Payment_ServiceSelect_SNAP($_POST['vehicle_type']);
+    $payment->Payment_ServiceSelect_SNAP($_POST['vehicle_type'], $_POST['Services_Expiry']);
   } else if($handler == "Payment_Service_Fuel_Dropdown_Get") {
-    $payment->Payment_ServiceSelect_Fuel($_POST['vehicle_type']);
+    $payment->Payment_ServiceSelect_Fuel($_POST['vehicle_type'], $_POST['Services_Expiry']);
   } else if($handler == "Transaction_Proccess_SNAP") {
     $payment->Transaction_Proccess_SNAP($_POST['ANPRKey'], $_POST['Plate'], $_POST['Company'], $_POST['Trailer'], $_POST['Vehicle_Type'], $_POST['Service']);
   } else if($handler == "Transaction_Proccess_Fuel") {

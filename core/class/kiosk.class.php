@@ -38,6 +38,12 @@
             "id" => $result['id']
           );
           echo json_encode($return2);
+        } else {
+          $return3 = array (
+            "Type" => "4"
+          );
+
+          echo json_encode($return3);
         }
       }
 
@@ -114,10 +120,12 @@
     function Kiosk_GET_PaymentServices($pay, $expiry, $type) {
       $this->mysql = new MySQL;
       $this->user = new User;
+      $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_expiry = ? AND service_vehicles = ? AND service_deleted < 1 AND service_active > 0 AND service_group != 2 ORDER BY service_price_gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_expiry = ? AND service_vehicles = ? AND service_campus = ? AND service_deleted < 1 AND service_active > 0 AND service_group != 2 ORDER BY service_price_gross ASC");
       $stmt->bindParam(1, $expiry);
       $stmt->bindParam(2, $type);
+      $stmt->bindParam(3, $campus);
       $stmt->execute();
       $html = "";
 
@@ -155,10 +163,132 @@
     }
 
     function Kiosk_ConfirmInfo() {
+      $this->payment = new Payment;
+      $this->vehicles = new Vehicles;
 
-      $html = '<h1>'.strtoupper($_POST['Kiosk_Plate']).'</h1><br>';
+      if($_POST['Kiosk_PayType'] == 1) {
+        $paytype = "Cash";
+      } else if ($_POST['Kiosk_PayType'] == 2) {
+        $paytype = "Card";
+      } else if ($_POST['Kiosk_PayType'] == 3) {
+        $paytype = "Roadking Pay / Roadking Accounts";
+      } else if ($_POST['Kiosk_PayType'] == 4) {
+        $paytype = "SNAP Account";
+      } else if ($_POST['Kiosk_PayType'] == 5) {
+        $paytype = "Fuel Card";
+      }
+
+      $html = '<h1 style="color:white;">'.strtoupper($_POST['Kiosk_Plate']).'</h1><br>';
+      $html .= '<h1 style="color:white;">'.$this->vehicles->Vehicle_Type_Info($_POST['Kiosk_Type'], "type_name").'</h1><br>';
+      $html .= '<h1 style="color:white;">'.$paytype.'</h1><br>';
+      $html .= '<h1 style="color:white;">'.$this->payment->Payment_ServiceInfo($_POST['Kiosk_Service'], "service_name").'</h1><br>';
+      $html .= '<h1 style="color:white;">£'.$this->payment->Payment_ServiceInfo($_POST['Kiosk_Service'], "service_price_gross").'</h1><br>';
 
       echo $html;
+
+      $this->payment = null;
+      $this->vehicles = null;
+    }
+    // Kiosk Payments
+    function Kiosk_Begin_Parking_Transaction($Plate, $Sys, $ID, $Type, $PayType, $Service, $FuelCard) {
+      $this->mysql = new MySQL;
+      $this->mssql = new MSSQL;
+      $this->anpr = new ANPR;
+      $this->user = new User;
+      $this->payment = new Payment;
+      $this->pm = new PM;
+      $this->account = new Account;
+      $this->vehicles = new Vehicles;
+      if($Sys == "1") {
+        // ANPR Payment
+        //Misc dets
+        $current_date = date("Y-m-d H:i:s");
+        $Plate = strtoupper($Plate);
+        $Company = null;
+        //ANPR Dets
+        $anprInfo = $this->anpr->ANPR_GetRecord($ID);
+        $ANPR_Date = $anprInfo['Capture_Date'];
+        //User Details
+        $name = $this->user->userInfo("first_name");
+        $campus = $this->user->userInfo("campus");
+        //Payment Service Details
+        $service_expiry = $this->Payment_ServiceInfo($Service, "service_expiry");
+        $service_name = $this->Payment_ServiceInfo($Service, "service_name");
+        $price_gross = $this->Payment_ServiceInfo($Service, "service_price_gross");
+        $price_net = $this->Payment_ServiceInfo($Service, "service_price_net");
+        $expiry = date("Y-m-d H:i:s", strtotime($ANPR_Date.'+ '.$service_expiry.' hours'));
+        $random_number = mt_rand(111111, 999999);
+        $payment_ref = $Plate."-".$random_number;
+        $exitKey = mt_rand(111111, 999999);
+        //Ticket Info
+        $shower_count = $this->payment->Payment_ServiceInfo($Service, "service_shower_amount");
+        $meal_count = $this->payment->Payment_ServiceInfo($Service, "service_meal_amount");
+        $service_ticket_name = $this->payment->Payment_ServiceInfo($Service, "service_ticket_name");
+        $group = $this->payment->Payment_ServiceInfo($Service, "service_group");
+        $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
+
+        if ($PayType == "1") {
+          //Cash
+          $this->payment->Payment_Transaction_Add($ID, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type);
+
+          $ref = $this->payment->PaymentInfo($Plate, "payment_ref");
+          $pay_id = $this->payment->PaymentInfo($Plate, "id");
+
+          //ANPR DB SQL
+          $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
+          $sql_anprTbl->bindParam(1, $expiry);
+          $sql_anprTbl->bindParam(2, $ID);
+          $sql_anprTbl->execute();
+
+          //Create new parking log information.
+          $this->vehicles->Vehicles_Parking_New($ID, $ref, $Plate, "", $Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
+
+          $this->PrintTicket();
+
+          $this->payment->Payment_Ticket_Info($pay_id, "1", $current_date, $ANPR_Date, $expiry);
+        } else if ($PayType == "2") {
+          //Card
+          $this->payment->Payment_Transaction_Add($ID, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type);
+
+          $ref = $this->payment->PaymentInfo($Plate, "payment_ref");
+          $pay_id = $this->payment->PaymentInfo($Plate, "id");
+
+          //ANPR DB SQL
+          $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
+          $sql_anprTbl->bindParam(1, $expiry);
+          $sql_anprTbl->bindParam(2, $ID);
+          $sql_anprTbl->execute();
+
+          //Create new parking log information.
+          $this->vehicles->Vehicles_Parking_New($ID, $ref, $Plate, "", $Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
+
+          $this->PrintTicket();
+
+          $this->payment->Payment_Ticket_Info($pay_id, "1", $current_date, $ANPR_Date, $expiry);
+        } else if ($PayType == "3") {
+          $Acc = $this->account->Account_FleetInfo($Plate, "account_id");
+          //Account
+          $this->payment->Payment_Transaction_Add($ID, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Acc, $campus, $payment_ref, null, $group, $Vehicle_Type);
+
+          $ref = $this->payment->PaymentInfo($Plate, "payment_ref");
+          $pay_id = $this->payment->PaymentInfo($Plate, "id");
+
+          //ANPR DB SQL
+          $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
+          $sql_anprTbl->bindParam(1, $expiry);
+          $sql_anprTbl->bindParam(2, $ID);
+          $sql_anprTbl->execute();
+
+          //Create new parking log information.
+          $this->vehicles->Vehicles_Parking_New($ID, $ref, $Plate, "", $Type, $Company, $ANPR_Date, $expiry, $name, $campus, $exitKey);
+
+          $this->PrintTicket();
+
+          $this->payment->Payment_Ticket_Info($pay_id, "1", $current_date, $ANPR_Date, $expiry);
+        }
+      } else if ($Sys == "2") {
+        // Renewal / ParkingManager Record Payment
+      }
     }
   }
 ?>

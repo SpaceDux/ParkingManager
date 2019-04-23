@@ -70,9 +70,33 @@
                  </div>
                </div>
                <div class="col-md-7">
-               <?php if ($account->Account_Check($anpr_rec['Plate']) == TRUE) { //ACCOUNTS
-                 $acc_id = $account->Account_FleetInfo($anpr_rec['Plate'], "account_id");
-                 ?>
+                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary active">
+                      <input type="radio" name="Services_Expiry" value="24" autocomplete="off" checked> 1 Day
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="Services_Expiry" value="48" autocomplete="off"> 2 Day's
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="Services_Expiry" value="72" autocomplete="off"> 3 Day's
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="Services_Expiry" value="96" autocomplete="off"> 4 Day's
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="Services_Expiry" value="120" autocomplete="off"> 5 Day's
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="Services_Expiry" value="144" autocomplete="off"> 6 Day's
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="Services_Expiry" value="168" autocomplete="off"> 7 Day's
+                    </label>
+                  </div>
+                  <hr>
+                  <?php if ($account->Account_Check($anpr_rec['Plate']) == TRUE) { //ACCOUNTS
+                    $acc_id = $account->Account_FleetInfo($anpr_rec['Plate'], "account_id");
+                  ?>
                  <nav>
                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
                      <a class="nav-item nav-link" id="nav-cash-tab" tabindex="-1" data-toggle="tab" href="#nav-cash" role="tab" aria-controls="nav-cash" aria-selected="false"><i class="fa fa-money-bill-alt"></i> Cash</a>

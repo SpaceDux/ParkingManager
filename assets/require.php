@@ -406,6 +406,7 @@
   //Payment Service CASH Dropdown
   $(document).on('change', '#NT_Vehicle_Type', function(){
     var veh_id = $(this).val();
+    var Services_Expiry = $('input[name="Services_Expiry"]:checked').val();
     if(veh_id == 'unselected') {
       $('#Cash_Dropdown').empty();
     } else {
@@ -413,7 +414,26 @@
       $.ajax({
         url: "<?php echo URL ?>/ajax-handler.php?handler=Payment_Service_Cash_Dropdown_Get",
         type: "POST",
-        data: {vehicle_type:veh_id},
+        data: {vehicle_type:veh_id, Services_Expiry:Services_Expiry},
+        dataType: "text",
+        success:function(data) {
+          $('#Cash_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Payment Service CASH Dropdown (EXPIRY)
+  $(document).on('change', 'input[name="Services_Expiry"]:checked', function(){
+    var veh_id = $('#NT_Vehicle_Type').val();
+    var Services_Expiry = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Cash_Dropdown').empty();
+    } else {
+      $('#Cash_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL ?>/ajax-handler.php?handler=Payment_Service_Cash_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id, Services_Expiry:Services_Expiry},
         dataType: "text",
         success:function(data) {
           $('#Cash_Dropdown').html(data);
@@ -424,14 +444,34 @@
   //Payment Service CARD Dropdown
   $(document).on('change', '#NT_Vehicle_Type', function(){
     var veh_id = $(this).val();
+    var Services_Expiry = $('input[name="Services_Expiry"]:checked').val();
     if(veh_id == 'unselected') {
       $('#Card_Dropdown').empty();
     } else {
       $('#Card_Dropdown').html('');
       $.ajax({
-        url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Card_Dropdown_Get",
+        url: "<?php echo URL ?>/ajax-handler.php?handler=Payment_Service_Card_Dropdown_Get",
         type: "POST",
-        data: {vehicle_type:veh_id},
+        data: {vehicle_type:veh_id, Services_Expiry:Services_Expiry},
+        dataType: "text",
+        success:function(data) {
+          $('#Card_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Payment Service CARD Dropdown (EXPIRY)
+  $(document).on('change', 'input[name="Services_Expiry"]:checked', function(){
+    var veh_id = $('#NT_Vehicle_Type').val();
+    var Services_Expiry = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Card_Dropdown').empty();
+    } else {
+      $('#Card_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL ?>/ajax-handler.php?handler=Payment_Service_Card_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id, Services_Expiry:Services_Expiry},
         dataType: "text",
         success:function(data) {
           $('#Card_Dropdown').html(data);
@@ -442,6 +482,7 @@
   //Payment Service ACCOUNT Dropdown
   $(document).on('change', '#NT_Vehicle_Type', function(){
     var veh_id = $(this).val();
+    var Services_Expiry = $('input[name="Services_Expiry"]:checked').val();
     if(veh_id == 'unselected') {
       $('#Account_Dropdown').empty();
     } else {
@@ -449,7 +490,26 @@
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Account_Dropdown_Get",
         type: "POST",
-        data: {vehicle_type:veh_id},
+        data: {vehicle_type:veh_id, Services_Expiry:Services_Expiry},
+        dataType: "text",
+        success:function(data) {
+          $('#Account_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Payment Service ACCOUNT Dropdown (EXPIRY)
+  $(document).on('change', 'input[name="Services_Expiry"]:checked', function(){
+    var veh_id = $('#NT_Vehicle_Type').val();
+    var Services_Expiry = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Account_Dropdown').empty();
+    } else {
+      $('#Account_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL ?>/ajax-handler.php?handler=Payment_Service_Account_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id, Services_Expiry:Services_Expiry},
         dataType: "text",
         success:function(data) {
           $('#Account_Dropdown').html(data);
@@ -460,6 +520,7 @@
   //Payment Service SNAP Dropdown
   $(document).on('change', '#NT_Vehicle_Type', function(){
     var veh_id = $(this).val();
+    var Services_Expiry = $('input[name="Services_Expiry"]:checked').val();
     if(veh_id == 'unselected') {
       $('#SNAP_Dropdown').empty();
     } else {
@@ -467,7 +528,26 @@
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_SNAP_Dropdown_Get",
         type: "POST",
-        data: {vehicle_type:veh_id},
+        data: {vehicle_type:veh_id, Services_Expiry:Services_Expiry},
+        dataType: "text",
+        success:function(data) {
+          $('#SNAP_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Payment Service SNAP Dropdown (EXPIRY)
+  $(document).on('change', 'input[name="Services_Expiry"]:checked', function(){
+    var veh_id = $('#NT_Vehicle_Type').val();
+    var Services_Expiry = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#SNAP_Dropdown').empty();
+    } else {
+      $('#SNAP_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL ?>/ajax-handler.php?handler=Payment_Service_SNAP_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id, Services_Expiry:Services_Expiry},
         dataType: "text",
         success:function(data) {
           $('#SNAP_Dropdown').html(data);
@@ -478,6 +558,7 @@
   //Payment Service Fuel Dropdown
   $(document).on('change', '#NT_Vehicle_Type', function(){
     var veh_id = $(this).val();
+    var Services_Expiry = $('input[name="Services_Expiry"]:checked').val();
     if(veh_id == 'unselected') {
       $('#Fuel_Dropdown').empty();
     } else {
@@ -485,7 +566,26 @@
       $.ajax({
         url: "<?php echo URL?>/ajax-handler.php?handler=Payment_Service_Fuel_Dropdown_Get",
         type: "POST",
-        data: {vehicle_type:veh_id},
+        data: {vehicle_type:veh_id, Services_Expiry:Services_Expiry},
+        dataType: "text",
+        success:function(data) {
+          $('#Fuel_Dropdown').html(data);
+        }
+      })
+    }
+  });
+  //Payment Service Fuel Dropdown (EXPIRY)
+  $(document).on('change', 'input[name="Services_Expiry"]:checked', function(){
+    var veh_id = $('#NT_Vehicle_Type').val();
+    var Services_Expiry = $(this).val();
+    if(veh_id == 'unselected') {
+      $('#Fuel_Dropdown').empty();
+    } else {
+      $('#Fuel_Dropdown').html('');
+      $.ajax({
+        url: "<?php echo URL ?>/ajax-handler.php?handler=Payment_Service_Fuel_Dropdown_Get",
+        type: "POST",
+        data: {vehicle_type:veh_id, Services_Expiry:Services_Expiry},
         dataType: "text",
         success:function(data) {
           $('#Fuel_Dropdown').html(data);

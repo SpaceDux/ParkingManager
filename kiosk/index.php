@@ -4,6 +4,8 @@
   if(!isset($_SESSION['id'])) {
     $user->Login($user_config['User'], $user_config['Pass']);
   }
+  // Get IP Address
+  // die(getHostByName(getHostName()));
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -20,7 +22,7 @@
     <div class="TopBar">
       <div class="WhereAmI">
         <i class="fa fa-location-arrow"></i>
-         Welcome to RoadKing: Parc Cybi
+         Welcome to <?php echo $pm->PM_SiteInfo($user->userInfo("campus"), "site_name");?>
       </div>
       <div class="Time" id="Time">
         <i class="fa fa-clock"></i>
@@ -80,6 +82,11 @@
               <input type="text" name="Kiosk_Plate" id="Kiosk_Plate" class="keyboard Kiosk_Plate_Input" maxlength="16" placeholder="YOUR REG" autocomplete="off"/>
               <input type="hidden" name="Kiosk_System" id="Kiosk_System" autocomplete="off"/>
               <input type="hidden" name="Kiosk_ID" id="Kiosk_ID" autocomplete="off"/>
+              <div class="Results">
+                <div class="Info">
+
+                </div>
+              </div>
             </div>
             <!-- Buttons -->
             <div class="BottomWrapper">
@@ -193,7 +200,7 @@
               <div class="Title">
                 How would you like to pay?...
               </div>
-              <div id="Payment_Types_Info_EN">
+              <div class="Info">
 
               </div>
               <div id="Payment_Types_EN">
@@ -221,7 +228,7 @@
               <div class="Title">
                 Please choose one of the following services...
               </div>
-              <div id="Payment_Services_Info">
+              <div class="Info">
 
               </div>
               <div id="Payment_Services_EN">
@@ -249,8 +256,10 @@
               <div class="Title">
                 Please confirm your vehicle information to begin payment.
               </div>
-              <div id="Confirm_EN">
-                
+              <div class="Results">
+                <div id="Confirm_EN">
+
+                </div>
               </div>
             </div>
             <!-- Buttons -->
@@ -267,23 +276,20 @@
           </div>
           <!-- Stage 7 -->
           <!--
-            Stage 7 will be the deciding print / take payment
+            Stage 7 for fuel cards
           -->
           <div id="Stage7_EN" class="Hide">
             <div class="Box">
               <div class="Title">
-                You have already been charged, and are not due to renew for 6 hours and 12 minutes
+                Please swipe your Fuel Card
               </div>
               <div class="Results">
-                Please choose one of the following options.
+                DKV will NOT accept payments that come with a meal voucher!
               </div>
               <div class="Box">
-                <div class="Button Green" id="sss">
-                  PRINT TICKET
-                </div>
-                <div class="Button Green" id="zzzz">
-                  NEW PAYMENT
-                </div>
+                <input type="password" id="Kiosk_FuelCard" class="form-control form-control-lg" name="Kiosk_FuelCard" value="">
+                <!-- <input type="text" id="Kiosk_FuelCard_No" class="form-control" name="Kiosk_FuelCard_No" value=""> -->
+                <!-- <input type="text" id="Kiosk_FuelCard_Ex" class="form-control" name="Kiosk_FuelCard_Ex" value=""> -->
               </div>
             </div>
             <!-- Buttons -->
@@ -291,6 +297,9 @@
               <div class="Box">
                 <div class="Button Red" id="Cancel_Parking_S7_EN">
                   CANCEL
+                </div>
+                <div class="Button Green" id="Next_Parking_S7_EN">
+                  PROCESS PAYMENT
                 </div>
               </div>
             </div>
