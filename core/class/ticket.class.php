@@ -25,11 +25,11 @@
       if($group == 1) {
         $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed);
       } else if ($group == 2) {
-        $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type);
+        $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type, $exitKey);
       } else if ($group == 3) {
         $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed);
       } else if ($group == 4) {
-        $this->Printer_Misc($shower_count, $wifi_count, $tid);
+        $this->Printer_Misc($shower_count, $wifi_count, $tid, $payment_type);
       }
     }
     //Begin Tickets
@@ -198,7 +198,7 @@
       $this->pm = null;
     }
     //Print Truckwash Ticket
-    function Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type) {
+    function Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type, $exitKey) {
       $this->user = new User;
       $this->pm = new PM;
       $campus = $this->user->userInfo("campus");
@@ -241,8 +241,6 @@
         $printer -> text("£".$gross."\n");
         $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
         $printer -> setTextSize(1, 1);
-        $printer -> feed();
-        $printer -> text("VAT @ 20%: Net £".$net." - £".number_format($vat_pay, 2));
         $printer -> feed(2);
         //Vehicle Details
         $printer -> selectPrintMode();
@@ -256,11 +254,21 @@
         $printer -> text("Payment Type: ".$payment_type."\n");
         $printer -> text("CUSTOMER COPY\n");
         $printer -> feed(2);
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> setReverseColors(TRUE);
+        $printer -> setTextSize(2, 2);
+        $printer -> text(" Exit Code: *".$exitKey."# ");
+        $printer -> setReverseColors(FALSE);#
+        $printer -> setTextSize(1, 1);
         //VAT info
-        $printer -> text("VAT No: ".$vatnum);
         $printer -> feed(2);
-        $printer -> text("Thank you for staying with us!\n");
-        $printer -> text("www.rktruckstops.co.uk");
+        if($campus == "2") {
+          $printer -> text("THIS TRUCKWASH IS OPERATED BY:\n");
+          $printer -> text("M&L Truck Wash Services Ltd.\n");
+        } else {
+          $printer -> text("Thank you for staying with us!\n");
+          $printer -> text("www.rktruckstops.co.uk");
+        }
         $printer -> feed();
         $printer -> cut();
         //Merchant Copy
@@ -282,8 +290,6 @@
         $printer -> text("£".$gross."\n");
         $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
         $printer -> setTextSize(1, 1);
-        $printer -> feed();
-        $printer -> text("VAT @ 20%: Net £".$net." - £".number_format($vat_pay, 2));
         $printer -> feed(2);
         //Vehicle Details
         $printer -> selectPrintMode();
@@ -297,11 +303,21 @@
         $printer -> text("Payment Type: ".$payment_type."\n");
         $printer -> text("MERCHANT COPY\n");
         $printer -> feed(2);
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> setReverseColors(TRUE);
+        $printer -> setTextSize(2, 2);
+        $printer -> text(" Exit Code: *".$exitKey."# ");
+        $printer -> setReverseColors(FALSE);
+        $printer -> setTextSize(1, 1);
         //VAT info
-        $printer -> text("VAT No: ".$vatnum);
         $printer -> feed(2);
-        $printer -> text("Thank you for staying with us!\n");
-        $printer -> text("www.rktruckstops.co.uk");
+        if($campus == "2") {
+          $printer -> text("THIS TRUCKWASH IS OPERATED BY:\n");
+          $printer -> text("M&L Truck Wash Services Ltd.\n");
+        } else {
+          $printer -> text("Thank you for staying with us!\n");
+          $printer -> text("www.rktruckstops.co.uk");
+        }
         $printer -> feed();
         $printer -> cut(Printer::CUT_PARTIAL);
 
@@ -312,7 +328,7 @@
       $this->pm = null;
     }
     // Wifi & Shower
-    function Printer_Misc($shower_count, $wifi_count, $tid) {
+    function Printer_Misc($shower_count, $wifi_count, $tid, $payment_type) {
       $this->user = new User;
       $this->pm = new PM;
       $campus = $this->user->userInfo("campus");
@@ -327,7 +343,9 @@
         $printer = new Printer($connector);
         $wifi = EscposImage::load($img_dir."/wifi.jpg", false);
         $shower  = EscposImage::load($img_dir."/shower.jpg", false);
-
+        if($payment_type == "Cash" || $payment_type == "Card") {
+          $printer -> pulse(0, 120, 240);
+        }
         $i = 1;
         //WIFI
         while ($i++ <= $wifi_count) {
@@ -343,9 +361,6 @@
             $printer -> graphics($wifi);
           } else {
             $printer -> bitImage($wifi);
-            if($payment_type == "Cash" || $payment_type == "Card") {
-              $printer -> pulse(0, 120, 240);
-            }
           }
           $printer -> feed();
           $printer -> setTextSize(2, 2);

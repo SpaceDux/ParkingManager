@@ -17,7 +17,7 @@
     function Payment_GetTransactions($key) {
       //Prep Class
       $this->mysql = new MySQL;
-      $query = $this->mysql->dbc->prepare("SELECT id, payment_type, payment_service_name, payment_author, payment_date FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0 ORDER BY payment_date DESC");
+      $query = $this->mysql->dbc->prepare("SELECT id, payment_type, payment_service_name, payment_author, payment_date FROM pm_payments WHERE payment_ref = ? AND payment_deleted = 0 ORDER BY payment_date DESC LIMIT 12");
       $query->bindParam(1, $key);
       $query->execute();
       $result = $query->fetchAll();
@@ -362,10 +362,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_expiry = ? AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_price_gross ASC");
-      $stmt->bindParam(1, $expiry);
-      $stmt->bindParam(2, $campus);
-      $stmt->bindParam(3, $vehicle);
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_expiry = 0 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 OR service_cash = 1 AND service_expiry = ? AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_price_gross ASC");
+      $stmt->bindParam(1, $campus);
+      $stmt->bindParam(2, $vehicle);
+      $stmt->bindParam(3, $expiry);
+      $stmt->bindParam(4, $campus);
+      $stmt->bindParam(5, $vehicle);
       $stmt->execute();
 
       $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_cash = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
@@ -394,11 +396,14 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_expiry = ? AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
-      $stmt->bindParam(1, $expiry);
-      $stmt->bindParam(2, $campus);
-      $stmt->bindParam(3, $vehicle);
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_expiry = 0 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 OR service_card = 1 AND service_expiry = ? AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_price_gross ASC");
+      $stmt->bindParam(1, $campus);
+      $stmt->bindParam(2, $vehicle);
+      $stmt->bindParam(3, $expiry);
+      $stmt->bindParam(4, $campus);
+      $stmt->bindParam(5, $vehicle);
       $stmt->execute();
+
 
       $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_card = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
@@ -426,11 +431,14 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_expiry = ? AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
-      $stmt->bindParam(1, $expiry);
-      $stmt->bindParam(2, $campus);
-      $stmt->bindParam(3, $vehicle);
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_expiry = 0 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 OR service_account = 1 AND service_expiry = ? AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_price_gross ASC");
+      $stmt->bindParam(1, $campus);
+      $stmt->bindParam(2, $vehicle);
+      $stmt->bindParam(3, $expiry);
+      $stmt->bindParam(4, $campus);
+      $stmt->bindParam(5, $vehicle);
       $stmt->execute();
+
 
       $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_account = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
       $stmt2->bindParam(1, $campus);
@@ -458,10 +466,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_expiry = ? AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
-      $stmt->bindParam(1, $expiry);
-      $stmt->bindParam(2, $campus);
-      $stmt->bindParam(3, $vehicle);
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_expiry = 0 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 OR service_snap = 1 AND service_expiry = ? AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_price_gross ASC");
+      $stmt->bindParam(1, $campus);
+      $stmt->bindParam(2, $vehicle);
+      $stmt->bindParam(3, $expiry);
+      $stmt->bindParam(4, $campus);
+      $stmt->bindParam(5, $vehicle);
       $stmt->execute();
 
       $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_snap = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
@@ -490,10 +500,12 @@
       $this->user = new User;
       $campus = $this->user->userInfo("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_expiry = ? AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
-      $stmt->bindParam(1, $expiry);
-      $stmt->bindParam(2, $campus);
-      $stmt->bindParam(3, $vehicle);
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_expiry = 0 AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 OR service_fuel = 1 AND service_expiry = ? AND service_campus = ? AND service_vehicles = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_price_gross ASC");
+      $stmt->bindParam(1, $campus);
+      $stmt->bindParam(2, $vehicle);
+      $stmt->bindParam(3, $expiry);
+      $stmt->bindParam(4, $campus);
+      $stmt->bindParam(5, $vehicle);
       $stmt->execute();
 
       $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_fuel = 1 AND service_vehicles = 0 AND service_campus = ? AND service_active = 1 AND service_deleted = 0 ORDER BY service_expiry, service_price_gross ASC");
