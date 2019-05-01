@@ -1021,3 +1021,37 @@
     </div>
   </div>
 </div>
+<!-- Confirm CASH Modal -->
+<div class="modal fade" id="Confirm_CashModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="Confirm_CashModal" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content bg-danger" style="border: inherit;">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title">Are you sure?</h5>
+      </div>
+      <div class="modal-body">
+        Please confirm all information is correct.
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary">Cancel</button>
+        <button class="btn btn-success">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Confirm CASH Modal -->
+<div class="modal fade" id="ConfirmModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="ConfirmModal" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content bg-danger" style="border: inherit;">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title">Are you sure?</h5>
+      </div>
+      <div class="modal-body">
+        Please confirm all information is correct.
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-toggle="#ConfirmModal">Cancel</button>
+        <button class="btn btn-success">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>

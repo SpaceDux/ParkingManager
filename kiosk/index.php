@@ -288,8 +288,8 @@
               </div>
               <div class="Box">
                 <input type="password" id="Kiosk_FuelCard" class="form-control form-control-lg" name="Kiosk_FuelCard" value="">
-                <!-- <input type="text" id="Kiosk_FuelCard_No" class="form-control" name="Kiosk_FuelCard_No" value=""> -->
-                <!-- <input type="text" id="Kiosk_FuelCard_Ex" class="form-control" name="Kiosk_FuelCard_Ex" value=""> -->
+                <input type="text" id="Kiosk_FuelCard_No" class="form-control" name="Kiosk_FuelCard_No" value="">
+                <input type="text" id="Kiosk_FuelCard_Ex" class="form-control" name="Kiosk_FuelCard_Ex" value="">
               </div>
             </div>
             <!-- Buttons -->
@@ -301,6 +301,24 @@
                 <div class="Button Green" id="Next_Parking_S7_EN">
                   PROCESS PAYMENT
                 </div>
+              </div>
+            </div>
+          </div>
+          <div id="Accepted_EN" class="Hide">
+            <div class="Box">
+              <div class="Title">
+                Thank you!
+              </div>
+              <div class="Results">
+                Your payment has been accept and your ticket is now being prepared & dispensed.
+                <br>
+                <br>
+                <br>
+                Please collect your ticket from this kiosk.
+                <br>
+                <br>
+                <br>
+                Thank you for choosing Roadking, have a good day.
               </div>
             </div>
           </div>

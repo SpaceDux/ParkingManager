@@ -790,7 +790,8 @@
         type: "POST",
         data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry,
         success:function() {
-          $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
+          $('#ConfirmModal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
+
         }
       });
     }
@@ -1074,6 +1075,7 @@
   //Print Ticket Modal Controller
   $(document).on('click', '#NT_Print_Ticket_Yes', function() {
     event.preventDefault();
+    $(this).attr("id", "DONE");
     var ANPRKey = $('#NT_ANPRKey').val();
     var Plate = $('#NT_Vehicle_Plate').val();
     var DateIN = $('#NT_Date').val();
@@ -1083,7 +1085,6 @@
       type: "POST",
       data: "ANPRKey="+ANPRKey+"&Plate="+Plate+"&Date="+DateIN+"&Company="+Company,
       success:function() {
-        $(this).attr("id", "DONE");
         window.location.replace("<?php echo URL?>/main");
       }
     });

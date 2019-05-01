@@ -177,7 +177,15 @@ $(document).on('click', '#Next_Parking_S6_EN', function() {
       data: Data,
       dataType: "text",
       success:function(res) {
-        // $('#Confirm_EN').html(res);
+        $('#Stage6_EN').addClass("Hide");
+        $('#Accepted_EN').removeClass("Hide");
+        setTimeout(function() {
+          $('#Parking_Form_EN')[0].reset();
+          $('#Parking_Page_EN').addClass("Hide");
+          $('#Accepted_EN').addClass("Hide");
+          $('#Language_Select').removeClass("Hide");
+          $('.Info').html("");
+        }, 10000);
       }
     });
   }
