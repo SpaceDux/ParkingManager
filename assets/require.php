@@ -796,8 +796,7 @@
         type: "POST",
         data: "LogID="+LogID+"&ANPRKey="+ANPRKey+"&PayRef="+PayRef+"&Plate="+Plate+"&Company="+Company+"&Trailer="+Trailer+"&Vehicle_Type="+Type+"&Service="+Service+"&Expiry="+Expiry,
         success:function() {
-          $('#ConfirmModal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
-
+          $('#Print_Ticket_Modal').modal({backdrop: 'static', keyboard: false, focus: true, show: true});
         }
       });
     }

@@ -1443,7 +1443,6 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->pm = new PM;
-      $this->mssql = new MSSQL;
       $this->anpr = new ANPR;
       $this->vehicles = new Vehicles;
 
@@ -1467,7 +1466,7 @@
       if($query->execute()) {
         $this->anpr->ANPR_Expiry_Set($anprkey, $new_expiry);
         $this->vehicles->Parking_Log_Expiry_Update($ref, $new_expiry);
-        $this->pm->PM_Notification_Create("$user has successfully deleted a transaction. ID: $key", 1);
+        $this->pm->PM_Notification_Create($user.' has deleted a transaction. ID: '.$key.'', 2);
       }
 
       $this->mysql = null;
@@ -1541,7 +1540,7 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->campus = $this->user->userInfo("campus");
-      $stmt = $this->mysql->dbc->prepare("SELECT id, payment_company_name, payment_vehicle_plate, payment_service_name, payment_date, payment_deleted FROM pm_payments WHERE payment_vehicle_plate LIKE ? AND payment_campus = ? OR id LIKE ? AND payment_campus = ? OR payment_etp_id LIKE ? AND payment_campus = ? ORDER BY payment_date DESC LIMIT 100");
+      $stmt = $this->mysql->dbc->prepare("SELECT id, payment_company_name, payment_vehicle_plate, payment_service_name, payment_date, payment_deleted, payment_type FROM pm_payments WHERE payment_vehicle_plate LIKE ? AND payment_campus = ? OR id LIKE ? AND payment_campus = ? OR payment_etp_id LIKE ? AND payment_campus = ? ORDER BY payment_date DESC LIMIT 100");
       $stmt->bindParam(1, $string);
       $stmt->bindParam(2, $this->campus);
       $stmt->bindParam(3, $string);
@@ -1559,6 +1558,7 @@
                 <th scope="col">T.ID</th>
                 <th scope="col">Company</th>
                 <th scope="col">Plate</th>
+                <th scope="col">Type</th>
                 <th scope="col">Service</th>
                 <th scope="col">Date</th>
                 <th scope="col"><i class="fa fa-cog"></i></th>
@@ -1567,12 +1567,26 @@
           ';
           $html .= '<tbody>';
           foreach($result as $row) {
+
+            if($row['payment_type'] == 1) {
+              $type = "Cash";
+            } else if($row['payment_type'] == 2) {
+              $type = "Card";
+            } else if($row['payment_type'] == 3) {
+              $type = "Account";
+            } else if($row['payment_type'] == 4) {
+              $type = "SNAP";
+            } else if($row['payment_type'] == 5) {
+              $type = "Fuel Card";
+            }
+
             if($row['payment_deleted'] == 0) {
               $html .= '
                 <tr>
                   <td>'.$row['id'].'</td>
                   <td>'.$row['payment_company_name'].'</td>
                   <td>'.$row['payment_vehicle_plate'].'</td>
+                  <td>'.$type.'</td>
                   <td>'.$row['payment_service_name'].'</td>
                   <td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>
                   <td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
@@ -1586,6 +1600,7 @@
                   <td>'.$row['id'].'</td>
                   <td>'.$row['payment_company_name'].'</td>
                   <td>'.$row['payment_vehicle_plate'].'</td>
+                  <td>'.$type.'</td>
                   <td>'.$row['payment_service_name'].'</td>
                   <td>'.date("d/m/y H:i:s", strtotime($row['payment_date'])).'</td>
                   <td><div class="btn-group" role="group" aria-label="Payment_Table_Options">
