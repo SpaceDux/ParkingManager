@@ -1204,6 +1204,7 @@
       data: data,
       success:function() {
         $('#Account_ServiceSwap').modal('toggle');
+        $('#Account_ChangeServiceForm')[0].reset();
       }
     })
   });

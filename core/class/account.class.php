@@ -505,14 +505,18 @@
       $service_price_gross = $this->payment->Payment_ServiceInfo($new_service, "service_price_gross");
 
       // Begin Query to change record
-      $stmt = $this->mysql->dbc->prepare("UPDATE pm_payments SET payment_service_id = ? payment_service_name = ?, payment_price_net = ?, payment_price_gross = ?, payment_author = ? WHERE id = ?");
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_payments SET payment_service_id = ?, payment_service_name = ?, payment_price_net = ?, payment_price_gross = ?, payment_author = ? WHERE id = ?");
       $stmt->bindParam(1, $new_service);
       $stmt->bindParam(2, $service_name);
       $stmt->bindParam(3, $service_price_net);
       $stmt->bindParam(4, $service_price_gross);
       $stmt->bindParam(5, $author);
       $stmt->bindParam(6, $id);
-      $stmt->execute();
+      if($stmt->execute()) {
+        echo "True";
+      } else {
+        echo "False";
+      }
 
       $this->mysql = null;
       $this->user = null;
