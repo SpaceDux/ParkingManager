@@ -1055,3 +1055,56 @@
     </div>
   </div>
 </div>
+<!-- Change Account Payment Service -->
+<div class="modal fade" id="Account_ServiceSwap" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="Account_ServiceSwap" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" style="border: inherit;">
+      <div class="modal-header">
+        <h5 class="modal-title">Change Assigned Service</h5>
+      </div>
+      <div class="modal-body">
+        <form id="Account_ChangeServiceForm">
+          <div class="form-group">
+            <input type="hidden" id="Acc_PayID" name="Payment_ID">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+             <label class="btn btn-secondary active">
+               <input type="radio" name="Services_Expiry" value="24" autocomplete="off" checked> 1 Day
+             </label>
+             <label class="btn btn-secondary">
+               <input type="radio" name="Service_Expiry" value="48" autocomplete="off"> 2 Day's
+             </label>
+             <label class="btn btn-secondary">
+               <input type="radio" name="Service_Expiry" value="72" autocomplete="off"> 3 Day's
+             </label>
+             <label class="btn btn-secondary">
+               <input type="radio" name="Service_Expiry" value="96" autocomplete="off"> 4 Day's
+             </label>
+             <label class="btn btn-secondary">
+               <input type="radio" name="Service_Expiry" value="120" autocomplete="off"> 5 Day's
+             </label>
+             <label class="btn btn-secondary">
+               <input type="radio" name="Service_Expiry" value="144" autocomplete="off"> 6 Day's
+             </label>
+             <label class="btn btn-secondary">
+               <input type="radio" name="Service_Expiry" value="168" autocomplete="off"> 7 Day's
+             </label>
+            </div>
+            <hr>
+            <select class="form-control" id="NT_Vehicle_Type">
+              <option value="0">Please choose a vehicle type</option>
+              <?php $pm->PM_VehicleTypes_Dropdown(); ?>
+            </select>
+            <hr>
+            <div id="Account_Dropdown">
+
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button class="btn btn-success" id="Account_ChangeServiceBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>

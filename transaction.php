@@ -57,7 +57,7 @@
                </div>
                <div class="form-group">
                  <label for="NT_Vehicle_Type">Trailer Number</label>
-                 <input type="text" class="form-control" name="NT_Vehicle_Trailer" id="NT_Vehicle_Trailer" <?php echo $record['parked_trailer']?> placeholder="Trailer Number" style="text-transform: uppercase;">
+                 <input autocomplete="new-password" type="text" class="form-control" name="NT_Vehicle_Trailer" id="NT_Vehicle_Trailer" <?php echo $record['parked_trailer']?> placeholder="Trailer Number" style="text-transform: uppercase;">
                </div>
                <div class="form-group">
                  <label for="T_Vehicle_Type">Vehicle Type</label>

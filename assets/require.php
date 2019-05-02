@@ -201,6 +201,12 @@
     event.preventDefault();
     $('#ANPR_Exit_Log').modal('toggle');
   }
+  //ANPR Exit Log
+  function Account_ChangeService(str) {
+    event.preventDefault();
+    $('#Account_ServiceSwap').modal('toggle');
+    $('#Acc_PayID').val(str);
+  }
   //Search Functions
   $(document).ready(function() {
     //ANPR Search
@@ -1172,7 +1178,7 @@
     $('#ANPR_Add_Date').val(datetime);
   });
   //Change PW
-  $(document).on('click', '#User_Change_PW_Confirm', function(){
+  $(document).on('click', '#User_Change_PW_Confirm', function() {
     var data = $('#User_Change_PW_Form').serialize();
     var Pass1 = $('#User_New_Password').val();
     var Pass2 = $('#User_New_Password_Confirm').val();
@@ -1188,6 +1194,18 @@
     } else {
       alert("Are you sure those passwords match? Try again");
     }
+  });
+  //Change PW
+  $(document).on('click', '#Account_ChangeServiceBtn', function() {
+    var data = $('#Account_ChangeServiceForm').serialize();
+    $.ajax({
+      url: "<?php echo URL?>/ajax-handler.php?handler=Account_ChangeService",
+      type: "POST",
+      data: data,
+      success:function() {
+        $('#Account_ServiceSwap').modal('toggle');
+      }
+    })
   });
   //Update Exit
   $('#exitButton').click(function(){

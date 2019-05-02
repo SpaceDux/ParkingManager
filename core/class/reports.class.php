@@ -34,6 +34,7 @@
       $html = '<table class="table table-bordered table-hover">
                   <thead>
                     <tr>
+                      <th scope="col">Company</th>
                       <th scope="col">Plate</th>
                       <th scope="col">Trailer</th>
                       <th scope="col">Vehicle Type</th>
@@ -98,6 +99,7 @@
 
           $key2 = $row['payment_ref'];
           $html .= '<tr '.$class.' style="color: #000;">';
+          $html .= '<td>'.$row['parked_company'].'</td>';
           $html .= '<td>'.$row['parked_plate'].'</td>';
           $html .= '<td>'.$row['parked_trailer'].'</td>';
           $html .= '<td>'.$this->vehicle->Vehicle_Type_Info($row['parked_type'], "type_shortName").'</td>';
@@ -128,6 +130,7 @@
             $html .= '<td> £'.$row['payment_price_gross'].'</td>';
             $html .= '<td> £'.$row['payment_price_net'].'</td>';
             $html .= '<td>Account: '.$this->account->Account_GetInfo($row['payment_account_id'], "account_name").'.</td>';
+            $html .= '<td colspan="2"><button class="btn btn-primary" onClick="Account_ChangeService('.$row['id'].')"><i class="fa fa-cog"></i> Service</button></td>';
             $html .= '</tr>';
           }
         }
