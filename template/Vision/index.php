@@ -8,23 +8,19 @@
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/vision.css">
   </head>
   <body>
-    <!-- <div class="TopBar">
-      <div class="Logo">
-        Parking<b>Manager</b>
-      </div>
-    </div> -->
     <div class="Login_Body">
       <div class="Login_FormArea">
         <div class="Body">
           <img src="{URL}/template/{TPL}/img/Roadking.png" alt="">
           <div class="Form">
             <div class="AlertInfo">
-
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">Parking<b>Manager</b> is currently under heavy development. Please report any bugs that may arise immediately<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
             </div>
+            <hr>
+
             <form class="form-group" id="Login_Form">
-              <label>Email Address</label>
-              <input type="text" class="form-control dark" name="Login_Email" placeholder="example@parking.man" autofocus>
-              <label>Password</label>
+              <input type="text" class="form-control dark" name="Login_Email" placeholder="Email Address" autofocus>
+              <hr>
               <input type="password" class="form-control dark" name="Login_Password" placeholder="Password">
             </form>
             <button type="button" id="Login_Form_Btn" class="btn btn-block btn-primary">Login</button>

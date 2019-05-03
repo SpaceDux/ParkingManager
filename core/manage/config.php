@@ -15,5 +15,5 @@
 	$_CONFIG['site']['template'] = 'Vision'; //Krypton Template System, Select the Template Directory
 
 	// Misc
-	$_CONFIG['misc']['copy'] = 'ParkingManager 4 | Copyright &copy; 2019 Roadking Truckstops'; //Krypton Template System, Select the Template Directory
+	$_CONFIG['misc']['copy'] = 'ParkingManager 4 | Copyright &copy; 2019 Ryan W. with Roadking Truckstops'; //Krypton Template System, Select the Template Directory
 ?>

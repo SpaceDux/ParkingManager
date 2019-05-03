@@ -6,7 +6,6 @@
     // Authorize user session(s)
     public function Login($email = '', $password = '')
     {
-      global $_CONFIG;
       $this->mysql = new MySQL;
       if(!empty(strip_tags($email)) && !empty(strip_tags($password))) {
         $query = $this->mysql->dbc->prepare("SELECT id, email, password FROM pm_users WHERE email = ?");
@@ -52,15 +51,12 @@
     {
       $this->mysql = new MySQL;
       $id = $_SESSION['id'];
-
       if(isset($_SESSION['id'])) {
         $query = $this->mysql->dbc->prepare("UPDATE pm_users SET active = 0 WHERE id = ?");
         $query->bindParam(1, $id);
         $query->execute();
         session_destroy();
         $this->mysql = null;
-      } else {
-
       }
     }
     // Checks if session exists

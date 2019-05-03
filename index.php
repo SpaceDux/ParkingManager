@@ -6,6 +6,4 @@ require 'global.php';
 	if (!isset($_GET['page'])) {
 		header("Location: /index");
 	}
-
-	// $user->Logout();
 ?>
