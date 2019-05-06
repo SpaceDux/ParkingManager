@@ -224,7 +224,20 @@ $('#Parking_Form_EN').on('submit', function() {
   event.preventDefault();
 });
 // Functions {
-
+//String Breakup for fuel card
+$(document).on('keyup', '#NT_Process_FuelStrip', function() {
+  var FuelString = $(this).val();
+  $.ajax({
+    url: "<?php echo URL?>/ajax-handler.php?handler=ETP_CardBreak",
+    type: "POST",
+    data: {FuelString:FuelString},
+    dataType: "json",
+    success:function(data) {
+      $("#NT_FuelCard_Number").val(data.cardno);
+      $("#NT_FuelCard_Date").val(data.expiry);
+    }
+  })
+});
 // }
 
 //TextBoxes {

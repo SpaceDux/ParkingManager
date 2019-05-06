@@ -191,7 +191,7 @@
       $this->vehicles = null;
     }
     // Kiosk Payments
-    function Kiosk_Begin_Parking_Transaction($Plate, $Sys, $ID, $Type, $PayType, $Service, $FuelCardNo, $FuelCardEx) {
+    function Kiosk_Begin_Parking_Transaction($Plate, $Sys, $ID, $Type, $PayType, $Service, $FuelCardNo = '', $FuelCardEx = '') {
       $this->mysql = new MySQL;
       $this->mssql = new MSSQL;
       $this->anpr = new ANPR;

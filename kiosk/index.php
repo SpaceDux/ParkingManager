@@ -287,9 +287,9 @@
                 DKV will NOT accept payments that come with a meal voucher!
               </div>
               <div class="Box">
-                <input type="password" id="Kiosk_FuelCard" class="form-control form-control-lg" name="Kiosk_FuelCard" value="">
-                <input type="text" id="Kiosk_FuelCard_No" class="form-control" name="Kiosk_FuelCard_No" value="">
-                <input type="text" id="Kiosk_FuelCard_Ex" class="form-control" name="Kiosk_FuelCard_Ex" value="">
+                <input type="password" id="NT_Process_FuelStrip" class="form-control form-control-lg" name="Kiosk_FuelCard" value="">
+                <input type="hidden" id="NT_FuelCard_Number" class="form-control" name="Kiosk_FuelCard_No" value="">
+                <input type="hidden" id="NT_FuelCard_Date" class="form-control" name="Kiosk_FuelCard_Ex" value="">
               </div>
             </div>
             <!-- Buttons -->
