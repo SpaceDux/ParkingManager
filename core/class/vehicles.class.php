@@ -35,11 +35,9 @@
         <tbody>';
         foreach ($result as $row) {
           //Get The right Path now.
-          if($this->user->userInfo("campus") == 1) {
+          if(isset($campus)) {
             $patch = str_replace("D:\ETP ANPR\images", $this->pm->PM_SiteInfo($campus, 'site_anpr_img'), $row['Patch']);
-          } else if($this->user->userInfo("campus") == 2) {
-            $patch = str_replace("F:\ETP ANPR\images", $this->pm->PM_SiteInfo($campus, 'site_anpr_img'), $row['Patch']);
-          } else if ($this->user->userInfo("campus") == 0) {
+          } else {
             $patch = "";
           }
           $number = $this->findHour($row['Capture_Date'], "");

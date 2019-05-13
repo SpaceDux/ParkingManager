@@ -104,37 +104,21 @@
     //ANPR Add Vehicle
     function ANPR_AddPlate($plate, $time) {
       //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID, BarcodeExpression)
-      $this->user = new User;
       $this->mssql = new MSSQL;
 
       $plate = strtoupper($plate);
-
-      if($this->user->userInfo("campus") == 1) {
-        if(!empty($plate)) {
-          $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane 01', :capDate, null, 'RoadKing - Parc Cybi Holyhead', '0', null, '0', :plate2, null, null, :capDate2, null, '')");
-          $stmt->bindParam(':plate', $plate);
-          $stmt->bindParam(':capDate', $time);
-          $stmt->bindParam(':plate2', $plate);
-          $stmt->bindParam(':capDate2', $time);
-          $stmt->execute();
-        } else {
-          die("Must contain a valid plate");
-        }
-      } else if($this->user->userInfo("campus") == 2) {
-        if(!empty($plate)) {
-          //Includes latest anpr update.
-          $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane 01', :capDate, :createdDate, null, 'RoadKing - The New Hollies', '0', null, '0', :plate2, null, null, :capDate2, null, '', '', '')");
-          $stmt->bindParam(':plate', $plate);
-          $stmt->bindParam(':capDate', $time);
-          $stmt->bindParam(':createdDate', $time);
-          $stmt->bindParam(':plate2', $plate);
-          $stmt->bindParam(':capDate2', $time);
-          $stmt->execute();
-        } else {
-          die("Must contain a valid plate");
-        }
+      if(!empty($plate)) {
+        //Includes latest anpr update.
+        $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane 01', :capDate, :createdDate, null, 'RoadKing - Added VIA PM', '0', null, '0', :plate2, null, null, :capDate2, null, '', '', '')");
+        $stmt->bindParam(':plate', $plate);
+        $stmt->bindParam(':capDate', $time);
+        $stmt->bindParam(':createdDate', $time);
+        $stmt->bindParam(':plate2', $plate);
+        $stmt->bindParam(':capDate2', $time);
+        $stmt->execute();
+      } else {
+        die("Must contain a valid plate");
       }
-
 
       $this->mssql = null;
       $this->user = null;

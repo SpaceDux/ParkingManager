@@ -15,12 +15,8 @@
       $campus = $this->user->userInfo("campus");
       // $this->user = null;
       $expiry = date("Y-m-d H:i:s");
-
-      if($campus == 2) {
-        $anpr = $this->mssql->dbc->prepare("SELECT TOP 20 * FROM ANPR_REX_Archive WHERE Lane_ID = 2 ORDER BY Capture_Date DESC");
-      } else {
-        $anpr = $this->mssql->dbc->prepare("SELECT TOP 20 * FROM ANPR_REX WHERE Lane_ID = 2 ORDER BY Capture_Date DESC");
-      }
+      
+      $anpr = $this->mssql->dbc->prepare("SELECT TOP 20 * FROM ANPR_REX_Archive WHERE Lane_ID = 2 ORDER BY Capture_Date DESC");
       $anpr->execute();
       foreach ($anpr->fetchAll() as $row) {
         $plate = $row['Plate'];
