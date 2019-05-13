@@ -71,7 +71,7 @@ a:hover, a:focus {
   overflow: hidden;
   padding: 0;
   box-sizing: border-box;
-  width: 800px;
+  width: auto;
   text-align: center;
   height: 70px;
 }
@@ -85,6 +85,7 @@ a:hover, a:focus {
   font-family: 'Poppins', sans-serif;
   padding: 0 10px;
   height: 70px;
+  cursor: pointer;
 }
 .Navigation_Bar > ul > li > a {
   display: block;
@@ -98,6 +99,12 @@ a:hover, a:focus {
 }
 .Navigation_Bar > ul > li.Selected {
   background: #232323;
+  color: #fff;
+
+}
+.Navigation_Bar > ul > li:hover {
+  background: #232323;
+  color: #fff;
 }
 .Navigation_Bar > ul > li > a i {
   font-size: 18px;
@@ -106,6 +113,39 @@ a:hover, a:focus {
   text-align: center;
   display: block;
   line-height: 40px;
+}
+.Navigation_Bar > ul > li > .Dropdown_Menu {
+  display: block;
+  z-index: 1000;
+  height: auto;
+  width: 280px;
+  position: absolute;
+  background: #232323;
+  margin-left: -10px;
+  margin-top: 15px;
+  display: none;
+  padding-bottom: 5px;
+  border-radius: 0 0 5px 5px
+}
+.Navigation_Bar > ul > li > .Dropdown_Menu > a {
+  display: block;
+  color: #efefef;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 0px;
+  padding: 0 25px;
+  line-height: 10px;
+  height: 60px;
+  line-height: 60px;
+  text-transform:uppercase;
+  text-align: left;
+  border-bottom: 0.2px solid #191919;
+}
+.Navigation_Bar > ul > li > .Dropdown_Menu > a:hover {
+  background: #191919;
+}
+.Navigation_Bar > ul > li:hover .Dropdown_Menu {
+  display: block;
 }
 /* Misc Styling */
 .Login_Body {

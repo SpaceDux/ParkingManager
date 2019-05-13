@@ -22,8 +22,9 @@
               <input type="text" class="form-control dark" name="Login_Email" placeholder="Email Address" autofocus>
               <hr>
               <input type="password" class="form-control dark" name="Login_Password" placeholder="Password">
+              <hr>
+              <input type="submit" class="btn btn-block btn-primary" value="Sign In">
             </form>
-            <button type="button" id="Login_Form_Btn" class="btn btn-block btn-primary">Login</button>
           </div>
         </div>
         <div class="Footer">

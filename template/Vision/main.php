@@ -17,28 +17,49 @@
     <div class="Navigation_Bar">
       <ul>
         <li class="Selected">
-          <a href="{URL}/main">
+          <a href="{URL}/index/main">
             <i class="fa fa-tachometer-alt"></i>
             DASHBOARD
           </a>
         </li>
         <li>
-          <a href="{URL}/main">
+          <a href="#">
             <i class="fa fa-truck"></i>
             VEHICLE TOOLS
           </a>
+          <div class="Dropdown_Menu">
+            <a href="#yc">Yard Check</a>
+            <a href="#se">Something else</a>
+          </div>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fa fa-pound-sign"></i>
+            PAYMENT TOOLS
+          </a>
+          <div class="Dropdown_Menu">
+            <a href="#yc">Transaction History</a>
+          </div>
         </li>
         <li>
           <a href="{URL}/main">
             <i class="fa fa-file-invoice"></i>
             ACCOUNT TOOLS
           </a>
+          <div class="Dropdown_Menu">
+            <a href="#yc">Account Management</a>
+            <a href="#se">Reports</a>
+          </div>
         </li>
         <li>
           <a href="{URL}/main">
             <i class="fa fa-cogs"></i>
             P<b>M</b> TOOLS
           </a>
+          <div class="Dropdown_Menu">
+            <a href="#yc">Notices</a>
+            <a href="#se">User Management</a>
+          </div>
         </li>
       </ul>
     </div>

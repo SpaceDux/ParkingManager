@@ -6,6 +6,8 @@
     // Authorize user session(s)
     public function Login($email = '', $password = '')
     {
+      global $_CONFIG;
+
       $this->mysql = new MySQL;
       if(!empty(strip_tags($email)) && !empty(strip_tags($password))) {
         $query = $this->mysql->dbc->prepare("SELECT id, email, password FROM pm_users WHERE email = ?");
@@ -22,7 +24,7 @@
             $set->execute();
             $result = [
               'Code' => '0',
-              'Text' => 'Successfully logged in.'
+              'Text' => 'Successfully logged in. You will be redirected in 3 seconds...'
             ];
           } else {
             $result = [
