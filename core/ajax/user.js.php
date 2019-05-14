@@ -20,6 +20,5 @@
       }
     });
   });
-  // User Logout
 
 </script>

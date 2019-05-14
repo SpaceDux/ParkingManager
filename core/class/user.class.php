@@ -58,8 +58,8 @@
         $query->bindParam(1, $id);
         $query->execute();
         session_destroy();
-        $this->mysql = null;
       }
+      $this->mysql = null;
     }
     // Checks if session exists
     public function LoggedIn()
@@ -74,6 +74,24 @@
         ];
       }
       echo json_encode($return);
+    }
+    // User Info
+    public function Info($what)
+    {
+      $this->mysql = new MySQL;
+
+      if(isset($_SESSION['id'])) {
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_users WHERE id = ?");
+        $stmt->bindParam(1, $_SESSION['id']);
+        if($stmt->execute()) {
+          $result = $stmt->fetch();
+          return $result[$what];
+        } else {
+          echo "ERROR";
+        }
+      }
+
+      $this->mysql = null;
     }
   }
 

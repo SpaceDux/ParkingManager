@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
 
 body {
-    background: #232323;
+    background: #efefef;
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
@@ -27,6 +27,9 @@ a:hover, a:focus {
   border-top: 0.2px solid #484848;
   border-bottom:0.2px solid #484848;
 }
+.mbl_only {
+  display: none !important;
+}
 
 /* Bootstrap Controls */
 .form-control[type="text"], .form-control[type="password"] {
@@ -35,6 +38,12 @@ a:hover, a:focus {
 }
 .form-control[type="text"]::placeholder, .form-control[type="password"]::placeholder {
   color: inherit;
+}
+.table-danger, .table-warning, .table-success {
+  color: #000;
+}
+.table-danger, .table-warning, .table-success {
+  color: #000 !important;
 }
 /* Top Menu Bar */
 .TopBar {
@@ -46,6 +55,7 @@ a:hover, a:focus {
 }
 .TopBar > .Logo {
   height: 50px;
+  width: 250px;
   padding: 0 10px;
   box-sizing:border-box;
   background: #232323;
@@ -54,8 +64,58 @@ a:hover, a:focus {
   line-height: 50px;
   text-align: center;
   color: #efefef;
+  position: absolute;
 }
-
+.TopBar > .Options {
+  list-style: none;
+  display: inline-block;
+  height: 50px;
+  width: auto;
+  box-sizing: border-box;
+  line-height: 50px;
+  margin-left: 254px;
+  margin-top: 0px;
+  padding: 0;
+}
+.TopBar > .Options > a {
+  display: inline-block;
+  height: 100%;
+  width: auto;
+  padding: 0px 10px;
+  color: #4c4c4c;
+  font-size: 23px;
+  border-right: 1px solid #e0e0e0;
+  margin-left: -4px;
+  text-align: center;
+}
+.TopBar > .Options > a:hover {
+  background: #eaeaea;
+}
+.TopBar > .Options-Right {
+  list-style: none;
+  display: inline-block;
+  height: 50px;
+  width: auto;
+  box-sizing: border-box;
+  line-height: 50px;
+  margin-top: 0px;
+  padding: 0;
+  float: right;
+}
+.TopBar > .Options-Right > a {
+  display: inline-block;
+  height: 100%;
+  width: auto;
+  padding: 0px 10px;
+  color: #4c4c4c;
+  font-size: 23px;
+  border-left: 1px solid #e0e0e0;
+  margin-left: -4px;
+  text-align: center;
+}
+.TopBar > .Options-Right > a:hover {
+  background: #eaeaea;
+}
 /* Navigation Bar */
 .Navigation_Bar {
   height: 70px;
@@ -116,7 +176,7 @@ a:hover, a:focus {
 }
 .Navigation_Bar > ul > li > .Dropdown_Menu {
   display: block;
-  z-index: 1000;
+  z-index: 999;
   height: auto;
   width: 280px;
   position: absolute;
@@ -191,6 +251,24 @@ a:hover, a:focus {
 .Wrapper {
   width: 95%;
   height: auto;
-  padding-top: 135px;
+  padding-top: 150px;
   margin: 0 auto;
+}
+.Box {
+  width: 100%;
+  height: auto;
+  background: #fbfbfb;
+  padding: 10px;
+  border-radius: 5px 5px;
+  margin-top: 20px;
+  border: 1px 1px 1px 1px solid #f7f7f7;
+}
+.Box > .Title {
+  font-size: 22px;
+  padding: 0px 10px;
+  width: 100%;
+  border-bottom: 2px solid #4a4a4a;
+  margin-bottom: 10px;
+  font-weight: 300;
+  color: #4a4a4a;
 }

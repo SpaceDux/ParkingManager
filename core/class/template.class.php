@@ -38,6 +38,9 @@
 			$this->Assign('tpl', $_CONFIG['site']['template']); //{TPL} Skin Name
 			$this->Assign('site_name', $_CONFIG['site']['name']); //{SITE_NAME} Site Name
 			$this->Assign('copy', $_CONFIG['misc']['copy']); //{SITE_NAME} Site Name
+			if(isset($_SESSION['id'])) {
+				$this->Assign('fname', $this->user->Info("first_name")); //{FNAME} Active User's first name
+			}
 
 			$this->user = null;
 		}

@@ -13,11 +13,21 @@
       <div class="Logo">
         <a href="{URL}/main">Parking<b>Manager</b></a>
       </div>
+      <div class="Options">
+        <a href="#" class="mbl_only"><i class="fa fa-align-justify"></i></a>
+        <a href="#"><i class="fa fa-search"></i></a>
+        <a href="#"><i class="fa fa-plus"></i></a>
+        <a href="#"><i class="fa fa-key"></i></a>
+      </div>
+      <div class="Options-Right">
+        <a href="#"><i class="fas fa-bell"></i></a>
+        <a href="#"><i class="fa fa-user"></i> {FNAME}</a>
+      </div>
     </div>
     <div class="Navigation_Bar">
       <ul>
         <li class="Selected">
-          <a href="{URL}/index/main">
+          <a href="{URL}/main">
             <i class="fa fa-tachometer-alt"></i>
             DASHBOARD
           </a>
@@ -59,6 +69,7 @@
           <div class="Dropdown_Menu">
             <a href="#yc">Notices</a>
             <a href="#se">User Management</a>
+            <a href="#se">Site Management</a>
           </div>
         </li>
       </ul>
@@ -66,16 +77,162 @@
     <div class="Wrapper">
       <div class="row">
         <div class="col-md-3">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          STATS
         </div>
         <div class="col-md-3">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          STATS
         </div>
         <div class="col-md-3">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          STATS
         </div>
         <div class="col-md-3">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          STATS
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-7">
+          <div class="Box">
+            <div class="Title">
+              <i class="fa fa-video" style="color: red; padding-right: 10px;"></i>  Live ANPR Feed
+            </div>
+            <table class="table table-striped table-dark table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Plate</th>
+                  <th scope="col">Time IN</th>
+                  <th scope="col">Patch</th>
+                  <th scope="col"><i class="fa fa-cog"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <td>Larry</td>
+                  <td>the Bird</td>
+                  <td>@twitter</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="Box">
+            <div class="Title">
+              PAID Feed
+            </div>
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Plate</th>
+                  <th scope="col">Time IN</th>
+                  <th scope="col">Patch</th>
+                  <th scope="col"><i class="fa fa-cog"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <td>Larry</td>
+                  <td>the Bird</td>
+                  <td>@twitter</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="Box">
+            <div class="Title">
+              RENEWALS Feed
+            </div>
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Company</th>
+                  <th scope="col">Plate</th>
+                  <th scope="col">Time IN</th>
+                  <th scope="col"><i class="fa fa-cog"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr class="table-warning">
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                  <td>@fat</td>
+                </tr>
+                <tr class="table-danger">
+                  <td>Larry</td>
+                  <td>the Bird</td>
+                  <td>@twitter</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="Box">
+            <div class="Title">
+              EXIT Feed
+            </div>
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Company</th>
+                  <th scope="col">Plate</th>
+                  <th scope="col">Time IN</th>
+                  <th scope="col"><i class="fa fa-cog"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr class="table-warning">
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                  <td>@fat</td>
+                </tr>
+                <tr class="table-danger">
+                  <td>Larry</td>
+                  <td>the Bird</td>
+                  <td>@twitter</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
