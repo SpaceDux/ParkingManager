@@ -518,7 +518,7 @@
         return $row['code'];
       }
     }
-    //
+    //Printer Selector
     function ChoosePrinter_Dropdown() {
       $this->mysql = new MySQL;
 

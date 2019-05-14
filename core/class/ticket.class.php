@@ -350,11 +350,7 @@
         //WIFI
         while ($i++ <= $wifi_count) {
           // Generate Voucher
-          if($campus == 2) {
-            $code = "";
-          } else {
-            $code = $this->pm->Create_WiFi_Voucher($campus);
-          }
+          $code = $this->pm->Create_WiFi_Voucher($campus);
           //Shower Ticket
           $printer -> setJustification(Printer::JUSTIFY_CENTER);
           if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
