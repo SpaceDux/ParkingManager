@@ -17,7 +17,6 @@
               <div class="alert alert-primary alert-dismissible fade show" role="alert">Parking<b>Manager</b> is currently under heavy development. Please report any bugs that may arise immediately<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
             </div>
             <hr>
-
             <form class="form-group" id="Login_Form">
               <input type="text" class="form-control dark" name="Login_Email" placeholder="Email Address" autofocus>
               <hr>
@@ -26,9 +25,6 @@
               <input type="submit" class="btn btn-block btn-primary" value="Sign In">
             </form>
           </div>
-        </div>
-        <div class="Footer">
-          {COPY}
         </div>
       </div>
     </div>

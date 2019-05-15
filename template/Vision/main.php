@@ -49,6 +49,7 @@
           </a>
           <div class="Dropdown_Menu">
             <a href="#yc">Transaction History</a>
+            <a href="#yc">Settlement Structure</a>
           </div>
         </li>
         <li>
@@ -133,9 +134,10 @@
             <table class="table table-striped table-hover table-bordered">
               <thead>
                 <tr>
+                  <th scope="col">Company</th>
                   <th scope="col">Plate</th>
                   <th scope="col">Time IN</th>
-                  <th scope="col">Patch</th>
+                  <th scope="col">T.ID</th>
                   <th scope="col"><i class="fa fa-cog"></i></th>
                 </tr>
               </thead>
@@ -145,9 +147,11 @@
                   <td>Otto</td>
                   <td>@mdo</td>
                   <td>@mdo</td>
+                  <td>@mdo</td>
                 </tr>
                 <tr>
                   <td>Jacob</td>
+                  <td>Thornton</td>
                   <td>Thornton</td>
                   <td>@fat</td>
                   <td>@fat</td>
@@ -155,6 +159,7 @@
                 <tr>
                   <td>Larry</td>
                   <td>the Bird</td>
+                  <td>@twitter</td>
                   <td>@twitter</td>
                   <td>@twitter</td>
                 </tr>
@@ -207,7 +212,7 @@
                 <tr>
                   <th scope="col">Company</th>
                   <th scope="col">Plate</th>
-                  <th scope="col">Time IN</th>
+                  <th scope="col">Time OUT</th>
                   <th scope="col"><i class="fa fa-cog"></i></th>
                 </tr>
               </thead>
@@ -218,17 +223,29 @@
                   <td>@mdo</td>
                   <td>@mdo</td>
                 </tr>
-                <tr class="table-warning">
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                  <td>@fat</td>
+                <tr>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
                 </tr>
-                <tr class="table-danger">
-                  <td>Larry</td>
-                  <td>the Bird</td>
-                  <td>@twitter</td>
-                  <td>@twitter</td>
+                <tr>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                  <td>@mdo</td>
                 </tr>
               </tbody>
             </table>
