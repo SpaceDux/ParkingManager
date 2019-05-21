@@ -535,6 +535,23 @@
 
       $this->mysql = null;
     }
+    // Settlement Groups
+    function PM_Settlement_Groups_Dropdown() {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_settlement_groups ORDER BY group_campus ASC");
+      $stmt->execute();
+
+      $html = '';
+
+      foreach($stmt->fetchAll() as $row) {
+        $html .= '<option value="'.$row['id'].'">'.$row['group_name'].' - '.$row['group_campus'].'</option>';
+      }
+
+      echo $html;
+
+      $this->mysql = null;
+    }
     function PM_PrinterInfo($printer, $what) {
       $this->mysql = new MySQL;
 
@@ -557,6 +574,86 @@
       } else if ($campus == 2) {
         $this->user->User_FastUpdate($id, "campus", 1);
       }
+      $this->user = null;
+    }
+    function Test($date1, $date2) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $campus = $this->user->userInfo("campus");
+      $date1 = date("Y-m-d 21:00:00", strtotime($date1));
+      $date2 = date("Y-m-d 21:00:00", strtotime($date2));
+      $html = "";
+
+      // Group Cash
+      $group = $this->mysql->dbc->prepare("SELECT * FROM pm_settlement_groups WHERE group_campus = ? ORDER BY group_order ASC");
+      $group->bindParam(1, $campus);
+      $group->execute();
+      $group_results = $group->fetchAll();
+      foreach($group_results as $row) {
+        $value=0;
+        $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 1 AND payment_settlement_group = ? AND payment_deleted < 1 AND payment_date BETWEEN ? AND ?");
+        $srv->bindParam(1, $campus);
+        $srv->bindParam(2, $row['id']);
+        $srv->bindParam(3, $date1);
+        $srv->bindParam(4, $date2);
+        $srv->execute();
+        foreach($srv->fetchAll() as $service) {
+          $multi = $service['payment_settlement_multi'];
+          $value += $multi;
+        }
+        $html .= "<br>".$row['group_name']." - ".$value;
+      }
+      $html .= "<Br><br>";
+      // Card
+      foreach($group_results as $row) {
+        $value=0;
+        $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 2 AND payment_settlement_group = ? AND payment_deleted < 1 AND payment_date BETWEEN ? AND ?");
+        $srv->bindParam(1, $campus);
+        $srv->bindParam(2, $row['id']);
+        $srv->bindParam(3, $date1);
+        $srv->bindParam(4, $date2);
+        $srv->execute();
+        foreach($srv->fetchAll() as $service) {
+          $multi = $service['payment_settlement_multi'];
+          $value += $multi;
+        }
+        $html .= "<br>".$row['group_name']." - ".$value;
+      }
+      $html .= "<Br><br>";
+      // Acc
+      foreach($group_results as $row) {
+        $value=0;
+        $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 3 AND payment_settlement_group = ? AND payment_deleted < 1 AND payment_date BETWEEN ? AND ?");
+        $srv->bindParam(1, $campus);
+        $srv->bindParam(2, $row['id']);
+        $srv->bindParam(3, $date1);
+        $srv->bindParam(4, $date2);
+        $srv->execute();
+        foreach($srv->fetchAll() as $service) {
+          $multi = $service['payment_settlement_multi'];
+          $value += $multi;
+        }
+        $html .= "<br>".$row['group_name']." - ".$value;
+      }
+      $html .= "<Br><br>";
+      // ETP
+      foreach($group_results as $row) {
+        $value=0;
+        $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type >= 4 AND payment_settlement_group = ? AND payment_deleted < 1 AND payment_date BETWEEN ? AND ?");
+        $srv->bindParam(1, $campus);
+        $srv->bindParam(2, $row['id']);
+        $srv->bindParam(3, $date1);
+        $srv->bindParam(4, $date2);
+        $srv->execute();
+        foreach($srv->fetchAll() as $service) {
+          $multi = $service['payment_settlement_multi'];
+          $value += $multi;
+        }
+        $html .= "<br>".$row['group_name']." - ".$value;
+      }
+      echo $html;
+
+      $this->mysql = null;
       $this->user = null;
     }
   }

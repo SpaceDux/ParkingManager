@@ -1263,5 +1263,84 @@
 
       $this->mysql = null;
     }
+    // End of Day settlement
+    function EOD_Settlement($date1, $date2) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->pm = new PM;
+      $this->payment = new Payment;
+      $campus = $this->user->userInfo("campus");
+      $printer_id = $this->user->userInfo("printer");
+      if($campus == 2) {
+        $date1 = date("Y-m-d 21:30:00", strtotime($date1));
+        $date2 = date("Y-m-d 21:30:00", strtotime($date2));
+      } else {
+        $date1 = date("Y-m-d 21:00:00", strtotime($date1));
+        $date2 = date("Y-m-d 21:00:00", strtotime($date2));
+      }
+
+      //Query Groups
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_settlement_groups WHERE group_deleted = 0 AND group_campus = ? ORDER BY group_order ASC");
+      $stmt->bindParam(1, $campus);
+      $stmt->execute();
+
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/assets/img/printer/".$campus;
+      try {
+        //Printer Connection
+        $connector = new WindowsPrintConnector('smb://'.$this->pm->PM_PrinterInfo($printer_id, "printer_user").':'.$this->pm->PM_PrinterInfo($printer_id, "printer_pass").'@'.$this->pm->PM_PrinterInfo($printer_id, "printer_ip").'/'.$this->pm->PM_PrinterInfo($printer_id, "printer_sharedname").'');
+        $printer = new Printer($connector);
+        $logo = EscposImage::load($img_dir."/logo.png", false);
+        //Settlement
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        if($this->pm->PM_PrinterInfo($printer_id, "printer_bitImage") == 0) {
+          $printer -> graphics($logo);
+        } else {
+          $printer -> bitImage($logo);
+        }
+        $printer -> feed();
+        $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
+        $printer -> setTextSize(1, 1);
+        // Name of Ticket
+        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> setTextSize(1, 2);
+        $printer -> setFont(Printer::FONT_A);
+        $printer -> text("END OF DAY PARKING SETTLEMENT\n");
+        $printer -> setTextSize(1, 1);
+        $printer -> setFont(Printer::FONT_A);
+        $printer -> text(date("d/m/y H:i", strtotime($date1))." - ".date("d/m/y H:i", strtotime($date2)));
+        $printer -> feed(2);
+        $printer -> selectPrintMode();
+        $value = 0;
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text("Cash Figures");
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        foreach($stmt->fetchAll() as $row) {
+          if($row['group_type'] == 1) {
+            // Query
+            $col = $this->Printer_Columns($row['group_name'], $value, 30, 10, 4);
+            $printer -> text($col);
+          } else if ($row['group_type'] == 2) {
+            // Query
+            $col = $this->Printer_Columns($row['group_name'], $value, 30, 10, 4);
+            $printer -> text($col);
+          } else if ($row['group_type'] == 3) {
+            // Query
+            $col = $this->Printer_Columns($row['group_name'], $value, 30, 10, 4);
+            $printer -> text($col);
+          } else if ($row['group_type'] == 4) {
+            // Query
+            $col = $this->Printer_Columns($row['group_name'], $value, 30, 10, 4);
+            $printer -> text($col);
+          }
+
+        }
+        $printer -> feed(2);
+        $printer -> cut(Printer::CUT_PARTIAL);
+      } finally {
+        $printer -> close();
+      }
+      $this->mysql = null;
+    }
   }
 ?>

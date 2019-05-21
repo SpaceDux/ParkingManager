@@ -280,6 +280,23 @@
               </div>
             </div>
           </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="Service_WiFi_Amount">Settlement Group</label>
+                <select id="Service_Settlement_Group" name="Service_Settlement_Group" class="form-control">
+                  <?php $pm->PM_Settlement_Groups_Dropdown(); ?>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="Service_Settlement_Multi">Settlement Multiplier</label>
+                <input type="number" id="Service_Settlement_Multi" name="Service_Settlement_Multi" class="form-control" placeholder="0" value="0" required>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-body">
           <div class="modal-footer">
@@ -459,6 +476,23 @@
                   <option value="0">No</option>
                   <option value="1">Yes</option>
                 </select>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="Service_WiFi_Amount">Settlement Group</label>
+                <select id="Service_Settlement_Group_Update" name="Service_Settlement_Group_Update" class="form-control">
+                  <?php $pm->PM_Settlement_Groups_Dropdown(); ?>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="Service_Settlement_Multi">Settlement Multiplier</label>
+                <input type="number" id="Service_Settlement_Multi_Update" name="Service_Settlement_Multi_Update" class="form-control" value="0" required>
               </div>
             </div>
           </div>

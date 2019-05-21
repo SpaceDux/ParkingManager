@@ -76,6 +76,8 @@
         $('#Service_Active_Update').val(data.service_active);
         $('#Service_Discount_Amount_Update').val(data.service_discount_amount);
         $('#Service_WiFi_Amount_Update').val(data.service_wifi_amount);
+        $('#Service_Settlement_Group_Update').val(data.service_settlement_group);
+        $('#Service_Settlement_Multi_Update').val(data.service_settlement_multi);
         $('#Payment_Service_UpdateModal').modal('toggle');
       }
     })

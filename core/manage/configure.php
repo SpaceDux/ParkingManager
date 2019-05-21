@@ -19,7 +19,7 @@
   $_CONFIG['mysql']['port'] = '3306'; //MySQL Server: IP Address
   $_CONFIG['mysql']['user'] = 'root'; //MySQL Server: User
   $_CONFIG['mysql']['pass'] = ''; //MySQL Server: Password
-  $_CONFIG['mysql']['database'] = 'parking_manager'; //MySQL Server: Database name
+  $_CONFIG['mysql']['database'] = 'new_rkpm'; //MySQL Server: Database name
 
   /*
     ParkingManager Configuration + Settings

@@ -123,7 +123,7 @@
       foreach($result as $type) {
         $id = $type['id'];
         $html .= '<tr class="table table-primary"><td colspan="15">'.$type['type_name'].'</td></tr>';
-        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_vehicles = ? AND service_campus = ? ORDER BY service_expiry, service_price_gross ASC");
+        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_vehicles = ? AND service_campus = ? AND service_deleted < 1 ORDER BY service_expiry, service_price_gross ASC");
         $query->bindParam(1, $id);
         $query->bindParam(2, $site);
         $query->execute();
@@ -254,11 +254,11 @@
       $this->mysql = null;
     }
     //Add Transaction
-    function Payment_Transaction_Add($ANPRKey, $plate, $company, $pay_type, $service, $service_name, $gross, $net, $author, $date, $account, $campus, $ref, $etp, $group, $vehicle_type) {
+    function Payment_Transaction_Add($ANPRKey, $plate, $company, $pay_type, $service, $service_name, $gross, $net, $author, $date, $account, $campus, $ref, $etp, $group, $vehicle_type, $settlement_group, $settlement_multi) {
       $this->mysql = new MySQL;
       $this->pm = new PM;
 
-      $sqlPayment = $this->mysql->dbc->prepare("INSERT INTO pm_payments (payment_anprkey, payment_vehicle_plate, payment_company_name, payment_type, payment_service_id, payment_service_name, payment_price_gross, payment_price_net, payment_author, payment_date, payment_account_id, payment_campus, payment_ref, payment_etp_id, payment_deleted, payment_deleted_comment, payment_service_group, payment_vehicle_type) VALUES (:ANPRKey, :Plate, :Company, :Type, :Service_ID, :Service_Name, :Price_Gross, :Price_Net, :Author, :Cur_Date, :Account, :Campus, :PayRef, :ETP, '0', '', :Group, :Vehicle_Type)");
+      $sqlPayment = $this->mysql->dbc->prepare("INSERT INTO pm_payments (payment_anprkey, payment_vehicle_plate, payment_company_name, payment_type, payment_service_id, payment_service_name, payment_price_gross, payment_price_net, payment_author, payment_date, payment_account_id, payment_campus, payment_ref, payment_etp_id, payment_deleted, payment_deleted_comment, payment_service_group, payment_vehicle_type, payment_settlement_group, payment_settlement_multi) VALUES (:ANPRKey, :Plate, :Company, :Type, :Service_ID, :Service_Name, :Price_Gross, :Price_Net, :Author, :Cur_Date, :Account, :Campus, :PayRef, :ETP, '0', '', :Group, :Vehicle_Type, :Settlement_Group, :Settlement_Multi)");
       $sqlPayment->bindParam(':ANPRKey', $ANPRKey);
       $sqlPayment->bindParam(':Plate', $plate);
       $sqlPayment->bindParam(':Company', $company);
@@ -275,6 +275,8 @@
       $sqlPayment->bindParam(':ETP', $etp);
       $sqlPayment->bindParam(':Group', $group);
       $sqlPayment->bindParam(':Vehicle_Type', $vehicle_type);
+      $sqlPayment->bindParam(':Settlement_Group', $settlement_group);
+      $sqlPayment->bindParam(':Settlement_Multi', $settlement_multi);
       if($sqlPayment->execute()) {
         $newDate = date("D - H:i", strtotime($date));
         if($pay_type == 1) {
@@ -320,12 +322,12 @@
       $this->mysql = null;
     }
     //Payment service update
-    function Payment_Service_Update($id, $name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $types, $meal_amount, $shower_amount, $group, $etpid, $active, $wifi_amount, $discount_amount) {
+    function Payment_Service_Update($id, $name, $ticket_name, $price_gross, $price_net, $expiry, $cash, $card, $account, $snap, $fuel, $campus, $types, $meal_amount, $shower_amount, $group, $etpid, $active, $wifi_amount, $discount_amount, $settlement_group, $settlement_multi) {
       $this->mysql = new MySQL;
       $this->user = new User;
       $fname = $this->user->userInfo("first_name");
 
-      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ?, service_vehicles = ?, service_ticket_name = ?, service_meal_amount = ?, service_shower_amount = ?, service_group = ?, service_etpid = ?, service_active = ?, service_wifi_amount = ?, service_discount_amount = ? WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("UPDATE pm_services SET service_name = ?, service_price_gross = ?, service_price_net = ?, service_expiry = ?, service_cash = ?, service_card = ?, service_account = ?, service_snap = ?, service_fuel = ?, service_update_author = ?, service_campus = ?, service_vehicles = ?, service_ticket_name = ?, service_meal_amount = ?, service_shower_amount = ?, service_group = ?, service_etpid = ?, service_active = ?, service_wifi_amount = ?, service_discount_amount = ?, service_settlement_group = ?, service_settlement_multi = ? WHERE id = ?");
       $query->bindParam(1, $name);
       $query->bindParam(2, $price_gross);
       $query->bindParam(3, $price_net);
@@ -346,7 +348,9 @@
       $query->bindParam(18, $active);
       $query->bindParam(19, $wifi_amount);
       $query->bindParam(20, $discount_amount);
-      $query->bindParam(21, $id);
+      $query->bindParam(21, $settlement_group);
+      $query->bindParam(22, $settlement_multi);
+      $query->bindParam(23, $id);
       if($query->execute()) {
         echo "Successful";
       } else {
@@ -633,9 +637,11 @@
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
         $group = $this->Payment_ServiceInfo($Service, "service_group");
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
+        $settlement_group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+        $settlement_multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
 
         //Insert Payment data
-        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type, $settlement_group, $settlement_multi);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -696,9 +702,11 @@
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
+        $settlement_group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+        $settlement_multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
 
         //Insert Payment data
-        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, null, $group, $Vehicle_Type, $settlement_group, $settlement_multi);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -760,9 +768,11 @@
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
+        $settlement_group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+        $settlement_multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
 
         //Insert Payment data
-        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account_ID, $campus, $payment_ref, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account_ID, $campus, $payment_ref, null, $group, $Vehicle_Type, $settlement_group, $settlement_multi);
 
         $ref = $this->PaymentInfo($Plate, "payment_ref");
         $pay_id = $this->PaymentInfo($Plate, "id");
@@ -825,13 +835,15 @@
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
         $etpid = $this->Payment_ServiceInfo($Service, "service_etpid");
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
+        $settlement_group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+        $settlement_multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
 
         $return = $this->etp->Proccess_Transaction_SNAP($etpid, $Plate, $Company);
         if($return == FALSE) {
           echo 0;
         } else {
           //Insert Payment data
-          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $return, $group, $Vehicle_Type);
+          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $return, $group, $Vehicle_Type, $settlement_group, $settlement_multi);
 
           $ref = $this->PaymentInfo($Plate, "payment_ref");
           $pay_id = $this->PaymentInfo($Plate, "id");
@@ -896,10 +908,13 @@
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
         $site_vat = $this->pm->PM_SiteInfo($campus, "site_vat");
+        $settlement_group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+        $settlement_multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
+
         $result = $this->etp->Proccess_Transaction_Fuel($etpid, $Plate, $Company, $FuelCardno, $CardExpiry);
         if($result != FALSE) {
           //Insert Payment data
-          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $result, $group, $Vehicle_Type);
+          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $payment_ref, $result, $group, $Vehicle_Type, $settlement_group, $settlement_multi);
 
           $ref = $this->PaymentInfo($Plate, "payment_ref");
           $pay_id = $this->PaymentInfo($Plate, "id");
@@ -960,11 +975,13 @@
         $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
+        $settlement_group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+        $settlement_multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
 
         $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
-        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "1", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group, $Vehicle_Type, $settlement_group, $settlement_multi);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -1014,11 +1031,13 @@
         $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
         $meal_count = $this->Payment_ServiceInfo($Service, "service_meal_amount");
         $service_ticket_name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
+        $settlement_group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+        $settlement_multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
 
         $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
-        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "2", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, null, $group, $Vehicle_Type, $settlement_group, $settlement_multi);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -1064,6 +1083,8 @@
         $price_net = $this->Payment_ServiceInfo($Service, "service_price_net");
         $expiry = date("Y-m-d H:i:s", strtotime($Expiry.'+ '.$service_expiry.' hours'));
         $group = $this->Payment_ServiceInfo($Service, "service_group");
+        $settlement_group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+        $settlement_multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
 
         //Ticket Info
         $shower_count = $this->Payment_ServiceInfo($Service, "service_shower_amount");
@@ -1073,7 +1094,7 @@
         $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
         //SQL Payment
-        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account, $campus, $PayRef, null, $group, $Vehicle_Type);
+        $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "3", $Service, $service_name, $price_gross, $price_net, $name, $current_date, $Account, $campus, $PayRef, null, $group, $Vehicle_Type, $settlement_group, $settlement_multi);
         //ANPR DB SQL
         $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
         $sql_anprTbl->bindParam(1, $expiry);
@@ -1121,6 +1142,8 @@
         $expiry = date("Y-m-d H:i:s", strtotime($Expiry.'+ '.$service_expiry.' hours'));
         $group = $this->Payment_ServiceInfo($Service, "service_group");
         $etpid = $this->Payment_ServiceInfo($Service, "service_etpid");
+        $settlement_group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+        $settlement_multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
 
         $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
 
@@ -1130,7 +1153,7 @@
           //echo "TRANSACTION NOT ADDED";
         } else {
           //SQL Payment
-          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $return, $group, $Vehicle_Type);
+          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "4", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $return, $group, $Vehicle_Type, $settlement_group, $settlement_multi);
           //ANPR DB SQL
           $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
           $sql_anprTbl->bindParam(1, $expiry);
@@ -1180,12 +1203,14 @@
         $expiry = date("Y-m-d H:i:s", strtotime($Expiry.'+ '.$service_expiry.' hours'));
         $group = $this->Payment_ServiceInfo($Service, "service_group");
         $etpid = $this->Payment_ServiceInfo($Service, "service_etpid");
+        $settlement_group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+        $settlement_multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
 
         $result = $this->etp->Proccess_Transaction_Fuel($etpid, $Plate, $Company, $FuelCard, $CardExpiry);
         if($result != FALSE) {
           $Vehicle_Type = $this->vehicles->Vehicle_Update_Type($LogID, $Vehicle_Type);
           //SQL Payment
-          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $result, $group, $Vehicle_Type);
+          $this->Payment_Transaction_Add($ANPRKey, $Plate, $Company, "5", $Service, $service_name, $price_gross, $price_net, $name, $current_date, null, $campus, $PayRef, $result, $group, $Vehicle_Type, $settlement_group, $settlement_multi);
           //ANPR DB SQL
           $sql_anprTbl = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
           $sql_anprTbl->bindParam(1, $expiry);
@@ -1634,6 +1659,7 @@
 
       $this->mysql = null;
     }
+    //
     function Payment_Upate_POST($id, $date) {
       $this->mysql = new MySQL;
 
