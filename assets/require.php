@@ -1097,7 +1097,7 @@
   //Print Ticket Modal Controller
   $(document).on('click', '#NT_Print_Ticket_No', function() {
     event.preventDefault();
-    // window.location.replace("<?php echo URL?>/main");
+    window.location.replace("<?php echo URL?>/main");
   });
   //Account Report Generate
   $(document).on('click', '#GenerateAccountReport', function() {
