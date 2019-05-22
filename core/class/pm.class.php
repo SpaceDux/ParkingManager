@@ -539,7 +539,7 @@
     function PM_Settlement_Groups_Dropdown() {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_settlement_groups ORDER BY group_campus ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_settlement_groups ORDER BY group_campus, group_order ASC");
       $stmt->execute();
 
       $html = '';

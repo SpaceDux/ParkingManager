@@ -132,7 +132,7 @@
   } else if($handler == "Change_User_Password") {
     $user->adminChangePW($_POST['User_ID'], $_POST['User_Password']);
   } else if($handler == "EOD_Settlement") {
-    $ticket->Printer_9PM($_POST['Date1'], $_POST['Date2']);
+    $ticket->EOD_Settlement($_POST['Date1'], $_POST['Date2']);
   } else if($handler == "ETP_CardBreak") {
     $etp->ETP_CardBreak($_POST['FuelString']);
   } else if ($handler == "Account_ChangeService") {

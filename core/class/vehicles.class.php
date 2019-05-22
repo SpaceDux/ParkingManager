@@ -36,7 +36,7 @@
         foreach ($result as $row) {
           //Get The right Path now.
           if(isset($campus)) {
-            $patch = str_replace("D:\ETP ANPR\images", $this->pm->PM_SiteInfo($campus, 'site_anpr_img'), $row['Patch']);
+            $patch = str_replace($this->pm->PM_SiteInfo($campus, 'site_anpr_imgstr'), $this->pm->PM_SiteInfo($campus, 'site_anpr_img'), $row['Patch']);
           } else {
             $patch = "";
           }

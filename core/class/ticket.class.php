@@ -1279,12 +1279,7 @@
         $date2 = date("Y-m-d 21:00:00", strtotime($date2));
       }
 
-      //Query Groups
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_settlement_groups WHERE group_deleted = 0 AND group_campus = ? ORDER BY group_order ASC");
-      $stmt->bindParam(1, $campus);
-      $stmt->execute();
-
-      $img_dir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/assets/img/printer/".$campus;
+      $img_dir = $_SERVER['DOCUMENT_ROOT']."/assets/img/printer/".$campus;
       try {
         //Printer Connection
         $connector = new WindowsPrintConnector('smb://'.$this->pm->PM_PrinterInfo($printer_id, "printer_user").':'.$this->pm->PM_PrinterInfo($printer_id, "printer_pass").'@'.$this->pm->PM_PrinterInfo($printer_id, "printer_ip").'/'.$this->pm->PM_PrinterInfo($printer_id, "printer_sharedname").'');
@@ -1311,29 +1306,92 @@
         $printer -> text(date("d/m/y H:i", strtotime($date1))." - ".date("d/m/y H:i", strtotime($date2)));
         $printer -> feed(2);
         $printer -> selectPrintMode();
-        $value = 0;
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
         $printer -> text("Cash Figures");
         $printer -> setJustification(Printer::JUSTIFY_LEFT);
-        foreach($stmt->fetchAll() as $row) {
-          if($row['group_type'] == 1) {
-            // Query
-            $col = $this->Printer_Columns($row['group_name'], $value, 30, 10, 4);
-            $printer -> text($col);
-          } else if ($row['group_type'] == 2) {
-            // Query
-            $col = $this->Printer_Columns($row['group_name'], $value, 30, 10, 4);
-            $printer -> text($col);
-          } else if ($row['group_type'] == 3) {
-            // Query
-            $col = $this->Printer_Columns($row['group_name'], $value, 30, 10, 4);
-            $printer -> text($col);
-          } else if ($row['group_type'] == 4) {
-            // Query
-            $col = $this->Printer_Columns($row['group_name'], $value, 30, 10, 4);
-            $printer -> text($col);
+        $printer -> feed();
+        // Group Cash
+        $group = $this->mysql->dbc->prepare("SELECT * FROM pm_settlement_groups WHERE group_campus = ? AND group_deleted < 1 ORDER BY group_order ASC");
+        $group->bindParam(1, $campus);
+        $group->execute();
+        $group_results = $group->fetchAll();
+        foreach($group_results as $row) {
+          $value=0;
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 1 AND payment_settlement_group = ? AND payment_deleted < 1 AND payment_date BETWEEN ? AND ?");
+          $srv->bindParam(1, $campus);
+          $srv->bindParam(2, $row['id']);
+          $srv->bindParam(3, $date1);
+          $srv->bindParam(4, $date2);
+          $srv->execute();
+          foreach($srv->fetchAll() as $service) {
+            $multi = $service['payment_settlement_multi'];
+            $value += $multi;
           }
-
+          $line = $this->Printer_Columns($row['group_name']." - ", $value, 30, 10, 4);
+          $printer -> text($line);
+        }
+        $printer -> feed();
+        $printer -> selectPrintMode();
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text("Card Figures");
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        $printer -> feed();
+        foreach($group_results as $row) {
+          $value=0;
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 2 AND payment_settlement_group = ? AND payment_deleted < 1 AND payment_date BETWEEN ? AND ?");
+          $srv->bindParam(1, $campus);
+          $srv->bindParam(2, $row['id']);
+          $srv->bindParam(3, $date1);
+          $srv->bindParam(4, $date2);
+          $srv->execute();
+          foreach($srv->fetchAll() as $service) {
+            $multi = $service['payment_settlement_multi'];
+            $value += $multi;
+          }
+          $line = $this->Printer_Columns($row['group_name']." - ", $value, 30, 10, 4);
+          $printer -> text($line);
+        }
+        $printer -> feed();
+        $printer -> selectPrintMode();
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text("Account Figures");
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        $printer -> feed();
+        foreach($group_results as $row) {
+          $value=0;
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type = 3 AND payment_settlement_group = ? AND payment_deleted < 1 AND payment_date BETWEEN ? AND ?");
+          $srv->bindParam(1, $campus);
+          $srv->bindParam(2, $row['id']);
+          $srv->bindParam(3, $date1);
+          $srv->bindParam(4, $date2);
+          $srv->execute();
+          foreach($srv->fetchAll() as $service) {
+            $multi = $service['payment_settlement_multi'];
+            $value += $multi;
+          }
+          $line = $this->Printer_Columns($row['group_name']." - ", $value, 30, 10, 4);
+          $printer -> text($line);
+        }
+        $printer -> feed();
+        $printer -> selectPrintMode();
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text("ETP Figures");
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        $printer -> feed();
+        foreach($group_results as $row) {
+          $value=0;
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_payments WHERE payment_campus = ? AND payment_type >= 4 AND payment_settlement_group = ? AND payment_deleted < 1 AND payment_date BETWEEN ? AND ?");
+          $srv->bindParam(1, $campus);
+          $srv->bindParam(2, $row['id']);
+          $srv->bindParam(3, $date1);
+          $srv->bindParam(4, $date2);
+          $srv->execute();
+          foreach($srv->fetchAll() as $service) {
+            $multi = $service['payment_settlement_multi'];
+            $value += $multi;
+          }
+          $line = $this->Printer_Columns($row['group_name']." - ", $value, 30, 10, 4);
+          $printer -> text($line);
         }
         $printer -> feed(2);
         $printer -> cut(Printer::CUT_PARTIAL);
