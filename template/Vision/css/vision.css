@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
 
 html, body {
-    background: #efefef;
+    background: #dedede;
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
@@ -83,6 +83,9 @@ a:hover, a:focus {
   color: #efefef;
   position: absolute;
 }
+.TopBar > .Logo_mbl {
+  display: none;
+}
 .TopBar > .Options {
   list-style: none;
   display: inline-block;
@@ -100,7 +103,7 @@ a:hover, a:focus {
   width: auto;
   padding: 0px 10px;
   color: #4c4c4c;
-  font-size: 23px;
+  font-size: 21px;
   border-right: 1px solid #e0e0e0;
   margin-left: -4px;
   text-align: center;
@@ -125,7 +128,7 @@ a:hover, a:focus {
   width: auto;
   padding: 0px 10px;
   color: #4c4c4c;
-  font-size: 23px;
+  font-size: 21px;
   border-left: 1px solid #e0e0e0;
   margin-left: -4px;
   text-align: center;
@@ -268,15 +271,14 @@ a:hover, a:focus {
 .Wrapper {
   width: 95%;
   height: auto;
-  padding-top: 150px;
+  padding-top: 140px;
   margin: 0 auto;
 }
 .Box {
   width: 100%;
   height: auto;
-  background: #fbfbfb;
+  background: #efefef;
   padding: 10px;
-  border-radius: 5px 5px;
   margin-top: 20px;
   border: 1px 1px 1px 1px solid #f7f7f7;
 }
@@ -284,13 +286,175 @@ a:hover, a:focus {
   font-size: 22px;
   padding: 0px 10px;
   width: 100%;
-  border-bottom: 2px solid #4a4a4a;
   margin-bottom: 10px;
   font-weight: 300;
   color: #4a4a4a;
 }
+.StatBox {
+  height: 80px;
+  width: 100%;
+  background: #efefef;
+  display: block;
+  border-radius: 4px 4px 4px 4px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
 @media only screen and (max-width: 1200px)  {
   .mbl_only {
     display: inherit !important;
+  }
+  .no_mbl {
+    display: none !important;
+  }
+  .Show {
+    display: block !important;
+  }
+  .TopBar > .Logo {
+    display: none;
+  }
+  .TopBar > .Logo_mbl {
+    height: 50px;
+    width: 90px;
+    padding: 0 10px;
+    box-sizing:border-box;
+    background: #232323;
+    display: inline-block;
+    font-size: 26px;
+    line-height: 50px;
+    text-align: center;
+    color: #efefef;
+    position: absolute;
+  }
+  .TopBar > .Options {
+    list-style: none;
+    display: inline-block;
+    height: 50px;
+    width: auto;
+    box-sizing: border-box;
+    line-height: 50px;
+    margin-left: 94px;
+    margin-top: 0px;
+    padding: 0;
+  }
+  .TopBar > .Options-Right {
+    list-style: none;
+    display: inline-block;
+    height: 50px;
+    width: auto;
+    box-sizing: border-box;
+    line-height: 50px;
+    margin-top: 0px;
+    padding: 0;
+    float: none;
+  }
+  .TopBar > .Options-Right > a {
+    display: inline-block;
+    height: 100%;
+    width: auto;
+    padding: 0px 10px;
+    color: #4c4c4c;
+    border-left: 1px solid #e0e0e0;
+    margin-left: -5px;
+    text-align: center;
+  }
+  /* Navigation Bar */
+  .Navigation_Bar {
+    height: auto;
+    width: 100%;
+    background: #191919;
+    box-shadow: 0 0 20px 0 rgba(0,0,0,1);
+    display: none;
+    margin-top: 50px;
+    z-index: 999;
+  }
+  .Navigation_Bar > ul {
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+    width: auto;
+    text-align: center;
+    height: auto;
+    width: 100%;
+  }
+  .Navigation_Bar > ul > li {
+    display: block;
+    width: auto;
+    box-sizing: border-box;
+    line-height: 100px;
+    font-size: 18px;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    padding: 0 10px;
+    height: 70px;
+    cursor: pointer;
+  }
+  .Navigation_Bar > ul > li > a {
+    display: block;
+    color: #efefef;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 0px;
+    padding-left: 25px;
+    padding-right: 25px;
+    line-height: 10px;
+  }
+  .Navigation_Bar > ul > li.Selected {
+    background: #232323;
+    color: #fff;
+
+  }
+  .Navigation_Bar > ul > li:hover {
+    background: #232323;
+    color: #fff;
+  }
+  .Navigation_Bar > ul > li > a i {
+    font-size: 18px;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    text-align: center;
+    display: block;
+    line-height: 40px;
+  }
+  .Navigation_Bar > ul > li > .Dropdown_Menu {
+    display: block;
+    z-index: 999;
+    height: auto;
+    width: 100%;
+    background: #232323;
+    margin-left: -10px;
+    margin-top: 15px;
+    display: none;
+    padding-bottom: 5px;
+    border-radius: 0 0 5px 5px
+  }
+  .Navigation_Bar > ul > li > .Dropdown_Menu > a {
+    display: block;
+    color: #efefef;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 0px;
+    padding: 0 25px;
+    line-height: 10px;
+    height: 60px;
+    line-height: 60px;
+    text-transform:uppercase;
+    text-align: left;
+    border-bottom: 0.2px solid #191919;
+  }
+  .Navigation_Bar > ul > li > .Dropdown_Menu > a:hover {
+    background: #191919;
+  }
+  .Navigation_Bar > ul > li:hover .Dropdown_Menu {
+    display: block;
+  }
+  .Wrapper {
+    width: 100%;
+    height: auto;
+    padding-top: 60px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .Box {
+    overflow-x: scroll;
   }
 }

@@ -27,9 +27,7 @@
 	} else {
 
 	}
-
 	$user = new PM\User();
-
 
 	//Other Activating
 	session_start();

@@ -13,15 +13,18 @@
       <div class="Logo">
         <a href="{URL}/main">Parking<b>Manager</b></a>
       </div>
+      <div class="Logo_mbl">
+        <a href="{URL}/main">P<b>M</b></a>
+      </div>
       <div class="Options">
-        <a href="#" class="mbl_only"><i class="fa fa-align-justify"></i></a>
+        <a href="#" class="mbl_only" onClick="Navi_Tog()"><i class="fa fa-align-justify"></i></a>
         <a href="#"><i class="fa fa-search"></i></a>
         <a href="#"><i class="fa fa-plus"></i></a>
         <a href="#"><i class="fa fa-key"></i></a>
       </div>
       <div class="Options-Right">
         <a href="#"><i class="fas fa-bell"></i></a>
-        <a href="#"><i class="fa fa-user"></i> {FNAME}</a>
+        <a href="#"><i class="fa fa-user"></i></a>
       </div>
     </div>
     <div class="Navigation_Bar">
@@ -33,7 +36,7 @@
           </a>
         </li>
         <li>
-          <a href="#">
+          <a>
             <i class="fa fa-truck"></i>
             VEHICLE TOOLS
           </a>
@@ -43,7 +46,7 @@
           </div>
         </li>
         <li>
-          <a href="#">
+          <a>
             <i class="fa fa-pound-sign"></i>
             PAYMENT TOOLS
           </a>
@@ -53,7 +56,7 @@
           </div>
         </li>
         <li>
-          <a href="{URL}/main">
+          <a>
             <i class="fa fa-file-invoice"></i>
             ACCOUNT TOOLS
           </a>
@@ -63,7 +66,7 @@
           </div>
         </li>
         <li>
-          <a href="{URL}/main">
+          <a>
             <i class="fa fa-cogs"></i>
             P<b>M</b> TOOLS
           </a>
@@ -78,16 +81,24 @@
     <div class="Wrapper">
       <div class="row">
         <div class="col-md-3">
-          STATS
+          <div class="StatBox">
+
+          </div>
         </div>
         <div class="col-md-3">
-          STATS
+          <div class="StatBox">
+
+          </div>
         </div>
         <div class="col-md-3">
-          STATS
+          <div class="StatBox">
+
+          </div>
         </div>
         <div class="col-md-3">
-          STATS
+          <div class="StatBox">
+
+          </div>
         </div>
       </div>
       <div class="row">
@@ -95,6 +106,10 @@
           <div class="Box">
             <div class="Title">
               <i class="fa fa-video" style="color: red; padding-right: 10px;"></i>  Live ANPR Feed
+              <div class="btn-group float-right" role="group" aria-label="Button group with nested dropdown">
+                <button type="button" class="btn btn-secondary"><i class="fa fa-search"></i></button>
+                <button type="button" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
+              </div>
             </div>
             <table class="table table-striped table-dark table-hover table-bordered">
               <thead>
@@ -254,8 +269,8 @@
       </div>
     </div>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="{URL}/template/{TPL}/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="{URL}/template/{TPL}/js/vision.js"></script>
     <?php require("core/ajax/controller.php"); ?>
   </body>
 </html>

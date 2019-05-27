@@ -40,6 +40,7 @@
 			$this->Assign('copy', $_CONFIG['misc']['copy']); //{SITE_NAME} Site Name
 			if(isset($_SESSION['id'])) {
 				$this->Assign('fname', $this->user->Info("first_name")); //{FNAME} Active User's first name
+				// $this->Assign('logout', $this->user->Logout()); //{FNAME} Active User's first name
 			}
 
 			$this->user = null;
