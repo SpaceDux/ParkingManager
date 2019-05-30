@@ -22,11 +22,9 @@
 		$tplPg = $_GET['page'];
 		define ('TEMPLATE_PATH', 'template/'.$tplDes);
 		define ('TEMPLATE_PAGE', '/'.$tplPg.'.php');
-
 		$template = new PM\Template(TEMPLATE_PATH.TEMPLATE_PAGE);
-	} else {
-
 	}
+	
 	$user = new PM\User();
 
 	//Other Activating

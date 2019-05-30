@@ -1,14 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700|Source+Sans+Pro:300,400,700');
-@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700');
-
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700|Poppins:300,400,600i&display=swap');
 html, body {
-    background: #dedede;
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    color: #fff;
-    scroll-behavior: smooth;
-
+  background: #dedede;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  scroll-behavior: smooth;
 }
 b {
   font-weight: 700;
@@ -75,7 +72,7 @@ a:hover, a:focus {
   width: 250px;
   padding: 0 10px;
   box-sizing:border-box;
-  background: #232323;
+  background: #333333;
   display: inline-block;
   font-size: 26px;
   line-height: 50px;
@@ -97,7 +94,8 @@ a:hover, a:focus {
   margin-top: 0px;
   padding: 0;
 }
-.TopBar > .Options > a {
+.TopBar > .Options > a,
+.TopBar > .Options > .Btn {
   display: inline-block;
   height: 100%;
   width: auto;
@@ -107,9 +105,23 @@ a:hover, a:focus {
   border-right: 1px solid #e0e0e0;
   margin-left: -4px;
   text-align: center;
+  cursor: pointer;
 }
-.TopBar > .Options > a:hover {
+.TopBar > .Options > a:hover,
+.TopBar > .Options > .Btn:hover {
   background: #eaeaea;
+}
+.TopBar > .Options .DropDown {
+  display: none;
+}
+.TopBar > .Options > .DrpBtn .DropDown {
+  width: 350px;
+  height: 100px;
+  background: #fff;
+  display: block;
+  margin: auto;
+  left: 250px;
+  position: absolute;
 }
 .TopBar > .Options-Right {
   list-style: none;
@@ -267,12 +279,74 @@ a:hover, a:focus {
   text-align: center;
   display: block;
 }
-
+.StatBar {
+  height: auto;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding-top: 120px;
+  padding-bottom: 10px;
+  background: #292929;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+}
+.StatBar .StatContent {
+  width: 95%;
+  margin: 0 auto;
+}
+.StatBar .StatContent .StatBox {
+  height: 80px;
+  width: 100%;
+  background: #333333;
+  display: block;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+.StatBar .StatContent .StatBox .Icon i {
+  display: inline-block;
+  height: 100%;
+  width: 30%;
+  float: right;
+  text-align: center;
+  font-size: 35px;
+  line-height: 80px;
+  background: #232323;
+}
+.StatBar .StatContent .StatBox .Stat {
+  height: 50px;
+  width: 70%;
+  display: inline-block;
+  position: absolute;
+  box-sizing: border-box;
+  line-height: 50px;
+  text-align: center;
+  font-size: 28px;
+}
+.StatBar .StatContent .StatBox .Text {
+  height: 30px;
+  width: 70%;
+  display: inline-block;
+  position: absolute;
+  box-sizing: border-box;
+  line-height: 30px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 300;
+  padding-top: 45px;
+}
+.StatBar .StatContent .StatBox-LG {
+  height: 170px;
+  width: 100%;
+  background: #333333;
+  display: block;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
 .Wrapper {
   width: 95%;
   height: auto;
-  padding-top: 140px;
-  margin: 0 auto;
+  margin: 0px auto;
 }
 .Box {
   width: 100%;
@@ -284,21 +358,12 @@ a:hover, a:focus {
 }
 .Box > .Title {
   font-size: 22px;
-  padding: 0px 10px;
   width: 100%;
   margin-bottom: 10px;
   font-weight: 300;
   color: #4a4a4a;
 }
-.StatBox {
-  height: 80px;
-  width: 100%;
-  background: #efefef;
-  display: block;
-  border-radius: 4px 4px 4px 4px;
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
+
 @media only screen and (max-width: 1200px)  {
   .mbl_only {
     display: inherit !important;
@@ -317,7 +382,7 @@ a:hover, a:focus {
     width: 90px;
     padding: 0 10px;
     box-sizing:border-box;
-    background: #232323;
+    background: #333333;
     display: inline-block;
     font-size: 26px;
     line-height: 50px;
@@ -335,6 +400,18 @@ a:hover, a:focus {
     margin-left: 94px;
     margin-top: 0px;
     padding: 0;
+  }
+  .TopBar > .Options > .DrpBtn ~ .DropDown {
+    width: 300px;
+    height: auto;
+    background: #fff;
+    display: none;
+    margin: auto;
+    left: 90px;
+    position: absolute;
+  }
+  .TopBar > .Options > .DrpBtn:hover ~ .DropDown {
+    display: none;
   }
   .TopBar > .Options-Right {
     list-style: none;
@@ -447,10 +524,13 @@ a:hover, a:focus {
   .Navigation_Bar > ul > li:hover .Dropdown_Menu {
     display: block;
   }
+  .StatBar {
+    padding-top: 60px;
+  }
   .Wrapper {
     width: 100%;
     height: auto;
-    padding-top: 60px;
+    padding-top: 0px;
     margin: 0 auto;
     overflow: hidden;
   }

@@ -1,8 +1,9 @@
 <?php
-// Configuration file for ParkingManager4
+// Configuration file for ParkingManager 4
+//ParkingManager - Author: Ryan Williams
+//Fenrir - Author: Ryan Williams
 
-	//Server configuration (Local Connection)
-	#Local
+	//Server configuration (MySQL Connection)
 	$_CONFIG['mysql']['host'] = 'localhost'; //The IP for the datebase server
 	$_CONFIG['mysql']['port'] = '3306'; //The username for the database server
 	$_CONFIG['mysql']['user'] = 'root'; //The username for the database server
@@ -12,8 +13,8 @@
 	// Site Configuration
 	$_CONFIG['site']['url'] = 'http://192.168.3.87/ParkingManager'; //Server URL example.com (DOES NOT END WITH /)
 	$_CONFIG['site']['name'] = 'ParkingManager'; //Website name, {SITE_NAME}
-	$_CONFIG['site']['template'] = 'Vision'; //Krypton Template System, Select the Template Directory
+	$_CONFIG['site']['template'] = 'Vision'; //Fenrir Template System, Select the Template Directory
 
 	// Misc
-	$_CONFIG['misc']['copy'] = 'ParkingManager 4 | Copyright &copy; 2019 Ryan W. with Roadking Truckstops'; //Krypton Template System, Select the Template Directory
+	$_CONFIG['misc']['copy'] = 'ParkingManager 4 | Copyright &copy; 2019 Roadking Truckstops'; //Fenrir Template System, Select the Template Directory
 ?>
