@@ -33,6 +33,7 @@
 		{
 			global $_CONFIG;
 			$this->user = new User;
+			$this->pm = new PM;
 
 			$this->Assign('url', $_CONFIG['site']['url']); //{URL} Site URL
 			$this->Assign('tpl', $_CONFIG['site']['template']); //{TPL} Skin Name
@@ -40,10 +41,10 @@
 			$this->Assign('copy', $_CONFIG['misc']['copy']); //{SITE_NAME} Site Name
 			if(isset($_SESSION['id'])) {
 				$this->Assign('fname', $this->user->Info("first_name")); //{FNAME} Active User's first name
-				// $this->Assign('logout', $this->user->Logout()); //{FNAME} Active User's first name
 			}
 
 			$this->user = null;
+			$this->pm = null;
 		}
 		//This function takes the set params and turns them into an actual function
 		function Assign($_searchString, $_replaceString)

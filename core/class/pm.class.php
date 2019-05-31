@@ -1,0 +1,43 @@
+<?php
+  namespace ParkingManager;
+  class PM
+  {
+    // VARS
+    protected $mysql;
+
+    // Get notifications
+    function GET_Notifications() {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+
+      $campus = $this->user->Info("campus");
+
+      $html = "";
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_notifications WHERE notification_site = ? ORDER BY notification_created DESC LIMIT 25");
+      $stmt->bindParam(1, $campus);
+      $stmt->execute();
+
+      foreach($stmt->fetchAll() as $row) {
+        if($row['notification_urgency'] == 0) {
+          $urg = "alert-success";
+        } else if($row['notification_urgency'] == 1) {
+          $urg = "alert-warning";
+        } else if($row['notification_urgency'] == 2) {
+          $urg = "alert-danger";
+        }
+
+        $html .= '<div class="alert '.$urg.'" role="alert">
+                    <p>'.$row['notification_text'].'</p>
+                    <hr>
+                    <p class="mb-0" style="text-align: right;"><i class="fa fa-clock"></i> '.date("H:i:s", strtotime($row['notification_created'])).'</p>
+                  </div>';
+      }
+
+      echo $html;
+
+      $this->mysql = null;
+      $this->user = null;
+    }
+  }
+?>

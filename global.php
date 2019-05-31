@@ -9,6 +9,7 @@
 	require_once(__DIR__.'/core/class/template.class.php');
 	require_once(__DIR__.'/core/class/mysql.class.php');
 	require_once(__DIR__.'/core/class/user.class.php');
+	require_once(__DIR__.'/core/class/pm.class.php');
 
 
 	//Begin Activating the Engine
@@ -24,8 +25,9 @@
 		define ('TEMPLATE_PAGE', '/'.$tplPg.'.php');
 		$template = new PM\Template(TEMPLATE_PATH.TEMPLATE_PAGE);
 	}
-	
+
 	$user = new PM\User();
+	$pm = new PM\PM();
 
 	//Other Activating
 	session_start();

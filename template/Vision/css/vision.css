@@ -111,18 +111,6 @@ a:hover, a:focus {
 .TopBar > .Options > .Btn:hover {
   background: #eaeaea;
 }
-.TopBar > .Options .DropDown {
-  display: none;
-}
-.TopBar > .Options > .DrpBtn .DropDown {
-  width: 350px;
-  height: 100px;
-  background: #fff;
-  display: block;
-  margin: auto;
-  left: 250px;
-  position: absolute;
-}
 .TopBar > .Options-Right {
   list-style: none;
   display: inline-block;
@@ -134,7 +122,8 @@ a:hover, a:focus {
   padding: 0;
   float: right;
 }
-.TopBar > .Options-Right > a {
+.TopBar > .Options-Right > a,
+.TopBar > .Options-Right > .Btn {
   display: inline-block;
   height: 100%;
   width: auto;
@@ -144,8 +133,10 @@ a:hover, a:focus {
   border-left: 1px solid #e0e0e0;
   margin-left: -4px;
   text-align: center;
+  cursor: pointer;
 }
-.TopBar > .Options-Right > a:hover {
+.TopBar > .Options-Right > a:hover,
+.TopBar > .Options-Right > .Btn:hover {
   background: #eaeaea;
 }
 /* Navigation Bar */
@@ -274,10 +265,24 @@ a:hover, a:focus {
 .Login_FormArea > .Footer {
   bottom: 0px;
   width: 500px;
-  position: absolute;
+  position: fixed;
   color: #efefef;
   text-align: center;
   display: block;
+}
+.NotificationPane {
+  height: 100%;
+  width: 350px;
+  background: #292929;
+  right: -350px;
+  float: right;
+  position: fixed;
+  z-index: 999;
+  overflow-y: scroll;
+}
+.NotificationPane .Body {
+  padding: 20px 10px;
+  margin-top: 50px;
 }
 .StatBar {
   height: auto;
@@ -400,18 +405,6 @@ a:hover, a:focus {
     margin-left: 94px;
     margin-top: 0px;
     padding: 0;
-  }
-  .TopBar > .Options > .DrpBtn ~ .DropDown {
-    width: 300px;
-    height: auto;
-    background: #fff;
-    display: none;
-    margin: auto;
-    left: 90px;
-    position: absolute;
-  }
-  .TopBar > .Options > .DrpBtn:hover ~ .DropDown {
-    display: none;
   }
   .TopBar > .Options-Right {
     list-style: none;

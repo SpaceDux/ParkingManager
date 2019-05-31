@@ -20,21 +20,16 @@
         <a href="#" class="mbl_only" onClick="Navi_Tog()"><i class="fa fa-align-justify"></i></a>
         <a href="#"><i class="fa fa-search"></i></a>
         <a href="#"><i class="fa fa-plus"></i></a>
-        <div class="Btn DrpBtn"><i class="fa fa-key"></i>
-          <div class="DropDown">
-            <div class="row">
-              <div class="col-md-6">
-
-              </div>
-              <div class="col-md-6">
-
-              </div>
-            </div>
-          </div>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-key"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Open Entry Barrier</a>
+          <a class="dropdown-item" href="#">Open Exit Barrier</a>
         </div>
       </div>
       <div class="Options-Right">
-        <a href="#"><i class="fas fa-bell"></i></a>
+        <div class="Btn" id="NotificationsBtn" onClick="Notifications()"><i class="fas fa-bell"></i></div>
         <a href="#"><i class="fa fa-user"></i></a>
       </div>
     </div>
@@ -53,7 +48,6 @@
           </a>
           <div class="Dropdown_Menu">
             <a href="#yc">Yard Check</a>
-            <a href="#se">Something else</a>
           </div>
         </li>
         <li>
@@ -88,6 +82,13 @@
           </div>
         </li>
       </ul>
+    </div>
+    <div class="NotificationPane" id="NotificationPane">
+      <div class="Body">
+        <div id="Load_Notifications">
+
+        </div>
+      </div>
     </div>
     <div class="StatBar">
       <div class="StatContent">
