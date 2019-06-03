@@ -279,10 +279,13 @@ a:hover, a:focus {
   position: fixed;
   z-index: 999;
   overflow-y: scroll;
+  margin-top: 50px;
 }
 .NotificationPane .Body {
-  padding: 20px 10px;
-  margin-top: 50px;
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 50px;
 }
 .StatBar {
   height: auto;

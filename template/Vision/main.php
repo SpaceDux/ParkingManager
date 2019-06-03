@@ -150,75 +150,17 @@
                 <button type="button" class="btn btn-secondary"><i class="fa fa-redo-alt"></i></button>
               </div>
             </div>
-            <table class="table table-striped table-dark table-hover table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">Plate</th>
-                  <th scope="col">Time IN</th>
-                  <th scope="col">Patch</th>
-                  <th scope="col"><i class="fa fa-cog"></i></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <td>Larry</td>
-                  <td>the Bird</td>
-                  <td>@twitter</td>
-                  <td>@twitter</td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="ANPR_Feed">
+
+            </div>
           </div>
           <div class="Box">
             <div class="Title">
               PAID Feed
             </div>
-            <table class="table table-striped table-hover table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">Company</th>
-                  <th scope="col">Plate</th>
-                  <th scope="col">Time IN</th>
-                  <th scope="col">T.ID</th>
-                  <th scope="col"><i class="fa fa-cog"></i></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <td>Larry</td>
-                  <td>the Bird</td>
-                  <td>@twitter</td>
-                  <td>@twitter</td>
-                  <td>@twitter</td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="PAID_Feed">
+
+            </div>
           </div>
         </div>
         <div class="col-md-5">
@@ -226,83 +168,17 @@
             <div class="Title">
               RENEWALS Feed
             </div>
-            <table class="table table-striped table-hover table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">Company</th>
-                  <th scope="col">Plate</th>
-                  <th scope="col">Time IN</th>
-                  <th scope="col"><i class="fa fa-cog"></i></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr class="table-warning">
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                  <td>@fat</td>
-                </tr>
-                <tr class="table-danger">
-                  <td>Larry</td>
-                  <td>the Bird</td>
-                  <td>@twitter</td>
-                  <td>@twitter</td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="RENEWAL_Feed">
+
+            </div>
           </div>
           <div class="Box">
             <div class="Title">
               EXIT Feed
             </div>
-            <table class="table table-striped table-hover table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">Company</th>
-                  <th scope="col">Plate</th>
-                  <th scope="col">Time OUT</th>
-                  <th scope="col"><i class="fa fa-cog"></i></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="EXIT_Feed">
+
+            </div>
           </div>
         </div>
       </div>

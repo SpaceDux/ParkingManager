@@ -11,7 +11,7 @@
 	$_CONFIG['mysql']['db'] = 'new_rkpm'; //Select the database you want to connect too
 
 	// Site Configuration
-	$_CONFIG['site']['url'] = 'http://192.168.3.87/ParkingManager'; //Server URL example.com (DOES NOT END WITH /)
+	$_CONFIG['site']['url'] = 'http://localhost/ParkingManager'; //Server URL example.com (DOES NOT END WITH /)
 	$_CONFIG['site']['name'] = 'ParkingManager'; //Website name, {SITE_NAME}
 	$_CONFIG['site']['template'] = 'Vision'; //Fenrir Template System, Select the Template Directory
 

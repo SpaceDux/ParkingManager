@@ -8,7 +8,9 @@
 	//Class Files
 	require_once(__DIR__.'/core/class/template.class.php');
 	require_once(__DIR__.'/core/class/mysql.class.php');
+	require_once(__DIR__.'/core/class/mssql.class.php');
 	require_once(__DIR__.'/core/class/user.class.php');
+	require_once(__DIR__.'/core/class/vehicles.class.php');
 	require_once(__DIR__.'/core/class/pm.class.php');
 
 
@@ -28,6 +30,7 @@
 
 	$user = new PM\User();
 	$pm = new PM\PM();
+	$vehicles = new PM\Vehicles();
 
 	//Other Activating
 	session_start();

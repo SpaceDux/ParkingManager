@@ -39,5 +39,33 @@
       $this->mysql = null;
       $this->user = null;
     }
+    // GET site information
+    function Site_Info($site, $key) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_sites WHERE id = ?");
+      $stmt->bindParam(1, $site);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      return $result[$key];
+
+      $this->mysql = null;
+      $this->user = null;
+    }
+    // Hour Calculations
+    //Return timecalc hour only
+    function Hour($time1, $time2) {
+      if(isset($time1)) {
+        $d1 = new \DateTime($time1);
+        $d2 = new \DateTime($time2);
+        $int = $d2->diff($d1);
+        $h = $int->h;
+        $h = $h + ($int->days*24);
+        return $h;
+      } else {
+        echo "ERROR!";
+      }
+    }
   }
 ?>
