@@ -53,8 +53,7 @@
       $this->mysql = null;
       $this->user = null;
     }
-    // Hour Calculations
-    //Return timecalc hour only
+    // Hour Calculations ONLY returns hour
     function Hour($time1, $time2) {
       if(isset($time1)) {
         $d1 = new \DateTime($time1);
