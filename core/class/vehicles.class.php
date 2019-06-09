@@ -2,6 +2,7 @@
   namespace ParkingManager;
   class Vehicles
   {
+    protected $mysql;
     // ANPR Feed is called via ajax when ID="ANPR_FEED" is loaded in tpl
     function ANPR_Feed() {
       //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
@@ -46,7 +47,7 @@
           $table .= '<td>
                       <div class="btn-group" role="group" aria-label="Options">
                         <button type="button" id="ANPR_Edit" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
-                        <a href="transaction/'.$row['Uniqueref'].'/1" class="btn btn-danger"><i class="fa fa-pound-sign"></i></a>
+                        <button type="button" onClick="PaymentPane('.$row['Uniqueref'].', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
                         <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
                       </div>
                     </td>';
@@ -63,12 +64,77 @@
       $this->user = null;
     }
     // PAID Feed is called via ajax when ID="PAID_FEED" is loaded in tpl
-    function PAID_Feed() {
+    function ALLVEH_Feed() {
+      $this->user = new User;
+      $this->mysql = new MySQL;
 
-    }
-    // RENEWAL Feed is called via ajax when ID="RENEWAL_FEED" is loaded in tpl
-    function RENEWAL_Feed() {
+      $campus = $this->user->Info("campus");
+      $html_paid = '';
+      $html_renew = '';
+      $html_exit = '';
 
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column != '2' AND parked_campus = ? ORDER BY parked_expiry DESC");
+      $stmt->bindParam(1, $campus);
+      $stmt->execute();
+      $html_paid .= '<table class="table table-striped table-bordered table-hover">
+                      <thead>
+                      <tr>
+                        <th scope="col">Company</th>
+                        <th scope="col">Registration</th>
+                        <th scope="col">Time IN</th>
+                        <th scope="col">Vehicle Type</th>
+                        <th scope="col"><i class="fa fa-cog"></i></th>
+                      </tr>
+                      </thead>
+                      <tbody>';
+      $html_renew .= '<table class="table table-striped table-bordered table-hover">
+                      <thead>
+                      <tr>
+                        <th scope="col">Company</th>
+                        <th scope="col">Registration</th>
+                        <th scope="col">Time IN</th>
+                        <th scope="col">Vehicle Type</th>
+                        <th scope="col"><i class="fa fa-cog"></i></th>
+                      </tr>
+                      </thead>
+                      <tbody>';
+      $html_exit .= '<table class="table table-striped table-bordered table-hover">
+                      <thead>
+                      <tr>
+                        <th scope="col">Company</th>
+                        <th scope="col">Registration</th>
+                        <th scope="col">Time OUT</th>
+                        <th scope="col">Vehicle Type</th>
+                        <th scope="col"><i class="fa fa-cog"></i></th>
+                      </tr>
+                      </thead>
+                      <tbody>';
+
+      foreach($stmt->fetchAll() as $row) {
+        // Paid
+        if(strtotime($row['parked_expiry']) > date("Y-m-d H:i:s")) {
+          $html_paid .= '<tr>';
+          $html_paid .= '<td>'.$row['parked_company'].'</td>';
+          $html_paid .= '<td>'.$row['parked_plate'].'</td>';
+          $html_paid .= '<td>'.$row['parked_timein'].'</td>';
+          $html_paid .= '<td>'.$row['parked_type'].'</td>';
+          $html_paid .= '</tr>';
+        }
+      }
+
+
+      $html_paid .= '</tbody></table>';
+      $html_renew .= '</tbody></table>';
+      $html_exit .= '</tbody></table>';
+
+      $data = array("Paid" => $html_paid,
+              "Renew" => $html_renew,
+              "Exit" => $html_exit);
+
+      echo json_encode($data);
+
+      $this->mysql = null;
+      $this->user = null;
     }
   }
 ?>

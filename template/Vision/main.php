@@ -9,6 +9,37 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   </head>
   <body>
+    <div class="PaymentPane" id="PaymentPane">
+      <div class="Body">
+        <form id="Payment_Form">
+          <div class="row">
+            <div class="col">
+              <label>Vehicle Registration Plate</label>
+              <input type="text" class="form-control" placeholder="E.G CY15GHX">
+              <hr>
+              <label>Company / Name</label>
+              <input type="text" class="form-control" placeholder="E.G EXAMPLE TRANSPORT">
+              <hr>
+              <label>Vehicle Trailer Number</label>
+              <input type="text" class="form-control" placeholder="E.G TRL001">
+              <hr>
+              <label>Vehicle Type</label>
+              <select class="form-control" name="">
+                <option value="">CAB</option>
+                <option value="">CAB</option>
+                <option value="">CAB</option>
+                <option value="">CAB</option>
+              </select>
+              <hr>
+              <img src="" alt="">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Last name">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
     <div class="TopBar">
       <div class="Logo">
         <a href="{URL}/main">Parking<b>Manager</b></a>
@@ -138,7 +169,7 @@
         </div>
       </div>
     </div>
-    <div class="Wrapper">
+    <div class="Wrapper" id="Wrapper">
       <div class="row">
         <div class="col-md-7">
           <div class="Box">

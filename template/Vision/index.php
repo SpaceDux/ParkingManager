@@ -18,9 +18,9 @@
             </div>
             <hr>
             <form class="form-group" id="Login_Form">
-              <input type="text" class="form-control dark" name="Login_Email" placeholder="Email Address" autofocus>
+              <input type="text" class="form-control form_login dark" name="Login_Email" placeholder="Email Address" autofocus>
               <hr>
-              <input type="password" class="form-control dark" name="Login_Password" placeholder="Password">
+              <input type="password" class="form-control form_login dark" name="Login_Password" placeholder="Password">
               <hr>
               <input type="submit" class="btn btn-block btn-primary" value="Sign In">
             </form>

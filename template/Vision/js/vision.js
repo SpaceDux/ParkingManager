@@ -13,3 +13,14 @@ function Notifications() {
      pane.style.transition = "0.2s ease-in-out";
   }
 }
+// Slide open the Payment Pane
+function PaymentPane(ref, type) {
+  var pane = document.getElementById("PaymentPane");
+  if (pane.style.left === "0px") {
+     pane.style.left = "-90%";
+     pane.style.transition = "0.1s ease-in-out";
+  } else {
+     pane.style.left = "0px";
+     pane.style.transition = "0.1s ease-in-out";
+  }
+}

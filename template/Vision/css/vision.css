@@ -44,11 +44,11 @@ a:hover, a:focus {
 }
 
 /* Bootstrap Controls */
-.form-control[type="text"], .form-control[type="password"] {
+.form_login[type="text"], .form_login[type="password"] {
   border-left: 0.1px solid #efefef;
   border-radius: 0;
 }
-.form-control[type="text"]::placeholder, .form-control[type="password"]::placeholder {
+.form_login[type="text"]::placeholder, .form_login[type="password"]::placeholder {
   color: inherit;
 }
 .table-danger, .table-warning, .table-success {
@@ -353,6 +353,7 @@ a:hover, a:focus {
 }
 .Wrapper {
   width: 95%;
+  box-sizing: border-box;
   height: auto;
   margin: 0px auto;
 }
@@ -360,7 +361,7 @@ a:hover, a:focus {
   width: 100%;
   height: auto;
   background: #efefef;
-  padding: 10px;
+  padding: 8px;
   margin-top: 20px;
   border: 1px 1px 1px 1px solid #f7f7f7;
 }
@@ -371,7 +372,21 @@ a:hover, a:focus {
   font-weight: 300;
   color: #4a4a4a;
 }
-
+.PaymentPane {
+  width: 90%;
+  height: 100vh;
+  z-index: 1001;
+  background: #292929;
+  display: block;
+  margin: 0 auto;
+  position: fixed;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  left: -90%;
+}
+.PaymentPane > .Body {
+  padding: 10px;
+}
 @media only screen and (max-width: 1200px)  {
   .mbl_only {
     display: inherit !important;
@@ -529,6 +544,7 @@ a:hover, a:focus {
     padding-top: 0px;
     margin: 0 auto;
     overflow: hidden;
+    display: block;
   }
   .Box {
     overflow-x: scroll;

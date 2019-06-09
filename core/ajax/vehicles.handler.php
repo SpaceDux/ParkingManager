@@ -4,9 +4,8 @@
 
   if($handler == "Vehicles.ANPR_Feed") {
     $vehicles->ANPR_Feed();
-  } else if($handler == "Vehicles.PAID_Feed") {
-    $vehicles->PAID_Feed();
-
+  } else if($handler == "Vehicles.ALLVEH_Feed") {
+    $vehicles->ALLVEH_Feed();
   }
 
 ?>
