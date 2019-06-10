@@ -10,31 +10,64 @@
   </head>
   <body>
     <div class="PaymentPane" id="PaymentPane">
+      <div class="Title">
+        new transaction.
+        <div class="btn-group float-right" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-danger" onClick="PaymentPane()"><i class="fa fa-times"></i></button>
+        </div>
+      </div>
       <div class="Body">
         <form id="Payment_Form">
           <div class="row">
             <div class="col">
+              <input type="hidden" name="Payment_Type" id="Payment_Type" class="form-control">
+              <input type="hidden" name="Payment_Ref" id="Payment_Ref" class="form-control">
               <label>Vehicle Registration Plate</label>
-              <input type="text" class="form-control" placeholder="E.G CY15GHX">
+              <input type="text" name="Payment_Plate" class="form-control" placeholder="E.G CY15GHX">
               <hr>
               <label>Company / Name</label>
-              <input type="text" class="form-control" placeholder="E.G EXAMPLE TRANSPORT">
+              <input type="text" name="Payment_Name" class="form-control" placeholder="E.G EXAMPLE TRANSPORT">
               <hr>
               <label>Vehicle Trailer Number</label>
-              <input type="text" class="form-control" placeholder="E.G TRL001">
+              <input type="text" name="Payment_Trl" class="form-control" placeholder="E.G TRL001">
               <hr>
               <label>Vehicle Type</label>
-              <select class="form-control" name="">
+              <select class="form-control" name="Payment_VehType">
                 <option value="">CAB</option>
-                <option value="">CAB</option>
-                <option value="">CAB</option>
-                <option value="">CAB</option>
+                <option value="">C/T</option>
+                <option value="">Rigid</option>
+                <option value="">Trailer</option>
+                <option value="">Coach</option>
               </select>
               <hr>
               <img src="" alt="">
             </div>
             <div class="col">
-              <input type="text" class="form-control" placeholder="Last name">
+              <label>How many days parking</label>
+              <div class="btn-group btn-sm btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary active">
+                  <input type="radio" name="Payment_Services_Expiry" value="24" autocomplete="off" checked=""> 1 Day
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="48" autocomplete="off"> 2 Days
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="72" autocomplete="off"> 3 Days
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="96" autocomplete="off"> 4 Days
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="120" autocomplete="off"> 5 Days
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="144" autocomplete="off"> 6 Days
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="168" autocomplete="off"> 7 Days
+                </label>
+              </div>
+              <hr>
             </div>
           </div>
         </form>
