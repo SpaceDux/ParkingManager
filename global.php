@@ -12,6 +12,7 @@
 	require_once(__DIR__.'/core/class/pm.class.php');
 	require_once(__DIR__.'/core/class/user.class.php');
 	require_once(__DIR__.'/core/class/vehicles.class.php');
+	require_once(__DIR__.'/core/class/payment.class.php');
 
 
 	//Begin Activating the Engine
@@ -31,6 +32,7 @@
 	$user = new PM\User();
 	$pm = new PM\PM();
 	$vehicles = new PM\Vehicles();
+	$payment = new PM\Payment();
 
 	//Other Activating
 	session_start();

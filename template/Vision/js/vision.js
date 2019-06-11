@@ -14,7 +14,7 @@ function Notifications() {
   }
 }
 // Slide open the Payment Pane
-function PaymentPane(ref, type) {
+function PaymentPane() {
   var pane = document.getElementById("PaymentPane");
   if (pane.style.left === "0px") {
      pane.style.left = "-90%";

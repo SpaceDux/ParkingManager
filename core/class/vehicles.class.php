@@ -47,7 +47,7 @@
           $table .= '<td>
                       <div class="btn-group" role="group" aria-label="Options">
                         <button type="button" id="ANPR_Edit" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
-                        <button type="button" onClick="PaymentPane('.$row['Uniqueref'].', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                        <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
                         <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
                       </div>
                     </td>';
