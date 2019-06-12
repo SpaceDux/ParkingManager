@@ -41,6 +41,7 @@
 			$this->Assign('copy', $_CONFIG['misc']['copy']); //{SITE_NAME} Site Name
 			if(isset($_SESSION['id'])) {
 				$this->Assign('fname', $this->user->Info("first_name")); //{FNAME} Active User's first name
+				$this->Assign('vehtypes', $this->pm->Vehicle_Types()); //{VEHICLE_TYPES} returns the <option>'s
 			}
 
 			$this->user = null;

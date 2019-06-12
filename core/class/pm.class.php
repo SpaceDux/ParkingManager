@@ -66,5 +66,21 @@
         echo "ERROR!";
       }
     }
+    // Vehicle Types
+    function Vehicle_Types() {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types ORDER BY id ASC");
+      $stmt->execute();
+      $result = $stmt->fetchAll();
+      $html = "";
+      foreach($result as $row) {
+        $html .= '<option value="'.$row['id'].'">'.$row['type_name'].'</option>';
+      }
+
+      return $html;
+
+      $this->mysql = null;
+    }
   }
 ?>

@@ -57,6 +57,17 @@ a:hover, a:focus {
 .table-danger, .table-warning, .table-success {
   color: #000 !important;
 }
+.tab-content {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0 0 3px 3px;
+    padding: 10px;
+    background: #fff;
+}
+.nav-tabs {
+    margin-bottom: 0;
+}
 /* Top Menu Bar */
 .TopBar {
   height: 50px;

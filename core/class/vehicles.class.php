@@ -73,9 +73,13 @@
       $html_renew = '';
       $html_exit = '';
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_log WHERE parked_column != '2' AND parked_campus = ? ORDER BY parked_expiry DESC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Parked_Site = ? AND Parked_Deleted != '1' AND Parked_Column != '2' ORDER BY Parked_Expiry DESC");
       $stmt->bindParam(1, $campus);
       $stmt->execute();
+
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Parked_Site = ? AND Parked_Deleted != '1' AND Parked_Column == '2' ORDER BY Parked_Departure DESC");
+      $stmt2->bindParam(1, $campus);
+      $stmt2->execute();
       $html_paid .= '<table class="table table-striped table-bordered table-hover">
                       <thead>
                       <tr>
@@ -112,14 +116,31 @@
 
       foreach($stmt->fetchAll() as $row) {
         // Paid
-        if(strtotime($row['parked_expiry']) > date("Y-m-d H:i:s")) {
+        if(strtotime($row['Parked_Expiry']) >= date("Y-m-d H:i:s")) {
           $html_paid .= '<tr>';
-          $html_paid .= '<td>'.$row['parked_company'].'</td>';
-          $html_paid .= '<td>'.$row['parked_plate'].'</td>';
-          $html_paid .= '<td>'.$row['parked_timein'].'</td>';
-          $html_paid .= '<td>'.$row['parked_type'].'</td>';
+          $html_paid .= '<td>'.$row['Parked_Name'].'</td>';
+          $html_paid .= '<td>'.$row['Parked_Plate'].'</td>';
+          $html_paid .= '<td>'.$row['Parked_Arrival'].'</td>';
+          $html_paid .= '<td>'.$row['Parked_Type'].'</td>';
           $html_paid .= '</tr>';
         }
+        // Renewal
+        if(strtotime($row['Parked_Expiry']) <= date("Y-m-d H:i:s")) {
+          $html_renew .= '<tr>';
+          $html_renew .= '<td>'.$row['Parked_Name'].'</td>';
+          $html_renew .= '<td>'.$row['Parked_Plate'].'</td>';
+          $html_renew .= '<td>'.$row['Parked_Arrival'].'</td>';
+          $html_renew .= '<td>'.$row['Parked_Type'].'</td>';
+          $html_renew .= '</tr>';
+        }
+      }
+      foreach($stmt2->fetchAll() as $row) {
+        $html_exit .= '<tr>';
+        $html_exit .= '<td>'.$row['Parked_Name'].'</td>';
+        $html_exit .= '<td>'.$row['Parked_Plate'].'</td>';
+        $html_exit .= '<td>'.$row['Parked_Departure'].'</td>';
+        $html_exit .= '<td>'.$row['Parked_Type'].'</td>';
+        $html_exit .= '</tr>';
       }
 
 
@@ -128,8 +149,8 @@
       $html_exit .= '</tbody></table>';
 
       $data = array("Paid" => $html_paid,
-              "Renew" => $html_renew,
-              "Exit" => $html_exit);
+                    "Renew" => $html_renew,
+                    "Exit" => $html_exit);
 
       echo json_encode($data);
 
