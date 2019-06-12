@@ -66,7 +66,7 @@
         echo "ERROR!";
       }
     }
-    // Vehicle Types
+    // Vehicle Types list
     function Vehicle_Types() {
       $this->mysql = new MySQL;
 
