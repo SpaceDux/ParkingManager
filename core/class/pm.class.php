@@ -67,7 +67,7 @@
       }
     }
     // Vehicle Types list
-    function Vehicle_Types() {
+    function Vehicle_Types_DropdownOpt() {
       $this->mysql = new MySQL;
 
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types ORDER BY id ASC");
@@ -82,5 +82,6 @@
 
       $this->mysql = null;
     }
+    // 
   }
 ?>

@@ -25,6 +25,7 @@
           </thead>
         <tbody>';
         foreach ($result as $row) {
+          $plate = '\''.$row['Plate'].'\'';
           //Get The right Path now.
           if(isset($campus)) {
             $patch = str_replace($this->pm->Site_Info($campus, 'site_anpr_imgstr'), $this->pm->Site_Info($campus, 'site_anpr_img'), $row['Patch']);
@@ -47,7 +48,7 @@
           $table .= '<td>
                       <div class="btn-group" role="group" aria-label="Options">
                         <button type="button" id="ANPR_Edit" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
-                        <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                        <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', '.$plate.', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
                         <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
                       </div>
                     </td>';

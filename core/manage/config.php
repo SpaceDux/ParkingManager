@@ -15,6 +15,17 @@
 	$_CONFIG['site']['name'] = 'ParkingManager'; //Website name, {SITE_NAME}
 	$_CONFIG['site']['template'] = 'Vision'; //Fenrir Template System, Select the Template Directory
 
+	//ETP API Settings
+	$_CONFIG['etp_api']['base_uri'] = "https://api.etpcp.com/trx/";
+	//Holyhead
+	$_CONFIG['etp_api']['user'] = "sm394_34lll2345Ae";
+	$_CONFIG['etp_api']['pass'] = "P2002laeif[3234JklmNo1A@344_12Qq";
+
+	$_CONFIG['etp_api']['location_user-holyhead'] = "holyhead";
+	$_CONFIG['etp_api']['location_pass-holyhead'] = "2hst36sg";
+	//Cannock
+	$_CONFIG['etp_api']['location_user-cannock'] = "hollies";
+	$_CONFIG['etp_api']['location_pass-cannock'] = "hollies";
 	// Misc
 	$_CONFIG['misc']['copy'] = 'ParkingManager 4 | Copyright &copy; 2019 Roadking Truckstops'; //Fenrir Template System, Select the Template Directory
 ?>

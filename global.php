@@ -13,6 +13,10 @@
 	require_once(__DIR__.'/core/class/user.class.php');
 	require_once(__DIR__.'/core/class/vehicles.class.php');
 	require_once(__DIR__.'/core/class/payment.class.php');
+	require_once(__DIR__.'/core/class/etp.class.php');
+	require_once(__DIR__.'/core/class/account.class.php');
+
+	require_once(__DIR__.'/vendor/autoload.php');
 
 
 	//Begin Activating the Engine
@@ -33,6 +37,8 @@
 	$pm = new PM\PM();
 	$vehicles = new PM\Vehicles();
 	$payment = new PM\Payment();
+	$etp = new PM\ETP();
+	$account = new PM\Account();
 
 	//Other Activating
 	session_start();
