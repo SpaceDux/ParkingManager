@@ -33,7 +33,7 @@
               <hr>
               <label>Vehicle Type</label>
               <select class="form-control" id="Payment_VehType" name="Payment_VehType">
-                <option value="">Please Choose a Vehicle Type...</option>
+                <option value="unselected">Please Choose a Vehicle Type...</option>
                 {VEHTYPES}
               </select>
               <hr>
@@ -66,7 +66,7 @@
               </div>
               <hr>
               <div id="PaymentOptions">
-                
+
               </div>
             </div>
           </div>
