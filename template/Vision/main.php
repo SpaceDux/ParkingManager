@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   </head>
   <body>
+    <!-- Payment Pane START -->
     <div class="PaymentPane" id="PaymentPane">
       <div class="Title">
         new transaction.
@@ -37,7 +38,10 @@
                 {VEHTYPES}
               </select>
               <hr>
-              <img src="" alt="">
+              <div id="ANPR_Images">
+
+              </div>
+              <hr>
             </div>
             <div class="col">
               <label>How many days parking</label><br>
@@ -73,6 +77,7 @@
         </form>
       </div>
     </div>
+    <!-- Payment Pane END -->
     <div class="TopBar">
       <div class="Logo">
         <a href="{URL}/main">Parking<b>Manager</b></a>
@@ -83,7 +88,7 @@
       <div class="Options">
         <a href="#" class="mbl_only" onClick="Navi_Tog()"><i class="fa fa-align-justify"></i></a>
         <a href="#"><i class="fa fa-search"></i></a>
-        <a href="#"><i class="fa fa-plus"></i></a>
+        <a href="#" data-toggle="modal" data-target="#ANPR_AddPlate"><i class="fa fa-plus"></i></a>
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-key"></i>
         </a>
@@ -210,8 +215,8 @@
               <i class="fa fa-video" style="color: red; padding-right: 10px;"></i>  Live ANPR Feed
               <div class="btn-group float-right" role="group" aria-label="Button group with nested dropdown">
                 <button type="button" class="btn btn-secondary"><i class="fa fa-search"></i></button>
-                <button type="button" class="btn btn-secondary"><i class="fa fa-plus"></i></button>
-                <button type="button" class="btn btn-secondary"><i class="fa fa-redo-alt"></i></button>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#ANPR_AddPlate"><i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-secondary" onClick="ANPR_Feed_Refresh()"><i class="fa fa-redo-alt"></i></button>
               </div>
             </div>
             <div id="ANPR_Feed">
@@ -283,5 +288,6 @@
       });
     </script>
     <?php require("core/ajax/controller.php"); ?>
+    <?php require("modals.php"); ?>
   </body>
 </html>

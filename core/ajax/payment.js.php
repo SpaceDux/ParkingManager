@@ -9,6 +9,7 @@
     $('#Payment_Plate').val(Plate);
     PaymentPane();
     $('#PaymentOptions').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+    $('#ANPR_Images').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
     $.ajax({
       url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GET_PaymentOptions",
       data: {Plate:Plate},
@@ -16,6 +17,15 @@
       dataType: "text",
       success:function(Response) {
         $('#PaymentOptions').html(Response);
+      }
+    });
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_GetImages",
+      data: {Ref:Ref},
+      method: "POST",
+      dataType: "json",
+      success:function(Response) {
+        $('#ANPR_Images').html(Response);
       }
     });
   };

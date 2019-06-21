@@ -3,6 +3,8 @@
   class Vehicles
   {
     protected $mysql;
+    protected $mssql;
+    // ANPR TOOLS
     // ANPR Feed is called via ajax when ID="ANPR_FEED" is loaded in tpl
     function ANPR_Feed() {
       //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
@@ -14,7 +16,7 @@
         $query = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
         $query->execute();
         $result = $query->fetchAll();
-        $table = '<table class="table table-dark table-striped table-bordered table-hover">
+        $table = '<table class="table table-dark table-bordered table-hover">
         <thead>
           <tr>
             <th scope="col">Registration</th>
@@ -41,7 +43,7 @@
             $style = "table-danger";
           }
           //Begin Table.
-          $table .= '<tr class="'.$style.'">';
+          $table .= '<tr id="ANPR_Feed_'.$row['Uniqueref'].'" class="'.$style.'">';
           $table .= '<td>'.$row['Plate'].'</td>';
           $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
           $table .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
@@ -61,9 +63,92 @@
         $this->pm = null;
       } else {
         //nothing yet.
+        echo "ANPR has been disabled on your account.";
       }
       $this->user = null;
     }
+    // ANPR Duplicate vehicle, remove from feed.
+    function ANPR_Duplicate($ref) {
+      $this->mssql = new MSSQL;
+
+      $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 11 WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $ref);
+      if($stmt->execute()) {
+        print_r("SUCCESSFUL");
+      } else {
+        print_r("SUCCESSFUL");
+      }
+
+      $this->mssql = null;
+    }
+    // Add a vehicle into the anpr
+    function ANPR_AddPlate($plate, $time) {
+      $this->mssql = new MSSQL;
+      //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID, BarcodeExpression)
+
+      if(!empty($plate) AND !empty($time)) {
+        $plate = strip_tags(strtoupper($plate));
+        //Includes latest anpr update.
+        $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane 01', :capDate, :createdDate, null, 'RoadKing - Added VIA PM', '0', null, '0', :plate2, null, null, :capDate2, null, '', '', '')");
+        $stmt->bindParam(':plate', $plate);
+        $stmt->bindParam(':capDate', $time);
+        $stmt->bindParam(':createdDate', $time);
+        $stmt->bindParam(':plate2', $plate);
+        $stmt->bindParam(':capDate2', $time);
+        $stmt->execute();
+      }
+
+      $this->mssql = null;
+    }
+    // Update ANPR Record
+    function ANPR_Update($ref, $plate, $time, $trl) {
+      $this->mssql = new MSSQL;
+
+      $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ?, Capture_Date = ?, Notes = ? WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $plate);
+      $stmt->bindParam(2, $time);
+      $stmt->bindParam(3, $trl);
+      if($stmt->execute()) {
+        echo "SUCCESSFUL";
+      } else {
+        echo "UNSUCCESSFUL";
+      }
+
+      $this->mssql = null;
+    }
+    // get images
+    function ANPR_GetImages($ref) {
+      $this->mssql = new MSSQL;
+      $this->user = new User;
+      $this->pm = new PM;
+
+      $campus = $this->user->Info("campus");
+
+      $html = "";
+
+      $stmt = $this->mssql->dbc->prepare("SELECT Overview, Patch FROM ANPR_REX WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $ref);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+      if(count($result) > 0) {
+        if($result['Patch'] != "") {
+          $patch = str_replace($this->pm->Site_Info($campus, 'site_anpr_imgstr'), $this->pm->Site_Info($campus, 'site_anpr_img'), $result['Patch']);
+          $overview = str_replace($this->pm->Site_Info($campus, 'site_anpr_imgstr'), $this->pm->Site_Info($campus, 'site_anpr_img'), $result['Overview']);
+          $html .= '<img src="'.$patch.'" alt="" class="img-thumbnail">';
+          $html .= '<img src="'.$overview.'" alt="" class="img-thumbnail">';
+        } else {
+          $html .= "";
+        }
+        echo json_encode($html);
+      } else {
+        $html .= "";
+      }
+
+      $this->mssql = null;
+      $this->user = null;
+      $this->pm = null;
+    }
+    // ALL VEHICLE TOOLS
     // PAID Feed is called via ajax when ID="PAID_FEED" is loaded in tpl
     function ALLVEH_Feed() {
       $this->user = new User;
@@ -158,5 +243,6 @@
       $this->mysql = null;
       $this->user = null;
     }
+
   }
 ?>

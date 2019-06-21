@@ -235,7 +235,22 @@
 								<button style="width: 100%;" class="btn btn-primary btn-lg" id="Payment_Auth_SNAP">Confirm SNAP Transaction</button>';
 			$Fuel .= '</select>
 								<hr>
-								<button style="width: 100%;" class="btn btn-primary btn-lg" id="Payment_Auth_Fuel">Confirm Fuel Card Transaction</button>';
+								<label>Fuel Card Swipe</label>
+								<input type="password" class="form-control form-control-lg" id="FuelCard_Swipe" placeholder="Please swipe the fuel card...">
+								<hr>
+								<div class="form-row">
+	                <div class="col-8">
+	                  <label>Fuel Card Number</label>
+	                  <input type="text" class="form-control" placeholder="Fuel Card Number" id="Payment_FuelCard_Number">
+	                </div>
+	                <div class="col-4">
+	                  <label>Expiration Date</label>
+	                  <input type="text" class="form-control" placeholder="Expiry (02/2020)" id="Payment+FuelCard_Expiry">
+	                </div>
+                </div>
+								<hr>
+								<button style="width: 100%;" class="btn btn-primary btn-lg" id="Payment_Auth_Fuel">Confirm Fuel Card Transaction</button>
+								';
 
 			$result = array (
 					'Cash' => $Cash,
