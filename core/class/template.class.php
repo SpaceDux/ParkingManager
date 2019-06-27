@@ -43,7 +43,6 @@
 				$this->Assign('fname', $this->user->Info("first_name")); //{FNAME} Active User's first name
 				$this->Assign('vehtypes', $this->pm->Vehicle_Types_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
 			}
-
 			$this->user = null;
 			$this->pm = null;
 		}

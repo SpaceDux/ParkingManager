@@ -67,6 +67,5 @@
       $this->mysql = null;
       $this->user = null;
     }
-
   }
 ?>

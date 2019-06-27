@@ -177,9 +177,10 @@
 			$this->etp = null;
 		}
 		// Return all services available for that veh type and expiry
-		function PaymentServices_Dropdown($Type, $Expiry) {
+		function PaymentServices_Dropdown($Type, $Expiry, $Plate) {
 			$this->mysql = new MySQL;
 			$this->user = new User;
+			$this->pm = new PM;
 			$campus = $this->user->Info("campus");
 
 			$Cash = "";
@@ -193,6 +194,10 @@
 			$stmt->bindParam(2, $Expiry);
 			$stmt->bindParam(3, $Type);
 			$stmt->execute();
+
+			$stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_campus = ? AND service_active = 1 AND service_deleted < 1 AND service_vehicles = 0 ORDER BY service_group, service_price_gross ASC");
+			$stmt2->bindParam(1, $campus);
+			$stmt2->execute();
 
 			$Cash .= '<select class="form-control form-control-lg" name="Payment_Service_Cash">';
 			$Card .= '<select class="form-control form-control-lg" name="Payment_Service_Card">';
@@ -220,19 +225,50 @@
 					$Fuel .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
 				}
 			}
+			$Cash .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
+			$Card .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
+			$Account .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
+			$SNAP .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
+			$Fuel .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
+			foreach ($stmt2->fetchAll() as $row) {
+				if($row['service_cash'] == 1) {
+					$Cash .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				}
+
+				if($row['service_card'] == 1) {
+					$Card .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				}
+
+				if($row['service_account'] == 1) {
+					$Account .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				}
+
+				if($row['service_snap'] == 1) {
+					$SNAP .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				}
+
+				if($row['service_fuel'] == 1) {
+					$Fuel .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				}
+			}
 
 			$Cash .= '</select>
 								<hr>
-								<button style="width: 100%;" class="btn btn-primary btn-lg" id="Payment_Auth_Cash">Confirm Cash Transaction</button>';
+								<button type="button" style="width: 100%;" data-toggle="modal" data-target="#Payment_ConfirmationCash_Modal" class="btn btn-primary btn-lg">Confirm Cash Transaction</button>';
 			$Card .= '</select>
 								<hr>
-								<button style="width: 100%;" class="btn btn-primary btn-lg" id="Payment_Auth_Card">Confirm Card Transaction</button>';
+								<button type="button" style="width: 100%;" data-toggle="modal" data-target="#Payment_ConfirmationCard_Modal" class="btn btn-primary btn-lg">Confirm Card Transaction</button>';
 			$Account .= '</select>
 								<hr>
-								<button style="width: 100%;" class="btn btn-primary btn-lg" id="Payment_Auth_Account">Confirm Account Transaction</button>';
+								<label>Select an account to charge</label>
+								<select name="Payment_Account_ID" class="form-control form-control-lg">
+								'.$this->pm->Account_DropdownOpt($Plate).'
+								<select>
+								<hr>
+								<button type="button" style="width: 100%;" data-toggle="modal" data-target="#Payment_ConfirmationAcc_Modal" class="btn btn-primary btn-lg">Confirm Account Transaction</button>';
 			$SNAP .= '</select>
 								<hr>
-								<button style="width: 100%;" class="btn btn-primary btn-lg" id="Payment_Auth_SNAP">Confirm SNAP Transaction</button>';
+								<button type="button" style="width: 100%;" data-toggle="modal" data-target="#Payment_ConfirmationSNAP_Modal" class="btn btn-primary btn-lg">Confirm SNAP Transaction</button>';
 			$Fuel .= '</select>
 								<hr>
 								<label>Fuel Card Swipe</label>
@@ -245,12 +281,11 @@
 	                </div>
 	                <div class="col-4">
 	                  <label>Expiration Date</label>
-	                  <input type="text" class="form-control" placeholder="Expiry (02/2020)" id="Payment+FuelCard_Expiry">
+	                  <input type="text" class="form-control" placeholder="Expiry (02/2020)" id="Payment_FuelCard_Expiry">
 	                </div>
                 </div>
 								<hr>
-								<button style="width: 100%;" class="btn btn-primary btn-lg" id="Payment_Auth_Fuel">Confirm Fuel Card Transaction</button>
-								';
+								<button type="button" style="width: 100%;" data-toggle="modal" data-target="#Payment_ConfirmationFuel_Modal" class="btn btn-primary btn-lg">Confirm Fuel Card Transaction</button>';
 
 			$result = array (
 					'Cash' => $Cash,
@@ -264,6 +299,7 @@
 
 			$this->mysql = null;
 			$this->user = null;
+			$this->pm = null;
 		}
 	}
 ?>

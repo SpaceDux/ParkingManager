@@ -13,7 +13,7 @@
       if($this->user->Info("anpr") == 1) {
         $this->mssql = new MSSQL;
         $this->pm = new PM;
-        $query = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+        $query = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
         $query->execute();
         $result = $query->fetchAll();
         $table = '<table class="table table-dark table-bordered table-hover">
@@ -28,6 +28,8 @@
         <tbody>';
         foreach ($result as $row) {
           $plate = '\''.$row['Plate'].'\'';
+          $trl = '\''.$row['Notes'].'\'';
+          $date = '\''.$row['Capture_Date'].'\'';
           //Get The right Path now.
           if(isset($campus)) {
             $patch = str_replace($this->pm->Site_Info($campus, 'site_anpr_imgstr'), $this->pm->Site_Info($campus, 'site_anpr_img'), $row['Patch']);
@@ -49,8 +51,8 @@
           $table .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
           $table .= '<td>
                       <div class="btn-group" role="group" aria-label="Options">
-                        <button type="button" id="ANPR_Edit" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
-                        <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', '.$plate.', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                        <button type="button" onClick="ANPR_Update('.$row['Uniqueref'].', '.$plate.', '.$date.', '.$trl.')" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
+                        <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', '.$plate.', '.$trl.', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
                         <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
                       </div>
                     </td>';
@@ -95,23 +97,31 @@
         $stmt->bindParam(':createdDate', $time);
         $stmt->bindParam(':plate2', $plate);
         $stmt->bindParam(':capDate2', $time);
-        $stmt->execute();
+        if($stmt->execute()) {
+          echo "SUCCESSFUL";
+        } else {
+          echo "UNSUCCESSFUL";
+        }
       }
 
       $this->mssql = null;
     }
     // Update ANPR Record
-    function ANPR_Update($ref, $plate, $time, $trl) {
+    function ANPR_Update($ref, $plate, $trl = '', $time) {
       $this->mssql = new MSSQL;
-
-      $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ?, Capture_Date = ?, Notes = ? WHERE Uniqueref = ?");
-      $stmt->bindParam(1, $plate);
-      $stmt->bindParam(2, $time);
-      $stmt->bindParam(3, $trl);
-      if($stmt->execute()) {
-        echo "SUCCESSFUL";
-      } else {
-        echo "UNSUCCESSFUL";
+      if(!empty($plate) AND !empty($time)) {
+        $plate = strip_tags(strtoupper($plate));
+        $trl = strip_tags(strtoupper($trl));
+        $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ?, Capture_Date = ?, Notes = ? WHERE Uniqueref = ?");
+        $stmt->bindParam(1, $plate);
+        $stmt->bindParam(2, $time);
+        $stmt->bindParam(3, $trl);
+        $stmt->bindParam(4, $ref);
+        if($stmt->execute()) {
+          echo "SUCCESSFUL";
+        } else {
+          echo "UNSUCCESSFUL";
+        }
       }
 
       $this->mssql = null;

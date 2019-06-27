@@ -82,6 +82,43 @@
 
       $this->mysql = null;
     }
-    // 
+    // Account Dropdown
+    function Account_DropdownOpt($Plate) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->account = new Account;
+      $campus = $this->user->Info("campus");
+      $id = $this->account->Account_FleetInfo($Plate, "account_id");
+      if($id > 0) {
+        $list = '';
+        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ?");
+        $query->bindParam(1, $id);
+        $query->execute();
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+
+        $list .= '<option value="'.$result['id'].'">'.$result['account_name'].'</option>';
+
+      } else {
+        $list = '';
+        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE campus = ? AND account_deleted = 0 OR account_shared = 1 AND account_deleted = 0 ORDER BY account_name ASC");
+        $query->bindParam(1, $campus);
+        $query->execute();
+        $result = $query->fetchAll();
+        $list .= '<option value="unchecked">-- Please choose an account --</option>';
+        foreach ($result as $row) {
+          if($row['account_suspended'] == 1) {
+            $list .= '<option style="color: red;" value="unchecked">'.$row['account_name'].' - currently suspended</option>';
+          } else {
+            $list .= '<option value="'.$row['id'].'">'.$row['account_name'].'</option>';
+          }
+        }
+      }
+
+      return $list;
+
+      $this->mysql = null;
+      $this->user = null;
+      $this->account = null;
+    }
   }
 ?>

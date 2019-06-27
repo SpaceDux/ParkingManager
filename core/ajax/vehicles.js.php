@@ -1,4 +1,11 @@
 <script type="text/javascript">
+  // Microfunc to determine current datetime
+  function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+  }
   // Mark a record as Duplicate
   function ANPR_Duplicate(str) {
     event.preventDefault();
@@ -24,14 +31,66 @@
   }
   // Add a vehicle into the anpr feed
   function ANPR_AddPlate() {
-    event.preventDefault();
-    $.ajax({
-      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_AddPlate",
-      method: "POST",
-      dataType: "text",
-      success:function() {
-        ANPR_Feed_Refresh();
-
+    var d = new Date();
+    var date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+    var h = addZero(d.getHours());
+    var m = addZero(d.getMinutes());
+    var s = addZero(d.getSeconds());
+    var datetime = date+' '+h+':'+m+':'+s;
+    $('#AddPlate_Time').val(datetime);
+    $('#ANPR_AddPlate_Modal').modal('show');
+    $('#ANPR_AddPlate_Modal').find('[autofocus]').focus();
+    // Main
+    $('#AddPlate_Save').on('click', function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var Data = $('#ANPR_AddPlate_Form').serialize();
+      $.ajax({
+        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_AddPlate",
+        method: "POST",
+        data: Data,
+        dataType: "text",
+        success:function() {
+          ANPR_Feed_Refresh();
+          $('#ANPR_AddPlate_Form')[0].reset();
+          $('#ANPR_AddPlate_Modal').modal('hide');
+        }
+      });
+      return false;
+    });
+  }
+  // Add a vehicle into the anpr feed
+  function ANPR_Update(Ref, Plate, Time, Trl) {
+    $('input[name="Update_Ref"]').val(Ref);
+    $('input[name="Update_Plate"]').val(Plate);
+    $('input[name="Update_Trl"]').val(Trl);
+    $('input[name="Update_Time"]').val(Time);
+    $('#ANPR_Update_Modal').modal('show');
+    $('#ANPR_Update_Modal').find('[autofocus]').focus();
+    // Query
+    $('#ANPR_Update_Save').on('click', function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if($('input[name="Update_Plate"]').val() == "") {
+        $('input[name="Update_Plate"]').addClass("is-invalid");
+      } else if($('input[name="Update_Time"]').val() == "") {
+        $('input[name="Update_Time"]').addClass("is-invalid");
+      } else {
+        $('input[name="Update_Plate"]').removeClass("is-invalid");
+        $('input[name="Update_Time"]').removeClass("is-invalid");
+        var Data = $('#ANPR_Update_Form').serialize();
+        $.ajax({
+          url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_Update",
+          method: "POST",
+          data: Data,
+          dataType: "text",
+          success:function() {
+            ANPR_Feed_Refresh();
+            $('#ANPR_Update_Form')[0].reset();
+            $('#ANPR_Update_Modal').modal('hide');
+          }
+        });
+        return false;
       }
     });
   }
@@ -63,5 +122,4 @@
       }
     });
   });
-  // Add a vehicle into the anpr feed
 </script>
