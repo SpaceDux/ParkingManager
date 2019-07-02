@@ -23,9 +23,9 @@
     $.ajax({
       url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_Feed",
       method: "POST",
-      dataType: "text",
+      dataType: "json",
       success:function(Response) {
-        $('#ANPR_Feed').html(Response);
+        $('#ANPR_Feed').html(Response.Feed);
       }
     });
   }
@@ -100,9 +100,9 @@
     $.ajax({
       url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_Feed",
       method: "POST",
-      dataType: "text",
+      dataType: "json",
       success:function(Response) {
-        $('#ANPR_Feed').html(Response);
+        $('#ANPR_Feed').html(Response.Feed);
       }
     });
   });
@@ -113,6 +113,19 @@
     $('#EXIT_Feed').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
     $.ajax({
       url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ALLVEH_Feed",
+      method: "POST",
+      dataType: "json",
+      success:function(Response) {
+        $('#PAID_Feed').html(Response.Paid);
+        $('#RENEWAL_Feed').html(Response.Renew);
+        $('#EXIT_Feed').html(Response.Exit);
+      }
+    });
+  });
+  // All other vehicle feeds
+  $(document).ready(function() {
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.CountVehicles",
       method: "POST",
       dataType: "json",
       success:function(Response) {

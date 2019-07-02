@@ -4,12 +4,16 @@
   {
     protected $mysql;
     protected $mssql;
+    public $count_paid;
+    public $count_renewal;
+    public $count_anpr;
     // ANPR TOOLS
     // ANPR Feed is called via ajax when ID="ANPR_FEED" is loaded in tpl
     function ANPR_Feed() {
       //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
       $this->user = new User;
       $campus = $this->user->Info("campus");
+      $count_anpr = 0;
       if($this->user->Info("anpr") == 1) {
         $this->mssql = new MSSQL;
         $this->pm = new PM;
@@ -27,6 +31,7 @@
           </thead>
         <tbody>';
         foreach ($result as $row) {
+          $count_anpr++;
           $plate = '\''.$row['Plate'].'\'';
           $trl = '\''.$row['Notes'].'\'';
           $date = '\''.$row['Capture_Date'].'\'';
@@ -52,7 +57,7 @@
           $table .= '<td>
                       <div class="btn-group" role="group" aria-label="Options">
                         <button type="button" onClick="ANPR_Update('.$row['Uniqueref'].', '.$plate.', '.$date.', '.$trl.')" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
-                        <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', '.$plate.', '.$trl.', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                        <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', '.$plate.', '.$trl.', '.$date.', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
                         <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
                       </div>
                     </td>';
@@ -60,7 +65,8 @@
         }
         $table .= '</tbody>
                 </table>';
-        echo $table;
+        $result = array("Feed" => $table);
+        echo json_encode($result);
         $this->mssql = null;
         $this->pm = null;
       } else {
@@ -169,6 +175,9 @@
       $html_renew = '';
       $html_exit = '';
 
+      $count_paid = 0;
+      $count_renewal = 0;
+
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Parked_Site = ? AND Parked_Deleted != '1' AND Parked_Column != '2' ORDER BY Parked_Expiry DESC");
       $stmt->bindParam(1, $campus);
       $stmt->execute();
@@ -213,6 +222,7 @@
       foreach($stmt->fetchAll() as $row) {
         // Paid
         if(strtotime($row['Parked_Expiry']) >= date("Y-m-d H:i:s")) {
+          $count_paid++;
           $html_paid .= '<tr>';
           $html_paid .= '<td>'.$row['Parked_Name'].'</td>';
           $html_paid .= '<td>'.$row['Parked_Plate'].'</td>';
@@ -222,6 +232,7 @@
         }
         // Renewal
         if(strtotime($row['Parked_Expiry']) <= date("Y-m-d H:i:s")) {
+          $count_renewal++;
           $html_renew .= '<tr>';
           $html_renew .= '<td>'.$row['Parked_Name'].'</td>';
           $html_renew .= '<td>'.$row['Parked_Plate'].'</td>';
@@ -253,6 +264,20 @@
       $this->mysql = null;
       $this->user = null;
     }
-
+    //Time Calculation, displays in a msg
+    function timeCalc($time1, $time2) {
+      try {
+        if(isset($time1)) {
+          $d1 = new \DateTime($time1);
+          $d2 = new \DateTime($time2);
+          $int = $d2->diff($d1);
+          $h = $int->h;
+          $h = $h + ($int->days*24);
+          echo "Parked for <b>".$h."</b> hours and <b>".$int->format('%i')."</b> minutes";
+        }
+      } catch (\Exception $e) {
+        echo "<red>Time Construction error, please check & correct</red>";
+      }
+    }
   }
 ?>

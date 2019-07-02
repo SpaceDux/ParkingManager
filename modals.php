@@ -16,7 +16,7 @@
           </div>
           <div class="col">
             <label>Time of Arrival</label>
-            <input type="text" class="form-control" name="Time" id="AddPlate_Time">
+            <input type="text" class="form-control" name="Time" id="AddPlate_Time" tabindex="-1">
           </div>
         </div>
         <div class="modal-footer">
@@ -84,7 +84,6 @@
     </div>
   </div>
 </div>
-<!-- Modal -->
 <div class="modal fade" id="Payment_ConfirmationCard_Modal" tabindex="-1" role="dialog" aria-labelledby="Payment_ConfirmationCard_Modal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -108,7 +107,6 @@
     </div>
   </div>
 </div>
-<!-- Modal -->
 <div class="modal fade" id="Payment_ConfirmationAcc_Modal" tabindex="-1" role="dialog" aria-labelledby="Payment_ConfirmationAcc_Modal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -132,7 +130,6 @@
     </div>
   </div>
 </div>
-<!-- Modal -->
 <div class="modal fade" id="Payment_ConfirmationSNAP_Modal" tabindex="-1" role="dialog" aria-labelledby="Payment_ConfirmationSNAP_Modal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -156,7 +153,6 @@
     </div>
   </div>
 </div>
-<!-- Modal -->
 <div class="modal fade" id="Payment_ConfirmationFuel_Modal" tabindex="-1" role="dialog" aria-labelledby="Payment_ConfirmationFuel_Modal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

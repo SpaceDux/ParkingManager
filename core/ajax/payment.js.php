@@ -1,6 +1,6 @@
 <script type="text/javascript">
   // Ini Payment Portal
-  function PaymentPaneToggle(Ref, Plate, Trl, Type) {
+  function PaymentPaneToggle(Ref, Plate, Trl, Time, Type) {
     var Ref = Ref;
     var Plate = Plate;
     var Type = Type;
@@ -8,6 +8,16 @@
     $('#Payment_Ref').val(Ref);
     $('#Payment_Plate').val(Plate);
     $('#Payment_Trl').val(Trl);
+    // Time Prep
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",
+      data: {Time1:Time, Time2:""},
+      method: "POST",
+      dataType: "text",
+      success:function(Response) {
+        $('#Payment_TimeCalculation').html(Response);
+      }
+    });
     PaymentPane();
     $('#PaymentOptions').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
     $('#ANPR_Images').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
@@ -37,6 +47,114 @@
 
     PaymentPane();
   };
+  // Authorise Payment via TYPE
+  function AuthorisePayment(Method) {
+    //GET DATA
+    var Type = $('#Payment_Type').val();
+    var Ref = $('#Payment_Ref').val();
+    var Plate = $('#Payment_Plate').val();
+    var Name = $('#Payment_Name').val();
+    var Trl = $('#Payment_Trl').val();
+    var VehType = $("#Payment_VehType option:selected").val();
+    if(Method == "1") {
+      // Cash Payment
+      var Service = $("#Payment_Service_Cash option:selected").val();
+      if(Plate == "") {
+        alert("Please enter a valid Plate");
+      } else if(VehType == "unselected") {
+        alert("Please choose a valid vehicle type");
+      } else {
+        $.ajax({
+          url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
+          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, VehType:VehType, Service:Service},
+          method: "POST",
+          dataType: "json",
+          success:function(Response) {
+
+          }
+        });
+      }
+    }
+    if(Method == "2") {
+      // Card Payment
+      var Service = $("#Payment_Service_Card option:selected").val();
+      if(Plate == "") {
+        alert("Please enter a valid Plate");
+      } else if(VehType == "unselected") {
+        alert("Please choose a valid vehicle type");
+      } else {
+        $.ajax({
+          url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
+          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, VehType:VehType, Service:Service},
+          method: "POST",
+          dataType: "json",
+          success:function(Response) {
+
+          }
+        });
+      }
+    }
+    if(Method == "3") {
+      // Account Payment
+      var Service = $("#Payment_Service_Account option:selected").val();
+      var Account_ID = $("#Payment_Account_ID option:selected").val();
+      if(Plate == "") {
+        alert("Please enter a valid Plate");
+      } else if(VehType == "unselected") {
+        alert("Please choose a valid vehicle type");
+      } else {
+        $.ajax({
+          url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
+          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, VehType:VehType, Service:Service, Account_ID:Account_ID},
+          method: "POST",
+          dataType: "json",
+          success:function(Response) {
+
+          }
+        });
+      }
+    }
+    if(Method == "4") {
+      // SNAP Payment
+      var Service = $("#Payment_Service_SNAP option:selected").val();
+      if(Plate == "") {
+        alert("Please enter a valid Plate");
+      } else if(VehType == "unselected") {
+        alert("Please choose a valid vehicle type");
+      } else {
+        $.ajax({
+          url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
+          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, VehType:VehType, Service:Service},
+          method: "POST",
+          dataType: "json",
+          success:function(Response) {
+
+          }
+        });
+      }
+    }
+    if(Method == "5") {
+      // Fuel Payment
+      var Service = $("#Payment_Service_Fuel option:selected").val();
+      var CardNo = $('#Payment_FuelCard_Number').val();
+      var CardExpiry = $('#Payment_FuelCard_Expiry').val();
+      if(Plate == "") {
+        alert("Please enter a valid Plate");
+      } else if(VehType == "unselected") {
+        alert("Please choose a valid vehicle type");
+      } else {
+        $.ajax({
+          url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
+          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, VehType:VehType, Service:Service, CardNo:CardNo, CardExpiry:CardExpiry},
+          method: "POST",
+          dataType: "json",
+          success:function(Response) {
+
+          }
+        });
+      }
+    }
+  }
   //Payment Service Dropdown
   $(document).on('change', '#Payment_VehType', function(){
     var Type = $(this).val();

@@ -14,6 +14,8 @@
     $vehicles->ANPR_GetImages($_POST['Ref']);
   } else if($handler == "Vehicles.ANPR_Update") {
     $vehicles->ANPR_Update($_POST['Update_Ref'], $_POST['Update_Plate'], $_POST['Update_Trl'], $_POST['Update_Time']);
+  } else if($handler == "Vehicles.TimeCalc") {
+    $vehicles->timeCalc($_POST['Time1'], $_POST['Time2']);
   }
 
 ?>

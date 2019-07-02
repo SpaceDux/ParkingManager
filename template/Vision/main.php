@@ -27,7 +27,7 @@
               <input type="text" name="Payment_Plate" id="Payment_Plate" class="form-control" placeholder="E.G CY15GHX" style="text-transform: uppercase;" readonly>
               <hr>
               <label>Company / Name</label>
-              <input type="text" name="Payment_Name" class="form-control" placeholder="E.G EXAMPLE TRANSPORT" style="text-transform: uppercase;">
+              <input type="text" name="Payment_Name" id="Payment_Name" class="form-control" placeholder="E.G EXAMPLE TRANSPORT" style="text-transform: uppercase;">
               <hr>
               <label>Vehicle Trailer Number</label>
               <input type="text" name="Payment_Trl" class="form-control" id="Payment_Trl" placeholder="E.G TRL001" style="text-transform: uppercase;">
@@ -43,6 +43,7 @@
               </div>
             </div>
             <div class="col">
+              <div class="alert alert-primary" id="Payment_TimeCalculation"></div>
               <label>How many days parking</label><br>
               <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-secondary active">
@@ -164,7 +165,7 @@
           <div class="col-md-3">
             <div class="StatBox">
               <div class="Stat">
-                <b>87</b><small>/200</small>
+                <b id="ALL_Count"></b><small>/200</small>
               </div>
               <div class="Text">
                 vehicles <b>parked</b>
@@ -177,7 +178,7 @@
           <div class="col-md-3">
             <div class="StatBox">
               <div class="Stat">
-                <b>27</b>
+                <b id="ANPR_Count"></b>
               </div>
               <div class="Text">
                 awaiting <b>payment</b>
@@ -188,7 +189,7 @@
             </div>
             <div class="StatBox">
               <div class="Stat">
-                <b>3</b>
+                <b id="RENEWAL_Count"></b>
               </div>
               <div class="Text">
                 awaiting <b>renewal</b>
@@ -255,7 +256,12 @@
     <script type="text/javascript" src="{URL}/template/{TPL}/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/vision.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/Chart.min.js"></script>
+    <script type="text/javascript" src="{URL}/template/{TPL}/js/mousetrap.min.js"></script>
     <script type="text/javascript">
+      Mousetrap.bind('tab', function() {
+        ANPR_AddPlate();
+      });
+
       var ctx = document.getElementById('myChart');
       var myChart = new Chart(ctx, {
           type: 'bar',

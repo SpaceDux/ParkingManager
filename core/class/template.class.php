@@ -34,6 +34,7 @@
 			global $_CONFIG;
 			$this->user = new User;
 			$this->pm = new PM;
+			$this->vehicles = new Vehicles;
 
 			$this->Assign('url', $_CONFIG['site']['url']); //{URL} Site URL
 			$this->Assign('tpl', $_CONFIG['site']['template']); //{TPL} Skin Name
@@ -45,6 +46,7 @@
 			}
 			$this->user = null;
 			$this->pm = null;
+			$this->vehicles = null;
 		}
 		//This function takes the set params and turns them into an actual function
 		function Assign($_searchString, $_replaceString)

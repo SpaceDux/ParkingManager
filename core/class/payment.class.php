@@ -4,8 +4,7 @@
 	{
 		protected $mysql;
 
-    function PaymentOptions($Plate)
-		{
+    function PaymentOptions($Plate) {
 			$this->mysql = new MySQL;
 			$this->account = new Account;
 			$this->etp = new ETP;
@@ -199,11 +198,11 @@
 			$stmt2->bindParam(1, $campus);
 			$stmt2->execute();
 
-			$Cash .= '<select class="form-control form-control-lg" name="Payment_Service_Cash">';
-			$Card .= '<select class="form-control form-control-lg" name="Payment_Service_Card">';
-			$Account .= '<select class="form-control form-control-lg" name="Payment_Service_Account">';
-			$SNAP .= '<select class="form-control form-control-lg" name="Payment_Service_SNAP">';
-			$Fuel .= '<select class="form-control form-control-lg" name="Payment_Service_Fuel">';
+			$Cash .= '<select class="form-control form-control-lg" name="Payment_Service_Cash" id="Payment_Service_Cash">';
+			$Card .= '<select class="form-control form-control-lg" name="Payment_Service_Card" id="Payment_Service_Card">';
+			$Account .= '<select class="form-control form-control-lg" name="Payment_Service_Account" id="Payment_Service_Account">';
+			$SNAP .= '<select class="form-control form-control-lg" name="Payment_Service_SNAP" id="Payment_Service_SNAP">';
+			$Fuel .= '<select class="form-control form-control-lg" name="Payment_Service_Fuel" id="Payment_Service_Fuel">';
 			foreach ($stmt->fetchAll() as $row) {
 				if($row['service_cash'] == 1) {
 					$Cash .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
@@ -261,7 +260,7 @@
 			$Account .= '</select>
 								<hr>
 								<label>Select an account to charge</label>
-								<select name="Payment_Account_ID" class="form-control form-control-lg">
+								<select name="Payment_Account_ID" id="Payment_Account_ID" class="form-control form-control-lg">
 								'.$this->pm->Account_DropdownOpt($Plate).'
 								<select>
 								<hr>

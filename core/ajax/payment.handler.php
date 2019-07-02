@@ -6,6 +6,8 @@
     $payment->PaymentOptions($_POST['Plate']);
   } else if($handler == "Payment.GET_PaymentServices") {
     $payment->PaymentServices_Dropdown($_POST['Type'], $_POST['Expiry'], $_POST['Plate']);
+  } else if($handler == "Payment.Proccess_Transaction") {
+    $payment->PaymentServices_Dropdown($_POST['Method']);
   }
 
 ?>
