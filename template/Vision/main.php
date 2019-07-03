@@ -23,6 +23,7 @@
             <div class="col">
               <input type="hidden" name="Payment_Type" id="Payment_Type" class="form-control">
               <input type="hidden" name="Payment_Ref" id="Payment_Ref" class="form-control">
+              <input type="hidden" name="Payment_CaptureDate" id="Payment_CaptureDate" class="form-control">
               <label>Vehicle Registration Plate</label>
               <input type="text" name="Payment_Plate" id="Payment_Plate" class="form-control" placeholder="E.G CY15GHX" style="text-transform: uppercase;" readonly>
               <hr>

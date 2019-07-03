@@ -8,6 +8,7 @@
     $('#Payment_Ref').val(Ref);
     $('#Payment_Plate').val(Plate);
     $('#Payment_Trl').val(Trl);
+    $('#Payment_CaptureDate').val(Time);
     // Time Prep
     $.ajax({
       url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",
@@ -55,6 +56,7 @@
     var Plate = $('#Payment_Plate').val();
     var Name = $('#Payment_Name').val();
     var Trl = $('#Payment_Trl').val();
+    var Time = $('#Payment_CaptureDate').val();
     var VehType = $("#Payment_VehType option:selected").val();
     if(Method == "1") {
       // Cash Payment
@@ -66,11 +68,11 @@
       } else {
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
-          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, VehType:VehType, Service:Service},
+          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service},
           method: "POST",
           dataType: "json",
           success:function(Response) {
-
+            alert(Response);
           }
         });
       }
@@ -85,7 +87,7 @@
       } else {
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
-          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, VehType:VehType, Service:Service},
+          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service},
           method: "POST",
           dataType: "json",
           success:function(Response) {
@@ -102,10 +104,12 @@
         alert("Please enter a valid Plate");
       } else if(VehType == "unselected") {
         alert("Please choose a valid vehicle type");
+      } else if(Account_ID == "unchecked") {
+        alert("Please choose a valid account");
       } else {
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
-          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, VehType:VehType, Service:Service, Account_ID:Account_ID},
+          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service, Account_ID:Account_ID},
           method: "POST",
           dataType: "json",
           success:function(Response) {
@@ -124,7 +128,7 @@
       } else {
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
-          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, VehType:VehType, Service:Service},
+          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service},
           method: "POST",
           dataType: "json",
           success:function(Response) {
@@ -142,10 +146,14 @@
         alert("Please enter a valid Plate");
       } else if(VehType == "unselected") {
         alert("Please choose a valid vehicle type");
+      } else if(CardNo.length < 7) {
+        alert("Please choose a valid card number");
+      } else if(CardExpiry.length < 3) {
+        alert("Please choose a valid card expiry date");
       } else {
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
-          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, VehType:VehType, Service:Service, CardNo:CardNo, CardExpiry:CardExpiry},
+          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service, CardNo:CardNo, CardExpiry:CardExpiry},
           method: "POST",
           dataType: "json",
           success:function(Response) {

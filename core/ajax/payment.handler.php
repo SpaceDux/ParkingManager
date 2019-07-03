@@ -7,7 +7,19 @@
   } else if($handler == "Payment.GET_PaymentServices") {
     $payment->PaymentServices_Dropdown($_POST['Type'], $_POST['Expiry'], $_POST['Plate']);
   } else if($handler == "Payment.Proccess_Transaction") {
-    $payment->PaymentServices_Dropdown($_POST['Method']);
+    if($_POST['Method'] == 1) {
+      $payment->Proccess_Transaction($_POST['Method'], $_POST['Type'], $_POST['Ref'], $_POST['Plate'], $_POST['Name'], $_POST['Trl'], $_POST['Time'], $_POST['VehType'], $_POST['Service'], null, null, null);
+    } else if($_POST['Method'] == 2) {
+      $payment->Proccess_Transaction($_POST['Method'], $_POST['Type'], $_POST['Ref'], $_POST['Plate'], $_POST['Name'], $_POST['Trl'], $_POST['Time'], $_POST['VehType'], $_POST['Service'], null, null, null);
+    } else if($_POST['Method'] == 3) {
+      $payment->Proccess_Transaction($_POST['Method'], $_POST['Type'], $_POST['Ref'], $_POST['Plate'], $_POST['Name'], $_POST['Trl'], $_POST['Time'], $_POST['VehType'], $_POST['Service'], $_POST['Account_ID'], null, null);
+    } else if($_POST['Method'] == 3) {
+      $payment->Proccess_Transaction($_POST['Method'], $_POST['Type'], $_POST['Ref'], $_POST['Plate'], $_POST['Name'], $_POST['Trl'], $_POST['Time'], $_POST['VehType'], $_POST['Service'], null, null, null);
+    } else if($_POST['Method'] == 4) {
+      $payment->Proccess_Transaction($_POST['Method'], $_POST['Type'], $_POST['Ref'], $_POST['Plate'], $_POST['Name'], $_POST['Trl'], $_POST['Time'], $_POST['VehType'], $_POST['Service'], null, null, null);
+    } else if($_POST['Method'] == 5) {
+      $payment->Proccess_Transaction($_POST['Method'], $_POST['Type'], $_POST['Ref'], $_POST['Plate'], $_POST['Name'], $_POST['Trl'], $_POST['Time'], $_POST['VehType'], $_POST['Service'], null, $_POST['CardNo'], $_POST['CardExpiry']);
+    }
   }
 
 ?>

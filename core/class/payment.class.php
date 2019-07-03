@@ -300,5 +300,28 @@
 			$this->user = null;
 			$this->pm = null;
 		}
+		// Authorise Transaction / Payment
+		function Proccess_Transaction($Method, $Type, $Ref, $Plate, $Name, $Trl, $Time, $VehType, $Service, $Account_ID = '', $FuelCardNo = '', $FuelCardExpiry = '') {
+			$this->vehicles = new Vehicles;
+			$this->etp = new ETP;
+			$this->user = new User;
+
+			// If $TYPE is 1 (First time record)
+			if($Method == 1) {
+				echo "Cash!";
+			} else if($Method == 2) {
+				echo "Card!";
+			} else if($Method == 3) {
+				echo "Account!";
+			} else if($Method == 4) {
+				echo "SNAP!";
+			} else if($Method == 5) {
+				echo "Fuel Card!";
+			}
+
+			$this->vehicles = null;
+			$this->etp = null;
+			$this->user = null;
+		}
 	}
 ?>
