@@ -164,6 +164,30 @@
       $this->user = null;
       $this->pm = null;
     }
+    // get images
+    function ANPR_Info($ref, $what) {
+      $this->mssql = new MSSQL;
+      $this->user = new User;
+      $this->pm = new PM;
+
+      $campus = $this->user->Info("campus");
+
+      $html = "";
+
+      $stmt = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $ref);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+      if(count($result) > 0) {
+        return $result[$what];
+      } else {
+
+      }
+
+      $this->mssql = null;
+      $this->user = null;
+      $this->pm = null;
+    }
     // ALL VEHICLE TOOLS
     // PAID Feed is called via ajax when ID="PAID_FEED" is loaded in tpl
     function ALLVEH_Feed() {
@@ -178,11 +202,11 @@
       $count_paid = 0;
       $count_renewal = 0;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Parked_Site = ? AND Parked_Deleted != '1' AND Parked_Column != '2' ORDER BY Parked_Expiry DESC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Site = ? AND Deleted != '1' AND Parked_Column != '2' ORDER BY Expiry DESC");
       $stmt->bindParam(1, $campus);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Parked_Site = ? AND Parked_Deleted != '1' AND Parked_Column == '2' ORDER BY Parked_Departure DESC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Site = ? AND Deleted != '1' AND Parked_Column == '2' ORDER BY Departure DESC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
       $html_paid .= '<table class="table table-striped table-bordered table-hover">
@@ -221,32 +245,32 @@
 
       foreach($stmt->fetchAll() as $row) {
         // Paid
-        if(strtotime($row['Parked_Expiry']) >= date("Y-m-d H:i:s")) {
+        if(strtotime($row['Expiry']) >= date("Y-m-d H:i:s")) {
           $count_paid++;
           $html_paid .= '<tr>';
-          $html_paid .= '<td>'.$row['Parked_Name'].'</td>';
-          $html_paid .= '<td>'.$row['Parked_Plate'].'</td>';
-          $html_paid .= '<td>'.$row['Parked_Arrival'].'</td>';
-          $html_paid .= '<td>'.$row['Parked_Type'].'</td>';
+          $html_paid .= '<td>'.$row['Name'].'</td>';
+          $html_paid .= '<td>'.$row['Plate'].'</td>';
+          $html_paid .= '<td>'.$row['Arrival'].'</td>';
+          $html_paid .= '<td>'.$row['Type'].'</td>';
           $html_paid .= '</tr>';
         }
         // Renewal
-        if(strtotime($row['Parked_Expiry']) <= date("Y-m-d H:i:s")) {
+        if(strtotime($row['Expiry']) <= date("Y-m-d H:i:s")) {
           $count_renewal++;
           $html_renew .= '<tr>';
-          $html_renew .= '<td>'.$row['Parked_Name'].'</td>';
-          $html_renew .= '<td>'.$row['Parked_Plate'].'</td>';
-          $html_renew .= '<td>'.$row['Parked_Arrival'].'</td>';
-          $html_renew .= '<td>'.$row['Parked_Type'].'</td>';
+          $html_renew .= '<td>'.$row['Name'].'</td>';
+          $html_renew .= '<td>'.$row['Plate'].'</td>';
+          $html_renew .= '<td>'.$row['Arrival'].'</td>';
+          $html_renew .= '<td>'.$row['Type'].'</td>';
           $html_renew .= '</tr>';
         }
       }
       foreach($stmt2->fetchAll() as $row) {
         $html_exit .= '<tr>';
-        $html_exit .= '<td>'.$row['Parked_Name'].'</td>';
-        $html_exit .= '<td>'.$row['Parked_Plate'].'</td>';
-        $html_exit .= '<td>'.$row['Parked_Departure'].'</td>';
-        $html_exit .= '<td>'.$row['Parked_Type'].'</td>';
+        $html_exit .= '<td>'.$row['Name'].'</td>';
+        $html_exit .= '<td>'.$row['Plate'].'</td>';
+        $html_exit .= '<td>'.$row['Departure'].'</td>';
+        $html_exit .= '<td>'.$row['Type'].'</td>';
         $html_exit .= '</tr>';
       }
 
@@ -278,6 +302,47 @@
       } catch (\Exception $e) {
         echo "<red>Time Construction error, please check & correct</red>";
       }
+    }
+    // Create Parking Record
+    function Parking_Record_Create($ANPRRef, $Plate, $Trl, $Name, $TimeIN, $Expiry, $VehType, $Account_ID) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->pm = new PM;
+      $site = $this->user->Info("campus");
+      $Author = $this->user->Info("first_name");
+      $Uniqueref = date("YmdHis").$site;
+      $ExitKey = mt_rand(111111, 999999);
+      $Patch = $this->ANPR_Info($ANPRRef, "Patch");
+      $Overview = $this->ANPR_Info($ANPRRef, "Overview");
+      $Patch = str_replace($this->pm->Site_Info($site, 'site_anpr_imgstr'), $this->pm->Site_Info($site, 'site_anpr_img'), $Patch);
+      $Overview = str_replace($this->pm->Site_Info($site, 'site_anpr_imgstr'), $this->pm->Site_Info($site, 'site_anpr_img'), $Overview);
+      $Plate = strtoupper($Plate);
+
+
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO pm_parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, Account_ID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '0', '0', '', ?, ?, ?)");
+      $stmt->bindParam(1, $Uniqueref);
+      $stmt->bindParam(2, $ANPRRef);
+      $stmt->bindParam(3, $site);
+      $stmt->bindParam(4, $Plate);
+      $stmt->bindParam(5, $Name);
+      $stmt->bindParam(6, $VehType);
+      $stmt->bindParam(7, $TimeIN);
+      $stmt->bindParam(8, $Expiry);
+      $stmt->bindParam(9, $Account_ID);
+      $stmt->bindParam(10, $Trl);
+      $stmt->bindParam(11, $Author);
+      $stmt->bindParam(12, $ExitKey);
+      $stmt->bindParam(13, $Patch);
+      $stmt->bindParam(14, $Overview);
+      if($stmt->execute()) {
+        return $Uniqueref;
+      } else {
+        echo "UNSUCCESSFUL";
+      }
+
+      $this->mysql = null;
+      $this->user = null;
+      $this->pm = null;
     }
   }
 ?>

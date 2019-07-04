@@ -305,23 +305,40 @@
 			$this->vehicles = new Vehicles;
 			$this->etp = new ETP;
 			$this->user = new User;
+			$Service_Expiry = $this->Payment_ServiceInfo($Service, "service_expiry");
+			$Expiry = date("Y-m-d H:i:s", strtotime($Time.' +'.$Service_Expiry.' hours'));
 
-			// If $TYPE is 1 (First time record)
-			if($Method == 1) {
-				echo "Cash!";
-			} else if($Method == 2) {
-				echo "Card!";
-			} else if($Method == 3) {
-				echo "Account!";
-			} else if($Method == 4) {
-				echo "SNAP!";
-			} else if($Method == 5) {
-				echo "Fuel Card!";
+			if($Type == 1) {
+				// If $TYPE is 1 (First time record)
+				if($Method == 1) {
+					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
+				} else if($Method == 2) {
+					echo "Card!";
+				} else if($Method == 3) {
+					echo "Account!";
+				} else if($Method == 4) {
+					echo "SNAP!";
+				} else if($Method == 5) {
+					echo "Fuel Card!";
+				}
 			}
+
 
 			$this->vehicles = null;
 			$this->etp = null;
 			$this->user = null;
+		}
+		//Payment Service Info
+		function Payment_ServiceInfo($key, $what) {
+		 $this->mysql = new MySQL;
+
+		 $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE id = ?");
+		 $stmt->bindParam(1, $key);
+		 $stmt->execute();
+		 $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+		 return $result[$what];
+
+		 $this->mysql = null;
 		}
 	}
 ?>
