@@ -309,8 +309,9 @@
       $this->user = new User;
       $this->pm = new PM;
       $site = $this->user->Info("campus");
+      $uid = $this->user->Info("campus");
       $Author = $this->user->Info("first_name");
-      $Uniqueref = date("YmdHis").$site;
+      $Uniqueref = $uid.date("YmdHis").$site;
       $ExitKey = mt_rand(111111, 999999);
       $Patch = $this->ANPR_Info($ANPRRef, "Patch");
       $Overview = $this->ANPR_Info($ANPRRef, "Overview");

@@ -4,7 +4,8 @@
 	{
 		protected $mysql;
 
-    function PaymentOptions($Plate) {
+    function PaymentOptions($Plate)
+		{
 			$this->mysql = new MySQL;
 			$this->account = new Account;
 			$this->etp = new ETP;
@@ -300,18 +301,31 @@
 			$this->user = null;
 			$this->pm = null;
 		}
+
+		function New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Capture_Time, $Expiry) {
+			$this->mysql = new MySQL;
+			$Ticket_Name = $this->Payment_ServiceInfo($Service, "service_name");
+			$Service_Name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
+			$Service_Group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+			$Service_Multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
+			$Service_Multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
+
+			$this->mysql = null;
+		}
 		// Authorise Transaction / Payment
 		function Proccess_Transaction($Method, $Type, $Ref, $Plate, $Name, $Trl, $Time, $VehType, $Service, $Account_ID = '', $FuelCardNo = '', $FuelCardExpiry = '') {
 			$this->vehicles = new Vehicles;
 			$this->etp = new ETP;
-			$this->user = new User;
 			$Service_Expiry = $this->Payment_ServiceInfo($Service, "service_expiry");
 			$Expiry = date("Y-m-d H:i:s", strtotime($Time.' +'.$Service_Expiry.' hours'));
 
 			if($Type == 1) {
 				// If $TYPE is 1 (First time record)
 				if($Method == 1) {
+					// Create Parking Record
 					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
+					// Create Payment Record
+					$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Time, $Expiry);
 				} else if($Method == 2) {
 					echo "Card!";
 				} else if($Method == 3) {
@@ -326,7 +340,6 @@
 
 			$this->vehicles = null;
 			$this->etp = null;
-			$this->user = null;
 		}
 		//Payment Service Info
 		function Payment_ServiceInfo($key, $what) {

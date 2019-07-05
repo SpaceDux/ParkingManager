@@ -259,8 +259,11 @@
     <script type="text/javascript" src="{URL}/template/{TPL}/js/Chart.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/mousetrap.min.js"></script>
     <script type="text/javascript">
-      Mousetrap.bind('tab', function() {
+      Mousetrap.bind('esc', function() {
+        $('#ANPR_AddPlate_Form')[0].reset();
+        $('#AddPlate_Plate').focus();
         ANPR_AddPlate();
+
       });
 
       var ctx = document.getElementById('myChart');

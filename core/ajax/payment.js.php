@@ -9,6 +9,7 @@
     $('#Payment_Plate').val(Plate);
     $('#Payment_Trl').val(Trl);
     $('#Payment_CaptureDate').val(Time);
+    $('#Payment_Name').focus();
     // Time Prep
     $.ajax({
       url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",
@@ -72,7 +73,7 @@
           method: "POST",
           dataType: "json",
           success:function(Response) {
-            
+
           }
         });
       }
