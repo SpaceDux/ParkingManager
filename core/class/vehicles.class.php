@@ -132,6 +132,17 @@
 
       $this->mssql = null;
     }
+    // Update ANPR Record (array)
+    function ANPR_PaymentUpdate($ref, $expiry)  {
+      $this->mssql = new MSSQL;
+
+      $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $expiry);
+      $stmt->bindParam(2, $ref);
+      $stmt->execute();
+
+      $this->mssql = null;
+    }
     // get images
     function ANPR_GetImages($ref) {
       $this->mssql = new MSSQL;
@@ -193,11 +204,14 @@
     function ALLVEH_Feed() {
       $this->user = new User;
       $this->mysql = new MySQL;
+      $this->pm = new PM;
 
       $campus = $this->user->Info("campus");
       $html_paid = '';
       $html_renew = '';
       $html_exit = '';
+
+      $current = date("Y-m-d H:i:s");
 
       $count_paid = 0;
       $count_renewal = 0;
@@ -245,19 +259,35 @@
 
       foreach($stmt->fetchAll() as $row) {
         // Paid
-        if(strtotime($row['Expiry']) >= date("Y-m-d H:i:s")) {
-          $count_paid++;
+        if($row['Expiry'] >= $current) {
           $html_paid .= '<tr>';
           $html_paid .= '<td>'.$row['Name'].'</td>';
           $html_paid .= '<td>'.$row['Plate'].'</td>';
           $html_paid .= '<td>'.$row['Arrival'].'</td>';
           $html_paid .= '<td>'.$row['Type'].'</td>';
+          $html_paid .= '<td>
+                          <div class="btn-group" role="group" aria-label="Options">
+                            <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                            <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                            <div class="btn-group" role="group">
+                              <div class="dropdown-menu" aria-labelledby="OptionsDrop">
+                                <a href="#" class="dropdown-item">Flag Vehicle</a>
+                              </div>
+                            </div>
+                          </div>
+                        </td>';
           $html_paid .= '</tr>';
         }
         // Renewal
-        if(strtotime($row['Expiry']) <= date("Y-m-d H:i:s")) {
-          $count_renewal++;
-          $html_renew .= '<tr>';
+        if($row['Expiry'] <= $current) {
+          $number = $this->pm->Hour($row['Expiry'], "");
+          $style = "";
+          if($number >= 2 && $number < 4) {
+            $style = "table-warning";
+          } else if ($number >= 4) {
+            $style = "table-danger";
+          }
+          $html_renew .= '<tr class="'.$style.'">';
           $html_renew .= '<td>'.$row['Name'].'</td>';
           $html_renew .= '<td>'.$row['Plate'].'</td>';
           $html_renew .= '<td>'.$row['Arrival'].'</td>';
@@ -281,12 +311,13 @@
 
       $data = array("Paid" => $html_paid,
                     "Renew" => $html_renew,
-                    "Exit" => $html_exit);
+                    "Exit" => $html_exit );
 
       echo json_encode($data);
 
       $this->mysql = null;
       $this->user = null;
+      $this->pm = null;
     }
     //Time Calculation, displays in a msg
     function timeCalc($time1, $time2) {
@@ -311,13 +342,14 @@
       $site = $this->user->Info("campus");
       $uid = $this->user->Info("campus");
       $Author = $this->user->Info("first_name");
-      $Uniqueref = $uid.date("YmdHis").$site;
-      $ExitKey = mt_rand(111111, 999999);
+      $ExitKey = mt_rand(1111, 9999);
+      $Uniqueref = $uid.date("YmdHis").$ExitKey.$site;
       $Patch = $this->ANPR_Info($ANPRRef, "Patch");
       $Overview = $this->ANPR_Info($ANPRRef, "Overview");
       $Patch = str_replace($this->pm->Site_Info($site, 'site_anpr_imgstr'), $this->pm->Site_Info($site, 'site_anpr_img'), $Patch);
       $Overview = str_replace($this->pm->Site_Info($site, 'site_anpr_imgstr'), $this->pm->Site_Info($site, 'site_anpr_img'), $Overview);
       $Plate = strtoupper($Plate);
+      $Name = strtoupper($Name);
 
 
       $stmt = $this->mysql->dbc->prepare("INSERT INTO pm_parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, Account_ID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '0', '0', '', ?, ?, ?)");
@@ -338,7 +370,7 @@
       if($stmt->execute()) {
         return $Uniqueref;
       } else {
-        echo "UNSUCCESSFUL";
+        echo "UNSUCCESSFUL Parking";
       }
 
       $this->mysql = null;

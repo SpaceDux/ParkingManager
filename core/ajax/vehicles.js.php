@@ -122,17 +122,4 @@
       }
     });
   });
-  // All other vehicle feeds
-  $(document).ready(function() {
-    $.ajax({
-      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.CountVehicles",
-      method: "POST",
-      dataType: "json",
-      success:function(Response) {
-        $('#PAID_Feed').html(Response.Paid);
-        $('#RENEWAL_Feed').html(Response.Renew);
-        $('#EXIT_Feed').html(Response.Exit);
-      }
-    });
-  });
 </script>

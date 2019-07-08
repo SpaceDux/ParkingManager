@@ -301,16 +301,54 @@
 			$this->user = null;
 			$this->pm = null;
 		}
-
+		// Add payment into db
 		function New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Capture_Time, $Expiry) {
 			$this->mysql = new MySQL;
-			$Ticket_Name = $this->Payment_ServiceInfo($Service, "service_name");
-			$Service_Name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
-			$Service_Group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
-			$Service_Multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
-			$Service_Multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
+			$this->user = new User;
+
+			$Site = $this->user->Info("campus");
+			$Author = $this->user->Info("first_name");
+			$uid = $this->user->Info("id");
+			$Service_Name = $this->Payment_ServiceInfo($Service, "service_name");
+			$Ticket_Name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
+			$Service_Settlement_Group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
+			$Service_Settlement_Multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
+			$Service_Group = $this->Payment_ServiceInfo($Service, "service_group");
+			$Service_Gross = $this->Payment_ServiceInfo($Service, "service_price_gross");
+			$Service_Nett = $this->Payment_ServiceInfo($Service, "service_price_net");
+			$Uniqueref = $uid.date("YmdHis").mt_rand(1111, 9999).$Site;
+			$Processed = date("Y-m-d H:i:s");
+
+			$stmt = $this->mysql->dbc->prepare("INSERT INTO pm_transactions (id, Uniqueref, Parkingref, Site, Method, Plate, Name, Service, Service_Name, Service_Ticket_Name, Service_Group, Gross, Nett, Processed_Time, Vehicle_Capture_Time, Vehicle_Expiry_Time, Ticket_Printed, AccountID, ETPID, Deleted, Deleted_Comment, Settlement_Group, Settlement_Multi, Author)
+																					VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, '0', '', ?, ?, ?)");
+			$stmt->bindParam(1, $Uniqueref);
+			$stmt->bindParam(2, $Ref);
+			$stmt->bindParam(3, $Site);
+			$stmt->bindParam(4, $Method);
+			$stmt->bindParam(5, $Plate);
+			$stmt->bindParam(6, $Name);
+			$stmt->bindParam(7, $Service);
+			$stmt->bindParam(8, $Service_Name);
+			$stmt->bindParam(9, $Ticket_Name);
+			$stmt->bindParam(10, $Service_Group);
+			$stmt->bindParam(11, $Service_Gross);
+			$stmt->bindParam(12, $Service_Nett);
+			$stmt->bindParam(13, $Processed);
+			$stmt->bindParam(14, $Capture_Time);
+			$stmt->bindParam(15, $Expiry);
+			$stmt->bindParam(16, $Account_ID);
+			$stmt->bindParam(17, $ETP);
+			$stmt->bindParam(18, $Service_Settlement_Group);
+			$stmt->bindParam(19, $Service_Settlement_Multi);
+			$stmt->bindParam(20, $Author);
+			if($stmt->execute()) {
+				return $Uniqueref;
+			} else {
+				echo "UNSUCCESSFUL Payment";
+			}
 
 			$this->mysql = null;
+			$this->user = null;
 		}
 		// Authorise Transaction / Payment
 		function Proccess_Transaction($Method, $Type, $Ref, $Plate, $Name, $Trl, $Time, $VehType, $Service, $Account_ID = '', $FuelCardNo = '', $FuelCardExpiry = '') {
@@ -325,16 +363,34 @@
 					// Create Parking Record
 					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
 					// Create Payment Record
-					$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Time, $Expiry);
+					$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry);
+					$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+					if($Payment != "UNSUCCESSFUL") {
+						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+					}
 				} else if($Method == 2) {
-					echo "Card!";
+					// Create Parking Record
+					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
+					// Create Payment Record
+					$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry);
+					if($Payment != "UNSUCCESSFUL") {
+						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+					}
 				} else if($Method == 3) {
-					echo "Account!";
+					// Create Parking Record
+					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
+					// Create Payment Record
+					$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID, $ETP = null, $Time, $Expiry);
+					if($Payment != "UNSUCCESSFUL") {
+						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+					}
 				} else if($Method == 4) {
 					echo "SNAP!";
 				} else if($Method == 5) {
 					echo "Fuel Card!";
 				}
+			} else if($Type == 2) {
+
 			}
 
 

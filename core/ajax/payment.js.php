@@ -47,6 +47,12 @@
     $('#PaymentPane_Form')[0].reset();
     $('#PaymentPane_Form').load(' #PaymentPane_Form');
 
+    $('#Modal_BodyCash').load(' #Modal_BodyCash');
+    $('#Modal_BodyCard').load(' #Modal_BodyCard');
+    $('#Modal_BodyAcc').load(' #Modal_BodyAcc');
+    $('#Modal_BodySNAP').load(' #Modal_BodySNAP');
+    $('#Modal_BodyFuel').load(' #Modal_BodyFuel');
+
     PaymentPane();
   };
   // Authorise Payment via TYPE
@@ -59,6 +65,7 @@
     var Trl = $('#Payment_Trl').val();
     var Time = $('#Payment_CaptureDate').val();
     var VehType = $("#Payment_VehType option:selected").val();
+    // Sending data
     if(Method == "1") {
       // Cash Payment
       var Service = $("#Payment_Service_Cash option:selected").val();
@@ -66,14 +73,27 @@
         alert("Please enter a valid Plate");
       } else if(VehType == "unselected") {
         alert("Please choose a valid vehicle type");
+      } else if(Name == "") {
+        alert("Please enter a valid name");
       } else {
+        // After clicking authorise
+        $('.ConfirmModalBody').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+        $('.Modal_AuthBtn_true').addClass('Hide');
+        $('.Modal_AuthBtn_false').addClass('Hide');
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
-          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service},
+          data: {Method:1, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service},
           method: "POST",
           dataType: "json",
           success:function(Response) {
-
+            if(Response.Result == 1) {
+              $('.ConfirmModalBody').html('Transaction has successfully been added, would you like to print the ticket now?');
+              $('.Modal_PrintBtn_true').removeClass('Hide');
+              $('.Modal_PrintBtn_false').removeClass('Hide');
+            } else {
+              $('.ConfirmModalBody').html('Transaction has not been added, please check the details and try again<br></br><div id="ReasonFail"></div>');
+              $('.Modal_AuthBtn_false').removeClass('Hide');
+            }
           }
         });
       }
@@ -85,14 +105,27 @@
         alert("Please enter a valid Plate");
       } else if(VehType == "unselected") {
         alert("Please choose a valid vehicle type");
+      } else if(Name == "") {
+        alert("Please enter a valid name");
       } else {
+        // After clicking authorise
+        $('.ConfirmModalBody').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+        $('.Modal_AuthBtn_true').addClass('Hide');
+        $('.Modal_AuthBtn_false').addClass('Hide');
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
-          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service},
+          data: {Method:2, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service},
           method: "POST",
           dataType: "json",
           success:function(Response) {
-
+            if(Response.Result == 1) {
+              $('.ConfirmModalBody').html('Transaction has successfully been added, would you like to print the ticket now?');
+              $('.Modal_PrintBtn_true').removeClass('Hide');
+              $('.Modal_PrintBtn_false').removeClass('Hide');
+            } else {
+              $('.ConfirmModalBody').html('Transaction has not been added, please check the details and try again<br></br><div id="ReasonFail"></div>');
+              $('.Modal_AuthBtn_false').removeClass('Hide');
+            }
           }
         });
       }
@@ -108,13 +141,24 @@
       } else if(Account_ID == "unchecked") {
         alert("Please choose a valid account");
       } else {
+        // After clicking authorise
+        $('.ConfirmModalBody').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+        $('.Modal_AuthBtn_true').addClass('Hide');
+        $('.Modal_AuthBtn_false').addClass('Hide');
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
-          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service, Account_ID:Account_ID},
+          data: {Method:3, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service, Account_ID:Account_ID},
           method: "POST",
           dataType: "json",
           success:function(Response) {
-
+            if(Response.Result == 1) {
+              $('.ConfirmModalBody').html('Transaction has successfully been added, would you like to print the ticket now?');
+              $('.Modal_PrintBtn_true').removeClass('Hide');
+              $('.Modal_PrintBtn_false').removeClass('Hide');
+            } else {
+              $('.ConfirmModalBody').html('Transaction has not been added, please check the details and try again<br></br><div id="ReasonFail"></div>');
+              $('.Modal_AuthBtn_false').removeClass('Hide');
+            }
           }
         });
       }
