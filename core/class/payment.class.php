@@ -373,6 +373,7 @@
 					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
 					// Create Payment Record
 					$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry);
+					$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 					if($Payment != "UNSUCCESSFUL") {
 						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 					}
@@ -381,13 +382,40 @@
 					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
 					// Create Payment Record
 					$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID, $ETP = null, $Time, $Expiry);
+					$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 					if($Payment != "UNSUCCESSFUL") {
 						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 					}
 				} else if($Method == 4) {
-					echo "SNAP!";
+					$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+					$ETP = $this->etp->Proccess_Transaction_SNAP($ETPID, $Plate, $Name);
+					if($ETP != FALSE) {
+						// Create Parking Record
+						$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
+						// Create Payment Record
+						$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry);
+						$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+						if($Payment != "UNSUCCESSFUL") {
+							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+						}
+					} else {
+						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the transaction, please try again or seek alternative payment method.'));
+					}
 				} else if($Method == 5) {
-					echo "Fuel Card!";
+					$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+					$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
+					if($ETP != FALSE) {
+						// Create Parking Record
+						$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
+						// Create Payment Record
+						$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry);
+						$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+						if($Payment != "UNSUCCESSFUL") {
+							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+						}
+					} else {
+						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
+					}
 				}
 			} else if($Type == 2) {
 
@@ -408,6 +436,31 @@
 		 return $result[$what];
 
 		 $this->mysql = null;
+		}
+		//Break Up Fuel Card str
+		//String Preperation
+		public function Fuel_String_Prepare($string, $start, $end) {
+			$string = ' ' . $string;
+			$ini = strpos($string, $start);
+			if ($ini == 0) return '';
+			$ini += strlen($start);
+			$len = strpos($string, $end, $ini) - $ini;
+			return substr($string, $ini, $len);
+		}
+		function Payment_FC_Break($string) {
+			$Card = $this->Fuel_String_Prepare($string, ";", "=");
+			$expiry = $this->Fuel_String_Prepare($string, "=", "?");
+			$expiry_yr = substr($expiry, "0", "2");
+			$expiry_m = substr($expiry, "2", "2");
+			$rc = substr($expiry, "6", "2");
+			$expiry = $expiry_m."/20".$expiry_yr;
+
+			$result = [
+				'cardno' => $Card,
+				'expiry' => $expiry,
+			];
+
+			echo json_encode($result);
 		}
 	}
 ?>

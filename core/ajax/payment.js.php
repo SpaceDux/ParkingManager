@@ -32,26 +32,42 @@
         $('#PaymentOptions').html(Response);
       }
     });
-    $.ajax({
-      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_GetImages",
-      data: {Ref:Ref},
-      method: "POST",
-      dataType: "json",
-      success:function(Response) {
-        $('#ANPR_Images').html(Response);
-      }
-    });
+    if(Type != 1) {
+      $.ajax({
+        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.Parking_GetImages",
+        data: {Ref:Ref},
+        method: "POST",
+        dataType: "json",
+        success:function(Response) {
+          $('#ANPR_Images').html(Response);
+        }
+      });
+    } else {
+      $.ajax({
+        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_GetImages",
+        data: {Ref:Ref},
+        method: "POST",
+        dataType: "json",
+        success:function(Response) {
+          $('#ANPR_Images').html(Response);
+        }
+      });
+    }
   };
-  // Close Payment Portal
-  function PaymentPaneClose() {
-    $('#PaymentPane_Form')[0].reset();
-    $('#PaymentPane_Form').load(' #PaymentPane_Form');
-
+  // Reset confirmation modals
+  function ResetModals() {
     $('#Modal_BodyCash').load(' #Modal_BodyCash');
     $('#Modal_BodyCard').load(' #Modal_BodyCard');
     $('#Modal_BodyAcc').load(' #Modal_BodyAcc');
     $('#Modal_BodySNAP').load(' #Modal_BodySNAP');
     $('#Modal_BodyFuel').load(' #Modal_BodyFuel');
+  }
+  // Close Payment Portal
+  function PaymentPaneClose() {
+    $('#PaymentPane_Form')[0].reset();
+    $('#PaymentPane_Form').load(' #PaymentPane_Form');
+
+    ResetModals();
 
     PaymentPane();
   };
@@ -73,6 +89,8 @@
         alert("Please enter a valid Plate");
       } else if(VehType == "unselected") {
         alert("Please choose a valid vehicle type");
+      } else if(Service == "unchecked") {
+        alert("Please choose a service");
       } else if(Name == "") {
         alert("Please enter a valid name");
       } else {
@@ -105,6 +123,8 @@
         alert("Please enter a valid Plate");
       } else if(VehType == "unselected") {
         alert("Please choose a valid vehicle type");
+      } else if(Service == "unchecked") {
+        alert("Please choose a service");
       } else if(Name == "") {
         alert("Please enter a valid name");
       } else {
@@ -138,6 +158,8 @@
         alert("Please enter a valid Plate");
       } else if(VehType == "unselected") {
         alert("Please choose a valid vehicle type");
+      } else if(Service == "unchecked") {
+        alert("Please choose a service");
       } else if(Account_ID == "unchecked") {
         alert("Please choose a valid account");
       } else {
@@ -170,14 +192,29 @@
         alert("Please enter a valid Plate");
       } else if(VehType == "unselected") {
         alert("Please choose a valid vehicle type");
+      } else if(Service == "unchecked") {
+        alert("Please choose a service");
+      } else if(Name == "") {
+        alert("Please enter a valid Company/Name");
       } else {
+        // After clicking authorise
+        $('.ConfirmModalBody').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+        $('.Modal_AuthBtn_true').addClass('Hide');
+        $('.Modal_AuthBtn_false').addClass('Hide');
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
-          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service},
+          data: {Method:4, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service},
           method: "POST",
           dataType: "json",
           success:function(Response) {
-
+            if(Response.Result == 1) {
+              $('.ConfirmModalBody').html('Transaction has successfully been added, would you like to print the ticket now?');
+              $('.Modal_PrintBtn_true').removeClass('Hide');
+              $('.Modal_PrintBtn_false').removeClass('Hide');
+            } else {
+              $('.ConfirmModalBody').html('Transaction has not been added, please check the details and try again<br><br>'+Response.Msg);
+              $('.Modal_AuthBtn_false').removeClass('Hide');
+            }
           }
         });
       }
@@ -191,18 +228,33 @@
         alert("Please enter a valid Plate");
       } else if(VehType == "unselected") {
         alert("Please choose a valid vehicle type");
+      } else if(Service == "unchecked") {
+        alert("Please choose a service");
       } else if(CardNo.length < 7) {
-        alert("Please choose a valid card number");
+        alert("Please enter a valid card number");
       } else if(CardExpiry.length < 3) {
-        alert("Please choose a valid card expiry date");
+        alert("Please enter a valid card expiry date (MM/YYYY)");
+      } else if(Name == "") {
+        alert("Please enter Company/Name");
       } else {
+        // After clicking authorise
+        $('.ConfirmModalBody').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+        $('.Modal_AuthBtn_true').addClass('Hide');
+        $('.Modal_AuthBtn_false').addClass('Hide');
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
-          data: {Method:Method, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service, CardNo:CardNo, CardExpiry:CardExpiry},
+          data: {Method:5, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service, CardNo:CardNo, CardExpiry:CardExpiry},
           method: "POST",
           dataType: "json",
           success:function(Response) {
-
+            if(Response.Result == 1) {
+              $('.ConfirmModalBody').html('Transaction has successfully been added, would you like to print the ticket now?');
+              $('.Modal_PrintBtn_true').removeClass('Hide');
+              $('.Modal_PrintBtn_false').removeClass('Hide');
+            } else {
+              $('.ConfirmModalBody').html('Transaction has not been added, please check the details and try again<br><br>'+Response.Msg);
+              $('.Modal_AuthBtn_false').removeClass('Hide');
+            }
           }
         });
       }
@@ -273,5 +325,20 @@
         }
       })
     }
+  });
+
+  $(document).on('keyup', '#FuelCard_Swipe', function(e) {
+    e.preventDefault();
+    var Str = $(this).val();
+    $.ajax({
+      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.FuelCard_Break",
+      type: "POST",
+      data: {CardStr:Str},
+      dataType: "json",
+      success:function(Data) {
+        $('#Payment_FuelCard_Number').val(Data.cardno);
+        $('#Payment_FuelCard_Expiry').val(Data.expiry);
+      }
+    })
   });
 </script>

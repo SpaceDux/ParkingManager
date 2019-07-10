@@ -76,7 +76,7 @@
           Once you click proceed, all information is then final.
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger Modal_AuthBtn_false" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger Modal_AuthBtn_false" onclick="ResetModals()" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-success Modal_AuthBtn_true" onClick="AuthorisePayment('1')">Proceed</button>
           <button type="button" data-dismiss="modal" onClick="PaymentPaneClose()" class="btn btn-danger Modal_PrintBtn_false Hide" data-dismiss="modal">No</button>
           <button type="button" class="btn btn-success Modal_PrintBtn_true Hide">Yes</button>
@@ -90,9 +90,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Confirm Card Transaction</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div id="Modal_BodyCard">
         <div class="modal-body ConfirmModalBody">
@@ -103,7 +100,7 @@
           Once you click proceed, all information is then final.
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger Modal_AuthBtn_false" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger Modal_AuthBtn_false" onclick="ResetModals()" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-success Modal_AuthBtn_true" onClick="AuthorisePayment('2')">Proceed</button>
           <button type="button" data-dismiss="modal" onClick="PaymentPaneClose()" class="btn btn-danger Modal_PrintBtn_false Hide" data-dismiss="modal">No</button>
           <button type="button" class="btn btn-success Modal_PrintBtn_true Hide">Yes</button>
@@ -117,9 +114,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Confirm Account Transaction</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div id="Modal_BodyAcc">
         <div class="modal-body ConfirmModalBody">
@@ -130,7 +124,7 @@
           Once you click proceed, all information is then final.
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger Modal_AuthBtn_false" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger Modal_AuthBtn_false" onclick="ResetModals()" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-success Modal_AuthBtn_true" onClick="AuthorisePayment('3')">Proceed</button>
           <button type="button" data-dismiss="modal" onClick="PaymentPaneClose()" class="btn btn-danger Modal_PrintBtn_false Hide" data-dismiss="modal">No</button>
           <button type="button" class="btn btn-success Modal_PrintBtn_true Hide">Yes</button>
@@ -144,9 +138,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Confirm SNAP Transaction</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div id="Modal_BodySNAP">
         <div class="modal-body ConfirmModalBody">
@@ -157,7 +148,7 @@
           Once you click proceed, all information is then final.
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger Modal_AuthBtn_false" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger Modal_AuthBtn_false" onclick="ResetModals()" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-success Modal_AuthBtn_true" onClick="AuthorisePayment('4')">Proceed</button>
           <button type="button" data-dismiss="modal" onClick="PaymentPaneClose()" class="btn btn-danger Modal_PrintBtn_false Hide" data-dismiss="modal">No</button>
           <button type="button" class="btn btn-success Modal_PrintBtn_true Hide">Yes</button>
@@ -171,9 +162,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Confirm Fuel Card Transaction</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <div id="Modal_BodyFuel">
         <div class="modal-body ConfirmModalBody">
@@ -184,7 +172,7 @@
           Once you click proceed, all information is then final.
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger Modal_AuthBtn_false" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger Modal_AuthBtn_false" onclick="ResetModals()" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-success Modal_AuthBtn_true" onClick="AuthorisePayment('5')">Proceed</button>
           <button type="button" data-dismiss="modal" onClick="PaymentPaneClose()" class="btn btn-danger Modal_PrintBtn_false Hide" data-dismiss="modal">No</button>
           <button type="button" class="btn btn-success Modal_PrintBtn_true Hide">Yes</button>

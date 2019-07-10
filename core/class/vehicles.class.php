@@ -258,6 +258,10 @@
                       <tbody>';
 
       foreach($stmt->fetchAll() as $row) {
+        $ref = '\''.$row['Uniqueref'].'\'';
+        $plate = '\''.$row['Plate'].'\'';
+        $trl = '\''.$row['Trailer_No'].'\'';
+        $date = '\''.$row['Expiry'].'\'';
         // Paid
         if($row['Expiry'] >= $current) {
           $html_paid .= '<tr>';
@@ -292,6 +296,19 @@
           $html_renew .= '<td>'.$row['Plate'].'</td>';
           $html_renew .= '<td>'.$row['Arrival'].'</td>';
           $html_renew .= '<td>'.$row['Type'].'</td>';
+          $html_renew .= '<td>'.$row['Type'].'</td>';
+          $html_renew .= '<td>
+                            <div class="btn-group" role="group" aria-label="Options">
+                              <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                              <button type="button" class="btn btn-danger" onClick="PaymentPaneToggle('.$ref.', '.$plate.', '.$trl.', '.$date.', 2)"><i class="fa fa-pound-sign"></i></button>
+                              <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                              <div class="btn-group" role="group">
+                                <div class="dropdown-menu" aria-labelledby="OptionsDrop">
+                                  <a href="#" class="dropdown-item">Flag Vehicle</a>
+                                </div>
+                              </div>
+                            </div>
+                          </td>';
           $html_renew .= '</tr>';
         }
       }
@@ -376,6 +393,32 @@
       $this->mysql = null;
       $this->user = null;
       $this->pm = null;
+    }
+    // get images
+    function GetImages($ref) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+
+      $campus = $this->user->Info("campus");
+
+      $html = "";
+
+      $stmt = $this->mysql->dbc->prepare("SELECT Img_Overview, Img_Patch FROM pm_parking_records WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $ref);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+      if($result['Img_Patch'] != "") {
+        $patch = $result['Img_Patch'];
+        $overview = $result['Img_Overview'];
+        $html .= '<img src="'.$patch.'" alt="" class="img-thumbnail">';
+        $html .= '<img src="'.$overview.'" alt="" class="img-thumbnail">';
+      } else {
+        $html .= "";
+      }
+      echo json_encode($html);
+
+      $this->mssql = null;
+      $this->user = null;
     }
   }
 ?>

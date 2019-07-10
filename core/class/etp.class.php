@@ -9,14 +9,15 @@
     function SNAP_ListServices() {
       global $_CONFIG;
       $this->user = new User;
+      $API = $_CONFIG['ETP']['API'];
       //Begin API client
-      $client = new Client(['base_uri' => $_CONFIG['etp_api']['base_uri']]);
+      $client = new Client(['base_uri' => $API['api_uri']]);
 
       $response = $client->post('services/list', [
-        'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
+        'auth' => array($API['api_user'], $API['api_pass']),
         'json' => [
-          'locationusername' => $_CONFIG['etp_api']['location_user-cannock'],
-          'locationpassword' => $_CONFIG['etp_api']['location_pass-cannock']
+          'locationusername' => $API['holyhead_user'],
+          'locationpassword' => $API['holyhead_pass']
           ]
       ]);
 
@@ -54,29 +55,21 @@
       echo $html;
       $this->user = null;
     }
-    //String Preperation
-    public function Fuel_String_Prepare($string, $start, $end) {
-      $string = ' ' . $string;
-      $ini = strpos($string, $start);
-      if ($ini == 0) return '';
-      $ini += strlen($start);
-      $len = strpos($string, $end, $ini) - $ini;
-      return substr($string, $ini, $len);
-    }
     //Process SNAP transaction
     public function Proccess_Transaction_SNAP($etpid, $plate, $name) {
       global $_CONFIG;
       $this->user = new User;
       $campus = $this->user->Info("campus");
+      $API = $_CONFIG['ETP']['API'];
 
-      $client = new Client(['base_uri' => $_CONFIG['etp_api']['base_uri']]);
+      $client = new Client(['base_uri' => $API['api_uri']]);
       if($campus == 1 OR $campus == 0) {
         //Begin API client
         $response = $client->post('transaction/add', [
-          'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
+          'auth' => array($API['api_user'], $API['api_pass']),
           'json' => [
-            'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-            'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
+            'locationusername' => $API['holyhead_user'],
+            'locationpassword' => $API['holyhead_pass'],
             'serviceid' => $etpid,
             'regno' => $plate,
             'drivername' => $name
@@ -86,14 +79,15 @@
         if($return['outputstatus'] == 1) {
           return $return['outputtransactionid'];
         } else {
+          die($return['outputmessage']." - ".$etpid);
           return FALSE;
         }
       } else if ($campus == 2) {
         $response = $client->post('transaction/add', [
-          'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
+          'auth' => array($API['api_user'], $API['api_pass']),
           'json' => [
-            'locationusername' => $_CONFIG['etp_api']['location_user-cannock'],
-            'locationpassword' => $_CONFIG['etp_api']['location_pass-cannock'],
+            'locationusername' => $API['hollies_user'],
+            'locationpassword' => $API['hollies_pass'],
             'serviceid' => $etpid,
             'regno' => $plate,
             'drivername' => $name
@@ -113,15 +107,16 @@
       global $_CONFIG;
       $this->user = new User;
       $campus = $this->user->Info("campus");
+      $API = $_CONFIG['ETP']['API'];
 
-      $client = new Client(['base_uri' => $_CONFIG['etp_api']['base_uri']]);
+      $client = new Client(['base_uri' => $API['api_uri']]);
 
       if ($campus == 1 OR $campus == 0) {
         $response = $client->post('transaction/add', [
-          'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
+          'auth' => array($API['api_user'], $API['api_pass']),
           'json' => [
-            'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-            'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
+            'locationusername' => $API['holyhead_user'],
+            'locationpassword' => $API['holyhead_pass'],
             'serviceid' => $etpid,
             'regno' => $plate,
             'drivername' => $name,
@@ -159,15 +154,14 @@
     //check is SNAP
     public function Check_SNAP($Plate) {
       global $_CONFIG;
-      $this->user = new User;
-      $campus = $this->user->Info("campus");
-      $client = new Client(['base_uri' => $_CONFIG['etp_api']['base_uri']]);
+      $API = $_CONFIG['ETP']['API'];
+      $client = new Client(['base_uri' => $API['api_uri']]);
       //Begin API client
       $response = $client->post('transaction/add', [
-        'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
+        'auth' => array($API['api_user'], $API['api_pass']),
         'json' => [
-          'locationusername' => $_CONFIG['etp_api']['location_user-holyhead'],
-          'locationpassword' => $_CONFIG['etp_api']['location_pass-holyhead'],
+          'locationusername' => $API['holyhead_user'],
+          'locationpassword' => $API['holyhead_pass'],
           'serviceid' => "4439",
           'regno' => $Plate,
           'drivername' => "ISITSNAP",
@@ -180,22 +174,6 @@
       } else {
         return FALSE;
       }
-    }
-    //BreakUpCard
-    function ETP_CardBreak($string) {
-      $Card = $this->Fuel_String_Prepare($string, ";", "=");
-      $expiry = $this->Fuel_String_Prepare($string, "=", "?");
-      $expiry_yr = substr($expiry, "0", "2");
-      $expiry_m = substr($expiry, "2", "2");
-      $rc = substr($expiry, "6", "2");
-      $expiry = $expiry_m."/20".$expiry_yr;
-
-      $result = [
-        'cardno' => $Card,
-        'expiry' => $expiry,
-      ];
-
-      echo json_encode($result);
     }
   }
 ?>
