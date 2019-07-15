@@ -68,6 +68,8 @@
     $('#PaymentPane_Form').load(' #PaymentPane_Form');
 
     ResetModals();
+    ALLVEH_Feed_Refresh();
+    ANPR_Feed_Refresh();
 
     PaymentPane();
   };

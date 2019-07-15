@@ -296,17 +296,11 @@
           $html_renew .= '<td>'.$row['Plate'].'</td>';
           $html_renew .= '<td>'.$row['Arrival'].'</td>';
           $html_renew .= '<td>'.$row['Type'].'</td>';
-          $html_renew .= '<td>'.$row['Type'].'</td>';
           $html_renew .= '<td>
                             <div class="btn-group" role="group" aria-label="Options">
                               <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
                               <button type="button" class="btn btn-danger" onClick="PaymentPaneToggle('.$ref.', '.$plate.', '.$trl.', '.$date.', 2)"><i class="fa fa-pound-sign"></i></button>
                               <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                              <div class="btn-group" role="group">
-                                <div class="dropdown-menu" aria-labelledby="OptionsDrop">
-                                  <a href="#" class="dropdown-item">Flag Vehicle</a>
-                                </div>
-                              </div>
                             </div>
                           </td>';
           $html_renew .= '</tr>';
@@ -419,6 +413,28 @@
 
       $this->mssql = null;
       $this->user = null;
+    }
+    // Vehicle information
+    function Info($ref, $what) {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $ref);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+      return $result[$what];
+      $this->mysql = null;
+    }
+
+    function ExpiryUpdate($ref, $time) {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Expiry = ? WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $time);
+      $stmt->bindParam(2, $ref);
+      $stmt->execute();
+
+      $this->mysql = null;
     }
   }
 ?>

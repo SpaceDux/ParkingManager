@@ -132,10 +132,10 @@
         }
       } else if ($campus == 2) {
         $response = $client->post('transaction/add', [
-          'auth' => array($_CONFIG['etp_api']['user'], $_CONFIG['etp_api']['pass']),
+          'auth' => array($API['api_user'], $API['api_pass']),
           'json' => [
-            'locationusername' => $_CONFIG['etp_api']['location_user-cannock'],
-            'locationpassword' => $_CONFIG['etp_api']['location_pass-cannock'],
+            'locationusername' => $API['hollies_user'],
+            'locationpassword' => $API['hollies_pass'],
             'serviceid' => $etpid,
             'regno' => $plate,
             'drivername' => $name,

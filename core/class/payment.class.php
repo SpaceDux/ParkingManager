@@ -418,7 +418,62 @@
 					}
 				}
 			} else if($Type == 2) {
-
+				// If $TYPE is 1 (First time record)
+				if($Method == 1) {
+					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
+					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry);
+					$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+					$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+					if($Payment != "UNSUCCESSFUL") {
+						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+					}
+				} else if($Method == 2) {
+					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
+					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry);
+					$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+					$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+					if($Payment != "UNSUCCESSFUL") {
+						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+					}
+				} else if($Method == 3) {
+					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
+					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP = null, $Time, $Expiry);
+					$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+					$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+					if($Payment != "UNSUCCESSFUL") {
+						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+					}
+				} else if($Method == 4) {
+					$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+					$ETP = $this->etp->Proccess_Transaction_SNAP($ETPID, $Plate, $Name);
+					if($ETP != FALSE) {
+						$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
+						// Create Payment Record
+						$Payment = $this->New_Transaction($Ref, $Method, $Plate,  $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry);
+						$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+						if($Payment != "UNSUCCESSFUL") {
+							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+						}
+					} else {
+						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the transaction, please try again or seek alternative payment method.'));
+					}
+				} else if($Method == 5) {
+					$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+					$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
+					if($ETP != FALSE) {
+						$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
+						// Create Payment Record
+						$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry);
+						$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+						if($Payment != "UNSUCCESSFUL") {
+							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+						}
+					} else {
+						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
+					}
+				}
 			}
 
 
