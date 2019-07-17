@@ -261,6 +261,7 @@
         $ref = '\''.$row['Uniqueref'].'\'';
         $plate = '\''.$row['Plate'].'\'';
         $trl = '\''.$row['Trailer_No'].'\'';
+        $timein = '\''.$row['Arrival'].'\'';
         $date = '\''.$row['Expiry'].'\'';
         // Paid
         if($row['Expiry'] >= $current) {
@@ -271,13 +272,8 @@
           $html_paid .= '<td>'.$row['Type'].'</td>';
           $html_paid .= '<td>
                           <div class="btn-group" role="group" aria-label="Options">
-                            <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                            <button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button>
                             <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                            <div class="btn-group" role="group">
-                              <div class="dropdown-menu" aria-labelledby="OptionsDrop">
-                                <a href="#" class="dropdown-item">Flag Vehicle</a>
-                              </div>
-                            </div>
                           </div>
                         </td>';
           $html_paid .= '</tr>';
@@ -298,7 +294,7 @@
           $html_renew .= '<td>'.$row['Type'].'</td>';
           $html_renew .= '<td>
                             <div class="btn-group" role="group" aria-label="Options">
-                              <button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>
+                              <button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button>
                               <button type="button" class="btn btn-danger" onClick="PaymentPaneToggle('.$ref.', '.$plate.', '.$trl.', '.$date.', 2)"><i class="fa fa-pound-sign"></i></button>
                               <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
                             </div>

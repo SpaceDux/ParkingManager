@@ -1,5 +1,7 @@
 <?php
   namespace ParkingManager;
+  use UniFi_API;
+
   class PM
   {
     // VARS
@@ -36,6 +38,23 @@
 
       echo $html;
 
+      $this->mysql = null;
+      $this->user = null;
+    }
+    //Notifications Create
+    function POST_Notifications($text, $urgency) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      if(isset($text)) {
+        $date = date("Y-m-d H:i:s");
+        $site = $this->user->Info("campus");
+        $stmt = $this->mysql->dbc->prepare("INSERT INTO pm_notifications (notification_text, notification_site, notification_created, notification_urgency) VALUES (?, ?, ?, ?)");
+        $stmt->bindParam(1, $text);
+        $stmt->bindParam(2, $site);
+        $stmt->bindParam(3, $date);
+        $stmt->bindParam(4, $urgency);
+        $stmt->execute();
+      }
       $this->mysql = null;
       $this->user = null;
     }

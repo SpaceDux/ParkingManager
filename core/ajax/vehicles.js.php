@@ -106,7 +106,7 @@
       }
     });
   });
-  // All other vehicle feeds#
+  // All other vehicle feeds
   function ALLVEH_Feed_Refresh() {
     $('#PAID_Feed').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
     $('#RENEWAL_Feed').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
@@ -137,4 +137,50 @@
       }
     });
   });
+  // Update
+  function UpdateVehPaneToggle(Ref, Time) {
+    $('#Update_Ref').val(Ref);
+    $('#Update_Duration').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+    // Time Prep
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",
+      data: {Time1:Time, Time2:""},
+      method: "POST",
+      dataType: "text",
+      success:function(Response) {
+        $('#Update_Duration').html(Response);
+      }
+    });
+    // Get Veh Details
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.GetDetails",
+      data: {Ref:Ref},
+      method: "POST",
+      dataType: "text",
+      success:function(Response) {
+        $('#Update_Plate').html(Response.Plate);
+        $('#Update_Trailer').html(Response.Trailer_No);
+        $('#Update_Name').html(Response.Name);
+        $('#Update_VehType').html(Response.Type);
+        UpdateVehPane();
+      }
+    });
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.Parking_GetImages",
+      data: {Ref:Ref},
+      method: "POST",
+      dataType: "json",
+      success:function(Response) {
+        $('#Update_Images').html(Response);
+      }
+    });
+  };
+  // Close Payment Portal
+  function UpdateVehPaneClose() {
+    ResetModals();
+    ALLVEH_Feed_Refresh();
+
+    UpdateVehPane();
+  };
+
 </script>

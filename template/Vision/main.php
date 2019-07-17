@@ -79,6 +79,79 @@
       </div>
     </div>
     <!-- Payment Pane END -->
+    <!-- Update Veh Pane START -->
+    <div class="PaymentPane" id="UpdateVehPane">
+      <div class="Title">
+        update vehicle.
+        <div class="btn-group float-right" role="group">
+          <button type="button" class="btn btn-danger" onClick="UpdateVehPaneClose()"><i class="fa fa-times"></i></button>
+        </div>
+      </div>
+      <div class="Body">
+        <form id="UpdateVehicle_Form">
+          <div class="row">
+            <div class="col">
+              <input type="hidden" name="Update_Ref" id="Update_Ref" class="form-control">
+              <label for="Update_Plate">Update Vehicle Plate</label>
+              <input type="text" class="form-control" name="Update_Plate" id="Update_Plate">
+              <br>
+              <label for="Update_Trailer">Update Vehicle Trailer</label>
+              <input type="text" class="form-control" name="Update_Trailer" id="Update_Trailer">
+              <br>
+              <label for="Update_Name">Update Vehicle Company/Name</label>
+              <input type="text" class="form-control" name="Update_Name" id="Update_Name">
+              <br>
+              <label for="Update_VehType">Update Vehicle Type</label>
+              <select class="form-control" id="Update_VehType" name="Update_VehType">
+                <option value="unselected">Please Choose a Vehicle Type...</option>
+                {VEHTYPES}
+              </select>
+              <br>
+              <label>ANPR Images</label>
+              <div id="Update_Images">
+
+              </div>
+            </div>
+            <div class="col">
+              <div class="alert alert-primary" id="Update_Duration"></div>
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Service</th>
+                    <th scope="col">Processed</th>
+                    <th scope="col">Prints</th>
+                    <th scope="col"><i class="fa fa-cog"></i></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>24hr Parking</td>
+                    <td>25/09:20</td>
+                    <td>1</td>
+                    <td>
+                      <div class="btn-group" role="group" aria-label="Options">
+                        <button type="button" class="btn btn-danger"><i class="fa fa-print"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <label for="Update_Arrival">Update Time of Arrival</label>
+              <input type="text" class="form-control" name="Update_Arrival" id="Update_Arrival">
+              <br>
+              <label for="Update_Exit">Update Time of Exit</label>
+              <input type="text" class="form-control" name="Update_Exit" id="Update_Exit">
+              <br>
+              <label for="Update_Exit">Update Time of Exit</label>
+              <input type="text" class="form-control" name="Update_Exit" id="Update_Exit">
+              <br>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Update Pane END -->
     <div class="TopBar">
       <div class="Logo">
         <a href="{URL}/main">Parking<b>Manager</b></a>

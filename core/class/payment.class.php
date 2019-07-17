@@ -354,6 +354,9 @@
 		function Proccess_Transaction($Method, $Type, $Ref, $Plate, $Name, $Trl, $Time, $VehType, $Service, $Account_ID = '', $FuelCardNo = '', $FuelCardExpiry = '') {
 			$this->vehicles = new Vehicles;
 			$this->etp = new ETP;
+			$this->pm = new PM;
+			$this->user = new User;
+			$name = $this->user->Info("first_name");
 			$Service_Expiry = $this->Payment_ServiceInfo($Service, "service_expiry");
 			$Expiry = date("Y-m-d H:i:s", strtotime($Time.' +'.$Service_Expiry.' hours'));
 
@@ -367,6 +370,7 @@
 					$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 					if($Payment != "UNSUCCESSFUL") {
 						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+						$this->pm->POST_Notifications("A Cash Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 					}
 				} else if($Method == 2) {
 					// Create Parking Record
@@ -376,6 +380,7 @@
 					$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 					if($Payment != "UNSUCCESSFUL") {
 						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+						$this->pm->POST_Notifications("A Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 					}
 				} else if($Method == 3) {
 					// Create Parking Record
@@ -385,6 +390,8 @@
 					$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 					if($Payment != "UNSUCCESSFUL") {
 						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+						$this->pm->POST_Notifications("A KingPay Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+
 					}
 				} else if($Method == 4) {
 					$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
@@ -397,6 +404,8 @@
 						$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 						if($Payment != "UNSUCCESSFUL") {
 							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+							$this->pm->POST_Notifications("A SNAP Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+
 						}
 					} else {
 						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the transaction, please try again or seek alternative payment method.'));
@@ -412,6 +421,8 @@
 						$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 						if($Payment != "UNSUCCESSFUL") {
 							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+							$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+
 						}
 					} else {
 						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -426,6 +437,8 @@
 					$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 					if($Payment != "UNSUCCESSFUL") {
 						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+						$this->pm->POST_Notifications("A Cash Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+
 					}
 				} else if($Method == 2) {
 					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
@@ -434,6 +447,8 @@
 					$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 					if($Payment != "UNSUCCESSFUL") {
 						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+						$this->pm->POST_Notifications("A Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+
 					}
 				} else if($Method == 3) {
 					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
@@ -442,6 +457,8 @@
 					$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 					if($Payment != "UNSUCCESSFUL") {
 						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+						$this->pm->POST_Notifications("A KingPay Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+
 					}
 				} else if($Method == 4) {
 					$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
@@ -454,6 +471,8 @@
 						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 						if($Payment != "UNSUCCESSFUL") {
 							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+							$this->pm->POST_Notifications("A SNAP Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+
 						}
 					} else {
 						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the transaction, please try again or seek alternative payment method.'));
@@ -469,6 +488,8 @@
 						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 						if($Payment != "UNSUCCESSFUL") {
 							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
+							$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+
 						}
 					} else {
 						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -479,6 +500,8 @@
 
 			$this->vehicles = null;
 			$this->etp = null;
+			$this->pm = null;
+			$this->user = null;
 		}
 		//Payment Service Info
 		function Payment_ServiceInfo($key, $what) {

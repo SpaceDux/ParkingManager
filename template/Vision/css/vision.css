@@ -390,7 +390,7 @@ a:hover, a:focus {
 }
 .PaymentPane {
   width: 90%;
-  height: 100vh;
+  height: 100%;
   z-index: 1001;
   background: #f3f3f3;
   display: block;
