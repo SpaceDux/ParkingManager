@@ -432,5 +432,18 @@
 
       $this->mysql = null;
     }
+
+    function GetDetails($ref) {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $ref);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      echo json_encode($result);
+
+      $this->mysql = null;
+    }
   }
 ?>

@@ -18,6 +18,8 @@
     $vehicles->timeCalc($_POST['Time1'], $_POST['Time2']);
   } else if($handler == "Vehicles.Parking_GetImages") {
     $vehicles->GetImages($_POST['Ref']);
+  } else if($handler == "Vehicles.GetDetails") {
+    $vehicles->GetDetails($_POST['Ref']);
   }
 
 ?>

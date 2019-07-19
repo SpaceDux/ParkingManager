@@ -156,12 +156,15 @@
       url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.GetDetails",
       data: {Ref:Ref},
       method: "POST",
-      dataType: "text",
+      dataType: "json",
       success:function(Response) {
-        $('#Update_Plate').html(Response.Plate);
-        $('#Update_Trailer').html(Response.Trailer_No);
-        $('#Update_Name').html(Response.Name);
-        $('#Update_VehType').html(Response.Type);
+        $('#Update_Plate').val(Response.Plate);
+        $('#Update_Trailer').val(Response.Trailer_No);
+        $('#Update_Name').val(Response.Name);
+        $('#Update_VehType').val(Response.Type);
+        $('#Update_Arrival').val(Response.Arrival);
+        $('#Update_Exit').val(Response.Exit);
+        $('#Update_Column').val(Response.Parked_Column);
         UpdateVehPane();
       }
     });
@@ -177,6 +180,9 @@
   };
   // Close Payment Portal
   function UpdateVehPaneClose() {
+    $('#UpdateVehicle_Form')[0].reset();
+    $('#UpdateVehicle_Form').load(' #UpdateVehicle_Form');
+
     ResetModals();
     ALLVEH_Feed_Refresh();
 

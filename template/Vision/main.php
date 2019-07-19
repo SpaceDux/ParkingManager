@@ -94,19 +94,19 @@
               <input type="hidden" name="Update_Ref" id="Update_Ref" class="form-control">
               <label for="Update_Plate">Update Vehicle Plate</label>
               <input type="text" class="form-control" name="Update_Plate" id="Update_Plate">
-              <br>
-              <label for="Update_Trailer">Update Vehicle Trailer</label>
-              <input type="text" class="form-control" name="Update_Trailer" id="Update_Trailer">
-              <br>
+              <hr>
               <label for="Update_Name">Update Vehicle Company/Name</label>
               <input type="text" class="form-control" name="Update_Name" id="Update_Name">
-              <br>
+              <hr>
+              <label for="Update_Trailer">Update Vehicle Trailer</label>
+              <input type="text" class="form-control" name="Update_Trailer" id="Update_Trailer">
+              <hr>
               <label for="Update_VehType">Update Vehicle Type</label>
               <select class="form-control" id="Update_VehType" name="Update_VehType">
                 <option value="unselected">Please Choose a Vehicle Type...</option>
                 {VEHTYPES}
               </select>
-              <br>
+              <hr>
               <label>ANPR Images</label>
               <div id="Update_Images">
 
@@ -120,7 +120,8 @@
                     <th scope="col">Service</th>
                     <th scope="col">Processed</th>
                     <th scope="col">Prints</th>
-                    <th scope="col"><i class="fa fa-cog"></i></th>
+                    <th scope="col">Author</th>
+                    <th scope="col"><button type="button" class="btn btn-sm btn-danger float-right"><i class="fa fa-pound-sign"></i> New Payment</button></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -128,8 +129,9 @@
                     <td>24hr Parking</td>
                     <td>25/09:20</td>
                     <td>1</td>
+                    <td>Ryan</td>
                     <td>
-                      <div class="btn-group" role="group" aria-label="Options">
+                      <div class="btn-group float-right" role="group" aria-label="Options">
                         <button type="button" class="btn btn-danger"><i class="fa fa-print"></i></button>
                         <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                       </div>
@@ -139,13 +141,25 @@
               </table>
               <label for="Update_Arrival">Update Time of Arrival</label>
               <input type="text" class="form-control" name="Update_Arrival" id="Update_Arrival">
-              <br>
+              <hr>
               <label for="Update_Exit">Update Time of Exit</label>
               <input type="text" class="form-control" name="Update_Exit" id="Update_Exit">
-              <br>
-              <label for="Update_Exit">Update Time of Exit</label>
-              <input type="text" class="form-control" name="Update_Exit" id="Update_Exit">
-              <br>
+              <hr>
+              <label for="Update_Column">Update Vehicle Parking Column</label>
+              <select class="form-control" id="Update_Column" name="Update_Column">
+                <option value="unselected">Please Choose a Parking Column...</option>
+                <option value="1">Paid</option>
+                <option value="2">Exit</option>
+              </select>
+              <hr>
+              <label for="Update_Comment">Add a Comment</label>
+              <textarea class="form-control" id="Update_Comment"></textarea>
+              <br><br><hr>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn btn-primary">Save <i class="fa fa-save"></i></button>
+                <button type="button" class="btn btn-warning">Flag <i class="fa fa-flag"></i></button>
+                <button type="button" class="btn btn-danger">Delete <i class="fa fa-trash"></i></button>
+              </div>
             </div>
           </div>
         </form>
