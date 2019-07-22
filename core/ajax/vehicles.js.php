@@ -165,16 +165,27 @@
         $('#Update_Arrival').val(Response.Arrival);
         $('#Update_Exit').val(Response.Exit);
         $('#Update_Column').val(Response.Parked_Column);
+        // Payments
+        $.ajax({
+          url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GetVehPayments",
+          data: {Ref:Ref},
+          method: "POST",
+          dataType: "text",
+          success:function(Response) {
+            $('#Update_PaymentsTable').html(Response);
+          }
+        });
+        // Images
+        $.ajax({
+          url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.Parking_GetImages",
+          data: {Ref:Ref},
+          method: "POST",
+          dataType: "json",
+          success:function(Response) {
+            $('#Update_Images').html(Response);
+          }
+        });
         UpdateVehPane();
-      }
-    });
-    $.ajax({
-      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.Parking_GetImages",
-      data: {Ref:Ref},
-      method: "POST",
-      dataType: "json",
-      success:function(Response) {
-        $('#Update_Images').html(Response);
       }
     });
   };

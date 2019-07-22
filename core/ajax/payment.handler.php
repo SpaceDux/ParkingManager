@@ -20,6 +20,8 @@
     }
   } else if($handler == "Payment.FuelCard_Break") {
     $payment->Payment_FC_Break($_POST['CardStr']);
+  } else if($handler == "Payment.GetVehPayments") {
+    $payment->PerVehPayments($_POST['Ref']);
   }
 
 ?>
