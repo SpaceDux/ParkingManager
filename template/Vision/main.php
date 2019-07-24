@@ -44,13 +44,23 @@
             </div>
             <div class="col">
               <div class="alert alert-primary" id="Update_Duration"></div>
-              <div id="Update_PaymentsTable"></div> 
-              <label for="Update_Arrival">Update Time of Arrival</label>
-              <input type="text" class="form-control" name="Update_Arrival" id="Update_Arrival">
-              <hr>
-              <label for="Update_Exit">Update Time of Exit</label>
-              <input type="text" class="form-control" name="Update_Exit" id="Update_Exit">
-              <hr>
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Service</th>
+                    <th scope="col">Method</th>
+                    <th scope="col">Processed</th>
+                    <th scope="col">Printed</th>
+                    <th scope="col">Author</th>
+                    <th scope="col"><button type="button" class="btn btn-sm btn-danger float-right"><i class="fa fa-pound-sign"></i> New Payment</button></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <div id="Update_PaymentsTable">
+
+                  </div>
+                </tbody>
+              </table>
               <label for="Update_Column">Update Vehicle Parking Column</label>
               <select class="form-control" id="Update_Column" name="Update_Column">
                 <option value="unselected">Please Choose a Parking Column...</option>
@@ -58,11 +68,17 @@
                 <option value="2">Exit</option>
               </select>
               <hr>
-              <label for="Update_Comment">Add a Comment</label>
-              <textarea class="form-control" id="Update_Comment"></textarea>
+              <label for="Update_Arrival">Update Time of Arrival</label>
+              <input type="text" class="form-control" name="Update_Arrival" id="Update_Arrival">
+              <hr>
+              <label for="Update_Exit">Update Time of Exit</label>
+              <input type="text" class="form-control" name="Update_Exit" id="Update_Exit">
+              <hr>
+              <label for="Update_Notes">Add a Comment</label>
+              <textarea class="form-control" id="Update_Notes" name="Update_Notes"></textarea>
               <br><br><hr>
               <div class="btn-group btn-group-lg" role="group">
-                <button type="button" class="btn btn-primary">Save <i class="fa fa-save"></i></button>
+                <button type="button" class="btn btn-primary" onClick="UpdateVehicleRec()">Save <i class="fa fa-save"></i></button>
                 <button type="button" class="btn btn-warning">Flag <i class="fa fa-flag"></i></button>
                 <button type="button" class="btn btn-danger">Delete <i class="fa fa-trash"></i></button>
               </div>
@@ -326,7 +342,6 @@
         $('#ANPR_AddPlate_Form')[0].reset();
         $('#AddPlate_Plate').focus();
         ANPR_AddPlate();
-
       });
 
       var ctx = document.getElementById('myChart');

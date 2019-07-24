@@ -213,14 +213,11 @@
 
       $current = date("Y-m-d H:i:s");
 
-      $count_paid = 0;
-      $count_renewal = 0;
-
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Site = ? AND Deleted != '1' AND Parked_Column != '2' ORDER BY Expiry DESC");
       $stmt->bindParam(1, $campus);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Site = ? AND Deleted != '1' AND Parked_Column == '2' ORDER BY Departure DESC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Site = ? AND Deleted != '1' AND Parked_Column = '2' ORDER BY Departure DESC");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
       $html_paid .= '<table class="table table-striped table-bordered table-hover">
@@ -275,7 +272,7 @@
                             <button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button>
                             <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
                           </div>
-                        </td>';
+                          </td>';
           $html_paid .= '</tr>';
         }
         // Renewal
@@ -302,12 +299,17 @@
           $html_renew .= '</tr>';
         }
       }
+
       foreach($stmt2->fetchAll() as $row) {
+        $ref = '\''.$row['Uniqueref'].'\'';
+        $timein = '\''.$row['Arrival'].'\'';
+
         $html_exit .= '<tr>';
         $html_exit .= '<td>'.$row['Name'].'</td>';
         $html_exit .= '<td>'.$row['Plate'].'</td>';
         $html_exit .= '<td>'.$row['Departure'].'</td>';
         $html_exit .= '<td>'.$row['Type'].'</td>';
+        $html_exit .= '<td><button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button></td>';
         $html_exit .= '</tr>';
       }
 
@@ -318,7 +320,7 @@
 
       $data = array("Paid" => $html_paid,
                     "Renew" => $html_renew,
-                    "Exit" => $html_exit );
+                    "Exit" => $html_exit);
 
       echo json_encode($data);
 
@@ -421,7 +423,7 @@
       return $result[$what];
       $this->mysql = null;
     }
-
+    // Update a vehicles expiry time.
     function ExpiryUpdate($ref, $time) {
       $this->mysql = new MySQL;
 
@@ -432,7 +434,7 @@
 
       $this->mysql = null;
     }
-
+    // Get all details for updating record
     function GetDetails($ref) {
       $this->mysql = new MySQL;
 
@@ -445,5 +447,58 @@
 
       $this->mysql = null;
     }
+    // Update Vehicle record
+    function UpdateRecord($ref, $plate, $name, $trl, $type, $column, $arrival, $exit, $comment) {
+      $this->mysql = new MySQL;
+      $this->pm = new PM;
+
+      $name = strtoupper($name);
+      $plate = strtoupper($plate);
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Plate = ?, Name = ?, Trailer_No = ?, Type = ?, Parked_Column = ?, Arrival = ?, Departure = ?, Notes = ? WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $plate);
+      $stmt->bindParam(2, $name);
+      $stmt->bindParam(3, $trl);
+      $stmt->bindParam(4, $type);
+      $stmt->bindParam(5, $column);
+      $stmt->bindParam(6, $arrival);
+      $stmt->bindParam(7, $exit);
+      $stmt->bindParam(8, $comment);
+      $stmt->bindParam(9, $ref);
+      if($stmt->execute()) {
+        $this->pm->POST_Notifications("A vehicle record has been updated @ ".date("d/H:i:s").", Ref: ".$ref, '0');
+      } else {
+        echo "UNSUCCESSFUL";
+      }
+
+
+      $this->mysql = null;
+      $this->pm = null;
+    }
+    // Check Duplicate
+    function CheckDuplicate($plate) {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $site = $this->user->Info("campus");
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Site = ? AND Plate = ? AND Parked_Column < 2");
+      $stmt->bindParam(1, $site);
+      $stmt->bindParam(2, $plate);
+      $stmt->execute();
+      $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+      $result = $stmt->rowCount();
+
+      if($result > 0) {
+        $response = array('Response' => 'TRUE', 'Ref' => $data['Uniqueref'], 'Time' => $data['Arrival']);
+        echo json_encode($response);
+      } else {
+        $response = array('Response' => 'FALSE');
+        echo json_encode($response);
+      }
+
+      $this->mysql = null;
+      $this->user = null;
+    }
   }
+
 ?>

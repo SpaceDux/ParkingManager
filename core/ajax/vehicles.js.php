@@ -165,6 +165,7 @@
         $('#Update_Arrival').val(Response.Arrival);
         $('#Update_Exit').val(Response.Exit);
         $('#Update_Column').val(Response.Parked_Column);
+        $('#Update_Notes').val(Response.Notes);
         // Payments
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GetVehPayments",
@@ -199,5 +200,26 @@
 
     UpdateVehPane();
   };
+  // Update
+  function UpdateVehicleRec() {
+    var Ref = $('#Update_Ref').val();
+    var Plate = $('#Update_Plate').val();
+    var Name = $('#Update_Name').val();
+    var Trailer = $('#Update_Trailer').val();
+    var VehType = $('#Update_VehType').val();
+    var Column = $('#Update_Column').val();
+    var Arrival = $('#Update_Arrival').val();
+    var Exit = $('#Update_Exit').val();
+    var Notes = $('#Update_Notes').val();
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.UpdateRecord",
+      data: {Ref:Ref, Plate:Plate, Name:Name, Trailer:Trailer, VehType:VehType, Column:Column, Arrival:Arrival, Exit:Exit, Notes:Notes},
+      method: "POST",
+      success:function() {
+        UpdateVehPaneClose();
+        $('#UpdateVehicle_Form')[0].reset();
+      }
+    });
+  }
 
 </script>

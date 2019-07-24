@@ -20,6 +20,10 @@
     $vehicles->GetImages($_POST['Ref']);
   } else if($handler == "Vehicles.GetDetails") {
     $vehicles->GetDetails($_POST['Ref']);
+  } else if($handler == "Vehicles.UpdateRecord") {
+    $vehicles->UpdateRecord($_POST['Ref'], $_POST['Plate'], $_POST['Name'], $_POST['Trailer'], $_POST['VehType'], $_POST['Column'], $_POST['Arrival'], $_POST['Exit'], $_POST['Notes']);
+  } else if($handler == "Vehicles.CheckDuplicate") {
+    $vehicles->CheckDuplicate($_POST['Plate']);
   }
 
 ?>

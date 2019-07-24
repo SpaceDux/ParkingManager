@@ -181,3 +181,26 @@
     </div>
   </div>
 </div>
+<!-- Duplicate Modal -->
+<div class="modal fade" id="DuplicateVehicle" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="DuplicateVehicle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Duplicate Warning</h5>
+      </div>
+      <div>
+        <div id="DuplicateVehicleBody">
+          <div class="modal-body">
+            This vehicle already has a parking record, you will not be able to process
+            this transaction without first dealing with the record that already exists.
+            <br><br>
+            Pressing "Go-to Record" will take you to the existing vehicle record.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" id="DuplicateVehicleBtn" data-id="" data-time="">Go-to Record</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

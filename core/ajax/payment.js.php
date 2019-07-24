@@ -10,39 +10,46 @@
     $('#Payment_Trl').val(Trl);
     $('#Payment_CaptureDate').val(Time);
     $('#Payment_Name').focus();
-    // Time Prep
-    $.ajax({
-      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",
-      data: {Time1:Time, Time2:""},
-      method: "POST",
-      dataType: "text",
-      success:function(Response) {
-        $('#Payment_TimeCalculation').html(Response);
-      }
-    });
-    PaymentPane();
-    $('#PaymentOptions').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
-    $('#ANPR_Images').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
-    $.ajax({
-      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GET_PaymentOptions",
-      data: {Plate:Plate},
-      method: "POST",
-      dataType: "text",
-      success:function(Response) {
-        $('#PaymentOptions').html(Response);
-      }
-    });
-    if(Type != 1) {
+    // If vehicle isnt a duplicate
+    if(Type == 1) {
+      // Is Duplicate (Already has mysql rec)
       $.ajax({
-        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.Parking_GetImages",
-        data: {Ref:Ref},
+        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.CheckDuplicate",
+        data: {Plate:Plate},
         method: "POST",
         dataType: "json",
         success:function(Response) {
-          $('#ANPR_Images').html(Response);
+          if(Response.Response == "TRUE") {
+            $('#DuplicateVehicle').modal("toggle");
+            $('#DuplicateVehicleBtn').attr('data-id', Response.Ref);
+            $('#DuplicateVehicleBtn').attr('data-time', Response.Time);
+          } else {
+
+          }
         }
       });
-    } else {
+      // Time Prep
+      $.ajax({
+        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",
+        data: {Time1:Time, Time2:""},
+        method: "POST",
+        dataType: "text",
+        success:function(Response) {
+          $('#Payment_TimeCalculation').html(Response);
+        }
+      });
+      PaymentPane();
+      $('#PaymentOptions').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+      $('#ANPR_Images').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+      $.ajax({
+        url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GET_PaymentOptions",
+        data: {Plate:Plate},
+        method: "POST",
+        dataType: "text",
+        success:function(Response) {
+          $('#PaymentOptions').html(Response);
+        }
+      });
       $.ajax({
         url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_GetImages",
         data: {Ref:Ref},
@@ -52,8 +59,40 @@
           $('#ANPR_Images').html(Response);
         }
       });
+    } else {
+      // Time Prep
+      $.ajax({
+        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",
+        data: {Time1:Time, Time2:""},
+        method: "POST",
+        dataType: "text",
+        success:function(Response) {
+          $('#Payment_TimeCalculation').html(Response);
+        }
+      });
+      PaymentPane();
+      $('#PaymentOptions').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+      $('#ANPR_Images').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+      $.ajax({
+        url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GET_PaymentOptions",
+        data: {Plate:Plate},
+        method: "POST",
+        dataType: "text",
+        success:function(Response) {
+          $('#PaymentOptions').html(Response);
+        }
+      });
+      $.ajax({
+        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.Parking_GetImages",
+        data: {Ref:Ref},
+        method: "POST",
+        dataType: "json",
+        success:function(Response) {
+          $('#ANPR_Images').html(Response);
+        }
+      });
     }
-  };
+  }
   // Reset confirmation modals
   function ResetModals() {
     $('#Modal_BodyCash').load(' #Modal_BodyCash');
@@ -61,6 +100,7 @@
     $('#Modal_BodyAcc').load(' #Modal_BodyAcc');
     $('#Modal_BodySNAP').load(' #Modal_BodySNAP');
     $('#Modal_BodyFuel').load(' #Modal_BodyFuel');
+    $('#DuplicateVehicleBody').load(' #DuplicateVehicleBody');
   }
   // Close Payment Portal
   function PaymentPaneClose() {
@@ -262,7 +302,7 @@
       }
     }
   }
-  //Payment Service Dropdown
+  // Payment Service Dropdown
   $(document).on('change', '#Payment_VehType', function(){
     var Type = $(this).val();
     var Expiry = $('input[name="Payment_Services_Expiry"]:checked').val();
@@ -328,7 +368,7 @@
       })
     }
   });
-
+  // Fuel card mag breaker
   $(document).on('keyup', '#FuelCard_Swipe', function(e) {
     e.preventDefault();
     var Str = $(this).val();
@@ -342,5 +382,15 @@
         $('#Payment_FuelCard_Expiry').val(Data.expiry);
       }
     })
+  });
+  // Directs user to active record
+  $(document).on('click', '#DuplicateVehicleBtn', function(e) {
+    e.preventDefault();
+    var Ref = $(this).data('id');
+    var Time = $(this).data('time');
+    PaymentPaneClose();
+    ResetModals();
+    $('#DuplicateVehicle').modal('toggle');
+    UpdateVehPaneToggle(Ref, Time);
   });
 </script>
