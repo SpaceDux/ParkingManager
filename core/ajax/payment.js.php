@@ -133,8 +133,6 @@
         alert("Please choose a valid vehicle type");
       } else if(Service == "unchecked") {
         alert("Please choose a service");
-      } else if(Name == "") {
-        alert("Please enter a valid name");
       } else {
         // After clicking authorise
         $('.ConfirmModalBody').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
@@ -167,8 +165,6 @@
         alert("Please choose a valid vehicle type");
       } else if(Service == "unchecked") {
         alert("Please choose a service");
-      } else if(Name == "") {
-        alert("Please enter a valid name");
       } else {
         // After clicking authorise
         $('.ConfirmModalBody').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
@@ -392,5 +388,15 @@
     ResetModals();
     $('#DuplicateVehicle').modal('toggle');
     UpdateVehPaneToggle(Ref, Time);
+  });
+  // Click new payment via update
+  $(document).on('click', '#PaymentOnUpdate', function() {
+    var Ref = $('#Update_Ref').val();
+    var Plate = $('#Update_Plate').val();
+    var Trl = $('#Update_Trailer').val();
+    var Time = $('#Update_Expiry').val();
+    var Type = $('#Update_VehType').val();
+    PaymentPaneToggle(Ref, Plate, Trl, Time, "2");
+    UpdateVehPaneClose();
   });
 </script>

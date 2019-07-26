@@ -22,6 +22,8 @@
           <div class="row">
             <div class="col">
               <input type="hidden" name="Update_Ref" id="Update_Ref" class="form-control">
+              <input type="hidden" name="Update_Expiry" id="Update_Expiry" class="form-control">
+              <input type="hidden" name="Update_Flag" id="Update_Flag" class="form-control">
               <label for="Update_Plate">Update Vehicle Plate</label>
               <input type="text" class="form-control" name="Update_Plate" id="Update_Plate">
               <hr>
@@ -44,23 +46,9 @@
             </div>
             <div class="col">
               <div class="alert alert-primary" id="Update_Duration"></div>
-              <table class="table table-dark">
-                <thead>
-                  <tr>
-                    <th scope="col">Service</th>
-                    <th scope="col">Method</th>
-                    <th scope="col">Processed</th>
-                    <th scope="col">Printed</th>
-                    <th scope="col">Author</th>
-                    <th scope="col"><button type="button" class="btn btn-sm btn-danger float-right"><i class="fa fa-pound-sign"></i> New Payment</button></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <div id="Update_PaymentsTable">
+              <div id="Update_PaymentsTable">
 
-                  </div>
-                </tbody>
-              </table>
+              </div>
               <label for="Update_Column">Update Vehicle Parking Column</label>
               <select class="form-control" id="Update_Column" name="Update_Column">
                 <option value="unselected">Please Choose a Parking Column...</option>
@@ -77,11 +65,16 @@
               <label for="Update_Notes">Add a Comment</label>
               <textarea class="form-control" id="Update_Notes" name="Update_Notes"></textarea>
               <br><br><hr>
-              <div class="btn-group btn-group-lg" role="group">
-                <button type="button" class="btn btn-primary" onClick="UpdateVehicleRec()">Save <i class="fa fa-save"></i></button>
-                <button type="button" class="btn btn-warning">Flag <i class="fa fa-flag"></i></button>
-                <button type="button" class="btn btn-danger">Delete <i class="fa fa-trash"></i></button>
+              <div class="btn-group btn-lg">
+                <button type="button" class="btn btn-dark" onClick="UpdateVehicleRec()">Save <i class="fa fa-save"></i></button>
+                <button type="button" class="btn btn-dark" id="Update_FlagBtn">Flag <i class="fa fa-flag"></i></button>
+                <button type="button" class="btn btn-dark" id="Update_ExitBtn">Exit <i class="fa fa-times"></i></button>
+                <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Delete Vehicle</a>
+                </div>
               </div>
+              <span class="badge badge-secondary float-right" id="UD_Ref"></span>
             </div>
           </div>
         </form>

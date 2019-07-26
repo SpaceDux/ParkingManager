@@ -24,6 +24,10 @@
     $vehicles->UpdateRecord($_POST['Ref'], $_POST['Plate'], $_POST['Name'], $_POST['Trailer'], $_POST['VehType'], $_POST['Column'], $_POST['Arrival'], $_POST['Exit'], $_POST['Notes']);
   } else if($handler == "Vehicles.CheckDuplicate") {
     $vehicles->CheckDuplicate($_POST['Plate']);
+  } else if($handler == "Vehicles.QuickExit") {
+    $vehicles->QuickExit($_POST['Ref']);
+  } else if($handler == "Vehicles.QuickFlag") {
+    $vehicles->QuickFlag($_POST['Ref'], $_POST['Flagged']);
   }
 
 ?>

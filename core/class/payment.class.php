@@ -547,7 +547,19 @@
 			$stmt->bindParam(1, $ref);
 			$stmt->execute();
 			$result = $stmt->fetchAll();
-			$html = "";
+
+			$html = '<table class="table table-dark">
+	                <thead>
+	                  <tr>
+	                    <th scope="col">Service</th>
+	                    <th scope="col">Method</th>
+	                    <th scope="col">Processed</th>
+	                    <th scope="col">Printed</th>
+	                    <th scope="col">Author</th>
+	                    <th scope="col"><button type="button" class="btn btn-sm btn-danger float-right" id="PaymentOnUpdate"><i class="fa fa-pound-sign"></i> New Payment</button></th>
+	                  </tr>
+	                </thead>
+                <tbody>';
 			foreach($result as $row) {
 				$ref = $row['Uniqueref'];
 				if($row['Method'] == "1") {
@@ -562,20 +574,23 @@
 					$Method = "Fuel Card";
 				}
 				$html .= '
-					<tr>
-						<td>'.$row['Service_Name'].'</td>
-						<td>'.$Method.'</td>
-						<td>'.date("d/H:i", strtotime($row['Processed_Time'])).'</td>
-						<td>'.$row['Ticket_Printed'].'</td>
-						<td>'.$row['Author'].'</td>
-						<td>
-							<div class="btn-group float-right" role="group" aria-label="Options">
-								<button type="button" class="btn btn-danger" onClick="PrintTicket('.$row['Uniqueref'].')"><i class="fa fa-print"></i></button>
-								<button type="button" class="btn btn-danger" onClick="DeleteTransaction('.$row['Uniqueref'].')"><i class="fa fa-trash"></i></button>
-							</div>
-						</td>
-					<tr>';
+				<tr>
+					<td>'.$row['Service_Name'].'</td>
+					<td>'.$Method.'</td>
+					<td>'.date("d/H:i", strtotime($row['Processed_Time'])).'</td>
+					<td>'.$row['Ticket_Printed'].'</td>
+					<td>'.$row['Author'].'</td>
+					<td>
+						<div class="btn-group float-right" role="group" aria-label="Options">
+							<button type="button" class="btn btn-danger" onClick="PrintTicket('.$row['Uniqueref'].')"><i class="fa fa-print"></i></button>
+							<button type="button" class="btn btn-danger" onClick="DeleteTransaction('.$row['Uniqueref'].')"><i class="fa fa-trash"></i></button>
+						</div>
+					</td>
+				<tr>';
 			}
+			$html .= '</tbody>
+			        </table>';
+
 			echo $html;
 
 			$this->mysql = null;

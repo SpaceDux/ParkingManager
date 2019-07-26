@@ -141,6 +141,7 @@
   function UpdateVehPaneToggle(Ref, Time) {
     $('#Update_Ref').val(Ref);
     $('#Update_Duration').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+    $('#UD_Ref').html(Ref);
     // Time Prep
     $.ajax({
       url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",
@@ -159,11 +160,13 @@
       dataType: "json",
       success:function(Response) {
         $('#Update_Plate').val(Response.Plate);
+        $('#Update_Flag').val(Response.Flagged);
+        $('#Update_Expiry').val(Response.Expiry);
         $('#Update_Trailer').val(Response.Trailer_No);
         $('#Update_Name').val(Response.Name);
         $('#Update_VehType').val(Response.Type);
         $('#Update_Arrival').val(Response.Arrival);
-        $('#Update_Exit').val(Response.Exit);
+        $('#Update_Exit').val(Response.Departure);
         $('#Update_Column').val(Response.Parked_Column);
         $('#Update_Notes').val(Response.Notes);
         // Payments
@@ -221,5 +224,54 @@
       }
     });
   }
+  // Quick Exit
+  $(document).on('click', '#Update_ExitBtn', function(e) {
+    e.preventDefault();
+    var Ref = $('#Update_Ref').val();
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.QuickExit",
+      data: {Ref:Ref},
+      method: "POST",
+      success:function() {
+        UpdateVehPaneClose();
+        $('#UpdateVehicle_Form')[0].reset();
+      }
+    })
+  });
+  function QuickExit(Ref) {
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.QuickExit",
+      data: {Ref:Ref},
+      method: "POST",
+      success:function() {
+        ALLVEH_Feed_Refresh();
+      }
+    });
+  };
+  // Flag
+  $(document).on('click', '#Update_FlagBtn', function(e) {
+    e.preventDefault();
+    var Ref = $('#Update_Ref').val();
+    var Flagged = $('#Update_Flag').val();
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.QuickFlag",
+      data: {Ref:Ref, Flagged:Flagged},
+      method: "POST",
+      success:function() {
+        UpdateVehPaneClose();
+        $('#UpdateVehicle_Form')[0].reset();
+      }
+    })
+  });
+  function QuickFlag(Ref, Flagged) {
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.QuickFlag",
+      data: {Ref:Ref, Flagged:Flagged},
+      method: "POST",
+      success:function() {
+        ALLVEH_Feed_Refresh();
+      }
+    });
+  };
 
 </script>

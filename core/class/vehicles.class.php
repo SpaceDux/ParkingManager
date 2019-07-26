@@ -217,7 +217,7 @@
       $stmt->bindParam(1, $campus);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Site = ? AND Deleted != '1' AND Parked_Column = '2' ORDER BY Departure DESC");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Site = ? AND Deleted != '1' AND Parked_Column = '2' ORDER BY Departure DESC LIMIT 30");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
       $html_paid .= '<table class="table table-striped table-bordered table-hover">
@@ -260,17 +260,24 @@
         $trl = '\''.$row['Trailer_No'].'\'';
         $timein = '\''.$row['Arrival'].'\'';
         $date = '\''.$row['Expiry'].'\'';
+        $flag = $row['Flagged'];
+
+        if($flag == "1") {
+          $flagIco = '<i style="color: red;" class="far fa-flag"></i>';
+        } else {
+          $flagIco = '';
+        }
         // Paid
         if($row['Expiry'] >= $current) {
           $html_paid .= '<tr>';
-          $html_paid .= '<td>'.$row['Name'].'</td>';
+          $html_paid .= '<td>'.$flagIco.' '.$row['Name'].'</td>';
           $html_paid .= '<td>'.$row['Plate'].'</td>';
-          $html_paid .= '<td>'.$row['Arrival'].'</td>';
+          $html_paid .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
           $html_paid .= '<td>'.$row['Type'].'</td>';
           $html_paid .= '<td>
                           <div class="btn-group" role="group" aria-label="Options">
                             <button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button>
-                            <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                            <button type="button" class="btn btn-danger" onClick="QuickExit('.$ref.')"><i class="fa fa-times"></i></button>
                           </div>
                           </td>';
           $html_paid .= '</tr>';
@@ -287,13 +294,13 @@
           $html_renew .= '<tr class="'.$style.'">';
           $html_renew .= '<td>'.$row['Name'].'</td>';
           $html_renew .= '<td>'.$row['Plate'].'</td>';
-          $html_renew .= '<td>'.$row['Arrival'].'</td>';
+          $html_renew .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
           $html_renew .= '<td>'.$row['Type'].'</td>';
           $html_renew .= '<td>
                             <div class="btn-group" role="group" aria-label="Options">
                               <button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button>
                               <button type="button" class="btn btn-danger" onClick="PaymentPaneToggle('.$ref.', '.$plate.', '.$trl.', '.$date.', 2)"><i class="fa fa-pound-sign"></i></button>
-                              <button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                              <button type="button" class="btn btn-danger" onClick="QuickExit('.$ref.')"><i class="fa fa-times"></i></button>
                             </div>
                           </td>';
           $html_renew .= '</tr>';
@@ -307,7 +314,7 @@
         $html_exit .= '<tr>';
         $html_exit .= '<td>'.$row['Name'].'</td>';
         $html_exit .= '<td>'.$row['Plate'].'</td>';
-        $html_exit .= '<td>'.$row['Departure'].'</td>';
+        $html_exit .= '<td>'.date("d/H:i", strtotime($row['Departure'])).'</td>';
         $html_exit .= '<td>'.$row['Type'].'</td>';
         $html_exit .= '<td><button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button></td>';
         $html_exit .= '</tr>';
@@ -359,9 +366,10 @@
       $Overview = str_replace($this->pm->Site_Info($site, 'site_anpr_imgstr'), $this->pm->Site_Info($site, 'site_anpr_img'), $Overview);
       $Plate = strtoupper($Plate);
       $Name = strtoupper($Name);
+      $time = date("Y-m-d H:i:s");
 
 
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO pm_parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, Account_ID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '0', '0', '', ?, ?, ?)");
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO pm_parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, Account_ID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Last_Updated) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '0', '0', '', ?, ?, ?, ?)");
       $stmt->bindParam(1, $Uniqueref);
       $stmt->bindParam(2, $ANPRRef);
       $stmt->bindParam(3, $site);
@@ -376,6 +384,7 @@
       $stmt->bindParam(12, $ExitKey);
       $stmt->bindParam(13, $Patch);
       $stmt->bindParam(14, $Overview);
+      $stmt->bindParam(15, $time);
       if($stmt->execute()) {
         return $Uniqueref;
       } else {
@@ -498,6 +507,34 @@
 
       $this->mysql = null;
       $this->user = null;
+    }
+    // Quick Exit
+    function QuickExit($ref) {
+      $this->mysql = new MySQL;
+      $cur = date("Y-m-d H:i:s");
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Departure = ?, Parked_Column = 2 WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $cur);
+      $stmt->bindParam(2, $ref);
+      $stmt->execute();
+
+      $this->mysql = null;
+    }
+    // Quick Flag
+    function QuickFlag($ref, $flag) {
+      $this->mysql = new MySQL;
+
+      if($flag == "1") {
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Flagged = 0 WHERE Uniqueref = ?");
+        $stmt->bindParam(1, $ref);
+        $stmt->execute();
+      } else {
+        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Flagged = 1 WHERE Uniqueref = ?");
+        $stmt->bindParam(1, $ref);
+        $stmt->execute();
+      }
+
+      $this->mysql = null;
     }
   }
 
