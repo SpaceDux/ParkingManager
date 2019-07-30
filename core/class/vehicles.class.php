@@ -9,7 +9,8 @@
     public $count_anpr;
     // ANPR TOOLS
     // ANPR Feed is called via ajax when ID="ANPR_FEED" is loaded in tpl
-    function ANPR_Feed() {
+    function ANPR_Feed()
+    {
       //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
       $this->user = new User;
       $campus = $this->user->Info("campus");
@@ -76,7 +77,8 @@
       $this->user = null;
     }
     // ANPR Duplicate vehicle, remove from feed.
-    function ANPR_Duplicate($ref) {
+    function ANPR_Duplicate($ref)
+    {
       $this->mssql = new MSSQL;
 
       $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 11 WHERE Uniqueref = ?");
@@ -90,7 +92,8 @@
       $this->mssql = null;
     }
     // Add a vehicle into the anpr
-    function ANPR_AddPlate($plate, $time) {
+    function ANPR_AddPlate($plate, $time)
+    {
       $this->mssql = new MSSQL;
       //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID, BarcodeExpression)
 
@@ -113,7 +116,8 @@
       $this->mssql = null;
     }
     // Update ANPR Record
-    function ANPR_Update($ref, $plate, $trl = '', $time) {
+    function ANPR_Update($ref, $plate, $trl = '', $time)
+    {
       $this->mssql = new MSSQL;
       if(!empty($plate) AND !empty($time)) {
         $plate = strip_tags(strtoupper($plate));
@@ -133,7 +137,8 @@
       $this->mssql = null;
     }
     // Update ANPR Record (array)
-    function ANPR_PaymentUpdate($ref, $expiry)  {
+    function ANPR_PaymentUpdate($ref, $expiry)
+    {
       $this->mssql = new MSSQL;
 
       $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
@@ -144,7 +149,8 @@
       $this->mssql = null;
     }
     // get images
-    function ANPR_GetImages($ref) {
+    function ANPR_GetImages($ref)
+    {
       $this->mssql = new MSSQL;
       $this->user = new User;
       $this->pm = new PM;
@@ -176,7 +182,8 @@
       $this->pm = null;
     }
     // get images
-    function ANPR_Info($ref, $what) {
+    function ANPR_Info($ref, $what)
+    {
       $this->mssql = new MSSQL;
       $this->user = new User;
       $this->pm = new PM;
@@ -201,7 +208,8 @@
     }
     // ALL VEHICLE TOOLS
     // PAID Feed is called via ajax when ID="PAID_FEED" is loaded in tpl
-    function ALLVEH_Feed() {
+    function ALLVEH_Feed()
+    {
       $this->user = new User;
       $this->mysql = new MySQL;
       $this->pm = new PM;
@@ -273,7 +281,7 @@
           $html_paid .= '<td>'.$flagIco.' '.$row['Name'].'</td>';
           $html_paid .= '<td>'.$row['Plate'].'</td>';
           $html_paid .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
-          $html_paid .= '<td>'.$row['Type'].'</td>';
+          $html_paid .= '<td>'.$this->pm->GET_VehicleType($row['Type']).'</td>';
           $html_paid .= '<td>
                           <div class="btn-group" role="group" aria-label="Options">
                             <button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button>
@@ -295,7 +303,7 @@
           $html_renew .= '<td>'.$row['Name'].'</td>';
           $html_renew .= '<td>'.$row['Plate'].'</td>';
           $html_renew .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
-          $html_renew .= '<td>'.$row['Type'].'</td>';
+          $html_renew .= '<td>'.$this->pm->GET_VehicleType($row['Type']).'</td>';
           $html_renew .= '<td>
                             <div class="btn-group" role="group" aria-label="Options">
                               <button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button>
@@ -315,7 +323,7 @@
         $html_exit .= '<td>'.$row['Name'].'</td>';
         $html_exit .= '<td>'.$row['Plate'].'</td>';
         $html_exit .= '<td>'.date("d/H:i", strtotime($row['Departure'])).'</td>';
-        $html_exit .= '<td>'.$row['Type'].'</td>';
+        $html_exit .= '<td>'.$this->pm->GET_VehicleType($row['Type']).'</td>';
         $html_exit .= '<td><button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button></td>';
         $html_exit .= '</tr>';
       }
@@ -336,7 +344,8 @@
       $this->pm = null;
     }
     //Time Calculation, displays in a msg
-    function timeCalc($time1, $time2) {
+    function timeCalc($time1, $time2)
+    {
       try {
         if(isset($time1)) {
           $d1 = new \DateTime($time1);
@@ -351,14 +360,16 @@
       }
     }
     // Create Parking Record
-    function Parking_Record_Create($ANPRRef, $Plate, $Trl, $Name, $TimeIN, $Expiry, $VehType, $Account_ID) {
+    function Parking_Record_Create($ANPRRef, $Plate, $Trl, $Name, $TimeIN, $Expiry, $VehType, $Account_ID)
+    {
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->pm = new PM;
       $site = $this->user->Info("campus");
       $uid = $this->user->Info("campus");
       $Author = $this->user->Info("first_name");
-      $ExitKey = mt_rand(1111, 9999);
+      $ExitKey = mt_rand(11111, 99999);
+      $ExitKey = str_replace("0", "9", $ExitKey);
       $Uniqueref = $uid.date("YmdHis").$ExitKey.$site;
       $Patch = $this->ANPR_Info($ANPRRef, "Patch");
       $Overview = $this->ANPR_Info($ANPRRef, "Overview");
@@ -396,7 +407,8 @@
       $this->pm = null;
     }
     // get images
-    function GetImages($ref) {
+    function GetImages($ref)
+    {
       $this->mysql = new MySQL;
       $this->user = new User;
 
@@ -422,7 +434,8 @@
       $this->user = null;
     }
     // Vehicle information
-    function Info($ref, $what) {
+    function Info($ref, $what)
+    {
       $this->mysql = new MySQL;
 
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Uniqueref = ?");
@@ -433,7 +446,8 @@
       $this->mysql = null;
     }
     // Update a vehicles expiry time.
-    function ExpiryUpdate($ref, $time) {
+    function ExpiryUpdate($ref, $time)
+    {
       $this->mysql = new MySQL;
 
       $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Expiry = ? WHERE Uniqueref = ?");
@@ -444,7 +458,8 @@
       $this->mysql = null;
     }
     // Get all details for updating record
-    function GetDetails($ref) {
+    function GetDetails($ref)
+    {
       $this->mysql = new MySQL;
 
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Uniqueref = ?");
@@ -457,14 +472,16 @@
       $this->mysql = null;
     }
     // Update Vehicle record
-    function UpdateRecord($ref, $plate, $name, $trl, $type, $column, $arrival, $exit, $comment) {
+    function UpdateRecord($ref, $plate, $name, $trl, $type, $column, $arrival, $exit, $comment)
+    {
       $this->mysql = new MySQL;
       $this->pm = new PM;
 
       $name = strtoupper($name);
       $plate = strtoupper($plate);
+      $time = date("Y-m-d H:i:s");
 
-      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Plate = ?, Name = ?, Trailer_No = ?, Type = ?, Parked_Column = ?, Arrival = ?, Departure = ?, Notes = ? WHERE Uniqueref = ?");
+      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Plate = ?, Name = ?, Trailer_No = ?, Type = ?, Parked_Column = ?, Arrival = ?, Departure = ?, Notes = ?, Last_Updated = ? WHERE Uniqueref = ?");
       $stmt->bindParam(1, $plate);
       $stmt->bindParam(2, $name);
       $stmt->bindParam(3, $trl);
@@ -473,7 +490,8 @@
       $stmt->bindParam(6, $arrival);
       $stmt->bindParam(7, $exit);
       $stmt->bindParam(8, $comment);
-      $stmt->bindParam(9, $ref);
+      $stmt->bindParam(9, $time);
+      $stmt->bindParam(10, $ref);
       if($stmt->execute()) {
         $this->pm->POST_Notifications("A vehicle record has been updated @ ".date("d/H:i:s").", Ref: ".$ref, '0');
       } else {
@@ -485,7 +503,8 @@
       $this->pm = null;
     }
     // Check Duplicate
-    function CheckDuplicate($plate) {
+    function CheckDuplicate($plate)
+    {
       $this->mysql = new MySQL;
       $this->user = new User;
       $site = $this->user->Info("campus");
@@ -509,7 +528,8 @@
       $this->user = null;
     }
     // Quick Exit
-    function QuickExit($ref) {
+    function QuickExit($ref)
+    {
       $this->mysql = new MySQL;
       $cur = date("Y-m-d H:i:s");
 
@@ -521,7 +541,8 @@
       $this->mysql = null;
     }
     // Quick Flag
-    function QuickFlag($ref, $flag) {
+    function QuickFlag($ref, $flag)
+    {
       $this->mysql = new MySQL;
 
       if($flag == "1") {

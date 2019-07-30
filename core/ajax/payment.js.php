@@ -101,6 +101,12 @@
     $('#Modal_BodySNAP').load(' #Modal_BodySNAP');
     $('#Modal_BodyFuel').load(' #Modal_BodyFuel');
     $('#DuplicateVehicleBody').load(' #DuplicateVehicleBody');
+    //hide modals
+    $('#Payment_ConfirmationCash_Modal').modal('hide');
+    $('#Payment_ConfirmationCard_Modal').modal('hide');
+    $('#Payment_ConfirmationAcc_Modal').modal('hide');
+    $('#Payment_ConfirmationSNAP_Modal').modal('hide');
+    $('#Payment_ConfirmationFuel_Modal').modal('hide');
   }
   // Close Payment Portal
   function PaymentPaneClose() {
@@ -147,6 +153,7 @@
             if(Response.Result == 1) {
               $('.ConfirmModalBody').html('Transaction has successfully been added, would you like to print the ticket now?');
               $('.Modal_PrintBtn_true').removeClass('Hide');
+              $('.Modal_PrintBtn_true').attr('data-id', Response.Ref);
               $('.Modal_PrintBtn_false').removeClass('Hide');
             } else {
               $('.ConfirmModalBody').html('Transaction has not been added, please check the details and try again<br></br><div id="ReasonFail"></div>');
@@ -179,6 +186,7 @@
             if(Response.Result == 1) {
               $('.ConfirmModalBody').html('Transaction has successfully been added, would you like to print the ticket now?');
               $('.Modal_PrintBtn_true').removeClass('Hide');
+              $('.Modal_PrintBtn_true').attr('data-id', Response.Ref);
               $('.Modal_PrintBtn_false').removeClass('Hide');
             } else {
               $('.ConfirmModalBody').html('Transaction has not been added, please check the details and try again<br></br><div id="ReasonFail"></div>');
@@ -214,6 +222,7 @@
             if(Response.Result == 1) {
               $('.ConfirmModalBody').html('Transaction has successfully been added, would you like to print the ticket now?');
               $('.Modal_PrintBtn_true').removeClass('Hide');
+              $('.Modal_PrintBtn_true').attr('data-id', Response.Ref);
               $('.Modal_PrintBtn_false').removeClass('Hide');
             } else {
               $('.ConfirmModalBody').html('Transaction has not been added, please check the details and try again<br></br><div id="ReasonFail"></div>');
@@ -248,6 +257,7 @@
             if(Response.Result == 1) {
               $('.ConfirmModalBody').html('Transaction has successfully been added, would you like to print the ticket now?');
               $('.Modal_PrintBtn_true').removeClass('Hide');
+              $('.Modal_PrintBtn_true').attr('data-id', Response.Ref);
               $('.Modal_PrintBtn_false').removeClass('Hide');
             } else {
               $('.ConfirmModalBody').html('Transaction has not been added, please check the details and try again<br><br>'+Response.Msg);
@@ -288,6 +298,7 @@
             if(Response.Result == 1) {
               $('.ConfirmModalBody').html('Transaction has successfully been added, would you like to print the ticket now?');
               $('.Modal_PrintBtn_true').removeClass('Hide');
+              $('.Modal_PrintBtn_true').attr('data-id', Response.Ref);
               $('.Modal_PrintBtn_false').removeClass('Hide');
             } else {
               $('.ConfirmModalBody').html('Transaction has not been added, please check the details and try again<br><br>'+Response.Msg);
@@ -299,7 +310,7 @@
     }
   }
   // Payment Service Dropdown
-  $(document).on('change', '#Payment_VehType', function(){
+  $(document).on('change', '#Payment_VehType', function() {
     var Type = $(this).val();
     var Expiry = $('input[name="Payment_Services_Expiry"]:checked').val();
     var Plate = $('#Payment_Plate').val();
@@ -332,7 +343,7 @@
     }
   });
   //Payment Service Dropdown (EXPIRY)
-  $(document).on('change', 'input[name="Payment_Services_Expiry"]:checked', function(){
+  $(document).on('change', 'input[name="Payment_Services_Expiry"]:checked', function() {
     var Expiry = $(this).val();
     var Type = $('#Payment_VehType').val();
     var Plate = $('#Payment_Plate').val();
@@ -398,5 +409,26 @@
     var Type = $('#Update_VehType').val();
     PaymentPaneToggle(Ref, Plate, Trl, Time, "2");
     UpdateVehPaneClose();
+  });
+  // Send print job to the ticket class.
+  function Print_Ticket(Ref) {
+    $.ajax({
+      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Print_Ticket",
+      type: "POST",
+      data: {Ref:Ref},
+      success:function() {
+        console.log("Successfully printed Ticket. Ref: "+Ref);
+      }
+    });
+  }
+  $(document).on('click', '.Modal_PrintBtn_true', function() {
+    var Ref = $(this).data("id");
+    Print_Ticket(Ref);
+    PaymentPaneClose();
+    $('#Payment_ConfirmationCash_Modal').modal('hide');
+    $('#Payment_ConfirmationCard_Modal').modal('hide');
+    $('#Payment_ConfirmationAcc_Modal').modal('hide');
+    $('#Payment_ConfirmationSNAP_Modal').modal('hide');
+    $('#Payment_ConfirmationFuel_Modal').modal('hide');
   });
 </script>

@@ -22,6 +22,8 @@
     $payment->Payment_FC_Break($_POST['CardStr']);
   } else if($handler == "Payment.GetVehPayments") {
     $payment->PerVehPayments($_POST['Ref']);
+  } else if($handler == "Payment.Print_Ticket") {
+    $payment->PrintTicket($_POST['Ref']);
   }
 
 ?>

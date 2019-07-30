@@ -8,7 +8,8 @@
     protected $mysql;
 
     // Get notifications
-    function GET_Notifications() {
+    function GET_Notifications()
+    {
       $this->mysql = new MySQL;
       $this->user = new User;
 
@@ -42,7 +43,8 @@
       $this->user = null;
     }
     //Notifications Create
-    function POST_Notifications($text, $urgency) {
+    function POST_Notifications($text, $urgency)
+    {
       $this->mysql = new MySQL;
       $this->user = new User;
       if(isset($text)) {
@@ -59,7 +61,8 @@
       $this->user = null;
     }
     // GET site information
-    function Site_Info($site, $key) {
+    function Site_Info($site, $key)
+    {
       $this->mysql = new MySQL;
       $this->user = new User;
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_sites WHERE id = ?");
@@ -73,7 +76,8 @@
       $this->user = null;
     }
     // Hour Calculations ONLY returns hour
-    function Hour($time1, $time2) {
+    function Hour($time1, $time2)
+    {
       if(isset($time1)) {
         $d1 = new \DateTime($time1);
         $d2 = new \DateTime($time2);
@@ -86,7 +90,8 @@
       }
     }
     // Vehicle Types list
-    function Vehicle_Types_DropdownOpt() {
+    function Vehicle_Types_DropdownOpt()
+    {
       $this->mysql = new MySQL;
 
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types ORDER BY id ASC");
@@ -102,7 +107,8 @@
       $this->mysql = null;
     }
     // Account Dropdown
-    function Account_DropdownOpt($Plate) {
+    function Account_DropdownOpt($Plate)
+    {
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->account = new Account;
@@ -138,6 +144,34 @@
       $this->mysql = null;
       $this->user = null;
       $this->account = null;
+    }
+    // Get Vehicle Types
+    function GET_VehicleType($type)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types WHERE id = ?");
+      $stmt->bindParam(1, $type);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      return $result['type_shortName'];
+
+      $this->mysql = null;
+    }
+    // Return printed into
+    function PrinterInfo($printer, $what)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_printers WHERE id = ?");
+      $stmt->bindParam(1, $printer);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      return $result[$what];
+
+      $this->mysql = null;
     }
   }
 ?>

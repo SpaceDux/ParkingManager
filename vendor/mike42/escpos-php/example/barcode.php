@@ -1,9 +1,9 @@
 <?php
 require __DIR__ . '/../autoload.php';
 use Mike42\Escpos\Printer;
-use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 
-$connector = new WindowsPrintConnector("smb://parking desk:pd@192.168.3.19/pdholyhead");
+$connector = new FilePrintConnector("php://stdout");
 $printer = new Printer($connector);
 
 /* Height and width */

@@ -2,6 +2,7 @@
 	namespace ParkingManager;
 	class Payment
 	{
+		// Vars
 		protected $mysql;
 
     function PaymentOptions($Plate)
@@ -177,7 +178,8 @@
 			$this->etp = null;
 		}
 		// Return all services available for that veh type and expiry
-		function PaymentServices_Dropdown($Type, $Expiry, $Plate) {
+		function PaymentServices_Dropdown($Type, $Expiry, $Plate)
+		{
 			$this->mysql = new MySQL;
 			$this->user = new User;
 			$this->pm = new PM;
@@ -302,7 +304,8 @@
 			$this->pm = null;
 		}
 		// Add payment into db
-		function New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Capture_Time, $Expiry) {
+		function New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Capture_Time, $Expiry)
+		{
 			$this->mysql = new MySQL;
 			$this->user = new User;
 
@@ -319,8 +322,8 @@
 			$Uniqueref = $uid.date("YmdHis").mt_rand(1111, 9999).$Site;
 			$Processed = date("Y-m-d H:i:s");
 
-			$stmt = $this->mysql->dbc->prepare("INSERT INTO pm_transactions (id, Uniqueref, Parkingref, Site, Method, Plate, Name, Service, Service_Name, Service_Ticket_Name, Service_Group, Gross, Nett, Processed_Time, Vehicle_Capture_Time, Vehicle_Expiry_Time, Ticket_Printed, AccountID, ETPID, Deleted, Deleted_Comment, Settlement_Group, Settlement_Multi, Author)
-																					VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, '0', '', ?, ?, ?)");
+			$stmt = $this->mysql->dbc->prepare("INSERT INTO pm_transactions (id, Uniqueref, Parkingref, Site, Method, Plate, Name, Service, Service_Name, Service_Ticket_Name, Service_Group, Gross, Nett, Processed_Time, Vehicle_Capture_Time, Vehicle_Expiry_Time, Ticket_Printed, AccountID, ETPID, Deleted, Deleted_Comment, Settlement_Group, Settlement_Multi, Author, Last_Updated)
+																					VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, '0', '', ?, ?, ?, ?)");
 			$stmt->bindParam(1, $Uniqueref);
 			$stmt->bindParam(2, $Ref);
 			$stmt->bindParam(3, $Site);
@@ -341,6 +344,7 @@
 			$stmt->bindParam(18, $Service_Settlement_Group);
 			$stmt->bindParam(19, $Service_Settlement_Multi);
 			$stmt->bindParam(20, $Author);
+			$stmt->bindParam(21, $Processed);
 			if($stmt->execute()) {
 				return $Uniqueref;
 			} else {
@@ -351,7 +355,8 @@
 			$this->user = null;
 		}
 		// Authorise Transaction / Payment
-		function Proccess_Transaction($Method, $Type, $Ref, $Plate, $Name, $Trl, $Time, $VehType, $Service, $Account_ID = '', $FuelCardNo = '', $FuelCardExpiry = '') {
+		function Proccess_Transaction($Method, $Type, $Ref, $Plate, $Name, $Trl, $Time, $VehType, $Service, $Account_ID = '', $FuelCardNo = '', $FuelCardExpiry = '')
+		{
 			$this->vehicles = new Vehicles;
 			$this->etp = new ETP;
 			$this->pm = new PM;
@@ -391,7 +396,6 @@
 					if($Payment != "UNSUCCESSFUL") {
 						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 						$this->pm->POST_Notifications("A KingPay Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-
 					}
 				} else if($Method == 4) {
 					$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
@@ -504,7 +508,8 @@
 			$this->user = null;
 		}
 		//Payment Service Info
-		function Payment_ServiceInfo($key, $what) {
+		function Payment_ServiceInfo($key, $what)
+		{
 		 $this->mysql = new MySQL;
 
 		 $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE id = ?");
@@ -517,7 +522,8 @@
 		}
 		//Break Up Fuel Card str
 		//String Preperation
-		public function Fuel_String_Prepare($string, $start, $end) {
+		public function Fuel_String_Prepare($string, $start, $end)
+		{
 			$string = ' ' . $string;
 			$ini = strpos($string, $start);
 			if ($ini == 0) return '';
@@ -525,7 +531,8 @@
 			$len = strpos($string, $end, $ini) - $ini;
 			return substr($string, $ini, $len);
 		}
-		function Payment_FC_Break($string) {
+		function Payment_FC_Break($string)
+		{
 			$Card = $this->Fuel_String_Prepare($string, ";", "=");
 			$expiry = $this->Fuel_String_Prepare($string, "=", "?");
 			$expiry_yr = substr($expiry, "0", "2");
@@ -541,7 +548,8 @@
 			echo json_encode($result);
 		}
 		// List all payments attached to vehicle
-		function PerVehPayments($ref) {
+		function PerVehPayments($ref)
+		{
 			$this->mysql = new MySQL;
 			$stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Parkingref = ?");
 			$stmt->bindParam(1, $ref);
@@ -561,7 +569,7 @@
 	                </thead>
                 <tbody>';
 			foreach($result as $row) {
-				$ref = $row['Uniqueref'];
+				$ref = '\''.$row['Uniqueref'].'\'';
 				if($row['Method'] == "1") {
 					$Method = "Cash";
 				} else if($row['Method'] == "2") {
@@ -582,7 +590,7 @@
 					<td>'.$row['Author'].'</td>
 					<td>
 						<div class="btn-group float-right" role="group" aria-label="Options">
-							<button type="button" class="btn btn-danger" onClick="PrintTicket('.$row['Uniqueref'].')"><i class="fa fa-print"></i></button>
+							<button type="button" class="btn btn-danger" onClick="Print_Ticket('.$ref.')"><i class="fa fa-print"></i></button>
 							<button type="button" class="btn btn-danger" onClick="DeleteTransaction('.$row['Uniqueref'].')"><i class="fa fa-trash"></i></button>
 						</div>
 					</td>
@@ -594,6 +602,54 @@
 			echo $html;
 
 			$this->mysql = null;
+		}
+		// Print Ticket
+		function PrintTicket($Ref)
+		{
+			$this->mysql = new MySQL;
+			$this->ticket = new Ticket;
+			$this->vehicles = new Vehicles;
+
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Uniqueref = ?");
+			$stmt->bindParam(1, $Ref);
+			$stmt->execute();
+			$result = $stmt->fetch(\PDO::FETCH_ASSOC);
+			$TicketName = $result['Service_Ticket_Name'];
+			$Gross = $result['Gross'];
+			$Nett = $result['Nett'];
+			$Plate = $result['Plate'];
+			$Name = $result['Name'];
+			$Date = $result['Vehicle_Capture_Time'];
+			$Expiry = $result['Vehicle_Expiry_Time'];
+			$Method = $result['Method'];
+			$Service = $result['Service'];
+			if($Method == '1') {
+				$Type = "Cash";
+			} else if($Method == '2') {
+				$Type = "Card";
+			} else if($Method == '3') {
+				$Type = "Account";
+			} else if($Method == '4') {
+				$Type = "SNAP";
+			} else if($Method == '5') {
+				$Type = "Fuel Card";
+			}
+			$MealCount = $this->Payment_ServiceInfo($Service, "service_meal_amount");
+			$ShowerCount = $this->Payment_ServiceInfo($Service, "service_shower_amount");
+			$Group = $result['Service_Group'];
+			$PRef = $result['Parkingref']; // Parking Ref not Payment $Ref is payment
+			$ExitKey = $this->vehicles->Info($PRef, "ExitKey");
+			$DiscCount = $this->Payment_ServiceInfo($Service, "service_discount_amount");
+			$WifiCount = $this->Payment_ServiceInfo($Service, "service_wifi_amount");
+			$Account_ID = $result['AccountID'];
+			$Printed = $result['Ticket_Printed'];
+			$ProcessedTime = $result['Processed_Time'];
+
+			$this->ticket->Direction($TicketName, $Gross, $Nett, $Name = '', $Plate, $Ref, $Date, $Expiry, $Type, $MealCount, $ShowerCount, $Group, $ExitKey, $DiscCount, $WifiCount, $Account_ID, $Printed, $ProcessedTime, $Ref);
+
+			$this->mysql = null;
+			$this->ticket = null;
+			$this->vehicles = null;
 		}
 	}
 ?>

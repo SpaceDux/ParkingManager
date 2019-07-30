@@ -15,6 +15,7 @@
 	require_once(__DIR__.'/core/class/payment.class.php');
 	require_once(__DIR__.'/core/class/etp.class.php');
 	require_once(__DIR__.'/core/class/account.class.php');
+	require_once(__DIR__.'/core/class/ticket.class.php');
 
 	require_once(__DIR__.'/vendor/autoload.php');
 

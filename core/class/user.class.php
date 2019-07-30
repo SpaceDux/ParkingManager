@@ -5,7 +5,7 @@
   {
     // Vars
     protected $mysql;
-    
+
     // Authorize user session(s)
     public function Login($email = '', $password = '')
     {

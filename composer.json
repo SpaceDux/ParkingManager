@@ -1,0 +1,9 @@
+{
+    "require": {
+        "monolog/monolog": "1.0.*",
+        "phpoffice/phpspreadsheet": "^1.5",
+        "mike42/escpos-php": "^2.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "art-of-wifi/unifi-api-client": "^1.1"
+    }
+}
