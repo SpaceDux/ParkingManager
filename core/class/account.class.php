@@ -7,7 +7,8 @@
     private $user;
 
     //Account Information
-    function Account_GetInfo($key, $what) {
+    function Account_GetInfo($key, $what)
+    {
       $this->mysql = new MySQL;
 
       $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ?");
@@ -20,7 +21,8 @@
       $this->mysql = null;
     }
     //Fleet Information
-    function Account_FleetInfo($key, $what) {
+    function Account_FleetInfo($key, $what)
+    {
       $this->mysql = new MySQL;
 
       $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts_fleet WHERE account_vehicle_plate = ?");
@@ -33,7 +35,8 @@
       $this->mysql = null;
     }
     //Check if vehicle belongs to account.
-    function Account_Check($plate) {
+    function Account_Check($plate)
+    {
       $this->mysql = new MySQL;
       $this->user = new User;
       $campus = $this->user->Info("campus");

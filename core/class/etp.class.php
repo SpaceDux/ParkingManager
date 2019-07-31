@@ -6,7 +6,8 @@
 
   class ETP {
     //Add SNAP transaction
-    function SNAP_ListServices() {
+    function SNAP_ListServices()
+    {
       global $_CONFIG;
       $this->user = new User;
       $API = $_CONFIG['ETP']['API'];
@@ -56,7 +57,8 @@
       $this->user = null;
     }
     //Process SNAP transaction
-    public function Proccess_Transaction_SNAP($etpid, $plate, $name) {
+    public function Proccess_Transaction_SNAP($etpid, $plate, $name)
+    {
       global $_CONFIG;
       $this->user = new User;
       $campus = $this->user->Info("campus");
@@ -103,7 +105,8 @@
       $this->user = null;
     }
     //Process Fuelcard Transaction
-    public function Proccess_Transaction_Fuel($etpid, $plate, $name, $Card, $Expiry) {
+    public function Proccess_Transaction_Fuel($etpid, $plate, $name, $Card, $Expiry)
+    {
       global $_CONFIG;
       $this->user = new User;
       $campus = $this->user->Info("campus");
@@ -152,7 +155,8 @@
       }
     }
     //check is SNAP
-    public function Check_SNAP($Plate) {
+    public function Check_SNAP($Plate)
+    {
       global $_CONFIG;
       $API = $_CONFIG['ETP']['API'];
       $client = new Client(['base_uri' => $API['api_uri']]);

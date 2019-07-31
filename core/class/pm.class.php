@@ -173,5 +173,29 @@
 
       $this->mysql = null;
     }
+    //Generate WiFi voucher.
+    function Create_WiFi_Voucher($site)
+    {
+      //Minutes
+      $controllerurl = $this->Site_Info($site, "site_unifi_ip");
+      $controlleruser = $this->Site_Info($site, "site_unifi_user");
+      $controllerpassword = $this->Site_Info($site, "site_unifi_pass");
+      $site_id = $this->Site_Info($site, "site_unifi_site");
+      $controllerversion = $this->Site_Info($site, "site_unifi_ver");
+
+      $voucher_expiration = 1440;
+      //Unifi creds
+      $unifi_connection = new UniFi_API\Client($controlleruser, $controllerpassword, $controllerurl, $site_id, $controllerversion);
+      $loginresults = $unifi_connection->login();
+      //Make Voucher
+      $voucher_result = $unifi_connection->create_voucher($voucher_expiration, 1, 1, 'PM Generated '.date("d/m/y H:i"), '512', '2048');
+      $vouchers = $unifi_connection->stat_voucher($voucher_result[0]->create_time);
+      $vouchers = json_encode($vouchers);
+      $code = json_decode($vouchers, true);
+
+      foreach($code as $row) {
+        return $row['code'];
+      }
+    }
   }
 ?>

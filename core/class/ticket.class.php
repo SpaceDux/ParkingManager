@@ -24,22 +24,22 @@
       return implode($allLines, "\n") . "\n";
     }
     //Determine Ticket
-    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count, $acc_id, $printed, $Processed, $Ref)
+    function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count, $acc_id, $printed, $Processed)
     {
       $this->ImgDir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/printerImg/";
       if($group == 1) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed, $Ref);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed);
       } else if ($group == 2) {
         $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type, $exitKey);
       } else if ($group == 3) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed, $Ref);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed);
       } else if ($group == 4) {
-        $this->Printer_Misc($shower_count, $wifi_count, $tid, $payment_type);
+        $this->Printer_Misc($shower_count, $wifi_count, $tid, $payment_type, $Processed);
       }
     }
     //Begin Tickets
     //Print parking ticket
-    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed, $Ref)
+    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed)
     {
       $this->user = new User;
       $this->pm = new PM;
@@ -69,8 +69,8 @@
       $line_one = $this->Printer_Columns("Company: ".strtoupper($company), "Reg: ".strtoupper($reg), 18, 24, 2);
       $line_two = $this->Printer_Columns("Valid From: ".$date, "", 30, 12, 2);
       $line_info = $this->Printer_Columns("Reg: ".strtoupper($reg), "Exp: ".$expiry, 18, 24, 2);
-      $line_info2 = $this->Printer_Columns("Reg: ".strtoupper($reg), "Time: ".$Processed, 18, 24, 2);
-      $line_info3 = $this->Printer_Columns("Method: ".strtoupper($payment_type), "Time: ".$Processed, 18, 24, 2);
+      $line_merch = $this->Printer_Columns("Method: ".strtoupper($payment_type), "Time: ".date("d/m/y H:i", strtotime($Processed)), 18, 24, 2);
+      $priceGN = $this->Printer_Columns("Gross: £".$gross, "Nett: £".$net, 20, 20, 2);
       //Begin print
       //Ticket Code
       try {
@@ -211,13 +211,14 @@
         } else {
           $printer -> bitImage($logo);
         }
-        $printer -> text("\n".$line_info2);
         $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
-        $printer -> text($Ref."\n");
-        $printer -> feed();
-        $printer -> text($Processed);
-        $printer -> feed();
-        $printer->selectPrintMode();
+        $printer -> feed(1);
+        $printer -> text($tid."\n");
+        $printer -> feed(1);
+        $printer -> text($priceGN."\n");
+        $printer -> feed(1);
+        $printer -> text($line_merch);
+        $printer -> selectPrintMode();
         //End Ticket
         $printer -> cut(Printer::CUT_PARTIAL);
 
@@ -362,26 +363,30 @@
       $this->pm = null;
     }
     // Wifi & Shower
-    function Printer_Misc($shower_count, $wifi_count, $tid, $payment_type)
+    function Printer_Misc($shower_count, $wifi_count, $tid, $payment_type, $Processed)
     {
       $this->user = new User;
       $this->pm = new PM;
-      $campus = $this->user->userInfo("campus");
-      $printer_id = $this->user->userInfo("printer");
+      $campus = $this->user->Info("campus");
+      $printer_id = $this->user->Info("printer");
 
       $img_dir = $this->ImgDir.$campus;
 
       try {
+
         //Printer Connection
         $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "printer_user").':'.$this->pm->PrinterInfo($printer_id, "printer_pass").'@'.$this->pm->PrinterInfo($printer_id, "printer_ip").'/'.$this->pm->PrinterInfo($printer_id, "printer_sharedname").'');
 
         $printer = new Printer($connector);
         $wifi = EscposImage::load($img_dir."/wifi.jpg", false);
         $shower  = EscposImage::load($img_dir."/shower.jpg", false);
+        $logo = EscposImage::load($img_dir."/logo.png", false);
         if($payment_type == "Cash" || $payment_type == "Card") {
           $printer -> pulse(0, 120, 240);
         }
         $i = 1;
+        $line_merch = $this->Printer_Columns("Method: ".strtoupper($payment_type), "Time: ".date("d/m/y H:i", strtotime($Processed)), 18, 24, 2);
+        $priceGN = $this->Printer_Columns("Gross: £".$gross, "Nett: £".$net, 20, 20, 2);
         //WIFI
         while ($i++ <= $wifi_count) {
           // Generate Voucher
@@ -425,6 +430,25 @@
           //End Ticket
           $printer -> cut(Printer::CUT_PARTIAL);
         }
+        //Merchant Ticket
+        if($payment_type == "Cash" || $payment_type == "Card")
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+          $printer -> graphics($logo);
+        } else {
+          $printer -> bitImage($logo);
+        }
+        $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
+        $printer -> feed(1);
+        $printer -> text($tid."\n");
+        $printer -> feed(1);
+        $printer -> text($priceGN."\n");
+        $printer -> feed(1);
+        $printer -> text($line_merch);
+        $printer -> selectPrintMode();
+        //End Ticket
+        $printer -> cut(Printer::CUT_PARTIAL);
+        
       } finally {
         $printer -> close();
       }
@@ -438,8 +462,8 @@
       $this->user = new User;
       $this->pm = new PM;
       $this->payment = new Payment;
-      $campus = $this->user->userInfo("campus");
-      $printer_id = $this->user->userInfo("printer");
+      $campus = $this->user->Info("campus");
+      $printer_id = $this->user->Info("printer");
       if($campus == 2) {
         $date1 = date("Y-m-d 21:30:00", strtotime($date1));
         $date2 = date("Y-m-d 21:30:00", strtotime($date2));

@@ -16,6 +16,7 @@
 	require_once(__DIR__.'/core/class/etp.class.php');
 	require_once(__DIR__.'/core/class/account.class.php');
 	require_once(__DIR__.'/core/class/ticket.class.php');
+	require_once(__DIR__.'/core/class/background.class.php');
 
 	require_once(__DIR__.'/vendor/autoload.php');
 
@@ -40,6 +41,7 @@
 	$payment = new PM\Payment();
 	$etp = new PM\ETP();
 	$account = new PM\Account();
+	$background = new PM\Background();
 
 	//Other Activating
 	session_start();

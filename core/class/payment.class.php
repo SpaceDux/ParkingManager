@@ -551,7 +551,7 @@
 		function PerVehPayments($ref)
 		{
 			$this->mysql = new MySQL;
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Parkingref = ?");
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Parkingref = ? ORDER BY Processed_Time DESC");
 			$stmt->bindParam(1, $ref);
 			$stmt->execute();
 			$result = $stmt->fetchAll();
@@ -645,7 +645,7 @@
 			$Printed = $result['Ticket_Printed'];
 			$ProcessedTime = $result['Processed_Time'];
 
-			$this->ticket->Direction($TicketName, $Gross, $Nett, $Name = '', $Plate, $Ref, $Date, $Expiry, $Type, $MealCount, $ShowerCount, $Group, $ExitKey, $DiscCount, $WifiCount, $Account_ID, $Printed, $ProcessedTime, $Ref);
+			$this->ticket->Direction($TicketName, $Gross, $Nett, $Name = '', $Plate, $Ref, $Date, $Expiry, $Type, $MealCount, $ShowerCount, $Group, $ExitKey, $DiscCount, $WifiCount, $Account_ID, $Printed, $ProcessedTime);
 
 			$this->mysql = null;
 			$this->ticket = null;
