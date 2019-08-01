@@ -24,6 +24,8 @@
     $payment->PerVehPayments($_POST['Ref']);
   } else if($handler == "Payment.Print_Ticket") {
     $payment->PrintTicket($_POST['Ref']);
+  } else if($handler == "Payment.Transaction_List") {
+    $payment->Transaction_List($_POST['DateStart'], $_POST['DateEnd']);
   }
 
 ?>

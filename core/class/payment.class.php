@@ -651,5 +651,86 @@
 			$this->ticket = null;
 			$this->vehicles = null;
 		}
+		// Transaction History
+		function Transaction_List($Start, $End)
+		{
+			$this->mysql = new MySQL;
+			$this->user = new User;
+
+			$Start = date("Y-m-d 00:00:00", strtotime($Start));
+			$End = date("Y-m-d 23:59:59", strtotime($End));
+			$column = array('Name', 'Plate', 'Service_Name', 'Gross', 'Nett', 'Method', 'Processed_Time', 'AccountID', 'Author');
+
+
+			$query = 'SELECT * FROM pm_transactions ';
+
+				if(isset($Start) && isset($End) && $Start != '' && $End != '')
+				{
+				 $query .= 'WHERE Site = ? AND Processed_Time BETWEEN ? AND ? ';
+				}
+
+				if(isset($_POST['order']))
+				{
+				 $query .= 'ORDER BY '.$column[$_POST['order']['0']['column']].' '.$_POST['order']['0']['dir'].' ';
+				}
+				else
+				{
+				 $query .= 'ORDER BY Processed_Time DESC ';
+				}
+
+				$query1 = '';
+
+				if($_POST["length"] != -1)
+				{
+				 $query1 = 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+				}
+
+				// die($query.$query1);
+
+			$Site = $this->user->Info("campus");
+			$data = array();
+
+			$stmt = $this->mysql->dbc->prepare($query);
+			$stmt->bindParam(1, $Site);
+			$stmt->bindParam(2, $Start);
+			$stmt->bindParam(3, $End);
+			$stmt->execute();
+			$count_filter = $stmt->rowCount();
+
+			$stmt2 = $this->mysql->dbc->prepare($query.$query1);
+			$stmt2->bindParam(1, $Site);
+			$stmt2->bindParam(2, $Start);
+			$stmt2->bindParam(3, $End);
+			$stmt2->execute();
+
+			$stmt3 = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions");
+			$stmt3->execute();
+			$count_total = $stmt->rowCount();
+
+			$data = array();
+
+			foreach($stmt2->fetchAll() as $row) {
+				$sub_array = array();
+				$sub_array[] = $row['Name'];
+				$sub_array[] = $row['Plate'];
+				$sub_array[] = $row['Service_Name'];
+				$sub_array[] = $row['Gross'];
+				$sub_array[] = $row['Nett'];
+				$sub_array[] = $row['Method'];
+				$sub_array[] = $row['Processed_Time'];
+				$sub_array[] = $row['AccountID'];
+				$sub_array[] = $row['Author'];
+				$sub_array[] = "Option Buttons";
+				$data[] = $sub_array;
+			}
+			$output = array("data" =>  $data,
+											"recordsFiltered" => $count_filter,
+											"recordsTotal" => $count_total);
+
+			echo json_encode($output);
+
+			$this->mysql = null;
+			$this->user = null;
+		}
 	}
 ?>

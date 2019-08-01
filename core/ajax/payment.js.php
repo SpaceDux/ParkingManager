@@ -119,6 +119,10 @@
 
     PaymentPane();
   };
+  // Close Payment Portal
+  function ListTransactionsPaneClose() {
+    ListTransactionsPane();
+  };
   // Authorise Payment via TYPE
   function AuthorisePayment(Method) {
     //GET DATA
@@ -431,4 +435,60 @@
     $('#Payment_ConfirmationSNAP_Modal').modal('hide');
     $('#Payment_ConfirmationFuel_Modal').modal('hide');
   });
+  //
+  // $(document).on('click', '#TL_ViewSales', function() {
+  //   event.preventDefault();
+  //   var DateStart = $('#TL_DateStart').val();
+  //   var DateEnd = $('#TL_DateEnd').val();
+  //   $('#PaymentsDataTable').DataTable({
+  //     "serverSide": true,
+  //     "processing": true,
+  //     "order": [],
+  //     "ajax": {
+  //       url: '{URL}/core/ajax/payment.handler.php?handler=Payment.Transaction_List',
+  //       type: 'POST',
+  //       data:{
+  //         DateStart:DateStart,
+  //         DateEnd:DateEnd
+  //       }
+  //     }
+  //   })
+  // })
+  $(document).ready(function() {
+
+    fill_datatable();
+
+    function fill_datatable(DateStart = '', DateEnd = '')
+    {
+     var dataTable = $('#PaymentsDataTable').DataTable({
+      "processing" : true,
+      "serverSide" : true,
+      "search" : false,
+      "ajax" : {
+       url:"{URL}/core/ajax/payment.handler.php?handler=Payment.Transaction_List",
+       type:"POST",
+       data:{
+        DateStart:DateStart, DateEnd:DateEnd
+       }
+      }
+     });
+    }
+    $('#TL_ViewSales').click(function() {
+      var DateStart = $('#TL_DateStart').val();
+      var DateEnd = $('#TL_DateEnd').val();
+        if(DateStart != '' && DateEnd != '')
+        {
+          $('#PaymentsDataTable').DataTable().destroy();
+          fill_datatable(DateStart, DateEnd);
+        }
+        else
+        {
+          alert('Please choose a Start & End date');
+          $('#PaymentsDataTable').DataTable().destroy();
+          fill_datatable();
+        }
+    });
+
+
+ });
 </script>
