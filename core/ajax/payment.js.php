@@ -276,6 +276,7 @@
       var Service = $("#Payment_Service_Fuel option:selected").val();
       var CardNo = $('#Payment_FuelCard_Number').val();
       var CardExpiry = $('#Payment_FuelCard_Expiry').val();
+      var CardRC = $('#Payment_FuelCard_RC').val();
       if(Plate == "") {
         alert("Please enter a valid Plate");
       } else if(VehType == "unselected") {
@@ -295,7 +296,7 @@
         $('.Modal_AuthBtn_false').addClass('Hide');
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Proccess_Transaction",
-          data: {Method:5, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service, CardNo:CardNo, CardExpiry:CardExpiry},
+          data: {Method:5, Type:Type, Ref:Ref, Plate:Plate, Name:Name, Trl:Trl, Time:Time, VehType:VehType, Service:Service, CardNo:CardNo, CardExpiry:CardExpiry, CardRC:CardRC},
           method: "POST",
           dataType: "json",
           success:function(Response) {
@@ -391,6 +392,7 @@
       success:function(Data) {
         $('#Payment_FuelCard_Number').val(Data.cardno);
         $('#Payment_FuelCard_Expiry').val(Data.expiry);
+        $('#Payment_FuelCard_RC').val(Data.rc);
       }
     })
   });
@@ -435,29 +437,8 @@
     $('#Payment_ConfirmationSNAP_Modal').modal('hide');
     $('#Payment_ConfirmationFuel_Modal').modal('hide');
   });
-  //
-  // $(document).on('click', '#TL_ViewSales', function() {
-  //   event.preventDefault();
-  //   var DateStart = $('#TL_DateStart').val();
-  //   var DateEnd = $('#TL_DateEnd').val();
-  //   $('#PaymentsDataTable').DataTable({
-  //     "serverSide": true,
-  //     "processing": true,
-  //     "order": [],
-  //     "ajax": {
-  //       url: '{URL}/core/ajax/payment.handler.php?handler=Payment.Transaction_List',
-  //       type: 'POST',
-  //       data:{
-  //         DateStart:DateStart,
-  //         DateEnd:DateEnd
-  //       }
-  //     }
-  //   })
-  // })
   $(document).ready(function() {
-
     fill_datatable();
-
     function fill_datatable(DateStart = '', DateEnd = '')
     {
      var dataTable = $('#PaymentsDataTable').DataTable({
@@ -473,22 +454,47 @@
       }
      });
     }
-    $('#TL_ViewSales').click(function() {
+    $('#TL_ViewSales').click(function()
+    {
       var DateStart = $('#TL_DateStart').val();
       var DateEnd = $('#TL_DateEnd').val();
-        if(DateStart != '' && DateEnd != '')
-        {
-          $('#PaymentsDataTable').DataTable().destroy();
-          fill_datatable(DateStart, DateEnd);
-        }
-        else
-        {
-          alert('Please choose a Start & End date');
-          $('#PaymentsDataTable').DataTable().destroy();
-          fill_datatable();
-        }
+      // if($('#TL_Cash:checked').val() == 1) {
+      //   var Cash = 1
+      // } else {
+      //   var Cash = 0
+      // }
+      // if($('#TL_Card:checked').val() == 1) {
+      //   var Card = 1
+      // } else {
+      //   var Card = 0
+      // }
+      // if($('#TL_Account:checked').val() == 1) {
+      //   var Account = 1
+      // } else {
+      //   var Account = 0
+      // }
+      // if($('#TL_SNAP:checked').val() == 1) {
+      //   var Snap = 1
+      // } else {
+      //   var Snap = 0
+      // }
+      // if($('#TL_Fuel:checked').val() == 1) {
+      //   var Fuel = 1
+      // } else {
+      //   var Fuel = 0
+      // }
+
+      if(DateStart != '' && DateEnd != '')
+      {
+        $('#PaymentsDataTable').DataTable().destroy();
+        fill_datatable(DateStart, DateEnd);
+      }
+      else
+      {
+        alert('Please choose a Start & End date');
+        $('#PaymentsDataTable').DataTable().destroy();
+        fill_datatable();
+      }
     });
-
-
- });
+  });
 </script>

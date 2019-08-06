@@ -179,5 +179,50 @@
         return FALSE;
       }
     }
+    //
+    //Process SNAP transaction
+    public function DeleteTransaction($tid)
+    {
+      global $_CONFIG;
+      $this->user = new User;
+      $campus = $this->user->Info("campus");
+      $API = $_CONFIG['ETP']['API'];
+
+      $client = new Client(['base_uri' => $API['api_uri']]);
+      if($campus == 1 OR $campus == 0) {
+        //Begin API client
+        $response = $client->post('transaction/credit', [
+          'auth' => array($API['api_user'], $API['api_pass']),
+          'json' => [
+            'locationusername' => $API['holyhead_user'],
+            'locationpassword' => $API['holyhead_pass'],
+            'transactionid' => $tid
+          ]
+        ]);
+        $return = json_decode($response->getBody(), true);
+        if($return['outputstatus'] == 1) {
+          return $return['outputtransactionid'];
+        } else {
+          die($return['outputmessage']." - ".$tid);
+          return FALSE;
+        }
+      } else if ($campus == 2) {
+        $response = $client->post('transaction/credit', [
+          'auth' => array($API['api_user'], $API['api_pass']),
+          'json' => [
+            'locationusername' => $API['hollies_user'],
+            'locationpassword' => $API['hollies_pass'],
+            'transactionid' => $tid
+          ]
+        ]);
+        $return =  json_decode($response->getBody(), true);
+        if($return['outputstatus'] == 1) {
+          return $return['outputtransactionid'];
+        } else {
+          return FALSE;
+        }
+      }
+      $this->user = null;
+    }
   }
 ?>

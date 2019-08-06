@@ -96,7 +96,7 @@
     {
       $this->mssql = new MSSQL;
       //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID, BarcodeExpression)
-
+      $plate = str_replace(" ","", $plate);
       if(!empty($plate) AND !empty($time)) {
         $plate = strip_tags(strtoupper($plate));
         //Includes latest anpr update.

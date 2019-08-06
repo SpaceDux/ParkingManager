@@ -204,23 +204,24 @@
           }
         }
         //Merchant Ticket
-        if($payment_type == "Cash" || $payment_type == "Card")
-        $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
-          $printer -> graphics($logo);
-        } else {
-          $printer -> bitImage($logo);
+        if($payment_type == "Cash" || $payment_type == "Card") {
+          $printer -> setJustification(Printer::JUSTIFY_CENTER);
+          if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+            $printer -> graphics($logo);
+          } else {
+            $printer -> bitImage($logo);
+          }
+          $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
+          $printer -> feed(1);
+          $printer -> text($tid."\n");
+          $printer -> feed(1);
+          $printer -> text($priceGN."\n");
+          $printer -> feed(1);
+          $printer -> text($line_merch);
+          $printer -> selectPrintMode();
+          //End Ticket
+          $printer -> cut(Printer::CUT_PARTIAL);
         }
-        $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
-        $printer -> feed(1);
-        $printer -> text($tid."\n");
-        $printer -> feed(1);
-        $printer -> text($priceGN."\n");
-        $printer -> feed(1);
-        $printer -> text($line_merch);
-        $printer -> selectPrintMode();
-        //End Ticket
-        $printer -> cut(Printer::CUT_PARTIAL);
 
       } finally {
         $printer -> close();
@@ -448,7 +449,7 @@
         $printer -> selectPrintMode();
         //End Ticket
         $printer -> cut(Printer::CUT_PARTIAL);
-        
+
       } finally {
         $printer -> close();
       }

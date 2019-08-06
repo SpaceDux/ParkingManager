@@ -7,12 +7,11 @@
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/vision.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/dataTables.bootstrap4.min.css">
-    <!-- <link rel="stylesheet" href="{URL}/template/{TPL}/css/datatables.min.css"> -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   </head>
   <body>
     <!-- Update Veh Pane START -->
-    <div class="PaymentPane" id="UpdateVehPane">
+    <div class="PaymentPane" id="UpdateVehPane" >
       <div class="Title">
         update vehicle.
         <div class="btn-group float-right" role="group">
@@ -145,7 +144,7 @@
               </div>
               <hr>
               <div id="PaymentOptions">
-
+                
               </div>
             </div>
           </div>
@@ -180,7 +179,7 @@
           </div>
         </div>
         <div class="col">
-          <div class="form-check">
+          <!-- <div class="form-check">
             <input class="form-check-input" type="checkbox" name="TL_Cash" id="TL_Cash" value="1" checked="">
             <label class="form-check-label" for="TL_Cash">Cash</label>
           </div>
@@ -191,10 +190,10 @@
           <div class="form-check">
             <input class="form-check-input" type="checkbox" name="TL_Account" id="TL_Account" value="1" checked="">
             <label class="form-check-label" for="TL_Account">Account</label>
-          </div>
+          </div> -->
         </div>
         <div class="col">
-          <div class="form-check">
+          <!-- <div class="form-check">
             <input class="form-check-input" type="checkbox" name="TL_SNAP" id="TL_SNAP" value="1" checked="">
             <label class="form-check-label" for="TL_SNAP">SNAP Account</label>
           </div>
@@ -209,16 +208,17 @@
           <div class="form-check">
             <input class="form-check-input" type="checkbox" name="TL_Deleted" id="TL_Deleted" value="1">
             <label class="form-check-label" for="TL_Deleted">Hide Deleted</label>
-          </div>
+          </div> -->
         </div>
         <div class="col">
-          <div class="form-group">
+          <!-- <div class="form-group">
             <select class="form-control form-control-lg" name="TL_Group" id="TL_Group" autocomplete="off">
-              <option value="unchecked">-- Please choose a group --</option><option value="1">Parking</option><option value="2">Wash</option><option value="3">Parking + Food</option><option value="4">Misc</option>                      </select>
-          </div>
+
+            </select>
+          </div> -->
         </div>
-        <div class="col-md-2">
-          <div class="btn-group" role="group" aria-label="View Sales">
+        <div class="col">
+          <div class="btn-group float-right" role="group" aria-label="View Sales">
             <button type="button" id="TL_ViewSales" class="btn btn-lg btn-secondary">View Sales</button>
             <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </button>
@@ -493,6 +493,5 @@
     </script>
     <?php require("core/ajax/controller.php"); ?>
     <?php require("modals.php"); ?>
-
   </body>
 </html>
