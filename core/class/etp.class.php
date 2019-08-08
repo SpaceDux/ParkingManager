@@ -201,9 +201,8 @@
         ]);
         $return = json_decode($response->getBody(), true);
         if($return['outputstatus'] == 1) {
-          return $return['outputtransactionid'];
+          return TRUE;
         } else {
-          die($return['outputmessage']." - ".$tid);
           return FALSE;
         }
       } else if ($campus == 2) {
@@ -217,7 +216,7 @@
         ]);
         $return =  json_decode($response->getBody(), true);
         if($return['outputstatus'] == 1) {
-          return $return['outputtransactionid'];
+          return TRUE;
         } else {
           return FALSE;
         }

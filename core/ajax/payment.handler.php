@@ -26,6 +26,8 @@
     $payment->PrintTicket($_POST['Ref']);
   } else if($handler == "Payment.Transaction_List") {
     $payment->Transaction_List($_POST['DateStart'], $_POST['DateEnd']);
+  } else if($handler == "Payment.DeleteTransaction") {
+    $payment->Payment_Delete($_POST['Ref']);
   }
 
 ?>

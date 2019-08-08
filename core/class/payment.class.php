@@ -780,7 +780,7 @@
 		function PerVehPayments($ref)
 		{
 			$this->mysql = new MySQL;
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Parkingref = ? ORDER BY Processed_Time DESC");
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Parkingref = ? AND Deleted < 1 ORDER BY Processed_Time DESC");
 			$stmt->bindParam(1, $ref);
 			$stmt->execute();
 			$result = $stmt->fetchAll();
@@ -811,7 +811,7 @@
 					$Method = "Fuel Card";
 				}
 				$html .= '
-				<tr>
+				<tr id="Payment_Delete_'.$row['Uniqueref'].'">
 					<td>'.$row['Service_Name'].'</td>
 					<td>'.$Method.'</td>
 					<td>'.date("d/H:i", strtotime($row['Processed_Time'])).'</td>
@@ -820,7 +820,7 @@
 					<td>
 						<div class="btn-group float-right" role="group" aria-label="Options">
 							<button type="button" class="btn btn-danger" onClick="Print_Ticket('.$ref.')"><i class="fa fa-print"></i></button>
-							<button type="button" class="btn btn-danger" onClick="DeleteTransaction('.$row['Uniqueref'].')"><i class="fa fa-trash"></i></button>
+							<button type="button" class="btn btn-danger" onClick="DeleteTransaction('.$ref.')"><i class="fa fa-trash"></i></button>
 						</div>
 					</td>
 				<tr>';
@@ -892,17 +892,15 @@
 			$column = array('Name', 'Plate', 'Service_Name', 'Gross', 'Nett', 'Method', 'Processed_Time', 'AccountID', 'Author');
 			$search = $_POST['search']['value'];
 			$search = '%'.$search.'%';
+			$Site = $this->user->Info("campus");
+
 
 			$query = 'SELECT * FROM pm_transactions ';
 
 				if(isset($Start) && isset($End) && $Start != '' && $End != '')
 				{
-				 $query .= 'WHERE Site = ? AND Processed_Time BETWEEN ? AND ? ';
+				 $query .= 'WHERE Site = '.$Site.' AND Processed_Time BETWEEN ? AND ? ';
 				}
-				// if($search != '')
-				// {
-				// 	$query .= ' AND Name LIKE '.$search.' OR Plate LIKE '.$search.' ';
-				// }
 				if(isset($_POST['order']))
 				{
 				 $query .= 'ORDER BY '.$column[$_POST['order']['0']['column']].' '.$_POST['order']['0']['dir'].' ';
@@ -920,21 +918,17 @@
 				}
 
 				// die($query.$query1);
-
-			$Site = $this->user->Info("campus");
 			$data = array();
 
 			$stmt = $this->mysql->dbc->prepare($query);
-			$stmt->bindParam(1, $Site);
-			$stmt->bindParam(2, $Start);
-			$stmt->bindParam(3, $End);
+			$stmt->bindParam(1, $Start);
+			$stmt->bindParam(2, $End);
 			$stmt->execute();
 			$count_filter = $stmt->rowCount();
 
 			$stmt2 = $this->mysql->dbc->prepare($query.$query1);
-			$stmt2->bindParam(1, $Site);
-			$stmt2->bindParam(2, $Start);
-			$stmt2->bindParam(3, $End);
+			$stmt2->bindParam(1, $Start);
+			$stmt2->bindParam(2, $End);
 			$stmt2->execute();
 			$count_total = $stmt2->rowCount();
 
@@ -981,6 +975,50 @@
 			$this->mysql = null;
 			$this->user = null;
 			$this->account = null;
+		}
+		// Delete Payments
+		function Payment_Delete($ref)
+		{
+			$this->mysql = new MySQL;
+			$this->etp = new ETP;
+			$this->vehicles = new Vehicles;
+
+			$stmt1 = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Uniqueref = ?");
+			$stmt1->bindParam(1, $ref);
+			$stmt1->execute();
+			$record = $stmt1->fetch(\PDO::FETCH_ASSOC);
+			$serviceEx = $this->Payment_ServiceInfo($record['Service'], "service_expiry");
+			$parkingref = $record['Parkingref'];
+			$expiry = $this->vehicles->Info($parkingref, "Expiry");
+			$anpr = $this->vehicles->Info($parkingref, "ANPRRef");
+			$new_Expiry = date('Y-m-d H:i:s', strtotime($expiry.' - '.$serviceEx.' hours'));
+
+			if($record['Method'] > 3) {
+				$etpid = $record['ETPID'];
+				$delSnap = $this->etp->DeleteTransaction($etpid);
+				if($delSnap == TRUE) {
+					$stmt = $this->mysql->dbc->prepare("UPDATE pm_transactions SET Deleted = 1 WHERE Uniqueref = ?");
+					$stmt->bindParam(1, $ref);
+					$stmt->execute();
+					$this->vehicles->ExpiryUpdate($parkingref, $new_Expiry);
+					$this->vehicles->ANPR_PaymentUpdate($anpr, $new_Expiry);
+					echo $stmt->rowCount();
+				} else {
+					echo "REFUSED";
+				}
+			} else {
+				$stmt = $this->mysql->dbc->prepare("UPDATE pm_transactions SET Deleted = 1 WHERE Uniqueref = ?");
+				$stmt->bindParam(1, $ref);
+				$stmt->execute();
+				$this->vehicles->ExpiryUpdate($parkingref, $new_Expiry);
+				$this->vehicles->ANPR_PaymentUpdate($anpr, $new_Expiry);
+				echo $stmt->rowCount();
+			}
+
+
+			$this->mysql = null;
+			$this->etp = null;
+			$this->vehicles = null;
 		}
 	}
 ?>

@@ -366,7 +366,7 @@
       $this->user = new User;
       $this->pm = new PM;
       $site = $this->user->Info("campus");
-      $uid = $this->user->Info("campus");
+      $uid = $this->user->Info("id");
       $Author = $this->user->Info("first_name");
       $ExitKey = mt_rand(11111, 99999);
       $ExitKey = str_replace("0", "9", $ExitKey);

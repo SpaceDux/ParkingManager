@@ -314,6 +314,21 @@
       }
     }
   }
+  // Authorise Payment via TYPE
+  function DeleteTransaction(Ref) {
+    $.ajax({
+      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.DeleteTransaction",
+      type: "POST",
+      data: {Ref:Ref},
+      success:function(Data) {
+        if(Data > 0) {
+          $('#Payment_Delete_'+Ref).addClass('Hide');
+        } else {
+          
+        }
+      }
+    })
+  }
   // Payment Service Dropdown
   $(document).on('change', '#Payment_VehType', function() {
     var Type = $(this).val();
@@ -437,6 +452,7 @@
     $('#Payment_ConfirmationSNAP_Modal').modal('hide');
     $('#Payment_ConfirmationFuel_Modal').modal('hide');
   });
+  // List Transactions via Datatables
   $(document).ready(function() {
     fill_datatable();
     function fill_datatable(DateStart = '', DateEnd = '')
@@ -445,6 +461,7 @@
       "processing" : true,
       "serverSide" : true,
       "search" : false,
+      "order" : [[6, 'desc']],
       "ajax" : {
        url:"{URL}/core/ajax/payment.handler.php?handler=Payment.Transaction_List",
        type:"POST",
@@ -458,32 +475,6 @@
     {
       var DateStart = $('#TL_DateStart').val();
       var DateEnd = $('#TL_DateEnd').val();
-      // if($('#TL_Cash:checked').val() == 1) {
-      //   var Cash = 1
-      // } else {
-      //   var Cash = 0
-      // }
-      // if($('#TL_Card:checked').val() == 1) {
-      //   var Card = 1
-      // } else {
-      //   var Card = 0
-      // }
-      // if($('#TL_Account:checked').val() == 1) {
-      //   var Account = 1
-      // } else {
-      //   var Account = 0
-      // }
-      // if($('#TL_SNAP:checked').val() == 1) {
-      //   var Snap = 1
-      // } else {
-      //   var Snap = 0
-      // }
-      // if($('#TL_Fuel:checked').val() == 1) {
-      //   var Fuel = 1
-      // } else {
-      //   var Fuel = 0
-      // }
-
       if(DateStart != '' && DateEnd != '')
       {
         $('#PaymentsDataTable').DataTable().destroy();
