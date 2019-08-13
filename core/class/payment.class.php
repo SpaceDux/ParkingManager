@@ -329,7 +329,7 @@
 			$Uniqueref = $uid.date("YmdHis").mt_rand(1111, 9999).$Site;
 			$Processed = date("Y-m-d H:i:s");
 
-			$stmt = $this->mysql->dbc->prepare("INSERT INTO pm_transactions (id, Uniqueref, Parkingref, Site, Method, Plate, Name, Service, Service_Name, Service_Ticket_Name, Service_Group, Gross, Nett, Processed_Time, Vehicle_Capture_Time, Vehicle_Expiry_Time, Ticket_Printed, AccountID, ETPID, Deleted, Deleted_Comment, Settlement_Group, Settlement_Multi, Author, FuelCard_Type, FuelCard_No, FuelCard_Ex, Last_Updated)
+			$stmt = $this->mysql->dbc->prepare("INSERT INTO transactions (id, Uniqueref, Parkingref, Site, Method, Plate, Name, Service, Service_Name, Service_Ticket_Name, Service_Group, Gross, Nett, Processed_Time, Vehicle_Capture_Time, Vehicle_Expiry_Time, Ticket_Printed, AccountID, ETPID, Deleted, Deleted_Comment, Settlement_Group, Settlement_Multi, Author, FuelCard_Type, FuelCard_No, FuelCard_Ex, Last_Updated)
 																					VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, '0', '', ?, ?, ?, ?, ?, ?, ?)");
 			$stmt->bindParam(1, $Uniqueref);
 			$stmt->bindParam(2, $Ref);
@@ -438,7 +438,7 @@
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A DKV Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -457,7 +457,7 @@
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -474,7 +474,7 @@
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -491,7 +491,7 @@
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A UTA Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -508,7 +508,7 @@
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -525,7 +525,7 @@
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -542,7 +542,7 @@
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A BP Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -614,7 +614,7 @@
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A DKV Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -633,7 +633,7 @@
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -650,7 +650,7 @@
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -667,7 +667,7 @@
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A UTA Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -684,7 +684,7 @@
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -701,7 +701,7 @@
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -718,7 +718,7 @@
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A Fuel Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+								$this->pm->POST_Notifications("A BP Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -780,7 +780,7 @@
 		function PerVehPayments($ref)
 		{
 			$this->mysql = new MySQL;
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Parkingref = ? AND Deleted < 1 ORDER BY Processed_Time DESC");
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Parkingref = ? AND Deleted < 1 ORDER BY Processed_Time DESC");
 			$stmt->bindParam(1, $ref);
 			$stmt->execute();
 			$result = $stmt->fetchAll();
@@ -839,7 +839,7 @@
 			$this->ticket = new Ticket;
 			$this->vehicles = new Vehicles;
 
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Uniqueref = ?");
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Uniqueref = ?");
 			$stmt->bindParam(1, $Ref);
 			$stmt->execute();
 			$result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -874,7 +874,14 @@
 			$Printed = $result['Ticket_Printed'];
 			$ProcessedTime = $result['Processed_Time'];
 
+			$Printed = $Printed + 1;
+
 			$this->ticket->Direction($TicketName, $Gross, $Nett, $Name = '', $Plate, $Ref, $Date, $Expiry, $Type, $MealCount, $ShowerCount, $Group, $ExitKey, $DiscCount, $WifiCount, $Account_ID, $Printed, $ProcessedTime);
+
+			$stmt2 = $this->mysql->dbc->prepare("UPDATE transactions SET Ticket_Printed = ? WHERE Uniqueref = ?");
+			$stmt2->bindParam(1, $Printed);
+			$stmt2->bindParam(2, $Ref);
+			$stmt2->execute();
 
 			$this->mysql = null;
 			$this->ticket = null;
@@ -895,7 +902,7 @@
 			$Site = $this->user->Info("campus");
 
 
-			$query = 'SELECT * FROM pm_transactions ';
+			$query = 'SELECT * FROM transactions ';
 
 				if(isset($Start) && isset($End) && $Start != '' && $End != '')
 				{
@@ -961,7 +968,7 @@
 				$sub_array[] = '£'.$row['Nett'];
 				$sub_array[] = $Method;
 				$sub_array[] = date("d/m/y H:i:s", strtotime($row['Processed_Time']));
-				$sub_array[] = $this->account->Account_GetInfo($row['AccountID'], "account_name");
+				$sub_array[] = $this->account->Account_GetInfo($row['AccountID'], "Name");
 				$sub_array[] = $row['Author'];
 				$sub_array[] = $options;
 				$data[] = $sub_array;
@@ -982,8 +989,9 @@
 			$this->mysql = new MySQL;
 			$this->etp = new ETP;
 			$this->vehicles = new Vehicles;
+			$this->pm = new PM;
 
-			$stmt1 = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Uniqueref = ?");
+			$stmt1 = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Uniqueref = ?");
 			$stmt1->bindParam(1, $ref);
 			$stmt1->execute();
 			$record = $stmt1->fetch(\PDO::FETCH_ASSOC);
@@ -992,33 +1000,39 @@
 			$expiry = $this->vehicles->Info($parkingref, "Expiry");
 			$anpr = $this->vehicles->Info($parkingref, "ANPRRef");
 			$new_Expiry = date('Y-m-d H:i:s', strtotime($expiry.' - '.$serviceEx.' hours'));
+			$date = date("Y-m-d H:i:s");
 
 			if($record['Method'] > 3) {
 				$etpid = $record['ETPID'];
 				$delSnap = $this->etp->DeleteTransaction($etpid);
 				if($delSnap == TRUE) {
-					$stmt = $this->mysql->dbc->prepare("UPDATE pm_transactions SET Deleted = 1 WHERE Uniqueref = ?");
+					$stmt = $this->mysql->dbc->prepare("UPDATE transactions SET Deleted = 1 AND Last_Updated = ? WHERE Uniqueref = ?");
 					$stmt->bindParam(1, $ref);
+					$stmt->bindParam(2, $date);
 					$stmt->execute();
 					$this->vehicles->ExpiryUpdate($parkingref, $new_Expiry);
 					$this->vehicles->ANPR_PaymentUpdate($anpr, $new_Expiry);
 					echo $stmt->rowCount();
+					$this->pm->POST_Notifications("A ETP Payment has successfully been deleted, Ref: ".$ref, '0');
 				} else {
 					echo "REFUSED";
 				}
 			} else {
-				$stmt = $this->mysql->dbc->prepare("UPDATE pm_transactions SET Deleted = 1 WHERE Uniqueref = ?");
+				$stmt = $this->mysql->dbc->prepare("UPDATE transactions SET Deleted = 1 AND Last_Updated = ? WHERE Uniqueref = ?");
 				$stmt->bindParam(1, $ref);
+				$stmt->bindParam(2, $date);
 				$stmt->execute();
 				$this->vehicles->ExpiryUpdate($parkingref, $new_Expiry);
 				$this->vehicles->ANPR_PaymentUpdate($anpr, $new_Expiry);
 				echo $stmt->rowCount();
+				$this->pm->POST_Notifications("A Payment has successfully been deleted, Ref: ".$ref, '0');
 			}
 
 
 			$this->mysql = null;
 			$this->etp = null;
 			$this->vehicles = null;
+			$this->pm = null;
 		}
 	}
 ?>

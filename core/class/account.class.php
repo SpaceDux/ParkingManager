@@ -11,7 +11,7 @@
     {
       $this->mysql = new MySQL;
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ?");
       $query->bindParam(1, $key);
       $query->execute();
       $result = $query->fetch(\PDO::FETCH_ASSOC);
@@ -25,7 +25,7 @@
     {
       $this->mysql = new MySQL;
 
-      $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts_fleet WHERE account_vehicle_plate = ?");
+      $query = $this->mysql->dbc->prepare("SELECT * FROM accounts_trucks WHERE Plate = ?");
       $query->bindParam(1, $key);
       $query->execute();
       $result = $query->fetch(\PDO::FETCH_ASSOC);
@@ -41,23 +41,23 @@
       $this->user = new User;
       $campus = $this->user->Info("campus");
 
-      $sql1 = $this->mysql->dbc->prepare("SELECT account_id FROM pm_accounts_fleet WHERE account_vehicle_plate = ?");
+      $sql1 = $this->mysql->dbc->prepare("SELECT Uniqueref FROM accounts_trucks WHERE Plate = ?");
       $sql1->bindParam(1, $plate);
       $sql1->execute();
       $result1 = $sql1->fetch(\PDO::FETCH_ASSOC);
       $count = $sql1->rowCount();
       if ($count > 0) {
-        $id = $result1['account_id'];
+        $id = $result1['Uniqueref'];
 
-        $sql2 = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ? AND account_suspended = 0 AND account_deleted = 0");
+        $sql2 = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ? AND Suspended = 0 AND Deleted = 0");
         $sql2->bindParam(1, $id);
         $sql2->execute();
         $result = $sql2->fetch(\PDO::FETCH_ASSOC);
         $count2 = $sql2->rowCount();
         if ($count2 > 0) {
-          if($result['account_shared'] == 1) {
+          if($result['Shared'] == 1) {
             return TRUE;
-          } else if ($result['campus'] == $campus) {
+          } else if ($result['Site'] == $campus) {
             return TRUE;
           } else {
             return FALSE;
@@ -69,6 +69,21 @@
 
       $this->mysql = null;
       $this->user = null;
+    }
+    // List all accounts
+    function List_Accounts()
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM accounts ORDER BY Site");
+      $stmt->execute();
+      $html = '';
+
+      foreach($stmt->fetchAll() as $row) {
+        
+      }
+
+      $this->mysql = null;
     }
   }
 ?>

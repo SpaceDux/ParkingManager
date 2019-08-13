@@ -221,11 +221,11 @@
 
       $current = date("Y-m-d H:i:s");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Site = ? AND Deleted != '1' AND Parked_Column != '2' ORDER BY Expiry DESC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Site = ? AND Deleted != '1' AND Parked_Column != '2' ORDER BY Expiry DESC");
       $stmt->bindParam(1, $campus);
       $stmt->execute();
 
-      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Site = ? AND Deleted != '1' AND Parked_Column = '2' ORDER BY Departure DESC LIMIT 30");
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Site = ? AND Deleted != '1' AND Parked_Column = '2' ORDER BY Departure DESC LIMIT 30");
       $stmt2->bindParam(1, $campus);
       $stmt2->execute();
       $html_paid .= '<table class="table table-striped table-bordered table-hover">
@@ -380,7 +380,7 @@
       $time = date("Y-m-d H:i:s");
 
 
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO pm_parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, Account_ID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Last_Updated) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '0', '0', '', ?, ?, ?, ?)");
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, AccountID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Last_Updated) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '0', '0', '', ?, ?, ?, ?)");
       $stmt->bindParam(1, $Uniqueref);
       $stmt->bindParam(2, $ANPRRef);
       $stmt->bindParam(3, $site);
@@ -416,7 +416,7 @@
 
       $html = "";
 
-      $stmt = $this->mysql->dbc->prepare("SELECT Img_Overview, Img_Patch FROM pm_parking_records WHERE Uniqueref = ?");
+      $stmt = $this->mysql->dbc->prepare("SELECT Img_Overview, Img_Patch FROM parking_records WHERE Uniqueref = ?");
       $stmt->bindParam(1, $ref);
       $stmt->execute();
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -438,7 +438,7 @@
     {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Uniqueref = ?");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Uniqueref = ?");
       $stmt->bindParam(1, $ref);
       $stmt->execute();
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -450,7 +450,7 @@
     {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Expiry = ? WHERE Uniqueref = ?");
+      $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Expiry = ? WHERE Uniqueref = ?");
       $stmt->bindParam(1, $time);
       $stmt->bindParam(2, $ref);
       $stmt->execute();
@@ -462,7 +462,7 @@
     {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Uniqueref = ?");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Uniqueref = ?");
       $stmt->bindParam(1, $ref);
       $stmt->execute();
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -481,7 +481,7 @@
       $plate = strtoupper($plate);
       $time = date("Y-m-d H:i:s");
 
-      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Plate = ?, Name = ?, Trailer_No = ?, Type = ?, Parked_Column = ?, Arrival = ?, Departure = ?, Notes = ?, Last_Updated = ? WHERE Uniqueref = ?");
+      $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Plate = ?, Name = ?, Trailer_No = ?, Type = ?, Parked_Column = ?, Arrival = ?, Departure = ?, Notes = ?, Last_Updated = ? WHERE Uniqueref = ?");
       $stmt->bindParam(1, $plate);
       $stmt->bindParam(2, $name);
       $stmt->bindParam(3, $trl);
@@ -509,7 +509,7 @@
       $this->user = new User;
       $site = $this->user->Info("campus");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_parking_records WHERE Site = ? AND Plate = ? AND Parked_Column < 2");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Site = ? AND Plate = ? AND Parked_Column < 2");
       $stmt->bindParam(1, $site);
       $stmt->bindParam(2, $plate);
       $stmt->execute();
@@ -533,7 +533,7 @@
       $this->mysql = new MySQL;
       $cur = date("Y-m-d H:i:s");
 
-      $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Departure = ?, Parked_Column = 2 WHERE Uniqueref = ?");
+      $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Departure = ?, Parked_Column = 2 WHERE Uniqueref = ?");
       $stmt->bindParam(1, $cur);
       $stmt->bindParam(2, $ref);
       $stmt->execute();
@@ -546,11 +546,11 @@
       $this->mysql = new MySQL;
 
       if($flag == "1") {
-        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Flagged = 0 WHERE Uniqueref = ?");
+        $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Flagged = 0 WHERE Uniqueref = ?");
         $stmt->bindParam(1, $ref);
         $stmt->execute();
       } else {
-        $stmt = $this->mysql->dbc->prepare("UPDATE pm_parking_records SET Flagged = 1 WHERE Uniqueref = ?");
+        $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Flagged = 1 WHERE Uniqueref = ?");
         $stmt->bindParam(1, $ref);
         $stmt->execute();
       }

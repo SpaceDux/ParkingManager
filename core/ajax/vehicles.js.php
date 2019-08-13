@@ -214,15 +214,19 @@
     var Arrival = $('#Update_Arrival').val();
     var Exit = $('#Update_Exit').val();
     var Notes = $('#Update_Notes').val();
-    $.ajax({
-      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.UpdateRecord",
-      data: {Ref:Ref, Plate:Plate, Name:Name, Trailer:Trailer, VehType:VehType, Column:Column, Arrival:Arrival, Exit:Exit, Notes:Notes},
-      method: "POST",
-      success:function() {
-        UpdateVehPaneClose();
-        $('#UpdateVehicle_Form')[0].reset();
-      }
-    });
+    if(Column != "unselected") {
+      $.ajax({
+        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.UpdateRecord",
+        data: {Ref:Ref, Plate:Plate, Name:Name, Trailer:Trailer, VehType:VehType, Column:Column, Arrival:Arrival, Exit:Exit, Notes:Notes},
+        method: "POST",
+        success:function() {
+          UpdateVehPaneClose();
+          $('#UpdateVehicle_Form')[0].reset();
+        }
+      });
+    } else {
+      alert("Please choose a valid Parking Column");
+    }
   }
   // Quick Exit
   $(document).on('click', '#Update_ExitBtn', function(e) {

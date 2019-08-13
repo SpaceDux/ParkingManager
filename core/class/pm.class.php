@@ -17,7 +17,7 @@
 
       $html = "";
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_notifications WHERE notification_site = ? ORDER BY notification_created DESC LIMIT 25");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM notifications WHERE notification_site = ? ORDER BY notification_created DESC LIMIT 25");
       $stmt->bindParam(1, $campus);
       $stmt->execute();
 
@@ -50,7 +50,7 @@
       if(isset($text)) {
         $date = date("Y-m-d H:i:s");
         $site = $this->user->Info("campus");
-        $stmt = $this->mysql->dbc->prepare("INSERT INTO pm_notifications (notification_text, notification_site, notification_created, notification_urgency) VALUES (?, ?, ?, ?)");
+        $stmt = $this->mysql->dbc->prepare("INSERT INTO notifications (notification_text, notification_site, notification_created, notification_urgency) VALUES (?, ?, ?, ?)");
         $stmt->bindParam(1, $text);
         $stmt->bindParam(2, $site);
         $stmt->bindParam(3, $date);
@@ -116,16 +116,16 @@
       $id = $this->account->Account_FleetInfo($Plate, "account_id");
       if($id > 0) {
         $list = '';
-        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE id = ?");
+        $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ?");
         $query->bindParam(1, $id);
         $query->execute();
         $result = $query->fetch(\PDO::FETCH_ASSOC);
 
-        $list .= '<option value="'.$result['id'].'">'.$result['account_name'].'</option>';
+        $list .= '<option value="'.$result['Uniqueref'].'">'.$result['account_name'].'</option>';
 
       } else {
         $list = '';
-        $query = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts WHERE campus = ? AND account_deleted = 0 OR account_shared = 1 AND account_deleted = 0 ORDER BY account_name ASC");
+        $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Site = ? AND Deleted = 0 OR Shared = 1 AND Deleted = 0 ORDER BY Name ASC");
         $query->bindParam(1, $campus);
         $query->execute();
         $result = $query->fetchAll();

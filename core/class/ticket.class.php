@@ -69,7 +69,7 @@
       $line_one = $this->Printer_Columns("Company: ".strtoupper($company), "Reg: ".strtoupper($reg), 18, 24, 2);
       $line_two = $this->Printer_Columns("Valid From: ".$date, "", 30, 12, 2);
       $line_info = $this->Printer_Columns("Reg: ".strtoupper($reg), "Exp: ".$expiry, 18, 24, 2);
-      $line_merch = $this->Printer_Columns("Method: ".strtoupper($payment_type), "Time: ".date("d/m/y H:i", strtotime($Processed)), 18, 24, 2);
+      $line_merch = $this->Printer_Columns("Method: ".strtoupper($payment_type), "Time: ".$Processed, 18, 24, 2);
       $priceGN = $this->Printer_Columns("Gross: £".$gross, "Nett: £".$net, 20, 20, 2);
       //Begin print
       //Ticket Code
@@ -513,7 +513,7 @@
         $group_results = $group->fetchAll();
         foreach($group_results as $row) {
           $value=0;
-          $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Site = ? AND Method = 1 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method = 1 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
           $srv->bindParam(1, $campus);
           $srv->bindParam(2, $row['id']);
           $srv->bindParam(3, $date1);
@@ -534,7 +534,7 @@
         $printer -> feed();
         foreach($group_results as $row) {
           $value=0;
-          $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Site = ? AND Method = 2 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method = 2 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
           $srv->bindParam(1, $campus);
           $srv->bindParam(2, $row['id']);
           $srv->bindParam(3, $date1);
@@ -555,7 +555,7 @@
         $printer -> feed();
         foreach($group_results as $row) {
           $value=0;
-          $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Site = ? AND Method = 3 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method = 3 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
           $srv->bindParam(1, $campus);
           $srv->bindParam(2, $row['id']);
           $srv->bindParam(3, $date1);
@@ -576,7 +576,7 @@
         $printer -> feed();
         foreach($group_results as $row) {
           $value=0;
-          $srv = $this->mysql->dbc->prepare("SELECT * FROM pm_transactions WHERE Site = ? AND Method >= 4 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method >= 4 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
           $srv->bindParam(1, $campus);
           $srv->bindParam(2, $row['id']);
           $srv->bindParam(3, $date1);

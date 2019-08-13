@@ -3,156 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{SITE_NAME}: Dashboard</title>
+    <title>{SITE_NAME}: Account Manager</title>
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/vision.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   </head>
   <body>
-    <!-- Update Veh Pane START -->
-    <div class="PaymentPane" id="UpdateVehPane" >
-      <div class="Title">
-        update vehicle.
-        <div class="btn-group float-right" role="group">
-          <button type="button" class="btn btn-danger" onClick="UpdateVehPaneClose()"><i class="fa fa-times"></i></button>
-        </div>
-      </div>
-      <div class="Body">
-        <form id="UpdateVehicle_Form">
-          <div class="row">
-            <div class="col">
-              <input type="hidden" name="Update_Ref" id="Update_Ref" class="form-control">
-              <input type="hidden" name="Update_Expiry" id="Update_Expiry" class="form-control">
-              <input type="hidden" name="Update_Flag" id="Update_Flag" class="form-control">
-              <label for="Update_Plate">Update Vehicle Plate</label>
-              <input type="text" class="form-control" name="Update_Plate" id="Update_Plate">
-              <hr>
-              <label for="Update_Name">Update Vehicle Company/Name</label>
-              <input type="text" class="form-control" name="Update_Name" id="Update_Name">
-              <hr>
-              <label for="Update_Trailer">Update Vehicle Trailer</label>
-              <input type="text" class="form-control" name="Update_Trailer" id="Update_Trailer">
-              <hr>
-              <label for="Update_VehType">Update Vehicle Type</label>
-              <select class="form-control" id="Update_VehType" name="Update_VehType">
-                <option value="unselected">Please Choose a Vehicle Type...</option>
-                {VEHTYPES}
-              </select>
-              <hr>
-              <label>ANPR Images</label>
-              <div id="Update_Images">
-
-              </div>
-            </div>
-            <div class="col">
-              <div class="alert alert-primary" id="Update_Duration"></div>
-              <div id="Update_PaymentsTable">
-
-              </div>
-              <label for="Update_Column">Update Vehicle Parking Column</label>
-              <select class="form-control" id="Update_Column" name="Update_Column">
-                <option value="unselected">Please Choose a Parking Column...</option>
-                <option value="1">Paid</option>
-                <option value="2">Exit</option>
-              </select>
-              <hr>
-              <label for="Update_Arrival">Update Time of Arrival</label>
-              <input type="text" class="form-control" name="Update_Arrival" id="Update_Arrival">
-              <hr>
-              <label for="Update_Exit">Update Time of Exit</label>
-              <input type="text" class="form-control" name="Update_Exit" id="Update_Exit">
-              <hr>
-              <label for="Update_Notes">Add a Comment</label>
-              <textarea class="form-control" id="Update_Notes" name="Update_Notes"></textarea>
-              <br><br><hr>
-              <div class="btn-group btn-lg">
-                <button type="button" class="btn btn-dark" onClick="UpdateVehicleRec()">Save <i class="fa fa-save"></i></button>
-                <button type="button" class="btn btn-dark" id="Update_FlagBtn">Flag <i class="fa fa-flag"></i></button>
-                <button type="button" class="btn btn-dark" id="Update_ExitBtn">Exit <i class="fa fa-times"></i></button>
-                <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Delete Vehicle</a>
-                </div>
-              </div>
-              <span class="badge badge-secondary float-right" id="UD_Ref"></span>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!-- Update Pane END -->
-    <!-- Payment Pane START -->
-    <div class="PaymentPane" id="PaymentPane">
-      <div class="Title">
-        new transaction.
-        <div class="btn-group float-right" role="group">
-          <button type="button" class="btn btn-danger" onClick="PaymentPaneClose()"><i class="fa fa-times"></i></button>
-        </div>
-      </div>
-      <div class="Body">
-        <form id="PaymentPane_Form">
-          <div class="row">
-            <div class="col">
-              <input type="hidden" name="Payment_Type" id="Payment_Type" class="form-control">
-              <input type="hidden" name="Payment_Ref" id="Payment_Ref" class="form-control">
-              <input type="hidden" name="Payment_CaptureDate" id="Payment_CaptureDate" class="form-control">
-              <label>Vehicle Registration Plate</label>
-              <input type="text" name="Payment_Plate" id="Payment_Plate" class="form-control" placeholder="E.G CY15GHX" style="text-transform: uppercase;" readonly>
-              <hr>
-              <label>Company / Name</label>
-              <input type="text" name="Payment_Name" id="Payment_Name" class="form-control" placeholder="E.G EXAMPLE TRANSPORT" style="text-transform: uppercase;">
-              <hr>
-              <label>Vehicle Trailer Number</label>
-              <input type="text" name="Payment_Trl" class="form-control" id="Payment_Trl" placeholder="E.G TRL001" style="text-transform: uppercase;">
-              <hr>
-              <label>Vehicle Type</label>
-              <select class="form-control" id="Payment_VehType" name="Payment_VehType">
-                <option value="unselected">Please Choose a Vehicle Type...</option>
-                {VEHTYPES}
-              </select>
-              <hr>
-              <div id="ANPR_Images">
-
-              </div>
-            </div>
-            <div class="col">
-              <div class="alert alert-primary" id="Payment_TimeCalculation"></div>
-              <label>How many days parking</label><br>
-              <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-secondary active">
-                  <input type="radio" name="Payment_Services_Expiry" value="24" autocomplete="off" checked=""> 1 Day
-                </label>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="Payment_Services_Expiry" value="48" autocomplete="off"> 2 Days
-                </label>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="Payment_Services_Expiry" value="72" autocomplete="off"> 3 Days
-                </label>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="Payment_Services_Expiry" value="96" autocomplete="off"> 4 Days
-                </label>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="Payment_Services_Expiry" value="120" autocomplete="off"> 5 Days
-                </label>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="Payment_Services_Expiry" value="144" autocomplete="off"> 6 Days
-                </label>
-                <label class="btn btn-secondary">
-                  <input type="radio" name="Payment_Services_Expiry" value="168" autocomplete="off"> 7 Days
-                </label>
-              </div>
-              <hr>
-              <div id="PaymentOptions">
-
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!-- Payment Pane END -->
-    <!-- Payment Pane START -->
+    <!-- Transaction List START -->
     <div class="PaymentPane" id="TransactionListPane">
       <div class="Title">
         view all transactions.
@@ -290,7 +148,7 @@
     <!-- Main Navigation Bar START -->
     <div class="Navigation_Bar">
       <ul>
-        <li class="Selected">
+        <li>
           <a href="{URL}/main">
             <i class="fa fa-tachometer-alt"></i>
             DASHBOARD
@@ -315,7 +173,7 @@
             <a href="#">Settlement Structure</a>
           </div>
         </li>
-        <li>
+        <li class="Selected">
           <a>
             <i class="fa fa-file-invoice"></i>
             ACCOUNT TOOLS
@@ -377,6 +235,8 @@
                 <i class="fa fa-shopping-basket"></i>
               </div>
             </div>
+          </div>
+          <div class="col-md-3">
             <div class="StatBox">
               <div class="Stat">
                 <b id="RENEWAL_Count"></b>
@@ -389,59 +249,58 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="StatBox-LG">
-              <canvas id="myChart" style="max-width: 97%;max-height: 100%;display: block;margin: 0 auto;"></canvas>
-            </div>
-          </div>
         </div>
       </div>
     </div>
     <!-- Stat Bar END -->
     <div class="Wrapper" id="Wrapper">
-      <div class="row">
-        <div class="col-md-7">
-          <div class="Box">
-            <div class="Title">
-              <i class="fa fa-video" style="color: red; padding-right: 10px;"></i>  Live ANPR Feed
-              <div class="btn-group float-right" role="group" aria-label="Button group with nested dropdown">
-                <button type="button" class="btn btn-secondary"><i class="fa fa-search"></i></button>
-                <button type="button" class="btn btn-secondary" onClick="ANPR_AddPlate()"><i class="fa fa-plus"></i></button>
-                <button type="button" class="btn btn-secondary" onClick="ANPR_Feed_Refresh()"><i class="fa fa-redo-alt"></i></button>
-              </div>
-            </div>
-            <div id="ANPR_Feed">
-
-            </div>
-          </div>
-          <div class="Box">
-            <div class="Title">
-              PAID Feed
-            </div>
-            <div id="PAID_Feed">
-
+      <div class="row" style="padding-top: 10px;">
+        <div class="col-md-3">
+          <div class="jumbotron">
+            <h4 class="display-5">NEW ACCOUNT</h4>
+            <p class="lead"></p>
+            <hr class="my-4">
+            <p>Add a new Account/KingPay to <b>ParkingManager</b></p>
+            <div class="btn-group float-right" role="group" aria-label="Button group with nested dropdown">
+              <button type="button" class="btn btn-secondary"><i class="fa fa-sticky-note"></i> New Account</button>
             </div>
           </div>
         </div>
-        <div class="col-md-5">
-          <div class="Box">
-            <div class="Title">
-              RENEWALS Feed
+        <div class="col-md-3">
+          <div class="jumbotron">
+            <h4 class="display-5">HANNON</h4>
+            <div class="alert alert-success">
+              This account is shared with other sites.
             </div>
-            <div id="RENEWAL_Feed">
-
+            <p class="lead"></p>
+            <hr class="my-4">
+            <p>Contact Details</p>
+            <hr>
+            <p><i class="fa fa-phone"></i> 01726545245</p>
+            <p><i class="fa fa-envelope"></i> example@example.com</p>
+            <p><i class="fa fa-location-arrow"></i> Site</p>
+            <div class="alert alert-danger">
+              This account has been disabled.
             </div>
-          </div>
-          <div class="Box">
-            <div class="Title">
-              EXIT Feed
+            <div class="alert alert-warning">
+              This account has been suspended.
             </div>
-            <div id="EXIT_Feed">
-
+            <div class="btn-group float-right" role="group" aria-label="Button group with nested dropdown">
+              <button type="button" class="btn btn-secondary"><i class="fa fa-cog"></i> Settings</button>
+              <button type="button" class="btn btn-secondary"><i class="fa fa-truck"></i> Fleet</button>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#Suspend">Suspend Account</a>
+                  <a class="dropdown-item" href="#Disable">Disable Account</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+
     </div>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/bootstrap.bundle.min.js"></script>
@@ -455,36 +314,6 @@
         $('#ANPR_AddPlate_Form')[0].reset();
         $('#AddPlate_Plate').focus();
         ANPR_AddPlate();
-      });
-
-      var ctx = document.getElementById('myChart');
-      var myChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-          			labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-          			datasets: [{
-          				label: 'This Week',
-          				backgroundColor: 'rgba(197,197,197,0.7)',
-          				borderColor: 'rgba(96,96,96,0.7)',
-          				fill: true,
-          				data: [177,111,165,133,134,176,144]
-          			}, {
-          				label: 'Last Week',
-                  backgroundColor: 'rgba(96,96,96,0.7)',
-          				borderColor: 'rgba(197,197,197,0.7)',
-          				fill: true,
-          				data: [188,166,122,144,168,155,157]
-          			}]
-          		},
-          options: {
-              scales: {
-                  yAxes: [{
-                      ticks: {
-                          beginAtZero: true
-                      }
-                  }]
-              }
-          }
       });
       // Handle Modal autofocus
       $('.modal').on('shown.bs.modal', function() {
