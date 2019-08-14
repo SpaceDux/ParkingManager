@@ -35,6 +35,7 @@
 			$this->user = new User;
 			$this->pm = new PM;
 			$this->vehicles = new Vehicles;
+			$this->account = new Account;
 
 			$this->Assign('url', $_CONFIG['site']['url']); //{URL} Site URL
 			$this->Assign('tpl', $_CONFIG['site']['template']); //{TPL} Skin Name
@@ -43,10 +44,12 @@
 			if(isset($_SESSION['id'])) {
 				$this->Assign('fname', $this->user->Info("first_name")); //{FNAME} Active User's first name
 				$this->Assign('vehtypes', $this->pm->Vehicle_Types_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
+				$this->Assign('accounts', $this->account->List_Accounts()); //{ACCOUNTS} returns the full html list of accounts
 			}
 			$this->user = null;
 			$this->pm = null;
 			$this->vehicles = null;
+			$this->account = null;
 		}
 		//This function takes the set params and turns them into an actual function
 		function Assign($_searchString, $_replaceString)

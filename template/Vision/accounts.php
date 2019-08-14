@@ -261,43 +261,12 @@
             <p class="lead"></p>
             <hr class="my-4">
             <p>Add a new Account/KingPay to <b>ParkingManager</b></p>
-            <div class="btn-group float-right" role="group" aria-label="Button group with nested dropdown">
-              <button type="button" class="btn btn-secondary"><i class="fa fa-sticky-note"></i> New Account</button>
+            <div class="btn-group float-right" role="group">
+              <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Account_Register_Modal"><i class="fa fa-sticky-note"></i> New Account</button>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="jumbotron">
-            <h4 class="display-5">HANNON</h4>
-            <div class="alert alert-success">
-              This account is shared with other sites.
-            </div>
-            <p class="lead"></p>
-            <hr class="my-4">
-            <p>Contact Details</p>
-            <hr>
-            <p><i class="fa fa-phone"></i> 01726545245</p>
-            <p><i class="fa fa-envelope"></i> example@example.com</p>
-            <p><i class="fa fa-location-arrow"></i> Site</p>
-            <div class="alert alert-danger">
-              This account has been disabled.
-            </div>
-            <div class="alert alert-warning">
-              This account has been suspended.
-            </div>
-            <div class="btn-group float-right" role="group" aria-label="Button group with nested dropdown">
-              <button type="button" class="btn btn-secondary"><i class="fa fa-cog"></i> Settings</button>
-              <button type="button" class="btn btn-secondary"><i class="fa fa-truck"></i> Fleet</button>
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#Suspend">Suspend Account</a>
-                  <a class="dropdown-item" href="#Disable">Disable Account</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {ACCOUNTS}
       </div>
 
 

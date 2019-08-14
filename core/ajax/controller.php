@@ -4,4 +4,5 @@
   require("pm.js.php");
   require("vehicles.js.php");
   require("background.js.php");
+  require("account.js.php");
 ?>

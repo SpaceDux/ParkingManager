@@ -204,3 +204,86 @@
     </div>
   </div>
 </div>
+<!-- New Account modal -->
+<div class="modal" id="Account_Register_Modal" tabindex="-1" role="dialog" aria-labelledby="Account_Register_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Register a new Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="Account_Register_Form">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Name">Full Company Name</label>
+              <input type="text" class="form-control" name="Name" placeholder="Example Transport Ltd" required autofocus>
+              <hr>
+            </div>
+            <div class="col-md-6">
+              <label for="Name">Company Short Name</label>
+              <input type="text" class="form-control" name="ShortName" placeholder="EXAMPLE" required>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="Address">Company Address (Inc Post Code)</label>
+              <textarea type="text" class="form-control" name="Address" rows="4" value=""></textarea>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Address">Company Contact Email</label>
+              <input type="text" class="form-control" name="Contact_Email" value="" placeholder="example@example.com" required>
+              <hr>
+            </div>
+            <div class="col-md-6">
+              <label for="Address">Company Billing Email</label>
+              <input type="text" class="form-control" name="Billing_Email" value="" placeholder="example@example.com" required>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <label for="Address">Site</label>
+              <select class="form-control" name="Shared">
+
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="Address">Shared Account</label>
+              <select class="form-control" name="Shared">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="Address">Allow Discounts</label>
+              <select class="form-control" name="Shared">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="Address">Status</label>
+              <select class="form-control" name="Shared">
+                <option value="0">Active</option>
+                <option value="1">Suspend</option>
+                <option value="2">Teminated</option>
+              </select>
+              <br>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="Account_Register_Save">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
