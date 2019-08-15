@@ -42,8 +42,9 @@
 			$this->Assign('site_name', $_CONFIG['site']['name']); //{SITE_NAME} Site Name
 			$this->Assign('copy', $_CONFIG['misc']['copy']); //{SITE_NAME} Site Name
 			if(isset($_SESSION['id'])) {
-				$this->Assign('fname', $this->user->Info("first_name")); //{FNAME} Active User's first name
+				$this->Assign('fname', $this->user->Info("FirstName")); //{FNAME} Active User's first name
 				$this->Assign('vehtypes', $this->pm->Vehicle_Types_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
+				$this->Assign('sites', $this->pm->Sites_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
 				$this->Assign('accounts', $this->account->List_Accounts()); //{ACCOUNTS} returns the full html list of accounts
 			}
 			$this->user = null;

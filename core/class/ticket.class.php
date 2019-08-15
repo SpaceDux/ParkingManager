@@ -44,11 +44,11 @@
       $this->user = new User;
       $this->pm = new PM;
 
-      $campus = $this->user->Info("campus");
-      $printer_id = $this->user->Info("printer");
+      $campus = $this->user->Info("Site");
+      $printer_id = $this->user->Info("Printer");
       //VAT Information
       $vat_pay = ($gross - $net);
-      $vatnum = $this->pm->Site_Info($campus, "site_vat");
+      $vatnum = $this->pm->Site_Info($campus, "Vatno");
       $img_dir = $this->ImgDir.$campus;
       //Printer connection
       $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "printer_user").':'.$this->pm->PrinterInfo($printer_id, "printer_pass").'@'.$this->pm->PrinterInfo($printer_id, "printer_ip").'/'.$this->pm->PrinterInfo($printer_id, "printer_sharedname").'');
@@ -234,8 +234,8 @@
     {
       $this->user = new User;
       $this->pm = new PM;
-      $campus = $this->user->Info("campus");
-      $printer_id = $this->user->Info("printer");
+      $campus = $this->user->Info("Site");
+      $printer_id = $this->user->Info("Printer");
 
       //VAT Information
       $vat_rate = "20";
@@ -368,8 +368,8 @@
     {
       $this->user = new User;
       $this->pm = new PM;
-      $campus = $this->user->Info("campus");
-      $printer_id = $this->user->Info("printer");
+      $campus = $this->user->Info("Site");
+      $printer_id = $this->user->Info("Printer");
 
       $img_dir = $this->ImgDir.$campus;
 
@@ -463,8 +463,8 @@
       $this->user = new User;
       $this->pm = new PM;
       $this->payment = new Payment;
-      $campus = $this->user->Info("campus");
-      $printer_id = $this->user->Info("printer");
+      $campus = $this->user->Info("Site");
+      $printer_id = $this->user->Info("Printer");
       if($campus == 2) {
         $date1 = date("Y-m-d 21:30:00", strtotime($date1));
         $date2 = date("Y-m-d 21:30:00", strtotime($date2));

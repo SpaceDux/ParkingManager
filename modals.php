@@ -237,21 +237,21 @@
           </div>
           <div class="row">
             <div class="col-md-6">
-              <label for="Address">Company Contact Email</label>
+              <label for="Contact_Email">Company Contact Email</label>
               <input type="text" class="form-control" name="Contact_Email" value="" placeholder="example@example.com" required>
               <hr>
             </div>
             <div class="col-md-6">
-              <label for="Address">Company Billing Email</label>
+              <label for="Billing_Email">Company Billing Email</label>
               <input type="text" class="form-control" name="Billing_Email" value="" placeholder="example@example.com" required>
               <hr>
             </div>
           </div>
           <div class="row">
             <div class="col-md-3">
-              <label for="Address">Site</label>
-              <select class="form-control" name="Shared">
-
+              <label for="Site">Site</label>
+              <select class="form-control" name="Site">
+                {SITES}
               </select>
             </div>
             <div class="col-md-3">
@@ -263,14 +263,14 @@
             </div>
             <div class="col-md-3">
               <label for="Address">Allow Discounts</label>
-              <select class="form-control" name="Shared">
+              <select class="form-control" name="Discount">
                 <option value="0">No</option>
                 <option value="1">Yes</option>
               </select>
             </div>
             <div class="col-md-3">
               <label for="Address">Status</label>
-              <select class="form-control" name="Shared">
+              <select class="form-control" name="Status">
                 <option value="0">Active</option>
                 <option value="1">Suspend</option>
                 <option value="2">Teminated</option>

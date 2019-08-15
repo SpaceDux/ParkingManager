@@ -173,7 +173,7 @@
             <a href="#">Settlement Structure</a>
           </div>
         </li>
-        <li class="Selected">
+        <li>
           <a>
             <i class="fa fa-file-invoice"></i>
             ACCOUNT TOOLS
@@ -183,7 +183,7 @@
             <a href="#se">Reports</a>
           </div>
         </li>
-        <li>
+        <li class="Selected">
           <a>
             <i class="fa fa-cogs"></i>
             P<b>M</b> TOOLS

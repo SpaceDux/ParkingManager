@@ -13,7 +13,7 @@
       $this->mysql = new MySQL;
       $this->user = new User;
 
-      $campus = $this->user->Info("campus");
+      $campus = $this->user->Info("Site");
 
       $html = "";
 
@@ -49,7 +49,7 @@
       $this->user = new User;
       if(isset($text)) {
         $date = date("Y-m-d H:i:s");
-        $site = $this->user->Info("campus");
+        $site = $this->user->Info("Site");
         $stmt = $this->mysql->dbc->prepare("INSERT INTO notifications (notification_text, notification_site, notification_created, notification_urgency) VALUES (?, ?, ?, ?)");
         $stmt->bindParam(1, $text);
         $stmt->bindParam(2, $site);
@@ -65,7 +65,7 @@
     {
       $this->mysql = new MySQL;
       $this->user = new User;
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_sites WHERE id = ?");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM sites WHERE Uniqueref = ?");
       $stmt->bindParam(1, $site);
       $stmt->execute();
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -106,13 +106,30 @@
 
       $this->mysql = null;
     }
+    // Vehicle Types list
+    function Sites_DropdownOpt()
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM sites");
+      $stmt->execute();
+      $result = $stmt->fetchAll();
+      $html = "";
+      foreach($result as $row) {
+        $html .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].'</option>';
+      }
+
+      return $html;
+
+      $this->mysql = null;
+    }
     // Account Dropdown
     function Account_DropdownOpt($Plate)
     {
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->account = new Account;
-      $campus = $this->user->Info("campus");
+      $campus = $this->user->Info("Site");
       $id = $this->account->Account_FleetInfo($Plate, "account_id");
       if($id > 0) {
         $list = '';
@@ -177,11 +194,11 @@
     function Create_WiFi_Voucher($site)
     {
       //Minutes
-      $controllerurl = $this->Site_Info($site, "site_unifi_ip");
-      $controlleruser = $this->Site_Info($site, "site_unifi_user");
-      $controllerpassword = $this->Site_Info($site, "site_unifi_pass");
-      $site_id = $this->Site_Info($site, "site_unifi_site");
-      $controllerversion = $this->Site_Info($site, "site_unifi_ver");
+      $controllerurl = $this->Site_Info($site, "Unifi_IP");
+      $controlleruser = $this->Site_Info($site, "Unifi_User");
+      $controllerpassword = $this->Site_Info($site, "Unifi_Password");
+      $site_id = $this->Site_Info($site, "Unifi_Site");
+      $controllerversion = $this->Site_Info($site, "Unifi_Ver");
 
       $voucher_expiration = 1440;
       //Unifi creds

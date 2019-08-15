@@ -13,17 +13,17 @@
 
       $this->mysql = new MySQL;
       if(!empty(strip_tags($email)) && !empty(strip_tags($password))) {
-        $query = $this->mysql->dbc->prepare("SELECT id, email, password FROM pm_users WHERE email = ?");
+        $query = $this->mysql->dbc->prepare("SELECT Uniqueref, Email, Password FROM users WHERE Email = ?");
         $query->bindParam(1, $email);
         $query->execute();
         if($query->rowCount() > 0) {
           $result = $query->fetch(\PDO::FETCH_ASSOC);
-          if(password_verify($password, $result['password'])) {
-            $_SESSION['id'] = $result['id'];
+          if(password_verify($password, $result['Password'])) {
+            $_SESSION['id'] = $result['Uniqueref'];
             $date = date("Y-m-d H:i:s");
-            $set = $this->mysql->dbc->prepare("UPDATE pm_users SET active = 1, last_log = ? WHERE id = ?");
+            $set = $this->mysql->dbc->prepare("UPDATE users SET Active = 1, Last_Logged = ? WHERE Uniqueref = ?");
             $set->bindParam(1, $date);
-            $set->bindParam(2, $result['id']);
+            $set->bindParam(2, $result['Uniqueref']);
             $set->execute();
             $result = [
               'Code' => '0',
@@ -84,7 +84,7 @@
       $this->mysql = new MySQL;
 
       if(isset($_SESSION['id'])) {
-        $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_users WHERE id = ?");
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM users WHERE Uniqueref = ?");
         $stmt->bindParam(1, $_SESSION['id']);
         if($stmt->execute()) {
           $result = $stmt->fetch();

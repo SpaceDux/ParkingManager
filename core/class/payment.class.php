@@ -183,7 +183,7 @@
 			$this->mysql = new MySQL;
 			$this->user = new User;
 			$this->pm = new PM;
-			$campus = $this->user->Info("campus");
+			$campus = $this->user->Info("Site");
 
 			$Cash = "";
 			$Card = "";
@@ -316,9 +316,9 @@
 			$this->mysql = new MySQL;
 			$this->user = new User;
 
-			$Site = $this->user->Info("campus");
-			$Author = $this->user->Info("first_name");
-			$uid = $this->user->Info("id");
+			$Site = $this->user->Info("Site");
+			$Author = $this->user->Info("FirstName");
+			$uid = $this->user->Info("Uniqueref");
 			$Service_Name = $this->Payment_ServiceInfo($Service, "service_name");
 			$Ticket_Name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
 			$Service_Settlement_Group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
@@ -371,7 +371,7 @@
 			$this->etp = new ETP;
 			$this->pm = new PM;
 			$this->user = new User;
-			$name = $this->user->Info("first_name");
+			$name = $this->user->Info("FirstName");
 			$Service_Expiry = $this->Payment_ServiceInfo($Service, "service_expiry");
 			$Expiry = date("Y-m-d H:i:s", strtotime($Time.' +'.$Service_Expiry.' hours'));
 
@@ -899,7 +899,7 @@
 			$column = array('Name', 'Plate', 'Service_Name', 'Gross', 'Nett', 'Method', 'Processed_Time', 'AccountID', 'Author');
 			$search = $_POST['search']['value'];
 			$search = '%'.$search.'%';
-			$Site = $this->user->Info("campus");
+			$Site = $this->user->Info("Site");
 
 
 			$query = 'SELECT * FROM transactions ';

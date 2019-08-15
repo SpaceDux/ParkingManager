@@ -13,9 +13,9 @@
     {
       //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
       $this->user = new User;
-      $campus = $this->user->Info("campus");
+      $campus = $this->user->Info("Site");
       $count_anpr = 0;
-      if($this->user->Info("anpr") == 1) {
+      if($this->user->Info("ANPR") == 1) {
         $this->mssql = new MSSQL;
         $this->pm = new PM;
         $query = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
@@ -38,7 +38,7 @@
           $date = '\''.$row['Capture_Date'].'\'';
           //Get The right Path now.
           if(isset($campus)) {
-            $patch = str_replace($this->pm->Site_Info($campus, 'site_anpr_imgstr'), $this->pm->Site_Info($campus, 'site_anpr_img'), $row['Patch']);
+            $patch = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $row['Patch']);
             // $patch = "";
           } else {
             $patch = "";
@@ -155,7 +155,7 @@
       $this->user = new User;
       $this->pm = new PM;
 
-      $campus = $this->user->Info("campus");
+      $campus = $this->user->Info("Site");
 
       $html = "";
 
@@ -188,7 +188,7 @@
       $this->user = new User;
       $this->pm = new PM;
 
-      $campus = $this->user->Info("campus");
+      $campus = $this->user->Info("Site");
 
       $html = "";
 
@@ -214,7 +214,7 @@
       $this->mysql = new MySQL;
       $this->pm = new PM;
 
-      $campus = $this->user->Info("campus");
+      $campus = $this->user->Info("Site");
       $html_paid = '';
       $html_renew = '';
       $html_exit = '';
@@ -365,16 +365,16 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->pm = new PM;
-      $site = $this->user->Info("campus");
+      $site = $this->user->Info("Site");
       $uid = $this->user->Info("id");
-      $Author = $this->user->Info("first_name");
+      $Author = $this->user->Info("FirstName");
       $ExitKey = mt_rand(11111, 99999);
       $ExitKey = str_replace("0", "9", $ExitKey);
-      $Uniqueref = $uid.date("YmdHis").$ExitKey.$site;
+      $Uniqueref = $uid.date("YmdHis").$ExitKey;
       $Patch = $this->ANPR_Info($ANPRRef, "Patch");
       $Overview = $this->ANPR_Info($ANPRRef, "Overview");
-      $Patch = str_replace($this->pm->Site_Info($site, 'site_anpr_imgstr'), $this->pm->Site_Info($site, 'site_anpr_img'), $Patch);
-      $Overview = str_replace($this->pm->Site_Info($site, 'site_anpr_imgstr'), $this->pm->Site_Info($site, 'site_anpr_img'), $Overview);
+      $Patch = str_replace($this->pm->Site_Info($site, 'ANPR_Imgstr'), $this->pm->Site_Info($site, 'ANPR_Img'), $Patch);
+      $Overview = str_replace($this->pm->Site_Info($site, 'ANPR_Imgstr'), $this->pm->Site_Info($site, 'ANPR_Img'), $Overview);
       $Plate = strtoupper($Plate);
       $Name = strtoupper($Name);
       $time = date("Y-m-d H:i:s");
@@ -412,7 +412,7 @@
       $this->mysql = new MySQL;
       $this->user = new User;
 
-      $campus = $this->user->Info("campus");
+      $campus = $this->user->Info("Site");
 
       $html = "";
 
@@ -507,7 +507,7 @@
     {
       $this->mysql = new MySQL;
       $this->user = new User;
-      $site = $this->user->Info("campus");
+      $site = $this->user->Info("Site");
 
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Site = ? AND Plate = ? AND Parked_Column < 2");
       $stmt->bindParam(1, $site);

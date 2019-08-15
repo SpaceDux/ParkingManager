@@ -13,10 +13,10 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->pm = new PM;
-      $campus = $this->user->Info("campus");
+      $campus = $this->user->Info("Site");
       if(isset($campus)) {
           try {
-            $this->dbc = new \PDO('sqlsrv:Server='.$this->pm->Site_Info($campus, 'site_anpr_ip').';Database='.$this->pm->Site_Info($campus,'site_anpr_db').'', $this->pm->Site_Info($campus, 'site_anpr_user'), $this->pm->Site_Info($campus, 'site_anpr_pass'));
+            $this->dbc = new \PDO('sqlsrv:Server='.$this->pm->Site_Info($campus, 'ANPR_IP').';Database='.$this->pm->Site_Info($campus,'ANPR_DB').'', $this->pm->Site_Info($campus, 'ANPR_User'), $this->pm->Site_Info($campus, 'ANPR_Password'));
           } catch (\PDOException $e) {
             die("MSSQL Engine Error: ".$e->getMessage());
           }
