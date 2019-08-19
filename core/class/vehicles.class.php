@@ -165,8 +165,8 @@
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
       if(count($result) > 0) {
         if($result['Patch'] != "") {
-          $patch = str_replace($this->pm->Site_Info($campus, 'site_anpr_imgstr'), $this->pm->Site_Info($campus, 'site_anpr_img'), $result['Patch']);
-          $overview = str_replace($this->pm->Site_Info($campus, 'site_anpr_imgstr'), $this->pm->Site_Info($campus, 'site_anpr_img'), $result['Overview']);
+          $patch = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $result['Patch']);
+          $overview = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $result['Overview']);
           $html .= '<img src="'.$patch.'" alt="" class="img-thumbnail">';
           $html .= '<img src="'.$overview.'" alt="" class="img-thumbnail">';
         } else {

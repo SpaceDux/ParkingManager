@@ -61,98 +61,64 @@
     {
       global $_CONFIG;
       $this->user = new User;
-      $campus = $this->user->Info("campus");
+      $this->pm = new PM;
+      $campus = $this->user->Info("Site");
       $API = $_CONFIG['ETP']['API'];
 
       $client = new Client(['base_uri' => $API['api_uri']]);
-      if($campus == 1 OR $campus == 0) {
-        //Begin API client
-        $response = $client->post('transaction/add', [
-          'auth' => array($API['api_user'], $API['api_pass']),
-          'json' => [
-            'locationusername' => $API['holyhead_user'],
-            'locationpassword' => $API['holyhead_pass'],
-            'serviceid' => $etpid,
-            'regno' => $plate,
-            'drivername' => $name
-          ]
-        ]);
-        $return = json_decode($response->getBody(), true);
-        if($return['outputstatus'] == 1) {
-          return $return['outputtransactionid'];
-        } else {
-          die($return['outputmessage']." - ".$etpid);
-          return FALSE;
-        }
-      } else if ($campus == 2) {
-        $response = $client->post('transaction/add', [
-          'auth' => array($API['api_user'], $API['api_pass']),
-          'json' => [
-            'locationusername' => $API['hollies_user'],
-            'locationpassword' => $API['hollies_pass'],
-            'serviceid' => $etpid,
-            'regno' => $plate,
-            'drivername' => $name
-          ]
-        ]);
-        $return =  json_decode($response->getBody(), true);
-        if($return['outputstatus'] == 1) {
-          return $return['outputtransactionid'];
-        } else {
-          return FALSE;
-        }
+      //Begin API client
+      $response = $client->post('transaction/add', [
+        'auth' => array($API['api_user'], $API['api_pass']),
+        'json' => [
+          'locationusername' => $this->pm->Site_Info($campus, "ETP_User"),
+          'locationpassword' => $this->pm->Site_Info($campus, "ETP_Pass"),
+          'serviceid' => $etpid,
+          'regno' => $plate,
+          'drivername' => $name
+        ]
+      ]);
+      $return = json_decode($response->getBody(), true);
+      if($return['outputstatus'] == 1) {
+        return $return['outputtransactionid'];
+      } else {
+        die($return['outputmessage']." - ".$etpid);
+        return FALSE;
       }
       $this->user = null;
+      $this->pm = null;
     }
     //Process Fuelcard Transaction
     public function Proccess_Transaction_Fuel($etpid, $plate, $name, $Card, $Expiry)
     {
       global $_CONFIG;
       $this->user = new User;
-      $campus = $this->user->Info("campus");
+      $this->pm = new PM;
+      $campus = $this->user->Info("Site");
       $API = $_CONFIG['ETP']['API'];
 
       $client = new Client(['base_uri' => $API['api_uri']]);
 
-      if ($campus == 1 OR $campus == 0) {
-        $response = $client->post('transaction/add', [
-          'auth' => array($API['api_user'], $API['api_pass']),
-          'json' => [
-            'locationusername' => $API['holyhead_user'],
-            'locationpassword' => $API['holyhead_pass'],
-            'serviceid' => $etpid,
-            'regno' => $plate,
-            'drivername' => $name,
-            'cardno' => $Card,
-            'cardexpiry' => $Expiry
-          ]
-        ]);
-        $return = json_decode($response->getBody(), true);
-        if($return['outputstatus'] == 1) {
-          return $return['outputtransactionid'];
-        } else {
-          return FALSE;
-        }
-      } else if ($campus == 2) {
-        $response = $client->post('transaction/add', [
-          'auth' => array($API['api_user'], $API['api_pass']),
-          'json' => [
-            'locationusername' => $API['hollies_user'],
-            'locationpassword' => $API['hollies_pass'],
-            'serviceid' => $etpid,
-            'regno' => $plate,
-            'drivername' => $name,
-            'cardno' => $Card,
-            'cardexpiry' => $Expiry
-          ]
-        ]);
-        $return = json_decode($response->getBody(), true);
-        if($return['outputstatus'] == 1) {
-          return $return['outputtransactionid'];
-        } else {
-          return FALSE;
-        }
-      }
+      $response = $client->post('transaction/add', [
+        'auth' => array($API['api_user'], $API['api_pass']),
+        'json' => [
+          'locationusername' => $this->pm->Site_Info($campus, "ETP_User"),
+          'locationpassword' => $this->pm->Site_Info($campus, "ETP_Pass"),
+          'serviceid' => $etpid,
+          'regno' => $plate,
+          'drivername' => $name,
+          'cardno' => $Card,
+          'cardexpiry' => $Expiry
+        ]
+      ]);
+      $return = json_decode($response->getBody(), true);
+      if($return['outputstatus'] == 1) {
+        return $return['outputtransactionid'];
+      } else {
+        return FALSE;
+      }#
+      $this->user = null;
+      $this->pm = null;
+
     }
     //check is SNAP
     public function Check_SNAP($Plate)
@@ -185,43 +151,29 @@
     {
       global $_CONFIG;
       $this->user = new User;
-      $campus = $this->user->Info("campus");
+      $this->pm = new PM;
+      $campus = $this->user->Info("Site");
+
       $API = $_CONFIG['ETP']['API'];
 
       $client = new Client(['base_uri' => $API['api_uri']]);
-      if($campus == 1 OR $campus == 0) {
-        //Begin API client
-        $response = $client->post('transaction/credit', [
-          'auth' => array($API['api_user'], $API['api_pass']),
-          'json' => [
-            'locationusername' => $API['holyhead_user'],
-            'locationpassword' => $API['holyhead_pass'],
-            'transactionid' => $tid
-          ]
-        ]);
-        $return = json_decode($response->getBody(), true);
-        if($return['outputstatus'] == 1) {
-          return TRUE;
-        } else {
-          return FALSE;
-        }
-      } else if ($campus == 2) {
-        $response = $client->post('transaction/credit', [
-          'auth' => array($API['api_user'], $API['api_pass']),
-          'json' => [
-            'locationusername' => $API['hollies_user'],
-            'locationpassword' => $API['hollies_pass'],
-            'transactionid' => $tid
-          ]
-        ]);
-        $return =  json_decode($response->getBody(), true);
-        if($return['outputstatus'] == 1) {
-          return TRUE;
-        } else {
-          return FALSE;
-        }
+      //Begin API client
+      $response = $client->post('transaction/credit', [
+        'auth' => array($API['api_user'], $API['api_pass']),
+        'json' => [
+          'locationusername' => $this->pm->Site_Info($campus, "ETP_User"),
+          'locationpassword' => $this->pm->Site_Info($campus, "ETP_Pass"),
+          'transactionid' => $tid
+        ]
+      ]);
+      $return = json_decode($response->getBody(), true);
+      if($return['outputstatus'] == 1) {
+        return TRUE;
+      } else {
+        return FALSE;
       }
       $this->user = null;
+      $this->pm = null;
     }
   }
 ?>

@@ -82,7 +82,7 @@
 
       foreach($stmt->fetchAll() as $row)
       {
-        $ref = ''.$row['Uniqueref'].'';
+        $ref = '\''.$row['Uniqueref'].'\'';
         $html .= '
         <div class="col-md-3">
           <div class="jumbotron">
@@ -95,13 +95,14 @@
             $html .= '
             <p class="lead"></p>
             <hr class="my-4">
-            <p>'.$row['Address'].'</p>
+            <p>'.$row['Name'].'<br>
+            '.$row['Address'].'</p>
             <hr>
-            <p><i class="fa fa-phone"></i> '.$row['Contact_No'].'</p>
+            <p><i class="fa fa-envelope"></i> '.$row['Contact_Email'].'</p>
             <p><i class="fa fa-envelope"></i> '.$row['Billing_Email'].'</p>
-            <p><i class="fa fa-location-arrow"></i> Site</p>
-            <p><i class="fa fa-history"></i> '.$row['Last_Updated'].'</p>';
-            if($row['Status'] == 2) {
+            <p><i class="fa fa-location-arrow"></i> '.$this->pm->Site_Info($row['Site'], "Name").'</p>
+            <p><i class="fa fa-history"></i> '.date("d/m/Y @ H:i:s", strtotime($row['Last_Updated'])).'</p>';
+            if($row['Status'] == 1) {
               $html .= '
               <div class="alert alert-danger">
                 This account has been suspended.
@@ -135,25 +136,64 @@
       $this->mysql = null;
       $this->pm = null;
     }
-
-    function Register_Account($Name, $Short, $Address, $Contact, $Billing, $Site = 1, $Shared, $Discount, $Status)
+    // Register a new account to parking manager
+    function Register_Account($Name, $Short, $Address, $Contact, $Billing, $Site, $Shared, $Discount, $Status)
     {
       $this->mysql = new MySQL;
 
-      $Uniqueref = date("YmdHis").mt_rand(1111, 9999).$Site;
+      $Uniqueref = date("YmdHis").mt_rand(1111, 9999);
+      $Last_Updated = date("Y-m-d H:i:s");
+      $Short = strtoupper($Short);
 
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO accounts (id, Uniqueref, Site, Shared, Name, ShortName, Address, Billing_Email, Discount_Vouchers, Status, Last_Updated) VALUE ('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO accounts VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       $stmt->bindParam(1, $Uniqueref);
-      $stmt->bindParam(2, "1");
+      $stmt->bindParam(2, $Site);
       $stmt->bindParam(3, $Shared);
       $stmt->bindParam(4, $Name);
-      $stmt->bindParam(5, $ShortName);
+      $stmt->bindParam(5, $Short);
       $stmt->bindParam(6, $Address);
       $stmt->bindParam(7, $Contact);
       $stmt->bindParam(8, $Billing);
       $stmt->bindParam(9, $Discount);
       $stmt->bindParam(10, $Status);
       $stmt->bindParam(11, $Last_Updated);
+      $stmt->execute();
+
+      $this->mysql = null;
+    }
+    // Update a account get data
+    function Update_Account_GET($Ref)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $Ref);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+      echo json_encode($result);
+
+      $this->mysql = null;
+    }
+    // Update account
+    function Update_Account($Ref, $Name, $Short, $Address, $Contact, $Billing, $Site, $Shared, $Discount, $Status)
+    {
+      $this->mysql = new MySQL;
+
+      $Last_Updated = date("Y-m-d H:i:s");
+
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE accounts SET Name = ?, ShortName = ?, Address = ?, Contact_Email = ?, Billing_Email = ?, Site = ?, Shared = ?, Discount_Vouchers = ?, Status = ?, Last_Updated = ? WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $Name);
+      $stmt->bindParam(2, $Short);
+      $stmt->bindParam(3, $Address);
+      $stmt->bindParam(4, $Contact);
+      $stmt->bindParam(5, $Billing);
+      $stmt->bindParam(6, $Site);
+      $stmt->bindParam(7, $Shared);
+      $stmt->bindParam(8, $Discount);
+      $stmt->bindParam(9, $Status);
+      $stmt->bindParam(10, $Last_Updated);
+      $stmt->bindParam(11, $Ref);
       $stmt->execute();
 
       $this->mysql = null;

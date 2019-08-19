@@ -4,6 +4,10 @@
 
   if($handler == "Account.New_Account") {
     $account->Register_Account($_POST['Name'], $_POST['ShortName'], $_POST['Address'], $_POST['Contact_Email'], $_POST['Billing_Email'], $_POST['Site'], $_POST['Shared'], $_POST['Discount'], $_POST['Status']);
+  } else if($handler == "Account.Update_Account_GET") {
+    $account->Update_Account_GET($_POST['Ref']);
+  } else if($handler == "Account.Update_Account") {
+    $account->Update_Account($_POST['Ref'], $_POST['Name'], $_POST['ShortName'], $_POST['Address'], $_POST['Contact_Email'], $_POST['Billing_Email'], $_POST['Site'], $_POST['Shared'], $_POST['Discount'], $_POST['Status']);
   }
 
 

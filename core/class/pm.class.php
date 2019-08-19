@@ -133,25 +133,25 @@
       $id = $this->account->Account_FleetInfo($Plate, "account_id");
       if($id > 0) {
         $list = '';
-        $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ?");
+        $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ? AND Status < 1");
         $query->bindParam(1, $id);
         $query->execute();
         $result = $query->fetch(\PDO::FETCH_ASSOC);
 
-        $list .= '<option value="'.$result['Uniqueref'].'">'.$result['account_name'].'</option>';
+        $list .= '<option value="'.$result['Uniqueref'].'">'.$result['Name'].'</option>';
 
       } else {
         $list = '';
-        $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Site = ? AND Deleted = 0 OR Shared = 1 AND Deleted = 0 ORDER BY Name ASC");
+        $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Site = ? AND Status < 2 OR Shared = 1 AND Status < 2 ORDER BY Name ASC");
         $query->bindParam(1, $campus);
         $query->execute();
         $result = $query->fetchAll();
         $list .= '<option value="unchecked">-- Please choose an account --</option>';
         foreach ($result as $row) {
-          if($row['account_suspended'] == 1) {
-            $list .= '<option style="color: red;" value="unchecked">'.$row['account_name'].' - currently suspended</option>';
+          if($row['Status'] > 0) {
+            $list .= '<option style="color: red;" value="unchecked">'.$row['Name'].' - currently suspended</option>';
           } else {
-            $list .= '<option value="'.$row['id'].'">'.$row['account_name'].'</option>';
+            $list .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].'</option>';
           }
         }
       }

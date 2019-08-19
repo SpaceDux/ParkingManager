@@ -318,7 +318,6 @@
 
 			$Site = $this->user->Info("Site");
 			$Author = $this->user->Info("FirstName");
-			$uid = $this->user->Info("Uniqueref");
 			$Service_Name = $this->Payment_ServiceInfo($Service, "service_name");
 			$Ticket_Name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
 			$Service_Settlement_Group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
@@ -326,7 +325,7 @@
 			$Service_Group = $this->Payment_ServiceInfo($Service, "service_group");
 			$Service_Gross = $this->Payment_ServiceInfo($Service, "service_price_gross");
 			$Service_Nett = $this->Payment_ServiceInfo($Service, "service_price_net");
-			$Uniqueref = $uid.date("YmdHis").mt_rand(1111, 9999).$Site;
+			$Uniqueref = date("YmdHis").mt_rand(1111, 9999);
 			$Processed = date("Y-m-d H:i:s");
 
 			$stmt = $this->mysql->dbc->prepare("INSERT INTO transactions (id, Uniqueref, Parkingref, Site, Method, Plate, Name, Service, Service_Name, Service_Ticket_Name, Service_Group, Gross, Nett, Processed_Time, Vehicle_Capture_Time, Vehicle_Expiry_Time, Ticket_Printed, AccountID, ETPID, Deleted, Deleted_Comment, Settlement_Group, Settlement_Multi, Author, FuelCard_Type, FuelCard_No, FuelCard_Ex, Last_Updated)
@@ -1006,9 +1005,9 @@
 				$etpid = $record['ETPID'];
 				$delSnap = $this->etp->DeleteTransaction($etpid);
 				if($delSnap == TRUE) {
-					$stmt = $this->mysql->dbc->prepare("UPDATE transactions SET Deleted = 1 AND Last_Updated = ? WHERE Uniqueref = ?");
-					$stmt->bindParam(1, $ref);
-					$stmt->bindParam(2, $date);
+					$stmt = $this->mysql->dbc->prepare("UPDATE transactions SET Deleted = 1, Last_Updated = ? WHERE Uniqueref = ?");
+					$stmt->bindParam(1, $date);
+					$stmt->bindParam(2, $ref);
 					$stmt->execute();
 					$this->vehicles->ExpiryUpdate($parkingref, $new_Expiry);
 					$this->vehicles->ANPR_PaymentUpdate($anpr, $new_Expiry);
@@ -1018,9 +1017,9 @@
 					echo "REFUSED";
 				}
 			} else {
-				$stmt = $this->mysql->dbc->prepare("UPDATE transactions SET Deleted = 1 AND Last_Updated = ? WHERE Uniqueref = ?");
-				$stmt->bindParam(1, $ref);
-				$stmt->bindParam(2, $date);
+				$stmt = $this->mysql->dbc->prepare("UPDATE transactions SET Deleted = 1, Last_Updated = ? WHERE Uniqueref = ?");
+				$stmt->bindParam(1, $date);
+				$stmt->bindParam(2, $ref);
 				$stmt->execute();
 				$this->vehicles->ExpiryUpdate($parkingref, $new_Expiry);
 				$this->vehicles->ANPR_PaymentUpdate($anpr, $new_Expiry);
