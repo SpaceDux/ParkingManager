@@ -41,15 +41,15 @@
       $this->user = new User;
       $campus = $this->user->Info("Site");
 
-      $sql1 = $this->mysql->dbc->prepare("SELECT Uniqueref FROM accounts_trucks WHERE Plate = ?");
+      $sql1 = $this->mysql->dbc->prepare("SELECT Account FROM accounts_trucks WHERE Plate = ?");
       $sql1->bindParam(1, $plate);
       $sql1->execute();
       $result1 = $sql1->fetch(\PDO::FETCH_ASSOC);
       $count = $sql1->rowCount();
       if ($count > 0) {
-        $id = $result1['Uniqueref'];
+        $id = $result1['Account'];
 
-        $sql2 = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ? AND Suspended = 0 AND Deleted = 0");
+        $sql2 = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ? AND Status < 1");
         $sql2->bindParam(1, $id);
         $sql2->execute();
         $result = $sql2->fetch(\PDO::FETCH_ASSOC);
@@ -104,12 +104,12 @@
             <p><i class="fa fa-history"></i> '.date("d/m/Y @ H:i:s", strtotime($row['Last_Updated'])).'</p>';
             if($row['Status'] == 1) {
               $html .= '
-              <div class="alert alert-danger">
+              <div class="alert alert-warning">
                 This account has been suspended.
               </div>';
             } else if($row['Status'] == 2) {
               $html .=  '
-              <div class="alert alert-warning">
+              <div class="alert alert-danger">
                 This account has been terminated.
               </div>';
             } else {}
@@ -118,13 +118,6 @@
             <div class="btn-group float-right" role="group" aria-label="Button group with nested dropdown">
               <button type="button" class="btn btn-secondary" onClick="Account_Settings('.$ref.')"><i class="fa fa-cog"></i> Settings</button>
               <button type="button" class="btn btn-secondary" onClick="Account_Settings_Fleet('.$ref.')"><i class="fa fa-truck"></i> Fleet</button>
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#Suspend" onClick="Account_Suspend('.$ref.')">Suspend Account</a>
-                  <a class="dropdown-item" href="#Disable" onClick="Account_Terminate('.$ref.')">Disable Account</a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -195,6 +188,79 @@
       $stmt->bindParam(10, $Last_Updated);
       $stmt->bindParam(11, $Ref);
       $stmt->execute();
+
+      $this->mysql = null;
+    }
+    // Register Fleet Vehicles
+    function Update_Fleet_GET($Ref)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM accounts_trucks WHERE Account = ? AND Deleted < 1 ORDER BY Plate ASC");
+      $stmt->bindParam(1, $Ref);
+      $stmt->execute();
+      $html = '<table class="table table-dark">
+                  <thead>
+                    <tr>
+                      <th scope="col">Plate</th>
+                      <th scope="col">Date Added</th>
+                      <th scope="col"><i class="fa fa-cog"></i></th>
+                    </tr>
+                  </thead>
+                <tbody>';
+      foreach($stmt->fetchAll() as $row) {
+        $Uniqueref = '\''.$row['Uniqueref'].'\'';
+        $html .= '
+            <tr>
+              <td>'.$row['Plate'].'</td>
+              <td>'.date("d/m/y H:i:s", strtotime($row['Last_Updated'])).'</td>
+              <td>
+                <button type="button" onClick="Fleet_Delete('.$Uniqueref.')" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+              </td>
+            </tr>';
+      }
+      $html .= '
+      </tbody>
+      </table>';
+
+      echo json_encode($html);
+
+      $this->mysql = null;
+    }
+    // Add Fleet Vehicle
+    function Update_Fleet($Ref, $Plate)
+    {
+      $this->mysql = new MySQL;
+
+      $Uniqueref = date("YmdHis").mt_rand(1111, 9999);
+      $Last_Updated = date("Y-m-d H:i:s");
+
+      $Plate = str_replace(" ", "", strtoupper($Plate));
+
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO accounts_trucks VALUES('', ?, ?, ?, '0', ?)");
+      $stmt->bindParam(1, $Uniqueref);
+      $stmt->bindParam(2, $Ref);
+      $stmt->bindParam(3, $Plate);
+      $stmt->bindParam(4, $Last_Updated);
+      $stmt->execute();
+
+      echo $stmt->rowCount();
+
+      $this->mysql = null;
+    }
+    // Delete Fleet Vehicle
+    function Delete_Fleet_Record($Ref)
+    {
+      $this->mysql = new MySQL;
+
+      $Last_Updated = date("Y-m-d H:i:s");
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE accounts_trucks SET Deleted = '1', Last_Updated = ? WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $Last_Updated);
+      $stmt->bindParam(2, $Ref);
+      $stmt->execute();
+
+      echo $stmt->rowCount();
 
       $this->mysql = null;
     }

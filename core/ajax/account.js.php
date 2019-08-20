@@ -34,6 +34,43 @@
       }
     })
   }
+  function Account_Settings_Fleet(Ref) {
+    event.preventDefault();
+    $('#Account_Update_Fleet_Form').find('[autofocus]').focus();
+    $.ajax({
+      url: "{URL}/core/ajax/account.handler.php?handler=Account.Update_Fleet_GET",
+      method: "POST",
+      data: {Ref:Ref},
+      dataType: "json",
+      success:function(Res) {
+        $('#Account_Update_Fleet_Modal').modal('toggle');
+        $('#Acc_Ref').val(Ref);
+        $('#FleetListTbl').html(Res);
+      }
+    })
+  }
+  function Fleet_Delete(Ref) {
+    var Acc = $('#Acc_Ref').val();
+    $.ajax({
+      url: "{URL}/core/ajax/account.handler.php?handler=Account.Delete_Fleet_Record",
+      method: "POST",
+      data: {Ref:Ref},
+      dataType: "json",
+      success:function(Res) {
+        if(Res > 0) {
+          $.ajax({
+            url: "{URL}/core/ajax/account.handler.php?handler=Account.Update_Fleet_GET",
+            method: "POST",
+            data: {Ref:Acc},
+            dataType: "json",
+            success:function(Res) {
+              $('#FleetListTbl').html(Res);
+            }
+          })
+        }
+      }
+    })
+  }
   $(document).on('click', '#Account_Update_Save', function() {
     event.preventDefault();
     var Data = $('#Account_Update_Form').serialize();
@@ -43,6 +80,30 @@
       data: Data,
       success:function(Res) {
         $('#Account_Update_Modal').modal('toggle');
+      }
+    })
+  });
+  $(document).on('submit', '#Account_Update_Fleet_Form', function() {
+    event.preventDefault();
+    var Ref = $('#Acc_Ref').val();
+    var Plate = $('#Plate').val();
+    $.ajax({
+      url: "{URL}/core/ajax/account.handler.php?handler=Account.Update_Fleet",
+      method: "POST",
+      data: {Ref:Ref, Plate:Plate},
+      success:function(Res) {
+        if(Res > 0) {
+          $('#Plate').val('');
+          $.ajax({
+            url: "{URL}/core/ajax/account.handler.php?handler=Account.Update_Fleet_GET",
+            method: "POST",
+            data: {Ref:Ref},
+            dataType: "json",
+            success:function(Res) {
+              $('#FleetListTbl').html(Res);
+            }
+          })
+        }
       }
     })
   });

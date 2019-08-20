@@ -370,3 +370,34 @@
     </div>
   </div>
 </div>
+<!-- Account Fleets -->
+<div class="modal" id="Account_Update_Fleet_Modal" tabindex="-1" role="dialog" aria-labelledby="Account_Update_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Account Fleet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="Account_Update_Fleet_Form">
+          <div class="row">
+            <div class="col-md-12">
+              <label for="Name">Add a Vehicle</label>
+              <input type="hidden" class="form-control" name="Ref" id="Acc_Ref">
+              <input type="text" class="form-control" name="Plate" id="Plate" placeholder="EX43PLE" autofocus>
+              <hr>
+              <div id="FleetListTbl">
+                
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

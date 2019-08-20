@@ -43,6 +43,7 @@
     {
       $this->user = new User;
       $this->pm = new PM;
+      $this->account = new Account;
 
       $campus = $this->user->Info("Site");
       $printer_id = $this->user->Info("Printer");
@@ -139,7 +140,7 @@
         $printer -> feed(1);
         //End Parking ticket
         $printer -> cut(Printer::CUT_PARTIAL);
-        if($printed < 3) {
+        if($printed < 100) {
           $i = 1;
           //Shower
           while ($i++ <= $shower_count) {
@@ -181,7 +182,7 @@
           $i = 1;
           //Discount
           while ($i++ <= $discount_count) {
-            if($acc_id == '2' OR $acc_id == '7') {
+            if($this->account->Account_GetInfo($acc_id, "Discount_Vouchers") == 0) {
               //Do nothing
             } else {
               //Meal Ticket
@@ -228,12 +229,14 @@
       }
       $this->user = null;
       $this->pm = null;
+      $this->account = null;
     }
     //Print Truckwash Ticket
     function Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type, $exitKey)
     {
       $this->user = new User;
       $this->pm = new PM;
+
       $campus = $this->user->Info("Site");
       $printer_id = $this->user->Info("Printer");
 
@@ -362,12 +365,14 @@
       }
       $this->user = null;
       $this->pm = null;
+      $this->account = null;
     }
     // Wifi & Shower
     function Printer_Misc($shower_count, $wifi_count, $tid, $payment_type, $Processed)
     {
       $this->user = new User;
       $this->pm = new PM;
+
       $campus = $this->user->Info("Site");
       $printer_id = $this->user->Info("Printer");
 

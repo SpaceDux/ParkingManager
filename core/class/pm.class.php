@@ -129,17 +129,25 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->account = new Account;
+
       $campus = $this->user->Info("Site");
-      $id = $this->account->Account_FleetInfo($Plate, "account_id");
-      if($id > 0) {
+      $id = $this->account->Account_FleetInfo($Plate, "Account");
+      $status = $this->account->Account_GetInfo($id, "Status");
+
+      if($status < 1 AND $status != '') {
         $list = '';
-        $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ? AND Status < 1");
+        $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ?");
         $query->bindParam(1, $id);
         $query->execute();
         $result = $query->fetch(\PDO::FETCH_ASSOC);
-
         $list .= '<option value="'.$result['Uniqueref'].'">'.$result['Name'].'</option>';
-
+      } else if($status == 1) {
+        $list = '';
+        $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ?");
+        $query->bindParam(1, $id);
+        $query->execute();
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $list .= '<option value="unchecked">'.$result['Name'].' - Currently Suspended</option>';
       } else {
         $list = '';
         $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Site = ? AND Status < 2 OR Shared = 1 AND Status < 2 ORDER BY Name ASC");
