@@ -8,7 +8,7 @@
        $this->mysql = new MySQL;
        $this->user = new User;
        $this->pm = new PM;
-       $campus = $this->user->Info("campus");
+       $campus = $this->user->Info("Site");
        // $this->user = null;
        $expiry = date("Y-m-d H:i:s");
 
