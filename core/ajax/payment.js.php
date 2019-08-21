@@ -324,7 +324,7 @@
         if(Data > 0) {
           $('#Payment_Delete_'+Ref).addClass('Hide');
         } else {
-          
+
         }
       }
     })
@@ -488,4 +488,20 @@
       }
     });
   });
+  $(document).on('change', '#Tariff_SitePick', function(e) {
+    e.preventDefault();
+    var Site = $(this).val();
+    if(Site != 'unselected') {
+      $('#Tariff_Tbl').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+      $.ajax({
+        url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GetTariffs",
+        type: "POST",
+        data: {Site:Site},
+        dataType: "text",
+        success:function(Data) {
+          $('#Tariff_Tbl').html(Data);
+        }
+      })
+    }
+  })
 </script>

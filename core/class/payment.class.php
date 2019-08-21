@@ -1033,5 +1033,19 @@
 			$this->vehicles = null;
 			$this->pm = null;
 		}
+		function List_Tariffs($Site)
+		{
+			$this->mysql = new MySQL;
+
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? ORDER BY Vehicle_Type ASC");
+			$stmt->bindParam(1, $Site);
+			$stmt->execute();
+
+			$html = "LOL";
+
+			echo $html;
+
+			$this->mysql = null;
+		}
 	}
 ?>

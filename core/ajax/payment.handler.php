@@ -28,6 +28,8 @@
     $payment->Transaction_List($_POST['DateStart'], $_POST['DateEnd']);
   } else if($handler == "Payment.DeleteTransaction") {
     $payment->Payment_Delete($_POST['Ref']);
+  } else if($handler == "Payment.GetTariffs") {
+    $payment->List_Tariffs($_POST['Site']);
   }
 
 ?>

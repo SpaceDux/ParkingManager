@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{SITE_NAME}: Account Manager</title>
+    <title>{SITE_NAME}: Tariffs</title>
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/vision.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/dataTables.bootstrap4.min.css">
@@ -163,7 +163,7 @@
             <a href="#yc">Yard Check</a>
           </div>
         </li>
-        <li>
+        <li class="Selected">
           <a>
             <i class="fa fa-pound-sign"></i>
             PAYMENT TOOLS
@@ -174,7 +174,7 @@
             <a href="{URL}/tariffs">Tariffs</a>
           </div>
         </li>
-        <li class="Selected">
+        <li>
           <a>
             <i class="fa fa-file-invoice"></i>
             ACCOUNT TOOLS
@@ -256,21 +256,34 @@
     <!-- Stat Bar END -->
     <div class="Wrapper" id="Wrapper">
       <div class="row" style="padding-top: 10px;">
-        <div class="col-md-3">
+        <div class="col">
           <div class="jumbotron">
-            <h4 class="display-5">NEW ACCOUNT</h4>
-            <p class="lead"></p>
-            <hr class="my-4">
-            <p>Add a new Account/KingPay to <b>ParkingManager</b></p>
-            <div class="btn-group float-right" role="group">
-              <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Account_Register_Modal"><i class="fa fa-sticky-note"></i> New Account</button>
+            <h1 class="display-7">Payment Tariffs</h1>
+            <p class="lead">To view tariffs, please choose a site. <br>If you'd like to add a new tariff, press the button below</p>
+            <div class="row">
+              <div class="col-md-2">
+                <select class="form-control" name="SitePick" id="Tariff_SitePick">
+                  <option value="unselected">-- Please choose a Site --</option>
+                  {SITES}
+                </select>
+              </div>
+              <div class="col-md-2">
+                <br>
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-primary btn-lg">Add a Tariff</button>
+              </div>
             </div>
           </div>
         </div>
-        {ACCOUNTS}
       </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="Tariff_Tbl">
 
-
+          </div>
+        </div>
+      </div>
     </div>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/bootstrap.bundle.min.js"></script>
@@ -279,6 +292,7 @@
     <script type="text/javascript" src="{URL}/template/{TPL}/js/mousetrap.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/datatables.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="{URL}/template/{TPL}/js/notify.min.js"></script>
     <script type="text/javascript">
       Mousetrap.bind('esc', function() {
         $('#ANPR_AddPlate_Form')[0].reset();
