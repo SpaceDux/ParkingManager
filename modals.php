@@ -389,12 +389,258 @@
               <input type="text" class="form-control" name="Plate" id="Plate" placeholder="EX43PLE" autofocus>
               <hr>
               <div id="FleetListTbl">
-                
+
               </div>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="Account_Register_Modal" tabindex="-1" role="dialog" aria-labelledby="Account_Register_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Register a new Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="Account_Register_Form">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Name">Full Company Name</label>
+              <input type="text" class="form-control" name="Name" placeholder="Example Transport Ltd" required autofocus>
+              <hr>
+            </div>
+            <div class="col-md-6">
+              <label for="Name">Company Short Name</label>
+              <input type="text" class="form-control" name="ShortName" placeholder="EXAMPLE" required>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="Address">Company Address (Inc Post Code)</label>
+              <textarea type="text" class="form-control" name="Address" rows="4" value=""></textarea>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Contact_Email">Company Contact Email</label>
+              <input type="text" class="form-control" name="Contact_Email" value="" placeholder="example@example.com" required>
+              <hr>
+            </div>
+            <div class="col-md-6">
+              <label for="Billing_Email">Company Billing Email</label>
+              <input type="text" class="form-control" name="Billing_Email" value="" placeholder="example@example.com" required>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <label for="Site">Site</label>
+              <select class="form-control" name="Site">
+                {SITES}
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="Address">Shared Account</label>
+              <select class="form-control" name="Shared">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="Address">Allow Discounts</label>
+              <select class="form-control" name="Discount">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="Address">Status</label>
+              <select class="form-control" name="Status">
+                <option value="0">Active</option>
+                <option value="1">Suspended</option>
+                <option value="2">Teminated</option>
+              </select>
+              <br>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="Account_Register_Save">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- New Tariff Modal -->
+<div class="modal" id="New_Tariff_Modal" tabindex="-1" role="dialog" aria-labelledby="New_Tariff_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Tariff</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="New_Tariff_Form">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Tariff_Name">Name</label>
+              <input type="text" class="form-control" name="Tariff_Name" id="Tariff_Name" placeholder="24hr Cab Parking with Meal" required autofocus>
+            </div>
+            <div class="col-md-6">
+              <label for="Tariff_TicketName">Ticket Name</label>
+              <input type="text" class="form-control" name="Tariff_TicketName" id="Tariff_TicketName" placeholder="24hr Parking Ticket" required>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Tariff_Gross">Gross Price</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">£</div>
+                </div>
+                <input type="text" class="form-control" name="Tariff_Gross" id="Tariff_Gross" value="" placeholder="" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="Tariff_Nett">Nett Price</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">£</div>
+                </div>
+                <input type="text" class="form-control" name="Tariff_Nett" id="Tariff_Nett" value="" placeholder="" required>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Tariff_Expiry">Expiry (in hours)</label>
+              <input type="number" class="form-control" name="Tariff_Expiry" id="Tariff_Expiry" value="" placeholder="24" required>
+            </div>
+            <div class="col-md-6">
+              <label for="Tariff_Group">Tariff Group</label>
+              <select class="form-control" name="Tariff_Group" id="Tariff_Group">
+                {TARIFF_GROUPS}
+              </select>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="">Accept Cash</label>
+              <select class="form-control" name="Tariff_Cash" id="Tariff_Cash">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <hr>
+              <label for="">Accept Card</label>
+              <select class="form-control" name="Tariff_Card" id="Tariff_Card">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <hr>
+              <label for="">Accept Account</label>
+              <select class="form-control" name="Tariff_Account" id="Tariff_Account">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="">Accept SNAP</label>
+              <select class="form-control" name="Tariff_SNAP" id="Tariff_SNAP">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <hr>
+              <label for="">Accept Fuel Card</label>
+              <select class="form-control" name="Tariff_Fuel" id="Tariff_Fuel">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <hr>
+              <label for="ETPID">ETPID Service ID (API)</label>
+              <input type="number" class="form-control" name="Tariff_ETPID" id="Tariff_ETPID" value="0" placeholder="">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-3">
+              <label for="Tariff_Meal">Meal Vouchers</label>
+              <input type="number" class="form-control" name="Tariff_Meal" id="Tariff_Meal" value="0" placeholder="" required>
+            </div>
+            <div class="col-md-3">
+              <label for="Tariff_Shower">Shower Vouchers</label>
+              <input type="number" class="form-control" name="Tariff_Shower" id="Tariff_Shower" value="0" placeholder="" required>
+            </div>
+            <div class="col-md-3">
+              <label for="Tariff_Discount">Discount Vouchers</label>
+              <input type="number" class="form-control" name="Tariff_Discount" id="Tariff_Discount" value="0" placeholder="" required>
+
+            </div>
+            <div class="col-md-3">
+              <label for="Tariff_WiFi">WiFi Vouchers</label>
+              <input type="number" class="form-control" name="Tariff_WiFi" id="Tariff_WiFi" value="0" placeholder="" required>
+            </div>
+            <br>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="VehType">Vehicle Type</label>
+              <select class="form-control" name="Tariff_VehType" id="Tariff_VehType">
+                {VEHTYPES}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="Site">Site</label>
+              <select class="form-control" name="Tariff_Site" id="Tariff_Site">
+                <option value="unselected">-- Please choose a Site --</option>
+                {SITES}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="Address">Status</label>
+              <select class="form-control" name="Tariff_Status" id="Tariff_Status">
+                <option value="0">Active</option>
+                <option value="1">Disabled</option>
+                <option value="2">Terminated</option>
+              </select>
+            </div>
+            <br>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Tariff_SettlementGroup">Settlement Group</label>
+              <select class="form-control" name="Tariff_SettlementGroup" id="Tariff_SettlementGroup">
+
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="Tariff_SettlementMulti">Settlement Multiply</label>
+              <input type="number" class="form-control" name="Tariff_SettlementMulti" id="Tariff_SettlementMulti" value="" placeholder="" required>
+            </div>
+            <br>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
           </div>
         </form>
       </div>

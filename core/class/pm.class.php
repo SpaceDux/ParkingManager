@@ -94,13 +94,29 @@
     {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types ORDER BY id ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM vehicle_types ORDER BY id ASC");
       $stmt->execute();
       $result = $stmt->fetchAll();
       $html = "";
       foreach($result as $row) {
-        $html .= '<option value="'.$row['id'].'">'.$row['type_name'].'</option>';
+        $html .= '<option value="'.$row['id'].'">'.$row['Name'].'</option>';
       }
+
+      return $html;
+
+      $this->mysql = null;
+    }
+    function Tariff_Groups_DowndownOpt()
+    {
+      $this->mysql = new MySQL;
+
+      $html = "";
+
+      $html .= '<option value="1">Miscellaneous</option>';
+      $html .= '<option value="2">Parking</option>';
+      $html .= '<option value="3">Parking with Meal</option>';
+      $html .= '<option value="4">Wash</option>';
+
 
       return $html;
 
@@ -175,12 +191,12 @@
     {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_vehicle_types WHERE id = ?");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM vehicle_types WHERE id = ?");
       $stmt->bindParam(1, $type);
       $stmt->execute();
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-      return $result['type_shortName'];
+      return $result['ShortName'];
 
       $this->mysql = null;
     }

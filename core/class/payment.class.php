@@ -1036,14 +1036,86 @@
 		function List_Tariffs($Site)
 		{
 			$this->mysql = new MySQL;
+			$html = '';
 
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? ORDER BY Vehicle_Type ASC");
+			$stmt2 = $this->mysql->dbc->prepare("SELECT * FROM vehicle_types ORDER BY id ASC");
+			$stmt2->execute();
+
+			foreach ($stmt2->fetchAll() as $row) {
+				$id = $row['id'];
+				$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Status < 2 AND Vehicle_Type = ? ORDER BY Vehicle_Type ASC");
+				$stmt->bindParam(1, $Site);
+				$stmt->bindParam(2, $id);
+				$stmt->execute();
+				foreach($stmt->fetchAll() as $row) {
+					$html .= '<tr class="">';
+					$html .= '<td>'.$row['Name'].'</td>';
+					$html .= '<td>£'.$row['Gross'].'</td>';
+					$html .= '<td>£'.$row['Nett'].'</td>';
+				}
+			}
+			echo $html;
+
+			$this->mysql = null;
+		}
+		// Settlemet Groups dropdown
+		function Settlement_DropdownOpt($Site)
+		{
+			$this->mysql = new MySQL;
+
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM settlement_groups WHERE Site = ? ORDER BY Set_Order ASC");
 			$stmt->bindParam(1, $Site);
 			$stmt->execute();
-
-			$html = "LOL";
+			$result = $stmt->fetchAll();
+			$html = "";
+			foreach($result as $row) {
+				$html .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].'</option>';
+			}
 
 			echo $html;
+
+			$this->mysql = null;
+		}
+		// Settlemet Groups dropdown
+		function New_Tariff($Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti)
+		{
+			$this->mysql = new MySQL;
+
+			$Uniqueref = date("YmdHis").mt_rand(1111, 9999);
+			$Time = date("Y-m-d H:i:s");
+
+
+			$stmt = $this->mysql->dbc->prepare("INSERT INTO tariffs VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			$stmt->bindParam(1, $Uniqueref);
+			$stmt->bindParam(2, $Site);
+			$stmt->bindParam(3, $Name);
+			$stmt->bindParam(4, $TicketName);
+			$stmt->bindParam(5, $Gross);
+			$stmt->bindParam(6, $Nett);
+			$stmt->bindParam(7, $Expiry);
+			$stmt->bindParam(8, $Group);
+			$stmt->bindParam(9, $VehType);
+			$stmt->bindParam(10, $Shower);
+			$stmt->bindParam(11, $Meal);
+			$stmt->bindParam(12, $Discount);
+			$stmt->bindParam(13, $WiFi);
+			$stmt->bindParam(14, $Cash);
+			$stmt->bindParam(15, $Card);
+			$stmt->bindParam(16, $Account);
+			$stmt->bindParam(17, $SNAP);
+			$stmt->bindParam(18, $Fuel);
+			$stmt->bindParam(19, $ETPID);
+			$stmt->bindParam(20, $SettlementGroup);
+			$stmt->bindParam(21, $SettlementMulti);
+			$stmt->bindParam(22, $Status);
+			$stmt->bindParam(23, $Time);
+			$stmt->execute();
+			if($stmt->rowCount() > 0) {
+				$result = array('Result' => '1', 'Message' => 'New Tariff has successfully been added into ParkingManager.');
+			} else {
+				$result = array('Result' => '0', 'Message' => 'New Tariff has NOT been added into ParkingManager. Please try again.');
+			}
+			echo json_encode($result);
 
 			$this->mysql = null;
 		}

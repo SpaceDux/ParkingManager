@@ -271,7 +271,7 @@
                 <br>
               </div>
               <div class="col-md-2">
-                <button class="btn btn-primary btn-lg">Add a Tariff</button>
+                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#New_Tariff_Modal">Add a Tariff</button>
               </div>
             </div>
           </div>
@@ -280,7 +280,7 @@
       <div class="row">
         <div class="col-md-12">
           <div id="Tariff_Tbl">
-
+            
           </div>
         </div>
       </div>

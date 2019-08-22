@@ -504,4 +504,46 @@
       })
     }
   })
+  $(document).on('change', '#Tariff_Site', function(e) {
+    e.preventDefault();
+    var Site = $('#Tariff_Site').val();
+    if(Site != 'unselected') {
+      $('#Tariff_SettlementGroup').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+      $.ajax({
+        url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Settlement_DropdownOpt",
+        type: "POST",
+        data: {Site:Site},
+        dataType: "text",
+        success:function(Data) {
+          $('#Tariff_SettlementGroup').html(Data);
+        }
+      })
+    }
+  })
+  //Work VAT @ 1.2
+  $(document).on('keyup', '#Tariff_Gross', function() {
+    var Gross = $(this).val();
+    var value = Gross / 1.2;
+    var result = parseInt(value*100)/100;
+    $('#Tariff_Nett').val(result);
+  });
+  $(document).on('submit', '#New_Tariff_Form', function(e) {
+    e.preventDefault();
+    var Data = $('#New_Tariff_Form').serialize();
+    $.ajax({
+      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.New_Tariff",
+      type: "POST",
+      data: Data,
+      dataType: "json",
+      success:function(Data) {
+        if(Data.Result == 1) {
+          $.notify(Data.Message, {className:'success',globalPosition: 'top left',});
+          $('#New_Tariff_Modal').modal('toggle');
+          $('#New_Tariff_Form').load(' #New_Tariff_Form');
+        } else {
+          $.notify(Data.Message, {className:'error',globalPosition: 'top left',});
+        }
+      }
+    })
+  });
 </script>

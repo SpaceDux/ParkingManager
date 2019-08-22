@@ -46,6 +46,7 @@
 				$this->Assign('vehtypes', $this->pm->Vehicle_Types_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
 				$this->Assign('sites', $this->pm->Sites_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
 				$this->Assign('accounts', $this->account->List_Accounts()); //{ACCOUNTS} returns the full html list of accounts
+				$this->Assign('tariff_groups', $this->pm->Tariff_Groups_DowndownOpt());
 			}
 			$this->user = null;
 			$this->pm = null;
