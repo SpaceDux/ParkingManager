@@ -322,12 +322,24 @@
       data: {Ref:Ref},
       success:function(Data) {
         if(Data > 0) {
+          $.notify("Transaction has successfully been deleted.", {className:'success',globalPosition: 'top left',});
           $('#Payment_Delete_'+Ref).addClass('Hide');
         } else {
 
         }
       }
     })
+  }
+  // Print parking tickets
+  function Print_Ticket(Ref) {
+    $.ajax({
+      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Print_Ticket",
+      type: "POST",
+      data: {Ref:Ref},
+      success:function() {
+        console.log("Successfully printed Ticket. Ref: "+Ref);
+      }
+    });
   }
   // Payment Service Dropdown
   $(document).on('change', '#Payment_VehType', function() {
@@ -432,16 +444,6 @@
     UpdateVehPaneClose();
   });
   // Send print job to the ticket class.
-  function Print_Ticket(Ref) {
-    $.ajax({
-      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Print_Ticket",
-      type: "POST",
-      data: {Ref:Ref},
-      success:function() {
-        console.log("Successfully printed Ticket. Ref: "+Ref);
-      }
-    });
-  }
   $(document).on('click', '.Modal_PrintBtn_true', function() {
     var Ref = $(this).data("id");
     Print_Ticket(Ref);
@@ -488,6 +490,7 @@
       }
     });
   });
+  // Choose site
   $(document).on('change', '#Tariff_SitePick', function(e) {
     e.preventDefault();
     var Site = $(this).val();
@@ -504,6 +507,7 @@
       })
     }
   })
+  // Choose site & fill settlement dropdown
   $(document).on('change', '#Tariff_Site', function(e) {
     e.preventDefault();
     var Site = $('#Tariff_Site').val();
@@ -527,6 +531,7 @@
     var result = parseInt(value*100)/100;
     $('#Tariff_Nett').val(result);
   });
+  // Add a new tariff to pm
   $(document).on('submit', '#New_Tariff_Form', function(e) {
     e.preventDefault();
     var Data = $('#New_Tariff_Form').serialize();
@@ -539,7 +544,7 @@
         if(Data.Result == 1) {
           $.notify(Data.Message, {className:'success',globalPosition: 'top left',});
           $('#New_Tariff_Modal').modal('toggle');
-          $('#New_Tariff_Form').load(' #New_Tariff_Form');
+          $('#New_Tariff_Form')[0].reset();
         } else {
           $.notify(Data.Message, {className:'error',globalPosition: 'top left',});
         }

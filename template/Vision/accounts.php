@@ -279,6 +279,7 @@
     <script type="text/javascript" src="{URL}/template/{TPL}/js/mousetrap.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/datatables.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="{URL}/template/{TPL}/js/notify.min.js"></script>
     <script type="text/javascript">
       Mousetrap.bind('esc', function() {
         $('#ANPR_AddPlate_Form')[0].reset();

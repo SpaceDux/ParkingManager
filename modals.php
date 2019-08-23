@@ -401,88 +401,6 @@
     </div>
   </div>
 </div>
-<div class="modal" id="Account_Register_Modal" tabindex="-1" role="dialog" aria-labelledby="Account_Register_Modal" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Register a new Account</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="Account_Register_Form">
-          <div class="row">
-            <div class="col-md-6">
-              <label for="Name">Full Company Name</label>
-              <input type="text" class="form-control" name="Name" placeholder="Example Transport Ltd" required autofocus>
-              <hr>
-            </div>
-            <div class="col-md-6">
-              <label for="Name">Company Short Name</label>
-              <input type="text" class="form-control" name="ShortName" placeholder="EXAMPLE" required>
-              <hr>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <label for="Address">Company Address (Inc Post Code)</label>
-              <textarea type="text" class="form-control" name="Address" rows="4" value=""></textarea>
-              <hr>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <label for="Contact_Email">Company Contact Email</label>
-              <input type="text" class="form-control" name="Contact_Email" value="" placeholder="example@example.com" required>
-              <hr>
-            </div>
-            <div class="col-md-6">
-              <label for="Billing_Email">Company Billing Email</label>
-              <input type="text" class="form-control" name="Billing_Email" value="" placeholder="example@example.com" required>
-              <hr>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-3">
-              <label for="Site">Site</label>
-              <select class="form-control" name="Site">
-                {SITES}
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label for="Address">Shared Account</label>
-              <select class="form-control" name="Shared">
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label for="Address">Allow Discounts</label>
-              <select class="form-control" name="Discount">
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label for="Address">Status</label>
-              <select class="form-control" name="Status">
-                <option value="0">Active</option>
-                <option value="1">Suspended</option>
-                <option value="2">Teminated</option>
-              </select>
-              <br>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="Account_Register_Save">Save</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- New Tariff Modal -->
 <div class="modal" id="New_Tariff_Modal" tabindex="-1" role="dialog" aria-labelledby="New_Tariff_Modal" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -603,6 +521,7 @@
             <div class="col-md-4">
               <label for="VehType">Vehicle Type</label>
               <select class="form-control" name="Tariff_VehType" id="Tariff_VehType">
+                <option value="0"> ANY VEHICLE </option>
                 {VEHTYPES}
               </select>
             </div>

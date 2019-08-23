@@ -191,13 +191,13 @@
 			$SNAP = "";
 			$Fuel = "";
 
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_campus = ? AND service_active = 1 AND service_deleted < 1 AND service_expiry = ? AND service_vehicles = ? ORDER BY service_price_gross ASC");
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND Status < 1 AND VehicleType = ? ORDER BY Gross ASC");
 			$stmt->bindParam(1, $campus);
 			$stmt->bindParam(2, $Expiry);
 			$stmt->bindParam(3, $Type);
 			$stmt->execute();
 
-			$stmt2 = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_campus = ? AND service_active = 1 AND service_deleted < 1 AND service_vehicles = 0 ORDER BY service_group, service_price_gross ASC");
+			$stmt2 = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Status < 1 AND VehicleType = 0 ORDER BY Gross ASC");
 			$stmt2->bindParam(1, $campus);
 			$stmt2->execute();
 
@@ -207,24 +207,24 @@
 			$SNAP .= '<select class="form-control form-control-lg" name="Payment_Service_SNAP" id="Payment_Service_SNAP">';
 			$Fuel .= '<select class="form-control form-control-lg" name="Payment_Service_Fuel" id="Payment_Service_Fuel">';
 			foreach ($stmt->fetchAll() as $row) {
-				if($row['service_cash'] == 1) {
-					$Cash .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				if($row['Cash'] == 1) {
+					$Cash .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].' - £'.$row['Gross'].'</option>';
 				}
 
-				if($row['service_card'] == 1) {
-					$Card .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				if($row['Card'] == 1) {
+					$Card .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].' - £'.$row['Gross'].'</option>';
 				}
 
-				if($row['service_account'] == 1) {
-					$Account .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				if($row['Account'] == 1) {
+					$Account .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].' - £'.$row['Gross'].'</option>';
 				}
 
-				if($row['service_snap'] == 1) {
-					$SNAP .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				if($row['Snap'] == 1) {
+					$SNAP .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].' - £'.$row['Gross'].'</option>';
 				}
 
-				if($row['service_fuel'] == 1) {
-					$Fuel .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				if($row['Fuel'] == 1) {
+					$Fuel .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].' - £'.$row['Gross'].'</option>';
 				}
 			}
 			$Cash .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
@@ -233,24 +233,24 @@
 			$SNAP .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
 			$Fuel .= '<option value="unchecked" style="color: red;">-- Misc Services --</option>';
 			foreach ($stmt2->fetchAll() as $row) {
-				if($row['service_cash'] == 1) {
-					$Cash .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				if($row['Cash'] == 1) {
+					$Cash .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].' - £'.$row['Gross'].'</option>';
 				}
 
-				if($row['service_card'] == 1) {
-					$Card .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				if($row['Card'] == 1) {
+					$Card .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].' - £'.$row['Gross'].'</option>';
 				}
 
-				if($row['service_account'] == 1) {
-					$Account .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				if($row['Account'] == 1) {
+					$Account .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].' - £'.$row['Gross'].'</option>';
 				}
 
-				if($row['service_snap'] == 1) {
-					$SNAP .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				if($row['Snap'] == 1) {
+					$SNAP .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].' - £'.$row['Gross'].'</option>';
 				}
 
-				if($row['service_fuel'] == 1) {
-					$Fuel .= '<option value="'.$row['id'].'">'.$row['service_name'].' - £'.$row['service_price_gross'].'</option>';
+				if($row['Fuel'] == 1) {
+					$Fuel .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].' - £'.$row['Gross'].'</option>';
 				}
 			}
 
@@ -318,13 +318,13 @@
 
 			$Site = $this->user->Info("Site");
 			$Author = $this->user->Info("FirstName");
-			$Service_Name = $this->Payment_ServiceInfo($Service, "service_name");
-			$Ticket_Name = $this->Payment_ServiceInfo($Service, "service_ticket_name");
-			$Service_Settlement_Group = $this->Payment_ServiceInfo($Service, "service_settlement_group");
-			$Service_Settlement_Multi = $this->Payment_ServiceInfo($Service, "service_settlement_multi");
-			$Service_Group = $this->Payment_ServiceInfo($Service, "service_group");
-			$Service_Gross = $this->Payment_ServiceInfo($Service, "service_price_gross");
-			$Service_Nett = $this->Payment_ServiceInfo($Service, "service_price_net");
+			$Service_Name = $this->Payment_TariffInfo($Service, "Name");
+			$Ticket_Name = $this->Payment_TariffInfo($Service, "TicketName");
+			$Service_Settlement_Group = $this->Payment_TariffInfo($Service, "Settlement_Group");
+			$Service_Settlement_Multi = $this->Payment_TariffInfo($Service, "Settlement_Multi");
+			$Service_Group = $this->Payment_TariffInfo($Service, "Group");
+			$Service_Gross = $this->Payment_TariffInfo($Service, "Gross");
+			$Service_Nett = $this->Payment_TariffInfo($Service, "Nett");
 			$Uniqueref = date("YmdHis").mt_rand(1111, 9999);
 			$Processed = date("Y-m-d H:i:s");
 
@@ -364,14 +364,14 @@
 			$this->user = null;
 		}
 		// Authorise Transaction / Payment
-		function Proccess_Transaction($Method, $Type, $Ref, $Plate, $Name, $Trl, $Time, $VehType, $Service, $Account_ID = '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '')
+		function Proccess_Transaction($Method, $Type, $Ref, $Plate, $Name = '', $Trl = '', $Time, $VehType, $Service, $Account_ID = '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '')
 		{
 			$this->vehicles = new Vehicles;
 			$this->etp = new ETP;
 			$this->pm = new PM;
 			$this->user = new User;
 			$name = $this->user->Info("FirstName");
-			$Service_Expiry = $this->Payment_ServiceInfo($Service, "service_expiry");
+			$Service_Expiry = $this->Payment_TariffInfo($Service, "Expiry");
 			$Expiry = date("Y-m-d H:i:s", strtotime($Time.' +'.$Service_Expiry.' hours'));
 
 			if($Type == 1) {
@@ -407,7 +407,7 @@
 						$this->pm->POST_Notifications("A KingPay Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 					}
 				} else if($Method == 4) {
-					$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+					$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 					$ETP = $this->etp->Proccess_Transaction_SNAP($ETPID, $Plate, $Name);
 					if($ETP != FALSE) {
 						// Create Parking Record
@@ -427,7 +427,7 @@
 					$CardChk = substr($FuelCardNo, "0", "6");
 					if ($CardChk == '704310' AND $FuelCardRC == "90") {
 						$CardType = 1; // DKV
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							// Create Parking Record
@@ -446,7 +446,7 @@
 						echo json_encode(array('Result' => 2, 'Msg' => '<b>ParkingManager</b> has identified that this card is DKV, however the Restriction Code is not 90 and has therefore been refused.'));
 					} else if ($CardChk == '707821') {
 						$CardType = 2; // Key Fuels
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							// Create Parking Record
@@ -463,7 +463,7 @@
 						}
 					} else if ($CardChk == '789666') {
 						$CardType = 2; // Key Fuels
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							// Create Parking Record
@@ -480,7 +480,7 @@
 						}
 					} else if ($CardChk == '706000') {
 						$CardType = 3; // UTA
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							// Create Parking Record
@@ -497,7 +497,7 @@
 						}
 					} else if ($CardChk == '700048') {
 						$CardType = 4; // MORGAN
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							// Create Parking Record
@@ -514,7 +514,7 @@
 						}
 					} else if ($CardChk == '708284') {
 						$CardType = 4; // MORGAN
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							// Create Parking Record
@@ -531,7 +531,7 @@
 						}
 					} else if ($CardChk == '700676') {
 						$CardType = 5; // BP
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							// Create Parking Record
@@ -583,7 +583,7 @@
 
 					}
 				} else if($Method == 4) {
-					$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+					$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 					$ETP = $this->etp->Proccess_Transaction_SNAP($ETPID, $Plate, $Name);
 					if($ETP != FALSE) {
 						$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
@@ -603,7 +603,7 @@
 					$CardChk = substr($FuelCardNo, "0", "6");
 					if ($CardChk == '704310' AND $FuelCardRC == "90") {
 						$CardType = 1; // DKV
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
@@ -622,7 +622,7 @@
 						echo json_encode(array('Result' => 2, 'Msg' => '<b>ParkingManager</b> has identified that this card is DKV, however the Restriction Code is not 90 and has therefore been refused.'));
 					} else if ($CardChk == '707821') {
 						$CardType = 2; // Key Fuels
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
@@ -639,7 +639,7 @@
 						}
 					} else if ($CardChk == '789666') {
 						$CardType = 2; // Key Fuels
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
@@ -656,7 +656,7 @@
 						}
 					} else if ($CardChk == '706000') {
 						$CardType = 3; // UTA
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
@@ -669,11 +669,11 @@
 								$this->pm->POST_Notifications("A UTA Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
 							}
 						} else {
-							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
+							echo  json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
 						}
 					} else if ($CardChk == '700048') {
 						$CardType = 4; // MORGAN
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
@@ -690,7 +690,7 @@
 						}
 					} else if ($CardChk == '708284') {
 						$CardType = 4; // MORGAN
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
@@ -707,7 +707,7 @@
 						}
 					} else if ($CardChk == '700676') {
 						$CardType = 5; // BP
-						$ETPID = $this->Payment_ServiceInfo($Service, "service_etpid");
+						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
@@ -735,11 +735,11 @@
 			$this->user = null;
 		}
 		//Payment Service Info
-		function Payment_ServiceInfo($key, $what)
+		function Payment_TariffInfo($key, $what)
 		{
 		 $this->mysql = new MySQL;
 
-		 $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE id = ?");
+		 $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Uniqueref = ?");
 		 $stmt->bindParam(1, $key);
 		 $stmt->execute();
 		 $result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -862,13 +862,13 @@
 			} else if($Method == '5') {
 				$Type = "Fuel Card";
 			}
-			$MealCount = $this->Payment_ServiceInfo($Service, "service_meal_amount");
-			$ShowerCount = $this->Payment_ServiceInfo($Service, "service_shower_amount");
+			$MealCount = $this->Payment_TariffInfo($Service, "service_meal_amount");
+			$ShowerCount = $this->Payment_TariffInfo($Service, "service_shower_amount");
 			$Group = $result['Service_Group'];
 			$PRef = $result['Parkingref']; // Parking Ref not Payment $Ref is payment
 			$ExitKey = $this->vehicles->Info($PRef, "ExitKey");
-			$DiscCount = $this->Payment_ServiceInfo($Service, "service_discount_amount");
-			$WifiCount = $this->Payment_ServiceInfo($Service, "service_wifi_amount");
+			$DiscCount = $this->Payment_TariffInfo($Service, "service_discount_amount");
+			$WifiCount = $this->Payment_TariffInfo($Service, "service_wifi_amount");
 			$Account_ID = $result['AccountID'];
 			$Printed = $result['Ticket_Printed'];
 			$ProcessedTime = $result['Processed_Time'];
@@ -994,7 +994,7 @@
 			$stmt1->bindParam(1, $ref);
 			$stmt1->execute();
 			$record = $stmt1->fetch(\PDO::FETCH_ASSOC);
-			$serviceEx = $this->Payment_ServiceInfo($record['Service'], "service_expiry");
+			$serviceEx = $this->Payment_TariffInfo($record['Service'], "service_expiry");
 			$parkingref = $record['Parkingref'];
 			$expiry = $this->vehicles->Info($parkingref, "Expiry");
 			$anpr = $this->vehicles->Info($parkingref, "ANPRRef");
@@ -1036,14 +1036,37 @@
 		function List_Tariffs($Site)
 		{
 			$this->mysql = new MySQL;
-			$html = '';
+			$html = '
+							<div class="Box">
+							<table class="table table-bordered table-hover">
+							  <thead class="thead-dark">
+							    <tr>
+							      <th scope="col">Name</th>
+							      <th scope="col">Gross</th>
+							      <th scope="col">Nett</th>
+							      <th scope="col">Shower Vouchers</th>
+							      <th scope="col">Meal Vouchers</th>
+							      <th scope="col">Discount Vouchers</th>
+							      <th scope="col">WiFi Vouchers</th>
+							      <th scope="col">Cash</th>
+							      <th scope="col">Card</th>
+							      <th scope="col">Account</th>
+							      <th scope="col">Snap</th>
+							      <th scope="col">Fuel</th>
+							      <th scope="col">ETP ID</th>
+							    </tr>
+							  </thead>
+							  <tbody>';
 
 			$stmt2 = $this->mysql->dbc->prepare("SELECT * FROM vehicle_types ORDER BY id ASC");
 			$stmt2->execute();
 
 			foreach ($stmt2->fetchAll() as $row) {
 				$id = $row['id'];
-				$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Status < 2 AND Vehicle_Type = ? ORDER BY Vehicle_Type ASC");
+				$html .= '<tr class="table-primary">';
+				$html .= '<td colspan="22">'.$row['Name'].'</td>';
+				$html .= '<tr>';
+				$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Status < 2 AND VehicleType = ? ORDER BY VehicleType ASC");
 				$stmt->bindParam(1, $Site);
 				$stmt->bindParam(2, $id);
 				$stmt->execute();
@@ -1052,8 +1075,20 @@
 					$html .= '<td>'.$row['Name'].'</td>';
 					$html .= '<td>£'.$row['Gross'].'</td>';
 					$html .= '<td>£'.$row['Nett'].'</td>';
+					$html .= '<td>'.$row['Shower_Vouchers'].'</td>';
+					$html .= '<td>'.$row['Meal_Vouchers'].'</td>';
+					$html .= '<td>'.$row['Discount_Vouchers'].'</td>';
+					$html .= '<td>'.$row['Wifi_Vouchers'].'</td>';
+					$html .= '<td>'.$row['Cash'].'</td>';
+					$html .= '<td>'.$row['Card'].'</td>';
+					$html .= '<td>'.$row['Account'].'</td>';
+					$html .= '<td>'.$row['Snap'].'</td>';
+					$html .= '<td>'.$row['Fuel'].'</td>';
+					$html .= '<td>'.$row['ETPID'].'</td>';
 				}
 			}
+
+			$html .= '</tbody></table></div>';
 			echo $html;
 
 			$this->mysql = null;
@@ -1116,6 +1151,8 @@
 				$result = array('Result' => '0', 'Message' => 'New Tariff has NOT been added into ParkingManager. Please try again.');
 			}
 			echo json_encode($result);
+
+			unset($Uniqueref);
 
 			$this->mysql = null;
 		}

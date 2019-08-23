@@ -258,16 +258,16 @@
       <div class="row" style="padding-top: 10px;">
         <div class="col-md-3">
           <div class="jumbotron">
-            <h4 class="display-5">NEW ACCOUNT</h4>
+            <h4 class="display-5">NEW SITE</h4>
             <p class="lead"></p>
             <hr class="my-4">
-            <p>Add a new Account/KingPay to <b>ParkingManager</b></p>
+            <p>Add a new Site to <b>ParkingManager</b></p>
             <div class="btn-group float-right" role="group">
               <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Account_Register_Modal"><i class="fa fa-sticky-note"></i> New Account</button>
             </div>
           </div>
         </div>
-        {ACCOUNTS}
+
       </div>
 
 
@@ -279,6 +279,7 @@
     <script type="text/javascript" src="{URL}/template/{TPL}/js/mousetrap.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/datatables.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="{URL}/template/{TPL}/js/notify.min.js"></script>
     <script type="text/javascript">
       Mousetrap.bind('esc', function() {
         $('#ANPR_AddPlate_Form')[0].reset();
