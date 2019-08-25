@@ -11,21 +11,14 @@
 	$_CONFIG['mysql']['db'] = 'parking_manager'; //Select the database you want to connect too
 
 	// Site Configuration
-	$_CONFIG['site']['url'] = 'http://192.168.3.45/ParkingManager'; //Server URL example.com (DOES NOT END WITH /)
+	$_CONFIG['site']['url'] = 'http://localhost/ParkingManager'; //Server URL example.com (DOES NOT END WITH /)
 	$_CONFIG['site']['name'] = 'ParkingManager'; //Website name, {SITE_NAME}
 	$_CONFIG['site']['template'] = 'Vision'; //Fenrir Template System, Select the Template Directory
 
 	//ETP API Settings
 	$_CONFIG['ETP']['API'] = array('api_uri' => 'https://api.etpcp.com/trx/',
 											 'api_user' => 'sm394_34lll2345Ae',
-											 'api_pass' => 'P2002laeif[3234JklmNo1A@344_12Qq',
-											 	// Holyhead
-											 'holyhead_user' => 'holyhead',
-											 'holyhead_pass' => '2hst36sg',
-											 	// Hollies
-											 'hollies_user' => 'hollies',
-											 'hollies_pass' => 'hollies'
-											);
+											 'api_pass' => 'P2002laeif[3234JklmNo1A@344_12Qq');
 	// Misc
 	$_CONFIG['misc']['copy'] = 'ParkingManager 4 | Copyright &copy; 2019 Roadking Truckstops'; //Fenrir Template System, Select the Template Directory
 ?>

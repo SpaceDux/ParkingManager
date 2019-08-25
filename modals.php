@@ -565,4 +565,168 @@
       </div>
     </div>
   </div>
+<!-- New Tariff Modal -->
+<div class="modal" id="Update_Tariff_Modal" tabindex="-1" role="dialog" aria-labelledby="Update_Tariff_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Tariff</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="Update_Tariff_Form">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Tariff_Name">Name</label>
+              <input type="hidden" class="form-control" name="Tariff_Ref_Update" id="Tariff_Ref_Update" placeholder="24hr Cab Parking with Meal" required autofocus>
+              <input type="text" class="form-control" name="Tariff_Name_Update" id="Tariff_Name_Update" placeholder="24hr Cab Parking with Meal" required autofocus>
+            </div>
+            <div class="col-md-6">
+              <label for="Tariff_TicketName">Ticket Name</label>
+              <input type="text" class="form-control" name="Tariff_TicketName_Update" id="Tariff_TicketName_Update" placeholder="24hr Parking Ticket" required>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Tariff_Gross">Gross Price</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">£</div>
+                </div>
+                <input type="text" class="form-control" name="Tariff_Gross_Update" id="Tariff_Gross_Update" value="" placeholder="" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="Tariff_Nett">Nett Price</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">£</div>
+                </div>
+                <input type="text" class="form-control" name="Tariff_Nett_Update" id="Tariff_Nett_Update" value="" placeholder="" required>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Tariff_Expiry">Expiry (in hours)</label>
+              <input type="number" class="form-control" name="Tariff_Expiry_Update" id="Tariff_Expiry_Update" value="" placeholder="24" required>
+            </div>
+            <div class="col-md-6">
+              <label for="Tariff_Group">Tariff Group</label>
+              <select class="form-control" name="Tariff_Group_Update" id="Tariff_Group_Update">
+                {TARIFF_GROUPS}
+              </select>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="">Accept Cash</label>
+              <select class="form-control" name="Tariff_Cash_Update" id="Tariff_Cash_Update">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <hr>
+              <label for="">Accept Card</label>
+              <select class="form-control" name="Tariff_Card_Update" id="Tariff_Card_Update">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <hr>
+              <label for="">Accept Account</label>
+              <select class="form-control" name="Tariff_Account_Update" id="Tariff_Account_Update">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="">Accept SNAP</label>
+              <select class="form-control" name="Tariff_SNAP_Update" id="Tariff_SNAP_Update">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <hr>
+              <label for="">Accept Fuel Card</label>
+              <select class="form-control" name="Tariff_Fuel_Update" id="Tariff_Fuel_Update">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <hr>
+              <label for="ETPID">ETPID Service ID (API)</label>
+              <input type="number" class="form-control" name="Tariff_ETPID_Update" id="Tariff_ETPID_Update" value="0" placeholder="">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-3">
+              <label for="Tariff_Meal">Meal Vouchers</label>
+              <input type="number" class="form-control" name="Tariff_Meal_Update" id="Tariff_Meal_Update" value="0" placeholder="" required>
+            </div>
+            <div class="col-md-3">
+              <label for="Tariff_Shower">Shower Vouchers</label>
+              <input type="number" class="form-control" name="Tariff_Shower_Update" id="Tariff_Shower_Update" value="0" placeholder="" required>
+            </div>
+            <div class="col-md-3">
+              <label for="Tariff_Discount">Discount Vouchers</label>
+              <input type="number" class="form-control" name="Tariff_Discount_Update" id="Tariff_Discount_Update" value="0" placeholder="" required>
+
+            </div>
+            <div class="col-md-3">
+              <label for="Tariff_WiFi">WiFi Vouchers</label>
+              <input type="number" class="form-control" name="Tariff_WiFi_Update" id="Tariff_WiFi_Update" value="0" placeholder="" required>
+            </div>
+            <br>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="VehType">Vehicle Type</label>
+              <select class="form-control" name="Tariff_VehType_Update" id="Tariff_VehType_Update">
+                <option value="0"> ANY VEHICLE </option>
+                {VEHTYPES}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="Site">Site</label>
+              <select class="form-control" name="Tariff_Site_Update" id="Tariff_Site_Update">
+                <option value="unselected">-- Please choose a Site --</option>
+                {SITES}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="Address">Status</label>
+              <select class="form-control" name="Tariff_Status_Update" id="Tariff_Status_Update">
+                <option value="0">Active</option>
+                <option value="1">Disabled</option>
+                <option value="2">Terminated</option>
+              </select>
+            </div>
+            <br>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Tariff_SettlementGroup">Settlement Group</label>
+              <select class="form-control" name="Tariff_SettlementGroup_Update" id="Tariff_SettlementGroup_Update">
+
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="Tariff_SettlementMulti">Settlement Multiply</label>
+              <input type="number" class="form-control" name="Tariff_SettlementMulti_Update" id="Tariff_SettlementMulti_Update" value="" placeholder="" required>
+            </div>
+            <br>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

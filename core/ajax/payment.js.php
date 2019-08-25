@@ -341,6 +341,42 @@
       }
     });
   }
+  // Get tariff details ready for update
+  function Update_Tariff_Tgl(Ref) {
+    event.preventDefault();
+    $.ajax({
+      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Update_Tariff_GET",
+      type: "POST",
+      data: {Ref:Ref},
+      dataType: 'json',
+      success:function(Data) {
+        $('#Tariff_Ref_Update').val(Data.Uniqueref);
+        $('#Tariff_Name_Update').val(Data.Name);
+        $('#Tariff_TicketName_Update').val(Data.TicketName);
+        $('#Tariff_Gross_Update').val(Data.Gross);
+        $('#Tariff_Nett_Update').val(Data.Nett);
+        $('#Tariff_Expiry_Update').val(Data.Expiry);
+        $('#Tariff_Group_Update').val(Data.Group);
+        $('#Tariff_Cash_Update').val(Data.Cash);
+        $('#Tariff_Card_Update').val(Data.Card);
+        $('#Tariff_Account_Update').val(Data.Account);
+        $('#Tariff_Snap_Update').val(Data.Snap);
+        $('#Tariff_Fuel_Update').val(Data.Fuel);
+        $('#Tariff_ETPID_Update').val(Data.ETPID);
+        $('#Tariff_Meal_Update').val(Data.Meal_Vouchers);
+        $('#Tariff_Shower_Update').val(Data.Shower_Vouchers);
+        $('#Tariff_Discount_Update').val(Data.Discount_Vouchers);
+        $('#Tariff_Wifi_Update').val(Data.Wifi_Vouchers);
+        $('#Tariff_VehType_Update').val(Data.VehicleType);
+        $('#Tariff_Site_Update').val(Data.Site);
+        $('#Tariff_Status_Update').val(Data.Status);
+        $('#Tariff_SettlementGroup').val(Data.Settlement_Group);
+        $('#Tariff_SettlementMulti_Update').val(Data.Settlement_Multi);
+        $('#Update_Tariff_Modal').modal('toggle');
+      }
+    });
+  }
+
   // Payment Service Dropdown
   $(document).on('change', '#Payment_VehType', function() {
     var Type = $(this).val();

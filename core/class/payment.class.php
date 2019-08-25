@@ -1054,6 +1054,8 @@
 							      <th scope="col">Snap</th>
 							      <th scope="col">Fuel</th>
 							      <th scope="col">ETP ID</th>
+							      <th scope="col">Status</th>
+							      <th scope="col"><i class="fa fa-cog"></i></th>
 							    </tr>
 							  </thead>
 							  <tbody>';
@@ -1071,6 +1073,7 @@
 				$stmt->bindParam(2, $id);
 				$stmt->execute();
 				foreach($stmt->fetchAll() as $row) {
+					$ref = '\''.$row['Uniqueref'].'\'';
 					$html .= '<tr class="">';
 					$html .= '<td>'.$row['Name'].'</td>';
 					$html .= '<td>£'.$row['Gross'].'</td>';
@@ -1079,12 +1082,40 @@
 					$html .= '<td>'.$row['Meal_Vouchers'].'</td>';
 					$html .= '<td>'.$row['Discount_Vouchers'].'</td>';
 					$html .= '<td>'.$row['Wifi_Vouchers'].'</td>';
-					$html .= '<td>'.$row['Cash'].'</td>';
-					$html .= '<td>'.$row['Card'].'</td>';
-					$html .= '<td>'.$row['Account'].'</td>';
-					$html .= '<td>'.$row['Snap'].'</td>';
-					$html .= '<td>'.$row['Fuel'].'</td>';
+					if($row['Cash'] == 1) {
+						$html .= '<td class="table-success">Enabled</td>';
+					} else {
+						$html .= '<td class="table-danger">Disabled</td>';
+					}
+					if($row['Card'] == 1) {
+						$html .= '<td class="table-success">Enabled</td>';
+					} else {
+						$html .= '<td class="table-danger">Disabled</td>';
+					}
+					if($row['Account'] == 1) {
+						$html .= '<td class="table-success">Enabled</td>';
+					} else {
+						$html .= '<td class="table-danger">Disabled</td>';
+					}
+					if($row['Snap'] == 1) {
+						$html .= '<td class="table-success">Enabled</td>';
+					} else {
+						$html .= '<td class="table-danger">Disabled</td>';
+					}
+					if($row['Fuel'] == 1) {
+						$html .= '<td class="table-success">Enabled</td>';
+					} else {
+						$html .= '<td class="table-danger">Disabled</td>';
+					}
 					$html .= '<td>'.$row['ETPID'].'</td>';
+					if($row['Status'] == 0) {
+						$html .= '<td class="table-success">Active</td>';
+					} else if($row['Status'] == 1) {
+						$html .= '<td class="table-warning">Disabled</td>';
+					}
+					$html .= '<td>
+											<button onClick="Update_Tariff_Tgl('.$ref.')" class="btn btn-primary"><i class="fa fa-cog"></i></button>
+										</td>';
 				}
 			}
 
@@ -1111,7 +1142,7 @@
 
 			$this->mysql = null;
 		}
-		// Settlemet Groups dropdown
+		// add a new tariff to pm
 		function New_Tariff($Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti)
 		{
 			$this->mysql = new MySQL;
@@ -1153,6 +1184,20 @@
 			echo json_encode($result);
 
 			unset($Uniqueref);
+
+			$this->mysql = null;
+		}
+		// Update existing Tariff
+		// Get and Return Tariff data
+		function Update_Tariff_GET($Ref)
+		{
+			$this->mysql = new MySQL;
+
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Uniqueref = ?");
+			$stmt->bindParam(1, $Ref);
+			$stmt->execute();
+
+			echo json_encode($stmt->fetch(\PDO::FETCH_ASSOC));
 
 			$this->mysql = null;
 		}
