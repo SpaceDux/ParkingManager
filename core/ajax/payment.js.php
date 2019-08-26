@@ -350,29 +350,39 @@
       data: {Ref:Ref},
       dataType: 'json',
       success:function(Data) {
-        $('#Tariff_Ref_Update').val(Data.Uniqueref);
-        $('#Tariff_Name_Update').val(Data.Name);
-        $('#Tariff_TicketName_Update').val(Data.TicketName);
-        $('#Tariff_Gross_Update').val(Data.Gross);
-        $('#Tariff_Nett_Update').val(Data.Nett);
-        $('#Tariff_Expiry_Update').val(Data.Expiry);
-        $('#Tariff_Group_Update').val(Data.Group);
-        $('#Tariff_Cash_Update').val(Data.Cash);
-        $('#Tariff_Card_Update').val(Data.Card);
-        $('#Tariff_Account_Update').val(Data.Account);
-        $('#Tariff_Snap_Update').val(Data.Snap);
-        $('#Tariff_Fuel_Update').val(Data.Fuel);
-        $('#Tariff_ETPID_Update').val(Data.ETPID);
-        $('#Tariff_Meal_Update').val(Data.Meal_Vouchers);
-        $('#Tariff_Shower_Update').val(Data.Shower_Vouchers);
-        $('#Tariff_Discount_Update').val(Data.Discount_Vouchers);
-        $('#Tariff_Wifi_Update').val(Data.Wifi_Vouchers);
-        $('#Tariff_VehType_Update').val(Data.VehicleType);
-        $('#Tariff_Site_Update').val(Data.Site);
-        $('#Tariff_Status_Update').val(Data.Status);
-        $('#Tariff_SettlementGroup').val(Data.Settlement_Group);
-        $('#Tariff_SettlementMulti_Update').val(Data.Settlement_Multi);
-        $('#Update_Tariff_Modal').modal('toggle');
+        var Site = Data.Site;
+        $.ajax({
+          url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Settlement_DropdownOpt",
+          type: "POST",
+          data: {Site:Site},
+          dataType: "text",
+          success:function(Res) {
+            $('#Update_Tariff_Modal').modal('toggle');
+            $('#Tariff_SettlementGroup_Update').html(Res);
+            $('#Tariff_Ref_Update').val(Data.Uniqueref);
+            $('#Tariff_Name_Update').val(Data.Name);
+            $('#Tariff_TicketName_Update').val(Data.TicketName);
+            $('#Tariff_Gross_Update').val(Data.Gross);
+            $('#Tariff_Nett_Update').val(Data.Nett);
+            $('#Tariff_Expiry_Update').val(Data.Expiry);
+            $('#Tariff_Group_Update').val(Data.Tariff_Group);
+            $('#Tariff_Cash_Update').val(Data.Cash);
+            $('#Tariff_Card_Update').val(Data.Card);
+            $('#Tariff_Account_Update').val(Data.Account);
+            $('#Tariff_SNAP_Update').val(Data.Snap);
+            $('#Tariff_Fuel_Update').val(Data.Fuel);
+            $('#Tariff_ETPID_Update').val(Data.ETPID);
+            $('#Tariff_Meal_Update').val(Data.Meal_Vouchers);
+            $('#Tariff_Shower_Update').val(Data.Shower_Vouchers);
+            $('#Tariff_Discount_Update').val(Data.Discount_Vouchers);
+            $('#Tariff_WiFi_Update').val(Data.Wifi_Vouchers);
+            $('#Tariff_VehType_Update').val(Data.VehicleType);
+            $('#Tariff_Site_Update').val(Data.Site);
+            $('#Tariff_Status_Update').val(Data.Status);
+            $('#Tariff_SettlementGroup_Update').val(Data.Settlement_Group);
+            $('#Tariff_SettlementMulti_Update').val(Data.Settlement_Multi);
+          }
+        });
       }
     });
   }
@@ -560,12 +570,35 @@
       })
     }
   })
+  // Choose site & fill settlement dropdown
+  $(document).on('change', '#Tariff_Site_Update', function(e) {
+    e.preventDefault();
+    var Site = $('#Tariff_Site_Update').val();
+    if(Site != 'unselected') {
+      $('#Tariff_SettlementGroup_Update').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+      $.ajax({
+        url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Settlement_DropdownOpt",
+        type: "POST",
+        data: {Site:Site},
+        dataType: "text",
+        success:function(Data) {
+          $('#Tariff_SettlementGroup_Update').html(Data);
+        }
+      })
+    }
+  })
   //Work VAT @ 1.2
   $(document).on('keyup', '#Tariff_Gross', function() {
     var Gross = $(this).val();
     var value = Gross / 1.2;
     var result = parseInt(value*100)/100;
     $('#Tariff_Nett').val(result);
+  });
+  $(document).on('keyup', '#Tariff_Gross_Update', function() {
+    var Gross = $(this).val();
+    var value = Gross / 1.2;
+    var result = parseInt(value*100)/100;
+    $('#Tariff_Nett_Update').val(result);
   });
   // Add a new tariff to pm
   $(document).on('submit', '#New_Tariff_Form', function(e) {
@@ -581,6 +614,26 @@
           $.notify(Data.Message, {className:'success',globalPosition: 'top left',});
           $('#New_Tariff_Modal').modal('toggle');
           $('#New_Tariff_Form')[0].reset();
+        } else {
+          $.notify(Data.Message, {className:'error',globalPosition: 'top left',});
+        }
+      }
+    })
+  });
+  // Add a new tariff to pm
+  $(document).on('submit', '#Update_Tariff_Form', function(e) {
+    e.preventDefault();
+    var Data = $('#Update_Tariff_Form').serialize();
+    $.ajax({
+      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Update_Tariff",
+      type: "POST",
+      data: Data,
+      dataType: "json",
+      success:function(Data) {
+        if(Data.Result == 1) {
+          $.notify(Data.Message, {className:'success',globalPosition: 'top left',});
+          $('#Update_Tariff_Modal').modal('toggle');
+          $('#Update_Tariff_Form')[0].reset();
         } else {
           $.notify(Data.Message, {className:'error',globalPosition: 'top left',});
         }

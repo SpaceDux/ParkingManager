@@ -238,5 +238,193 @@
         return $row['code'];
       }
     }
+    // Get All Sites
+    function List_Sites()
+    {
+      $this->mysql = new MySQL;
+      $html = '';
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM sites");
+      $stmt->execute();
+
+      foreach($stmt->fetchAll() as $row)
+      {
+        $ref = '\''.$row['Uniqueref'].'\'';
+        $html .= '
+        <div class="col-md-3">
+          <div class="jumbotron">
+            <h4 class="display-5">'.$row['Name'].'</h4>';
+            $html .= '
+            <p class="lead"></p>
+            <hr class="my-4">
+            <p>Vat No. '.$row['Vatno'].'<br>
+            <hr>
+            <p><i class="fa fa-history"></i> '.date("d/m/Y @ H:i:s", strtotime($row['Last_Updated'])).'</p>';
+            if($row['Status'] == 1) {
+              $html .= '
+              <div class="alert alert-warning">
+                This account has been suspended.
+              </div>';
+            } else if($row['Status'] == 2) {
+              $html .=  '
+              <div class="alert alert-danger">
+                This account has been terminated.
+              </div>';
+            } else {}
+
+            $html .= '
+            <div class="btn-group float-right" role="group" aria-label="Button group with nested dropdown">
+              <button type="button" class="btn btn-secondary" onClick="Site_Settings('.$ref.')"><i class="fa fa-cog"></i> Settings</button>
+            </div>
+          </div>
+        </div>
+        ';
+      }
+      return $html;
+      $this->mysql = null;
+    }
+    function New_Site($Data)
+    {
+      $this->mysql = new MySQL;
+
+      //die($Data['Name']);
+
+      $Uniqueref = date("YmdHis").mt_rand(1111, 9999);
+      $Time = date("Y-m-d H:i:s");
+
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO sites VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      $stmt->bindParam(1, $Uniqueref);
+      $stmt->bindValue(2, $Data['Name']);
+      $stmt->bindValue(3, $Data['Vatno']);
+      $stmt->bindValue(4, $Data['BarrierIN']);
+      $stmt->bindValue(5, $Data['BarrierOUT']);
+      $stmt->bindValue(6, $Data['ANPR_IP']);
+      $stmt->bindValue(7, $Data['ANPR_User']);
+      $stmt->bindValue(8, $Data['ANPR_Pass']);
+      $stmt->bindValue(9, $Data['ANPR_DB']);
+      $stmt->bindValue(10, $Data['ANPR_Imgstr']);
+      $stmt->bindValue(11, $Data['ANPR_Imgsrv']);
+      $stmt->bindValue(12, $Data['Unifi_Status']);
+      $stmt->bindValue(13, $Data['Unifi_IP']);
+      $stmt->bindValue(14, $Data['Unifi_User']);
+      $stmt->bindValue(15, $Data['Unifi_Pass']);
+      $stmt->bindValue(16, $Data['Unifi_Site']);
+      $stmt->bindValue(17, $Data['Unifi_Ver']);
+      $stmt->bindValue(18, $Data['ETP_User']);
+      $stmt->bindValue(19, $Data['ETP_Pass']);
+      $stmt->bindValue(20, '0');
+      $stmt->bindValue(21, $Time);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $result = array('Result' => '1', 'Message' => 'Site has successfully been added into ParkingManager.');
+      } else {
+        $result = array('Result' => '0', 'Message' => 'Site has NOT been added into ParkingManager. Please try again.');
+      }
+
+      echo json_encode($result);
+      unset($Uniqueref);
+
+      $this->mysql = null;
+    }
+    function Update_Site($Data)
+    {
+      $this->mysql = new MySQL;
+
+      $Time = date("Y-m-d H:i:s");
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE sites SET Name = ?, Vatno = ?, Barrier_IN = ?, Barrier_OUT = ?, ANPR_IP = ?, ANPR_User = ?, ANPR_Password = ?, ANPR_DB = ?, ANPR_Imgstr = ?, ANPR_Img = ?, Unifi_Status = ?, Unifi_IP = ?, Unifi_User = ?, Unifi_Pass = ?, Unifi_Site = ?, Unifi_Ver = ?, ETP_User = ?, ETP_Pass = ?, Last_Updated = ? WHERE Uniqueref = ?");
+      $stmt->bindValue(1, $Data['Name']);
+      $stmt->bindValue(2, $Data['Vatno']);
+      $stmt->bindValue(3, $Data['BarrierIN']);
+      $stmt->bindValue(4, $Data['BarrierOUT']);
+      $stmt->bindValue(5, $Data['ANPR_IP']);
+      $stmt->bindValue(6, $Data['ANPR_User']);
+      $stmt->bindValue(7, $Data['ANPR_Pass']);
+      $stmt->bindValue(8, $Data['ANPR_DB']);
+      $stmt->bindValue(9, $Data['ANPR_Imgstr']);
+      $stmt->bindValue(10, $Data['ANPR_Imgsrv']);
+      $stmt->bindValue(11, $Data['Unifi_Status']);
+      $stmt->bindValue(12, $Data['Unifi_IP']);
+      $stmt->bindValue(13, $Data['Unifi_User']);
+      $stmt->bindValue(14, $Data['Unifi_Pass']);
+      $stmt->bindValue(15, $Data['Unifi_Site']);
+      $stmt->bindValue(16, $Data['Unifi_Ver']);
+      $stmt->bindValue(17, $Data['ETP_User']);
+      $stmt->bindValue(18, $Data['ETP_Pass']);
+      $stmt->bindValue(19, $Time);
+      $stmt->bindValue(20, $Data['Ref']);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $result = array('Result' => '1', 'Message' => 'Site has successfully been updated in ParkingManager.');
+      } else {
+        $result = array('Result' => '0', 'Message' => 'Site has NOT been updated in ParkingManager. Please try again.');
+      }
+
+      echo json_encode($result);
+
+      $this->mysql = null;
+    }
+    function Update_Site_GET($Ref)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM sites WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $Ref);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      echo json_encode($result);
+
+      $this->mysql = null;
+    }
+    function List_Users()
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM users ORDER BY Status ASC");
+      $stmt->execute();
+
+      $html = '<table class="table table-hover table-bordered">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">First Name</th>
+                      <th scope="col">Last Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Site</th>
+                      <th scope="col">Rank</th>
+                      <th scope="col">Active</th>
+                      <th scope="col">ANPR</th>
+                      <th scope="col">Last Logged</th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+      foreach($stmt->fetchAll() as $row) {
+        if($row['Status'] < 1) {
+          $html .= '<tr>';
+        } else if($row['Status'] == 1) {
+          $html .= '<tr class="table-warning">';
+        } else {
+          $html .= '<tr class="table-danger">';
+        }
+        $html .= '<td>'.$row['FirstName'].'</td>';
+        $html .= '<td>'.$row['LastName'].'</td>';
+        $html .= '<td>'.$row['Email'].'</td>';
+        $html .= '<td>'.$this->Site_Info($row['Site'], "Name").'</td>';
+        $html .= '<td>'.$row['Rank'].'</td>';
+        $html .= '<td>'.$row['Active'].'</td>';
+        if($row['ANPR'] > 0) {
+          $html .= '<td class="table-success">Enabled</td>';
+        } else {
+          $html .= '<td class="table-danger">Disabled</td>';
+        }
+        $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['Last_Logged'])).'</td>';
+      }
+
+      $html .= '</tbody></table>';
+
+      return $html;
+
+      $this->mysql = null;
+    }
   }
 ?>

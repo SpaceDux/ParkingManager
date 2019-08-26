@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{SITE_NAME}: Account Manager</title>
+    <title>{SITE_NAME}: Site Manager</title>
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/vision.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/dataTables.bootstrap4.min.css">
@@ -263,11 +263,11 @@
             <hr class="my-4">
             <p>Add a new Site to <b>ParkingManager</b></p>
             <div class="btn-group float-right" role="group">
-              <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Account_Register_Modal"><i class="fa fa-sticky-note"></i> New Account</button>
+              <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Site_Register_Modal"><i class="fa fa-sticky-note"></i> New Site</button>
             </div>
           </div>
         </div>
-
+        {LIST_SITES}
       </div>
 
 

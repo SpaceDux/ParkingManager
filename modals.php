@@ -570,7 +570,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">New Tariff</h5>
+        <h5 class="modal-title">Update Tariff</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -722,6 +722,225 @@
             <br>
           </div>
         </div>
+        <div class="modal-footer">
+          <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Site Modals -->
+<div class="modal" id="Site_Register_Modal" tabindex="-1" role="dialog" aria-labelledby="Site_Register_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Site</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="Site_Register_Form">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Site_Name">Name</label>
+              <input type="text" class="form-control" name="Site_Name" id="Site_Name" placeholder="My Truckstop Name" required autofocus>
+              <hr>
+              <label for="Site_Barrier_IN">Entry Barrier IP</label>
+              <input type="text" class="form-control" name="Site_Barrier_IN" id="Site_Barrier_IN" placeholder="192.168.0.1/moxaparams">
+            </div>
+            <div class="col-md-6">
+              <label for="Site_VAT">VAT Number</label>
+              <input type="number" class="form-control" name="Site_VAT" id="Site_VAT" placeholder="18174632" required>
+              <hr>
+              <label for="Site_Barrier_OUT">Exit Barrier IP</label>
+              <input type="text" class="form-control" name="Site_Barrier_OUT" id="Site_Barrier_OUT" placeholder="192.168.0.1/moxaparams">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Site_ANPR_IP">ANPR IP</label>
+              <input type="text" class="form-control" name="Site_ANPR_IP" id="Site_ANPR_IP" placeholder="192.168.0.0" required>
+              <hr>
+              <label for="Site_ANPR_DB">ANPR Database</label>
+              <input type="text" class="form-control" name="Site_ANPR_DB" id="Site_ANPR_DB" placeholder="ANPRDB" required>
+              <hr>
+              <label for="Site_ANPR_Imgsrv">ANPR Image Server Address</label>
+              <input type="text" class="form-control" name="Site_ANPR_Imgsrv" id="Site_ANPR_Imgsrv" placeholder="http://192.168.2.34" required>
+            </div>
+            <div class="col-md-6">
+              <label for="Site_ANPR_User">ANPR User</label>
+              <input type="text" class="form-control" name="Site_ANPR_User" id="Site_ANPR_User" placeholder="SA" required>
+              <hr>
+              <label for="Site_ANPR_Pass">ANPR Password</label>
+              <input type="password" class="form-control" name="Site_ANPR_Pass" id="Site_ANPR_Pass" placeholder="Password" required>
+              <hr>
+              <label for="Site_ANPR_Imgstr">ANPR Image String</label>
+              <input type="text" class="form-control" name="Site_ANPR_Imgstr" id="Site_ANPR_Imgstr" placeholder="D:\ANPR PICS\EXAMPLE" required>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Site_Unifi_Status">Unifi Status</label>
+              <select class="form-control" name="Site_Unifi_Status" id="Site_Unifi_Status" required>
+                <option value="0">Disabled</option>
+                <option value="1">Enabled</option>
+              </select>
+              <hr>
+              <label for="Site_Unifi_User">Unifi User</label>
+              <input type="text" class="form-control" name="Site_Unifi_User" id="Site_Unifi_User" placeholder="Username">
+              <hr>
+              <label for="Site_Unifi_Pass">Unifi Password</label>
+              <input type="password" class="form-control" name="Site_Unifi_Pass" id="Site_Unifi_Pass" placeholder="Password">
+            </div>
+            <div class="col-md-6">
+              <label for="Site_Unifi_IP">Unifi IP</label>
+              <input type="text" class="form-control" name="Site_Unifi_IP" id="Site_Unifi_IP" placeholder="192.168.0.0">
+              <hr>
+              <label for="Site_Unifi_Site">Unifi Site</label>
+              <input type="text" class="form-control" name="Site_Unifi_Site" id="Site_Unifi_Site" placeholder="default">
+              <hr>
+              <label for="Site_Unifi_Ver">Unifi Controller Version</label>
+              <input type="text" class="form-control" name="Site_Unifi_Ver" id="Site_Unifi_Ver" placeholder="3.2.1">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Site_ETP_User">ETP User</label>
+              <input type="text" class="form-control" name="Site_ETP_User" id="Site_ETP_User" placeholder="Username" required>
+            </div>
+            <div class="col-md-6">
+              <label for="Site_ETP_Pass">ETP Password</label>
+              <input type="password" class="form-control" name="Site_ETP_Pass" id="Site_ETP_Pass" placeholder="Password" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal" id="Site_Update_Modal" tabindex="-1" role="dialog" aria-labelledby="Site_Update_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Site</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="Site_Update_Form">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Site_Name">Name</label>
+              <input type="hidden" class="form-control" name="Site_Ref_Update" id="Site_Ref_Update">
+              <input type="text" class="form-control" name="Site_Name_Update" id="Site_Name_Update" placeholder="My Truckstop Name" required autofocus>
+              <hr>
+              <label for="Site_Barrier_IN">Entry Barrier IP</label>
+              <input type="text" class="form-control" name="Site_Barrier_IN_Update" id="Site_Barrier_IN_Update" placeholder="192.168.0.1/moxaparams">
+            </div>
+            <div class="col-md-6">
+              <label for="Site_VAT">VAT Number</label>
+              <input type="number" class="form-control" name="Site_VAT_Update" id="Site_VAT_Update" placeholder="18174632" required>
+              <hr>
+              <label for="Site_Barrier_OUT">Exit Barrier IP</label>
+              <input type="text" class="form-control" name="Site_Barrier_OUT_Update" id="Site_Barrier_OUT_Update" placeholder="192.168.0.1/moxaparams">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Site_ANPR_IP">ANPR IP</label>
+              <input type="text" class="form-control" name="Site_ANPR_IP_Update" id="Site_ANPR_IP_Update" placeholder="192.168.0.0" required>
+              <hr>
+              <label for="Site_ANPR_DB">ANPR Database</label>
+              <input type="text" class="form-control" name="Site_ANPR_DB_Update" id="Site_ANPR_DB_Update" placeholder="ANPRDB" required>
+              <hr>
+              <label for="Site_ANPR_Imgsrv">ANPR Image Server Address</label>
+              <input type="text" class="form-control" name="Site_ANPR_Imgsrv_Update" id="Site_ANPR_Imgsrv_Update" placeholder="http://192.168.2.34" required>
+            </div>
+            <div class="col-md-6">
+              <label for="Site_ANPR_User">ANPR User</label>
+              <input type="text" class="form-control" name="Site_ANPR_User_Update" id="Site_ANPR_User_Update" placeholder="SA" required>
+              <hr>
+              <label for="Site_ANPR_Pass">ANPR Password</label>
+              <input type="password" class="form-control" name="Site_ANPR_Pass_Update" id="Site_ANPR_Pass_Update" placeholder="Password" required>
+              <hr>
+              <label for="Site_ANPR_Imgstr">ANPR Image String</label>
+              <input type="text" class="form-control" name="Site_ANPR_Imgstr_Update" id="Site_ANPR_Imgstr_Update" placeholder="D:\ANPR PICS\EXAMPLE" required>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Site_Unifi_Status">Unifi Status</label>
+              <select class="form-control" name="Site_Unifi_Status_Update" id="Site_Unifi_Status_Update" required>
+                <option value="0">Disabled</option>
+                <option value="1">Enabled</option>
+              </select>
+              <hr>
+              <label for="Site_Unifi_User">Unifi User</label>
+              <input type="text" class="form-control" name="Site_Unifi_User_Update" id="Site_Unifi_User_Update" placeholder="Username">
+              <hr>
+              <label for="Site_Unifi_Pass">Unifi Password</label>
+              <input type="password" class="form-control" name="Site_Unifi_Pass_Update" id="Site_Unifi_Pass_Update" placeholder="Password">
+            </div>
+            <div class="col-md-6">
+              <label for="Site_Unifi_IP">Unifi IP</label>
+              <input type="text" class="form-control" name="Site_Unifi_IP_Update" id="Site_Unifi_IP_Update" placeholder="192.168.0.0">
+              <hr>
+              <label for="Site_Unifi_Site">Unifi Site</label>
+              <input type="text" class="form-control" name="Site_Unifi_Site_Update" id="Site_Unifi_Site_Update" placeholder="default">
+              <hr>
+              <label for="Site_Unifi_Ver">Unifi Controller Version</label>
+              <input type="text" class="form-control" name="Site_Unifi_Ver_Update" id="Site_Unifi_Ver_Update" placeholder="3.2.1">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Site_ETP_User">ETP User</label>
+              <input type="text" class="form-control" name="Site_ETP_User_Update" id="Site_ETP_User_Update" placeholder="Username" required>
+            </div>
+            <div class="col-md-6">
+              <label for="Site_ETP_Pass">ETP Password</label>
+              <input type="password" class="form-control" name="Site_ETP_Pass_Update" id="Site_ETP_Pass_Update" placeholder="Password" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- User Modals -->
+<div class="modal" id="User_Register_Modal" tabindex="-1" role="dialog" aria-labelledby="User_Register_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="User_Register_Form">
+          <div class="row">
+            
+          </div>
+      </div>
+      <hr>
         <div class="modal-footer">
           <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">Save</button>

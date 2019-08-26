@@ -267,7 +267,7 @@
             </div>
           </div>
         </div>
-        {ACCOUNTS}
+        {LIST_ACCOUNTS}
       </div>
 
 

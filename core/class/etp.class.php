@@ -10,6 +10,13 @@
     {
       global $_CONFIG;
       $this->user = new User;
+      $this->pm = new PM;
+
+      $Site = $this->user->Info("Site");
+
+      $ETP_User = $this->pm->Site_Info($Site, "ETP_User");
+      $ETP_Pass = $this->pm->Site_Info($Site, "ETP_Pass");
+
       $API = $_CONFIG['ETP']['API'];
       //Begin API client
       $client = new Client(['base_uri' => $API['api_uri']]);
@@ -17,8 +24,8 @@
       $response = $client->post('services/list', [
         'auth' => array($API['api_user'], $API['api_pass']),
         'json' => [
-          'locationusername' => $API['holyhead_user'],
-          'locationpassword' => $API['holyhead_pass']
+          'locationusername' => $ETP_User,
+          'locationpassword' => $ETP_Pass
           ]
       ]);
 
@@ -55,6 +62,7 @@
 
       echo $html;
       $this->user = null;
+      $this->pm = null;
     }
     //Process SNAP transaction
     public function Proccess_Transaction_SNAP($etpid, $plate, $name)
@@ -124,14 +132,19 @@
     public function Check_SNAP($Plate)
     {
       global $_CONFIG;
+      $this->user = new User;
+      $this->pm = new PM;
+
+      $campus = $this->user->Info("Site");
+      
       $API = $_CONFIG['ETP']['API'];
       $client = new Client(['base_uri' => $API['api_uri']]);
       //Begin API client
       $response = $client->post('transaction/add', [
         'auth' => array($API['api_user'], $API['api_pass']),
         'json' => [
-          'locationusername' => $API['holyhead_user'],
-          'locationpassword' => $API['holyhead_pass'],
+          'locationusername' => $this->pm->Site_Info($campus, "ETP_User"),
+          'locationpassword' => $this->pm->Site_Info($campus, "ETP_Pass"),
           'serviceid' => "4439",
           'regno' => $Plate,
           'drivername' => "ISITSNAP",
@@ -144,8 +157,9 @@
       } else {
         return FALSE;
       }
+      $this->user  = null;
+      $this->pm = null;
     }
-    //
     //Process SNAP transaction
     public function DeleteTransaction($tid)
     {

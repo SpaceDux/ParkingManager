@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{SITE_NAME}: Tariffs</title>
+    <title>{SITE_NAME}: User Management</title>
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/vision.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/dataTables.bootstrap4.min.css">
@@ -163,7 +163,7 @@
             <a href="#yc">Yard Check</a>
           </div>
         </li>
-        <li class="Selected">
+        <li>
           <a>
             <i class="fa fa-pound-sign"></i>
             PAYMENT TOOLS
@@ -184,14 +184,14 @@
             <a href="#se">Reports</a>
           </div>
         </li>
-        <li>
+        <li class="Selected">
           <a>
             <i class="fa fa-cogs"></i>
             P<b>M</b> TOOLS
           </a>
           <div class="Dropdown_Menu">
             <a href="#yc">Notices</a>
-            <a href="#se">User Management</a>
+            <a href="{URL}/users">User Management</a>
             <a href="{URL}/sites">Site Management</a>
           </div>
         </li>
@@ -258,20 +258,11 @@
       <div class="row" style="padding-top: 10px;">
         <div class="col">
           <div class="jumbotron">
-            <h1 class="display-7">Payment Tariffs</h1>
-            <p class="lead">To view tariffs, please choose a site. <br>If you'd like to add a new tariff, press the button below</p>
+            <h1 class="display-7">User Management</h1>
+            <p class="lead">View, Edit & Add a new user to Parking<b>Manager</b></p>
             <div class="row">
               <div class="col-md-2">
-                <select class="form-control" name="SitePick" id="Tariff_SitePick">
-                  <option value="unselected">-- Please choose a Site --</option>
-                  {SITES}
-                </select>
-              </div>
-              <div class="col-md-2">
-                <br>
-              </div>
-              <div class="col-md-2">
-                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#New_Tariff_Modal">Add a Tariff</button>
+                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#User_Register_Modal">Add a User</button>
               </div>
             </div>
           </div>
@@ -279,8 +270,8 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <div id="Tariff_Tbl">
-
+          <div class="Box">
+            {LIST_USERS}
           </div>
         </div>
       </div>
