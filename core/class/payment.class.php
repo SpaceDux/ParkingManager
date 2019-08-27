@@ -322,7 +322,7 @@
 			$Ticket_Name = $this->Payment_TariffInfo($Service, "TicketName");
 			$Service_Settlement_Group = $this->Payment_TariffInfo($Service, "Settlement_Group");
 			$Service_Settlement_Multi = $this->Payment_TariffInfo($Service, "Settlement_Multi");
-			$Service_Group = $this->Payment_TariffInfo($Service, "Group");
+			$Service_Group = $this->Payment_TariffInfo($Service, "Tariff_Group");
 			$Service_Gross = $this->Payment_TariffInfo($Service, "Gross");
 			$Service_Nett = $this->Payment_TariffInfo($Service, "Nett");
 			$Uniqueref = date("YmdHis").mt_rand(1111, 9999);

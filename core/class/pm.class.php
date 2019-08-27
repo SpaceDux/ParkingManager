@@ -377,50 +377,17 @@
 
       $this->mysql = null;
     }
-    function List_Users()
+    function Printers_DropdownOpt()
     {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM users ORDER BY Status ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM printers WHERE Status < 1");
       $stmt->execute();
+      $html = '';
 
-      $html = '<table class="table table-hover table-bordered">
-                  <thead class="thead-dark">
-                    <tr>
-                      <th scope="col">First Name</th>
-                      <th scope="col">Last Name</th>
-                      <th scope="col">Email</th>
-                      <th scope="col">Site</th>
-                      <th scope="col">Rank</th>
-                      <th scope="col">Active</th>
-                      <th scope="col">ANPR</th>
-                      <th scope="col">Last Logged</th>
-                    </tr>
-                  </thead>
-                  <tbody>';
       foreach($stmt->fetchAll() as $row) {
-        if($row['Status'] < 1) {
-          $html .= '<tr>';
-        } else if($row['Status'] == 1) {
-          $html .= '<tr class="table-warning">';
-        } else {
-          $html .= '<tr class="table-danger">';
-        }
-        $html .= '<td>'.$row['FirstName'].'</td>';
-        $html .= '<td>'.$row['LastName'].'</td>';
-        $html .= '<td>'.$row['Email'].'</td>';
-        $html .= '<td>'.$this->Site_Info($row['Site'], "Name").'</td>';
-        $html .= '<td>'.$row['Rank'].'</td>';
-        $html .= '<td>'.$row['Active'].'</td>';
-        if($row['ANPR'] > 0) {
-          $html .= '<td class="table-success">Enabled</td>';
-        } else {
-          $html .= '<td class="table-danger">Disabled</td>';
-        }
-        $html .= '<td>'.date("d/m/y H:i:s", strtotime($row['Last_Logged'])).'</td>';
+        $html .= '<option value="'.$row['id'].'">'.$row['Name'].'</option>';
       }
-
-      $html .= '</tbody></table>';
 
       return $html;
 

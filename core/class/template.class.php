@@ -47,8 +47,9 @@
 				$this->Assign('sites', $this->pm->Sites_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
 				$this->Assign('list_accounts', $this->account->List_Accounts()); //{ACCOUNTS} returns the full html list of accounts
 				$this->Assign('tariff_groups', $this->pm->Tariff_Groups_DowndownOpt());
+				$this->Assign('printers', $this->pm->Printers_DropdownOpt());
 				$this->Assign('list_sites', $this->pm->List_Sites());
-				$this->Assign('list_users', $this->pm->List_Users());
+				$this->Assign('list_users', $this->user->List_Users());
 			}
 			$this->user = null;
 			$this->pm = null;

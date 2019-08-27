@@ -401,7 +401,7 @@
     </div>
   </div>
 </div>
-<!-- New Tariff Modal -->
+<!-- Tariff Modals -->
 <div class="modal" id="New_Tariff_Modal" tabindex="-1" role="dialog" aria-labelledby="New_Tariff_Modal" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -565,7 +565,6 @@
       </div>
     </div>
   </div>
-<!-- New Tariff Modal -->
 <div class="modal" id="Update_Tariff_Modal" tabindex="-1" role="dialog" aria-labelledby="Update_Tariff_Modal" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -929,7 +928,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">New User</h5>
+        <h5 class="modal-title">Register a new User</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -937,15 +936,199 @@
       <div class="modal-body">
         <form id="User_Register_Form">
           <div class="row">
-            
+            <div class="col-md-6">
+              <label for="Name">First Name</label>
+              <input type="text" class="form-control" name="FirstName" placeholder="Joe" required autofocus>
+              <hr>
+            </div>
+            <div class="col-md-6">
+              <label for="Name">Last Name</label>
+              <input type="text" class="form-control" name="LastName" placeholder="Bloggs" required>
+              <hr>
+            </div>
           </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="EmailAddress">Email Address</label>
+              <input type="email" class="form-control" name="EmailAddress" placeholder="example@example.com" required>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Name">Password</label>
+              <input type="password" class="form-control" name="Password" placeholder="Password" required>
+              <hr>
+            </div>
+            <div class="col-md-6">
+              <label for="Name">Confirm Password</label>
+              <input type="password" class="form-control" name="ConfirmPassword" placeholder="Confirm Password" required>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="Site">Site</label>
+              <select class="form-control" name="Site">
+                {SITES}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="Address">Enable ANPR</label>
+              <select class="form-control" name="ANPR">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="Rank">Rank</label>
+              <select class="form-control" name="Rank">
+                <option value="0">Security</option>
+                <option value="1">Manager</option>
+                <option value="2">Global Manager</option>
+              </select>
+              <br>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Address">Printer</label>
+              <select class="form-control" name="Printer">
+                {PRINTERS}
+              </select>
+              <br>
+            </div>
+            <div class="col-md-6">
+              <label for="Address">Status</label>
+              <select class="form-control" name="Status">
+                <option value="0">Active</option>
+                <option value="1">Suspended</option>
+                <option value="2">Teminated</option>
+              </select>
+              <br>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
       </div>
-      <hr>
-        <div class="modal-footer">
-          <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-      </form>
+    </div>
+  </div>
+</div>
+<div class="modal" id="User_Update_Modal" tabindex="-1" role="dialog" aria-labelledby="User_Update_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="User_Update_Form">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Name">First Name</label>
+              <input type="hidden" class="form-control" name="User_Ref" id="User_Ref">
+              <input type="text" class="form-control" name="User_FirstName" placeholder="Joe" id="User_FirstName" required autofocus>
+              <hr>
+            </div>
+            <div class="col-md-6">
+              <label for="Name">Last Name</label>
+              <input type="text" class="form-control" name="User_LastName" placeholder="Bloggs" id="User_LastName" required>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="EmailAddress">Email Address</label>
+              <input type="email" class="form-control" name="User_Email" id="User_Email" placeholder="example@example.com" required>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="Site">Site</label>
+              <select class="form-control" name="User_Site" id="User_Site">
+                {SITES}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="ANPR">Enable ANPR</label>
+              <select class="form-control" name="User_ANPR" id="User_ANPR">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="Rank">Rank</label>
+              <select class="form-control" name="User_Rank" id="User_Rank">
+                <option value="0">Security</option>
+                <option value="1">Manager</option>
+                <option value="2">Global Manager</option>
+              </select>
+              <br>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Printer">Printer</label>
+              <select class="form-control" id="User_Printer" name="User_Printer">
+                {PRINTERS}
+              </select>
+              <br>
+            </div>
+            <div class="col-md-6">
+              <label for="Status">Status</label>
+              <select class="form-control" name="User_Status" id="User_Status">
+                <option value="0">Active</option>
+                <option value="1">Suspended</option>
+                <option value="2">Teminated</option>
+              </select>
+              <br>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="User_UpdatePW_Modal" tabindex="-1" role="dialog" aria-labelledby="User_UpdatePW_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="User_UpdatePW_Form">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Password">New Password</label>
+              <input type="hidden" class="form-control" name="Ref">
+              <input type="password" class="form-control" name="Password" placeholder="Password" required autofocus>
+              <hr>
+            </div>
+            <div class="col-md-6">
+              <label for="ConfirmPassword">Confirm Password</label>
+              <input type="password" class="form-control" name="ConfirmPassword" placeholder="Password" required>
+              <hr>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

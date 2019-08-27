@@ -113,7 +113,7 @@
               </select>
               <hr>
               <div id="ANPR_Images">
-                
+
               </div>
             </div>
             <div class="col">
@@ -283,7 +283,12 @@
       </div>
       <div class="Options-Right">
         <div class="Btn" id="NotificationsBtn" onClick="Notifications()"><i class="fas fa-bell"></i></div>
-        <a href="#"><i class="fa fa-user"></i></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-user"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#" onClick="Logout()">Logout</a>
+        </div>
       </div>
     </div>
     <!-- Top Navigation Bar END -->
@@ -302,7 +307,7 @@
             VEHICLE TOOLS
           </a>
           <div class="Dropdown_Menu">
-            <a href="#yc">Yard Check</a>
+            <a href="#yardcheck">Yard Check</a>
           </div>
         </li>
         <li>
@@ -323,7 +328,7 @@
           </a>
           <div class="Dropdown_Menu">
             <a href="{URL}/accounts">Account Management</a>
-            <a href="#se">Reports</a>
+            <a href="{URL}/reports">Reports</a>
           </div>
         </li>
         <li>
@@ -332,9 +337,9 @@
             P<b>M</b> TOOLS
           </a>
           <div class="Dropdown_Menu">
-            <a href="#yc">Notices</a>
-            <a href="#se">User Management</a>
-            <a href="#se">Site Management</a>
+            <a href="#notices">Notices</a>
+            <a href="{URL}/users">User Management</a>
+            <a href="{URL}/sites">Site Management</a>
           </div>
         </li>
       </ul>
