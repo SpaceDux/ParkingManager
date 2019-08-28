@@ -107,4 +107,41 @@
       }
     })
   });
+  // Account Report data tables
+  $(document).ready(function() {
+    // fill_datatable_Report();
+    function fill_datatable_Report(Account = '', DateStart = '', DateEnd = '')
+    {
+     var dataTable = $('#AccReport_Tbl').DataTable({
+      "processing" : true,
+      "serverSide" : true,
+      "search" : false,
+      "order" : [[5, 'asc']],
+      "ajax" : {
+       url:"{URL}/core/ajax/account.handler.php?handler=Account.Account_Report",
+       type:"POST",
+       data:{
+        Account:Account, DateStart:DateStart, DateEnd:DateEnd
+       }
+      }
+     });
+    }
+    $('#Report_Generate').click(function()
+    {
+      var Account = $('#Report_Account').val();
+      var DateStart = $('#Report_DateFrom').val();
+      var DateEnd = $('#Report_DateToo').val();
+      if(Account != 'unselected' && DateStart != '' && DateEnd != '')
+      {
+        $('#AccReport_Tbl').DataTable().destroy();
+        fill_datatable_Report(Account, DateStart, DateEnd);
+      }
+      else
+      {
+        alert('Please choose an Account, Start & End date');
+        $('#AccReport_Tbl').DataTable().destroy();
+        // fill_datatable_Report();
+      }
+    });
+  });
 </script>

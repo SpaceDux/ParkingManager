@@ -970,6 +970,11 @@
 				$sub_array[] = $this->account->Account_GetInfo($row['AccountID'], "Name");
 				$sub_array[] = $row['Author'];
 				$sub_array[] = $options;
+				if($row['Deleted'] == 1) {
+          $sub_array[] = "Deleted";
+        } else {
+          $sub_array[] = "Active";
+        }
 				$data[] = $sub_array;
 			}
 			$output = array("data" =>  $data,

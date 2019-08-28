@@ -506,6 +506,11 @@
     function fill_datatable(DateStart = '', DateEnd = '')
     {
      var dataTable = $('#PaymentsDataTable').DataTable({
+       "createdRow" : function(row, data, index) {
+         if(data[10] == "Deleted") {
+           $(row).addClass("table-danger");
+         }
+       },
       "processing" : true,
       "serverSide" : true,
       "search" : false,

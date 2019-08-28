@@ -3,10 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{SITE_NAME}: Account Manager</title>
+    <title>{SITE_NAME}: Account Reports</title>
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/vision.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="{URL}/template/{TPL}/css/jquery-ui.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   </head>
   <body>
@@ -231,23 +232,69 @@
     <!-- Stat Bar END -->
     <div class="Wrapper" id="Wrapper">
       <div class="row" style="padding-top: 10px;">
-        <div class="col-md-3">
+        <div class="col">
           <div class="jumbotron">
-            <h4 class="display-5">NEW ACCOUNT</h4>
-            <p class="lead"></p>
-            <hr class="my-4">
-            <p>Add a new Account/KingPay to <b>ParkingManager</b></p>
-            <div class="btn-group float-right" role="group">
-              <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Account_Register_Modal"><i class="fa fa-sticky-note"></i> New Account</button>
+            <h1 class="display-7">Account Reports</h1>
+            <p class="lead">To view account transactions, please choose an account and a date range.
+            <div class="row">
+              <div class="col-md-2">
+                <select class="form-control" name="SitePick" id="Report_Account">
+                  <option value="unselected">-- Please choose an Account --</option>
+                  {ACCOUNTS}
+                </select>
+              </div>
+              <div class="col-md-2">
+                <input type="text" class="form-control" placeholder="Date From" id="Report_DateFrom" value="<?php echo date("Y-m-01") ?>">
+              </div>
+              <div class="col-md-2">
+                <input type="text" class="form-control" placeholder="Date Too" id="Report_DateToo" value="<?php echo date("Y-m-31") ?>">
+              </div>
+              <div class="col-md-2">
+                <div class="btn-group dropdown">
+                  <button type="button" id="Report_Generate" class="btn btn-primary">Generate</button>
+                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only"></span>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Download</a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        {LIST_ACCOUNTS}
       </div>
-
-
+      <div class="row">
+        <div class="col-md-12">
+          <table id="AccReport_Tbl" class="table table-dark table-bordered" style="width:100%">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Registration</th>
+                <th>Service</th>
+                <th>Gross</th>
+                <th>Nett</th>
+                <th>Processed</th>
+                <th><i class="fa fa-cogs"></i></th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Name</th>
+                <th>Registration</th>
+                <th>Service</th>
+                <th>Gross</th>
+                <th>Nett</th>
+                <th>Processed</th>
+                <th><i class="fa fa-cogs"></i></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
     </div>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="{URL}/template/{TPL}/js/jquery-ui.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/vision.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/Chart.min.js"></script>
@@ -255,7 +302,12 @@
     <script type="text/javascript" src="{URL}/template/{TPL}/js/datatables.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/notify.min.js"></script>
+
     <script type="text/javascript">
+      $( function() {
+        $( "#Report_DateFrom" ).datepicker({dateFormat: "yy-mm-dd"});
+        $( "#Report_DateToo" ).datepicker({dateFormat: "yy-mm-dd"});
+      });
       Mousetrap.bind('esc', function() {
         $('#ANPR_AddPlate_Form')[0].reset();
         $('#AddPlate_Plate').focus();

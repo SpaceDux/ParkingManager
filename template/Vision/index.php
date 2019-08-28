@@ -32,7 +32,6 @@
     <script type="text/javascript" src="{URL}/template/{TPL}/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="{URL}/template/{TPL}/js/notify.min.js"></script>
     <?php require("core/ajax/controller.php"); ?>
   </body>
 </html>

@@ -45,6 +45,7 @@
 				$this->Assign('fname', $this->user->Info("FirstName")); //{FNAME} Active User's first name
 				$this->Assign('vehtypes', $this->pm->Vehicle_Types_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
 				$this->Assign('sites', $this->pm->Sites_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
+				$this->Assign('accounts', $this->account->Account_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
 				$this->Assign('list_accounts', $this->account->List_Accounts()); //{ACCOUNTS} returns the full html list of accounts
 				$this->Assign('tariff_groups', $this->pm->Tariff_Groups_DowndownOpt());
 				$this->Assign('printers', $this->pm->Printers_DropdownOpt());

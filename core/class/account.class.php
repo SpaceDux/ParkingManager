@@ -264,5 +264,114 @@
 
       $this->mysql = null;
     }
+    // Account Dropdown
+    function Account_DropdownOpt()
+    {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+
+      $Site = $this->user->Info("Site");
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Site = ? AND Status < 2 OR Shared = 1 AND Status < 2 ORDER BY Name ASC");
+      $stmt->bindParam(1, $Site);
+      $stmt->execute();
+
+      $html = '';
+
+      foreach($stmt->fetchAll() as $row) {
+        if($row['Status'] > 0) {
+          $html .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].' - Suspended</option>';
+        } else {
+          $html .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].'</option>';
+        }
+      }
+
+      return $html;
+
+      $this->mysql = null;
+      $this->user = null;
+    }
+    // Account Report
+    function Account_Report($Account, $Date1, $Date2)
+    {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+
+      $Start = date("Y-m-d 00:00:00", strtotime($Date1));
+      $End = date("Y-m-d 23:59:59", strtotime($Date2));
+
+      $column = array('Name', 'Plate', 'Service_Name', 'Gross', 'Nett', 'Processed_Time');
+      $search = $_POST['search']['value'];
+      $search = '%'.$search.'%';
+      $Site = $this->user->Info("Site");
+
+
+      $query = 'SELECT * FROM transactions ';
+
+        if(isset($Start) && isset($End) && $Start != '' && $End != '')
+        {
+         $query .= 'WHERE Deleted = 0 AND AccountID = '.$Account.' AND Processed_Time BETWEEN ? AND ? ';
+        }
+        if(isset($_POST['order']))
+        {
+         $query .= 'ORDER BY '.$column[$_POST['order']['0']['column']].' '.$_POST['order']['0']['dir'].' ';
+        }
+        else
+        {
+         $query .= 'ORDER BY Processed_Time DESC ';
+        }
+
+        $query1 = '';
+
+        if($_POST["length"] != -1)
+        {
+         $query1 = 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+        }
+
+        // die($query.$query1);
+      $data = array();
+
+      $stmt = $this->mysql->dbc->prepare($query);
+      $stmt->bindParam(1, $Start);
+      $stmt->bindParam(2, $End);
+      $stmt->execute();
+      $count_filter = $stmt->rowCount();
+
+      $stmt2 = $this->mysql->dbc->prepare($query.$query1);
+      $stmt2->bindParam(1, $Start);
+      $stmt2->bindParam(2, $End);
+      $stmt2->execute();
+      $count_total = $stmt2->rowCount();
+
+      $data = array();
+
+
+      foreach($stmt2->fetchAll() as $row) {
+        $ref = '\''.$row['Uniqueref'].'\'';
+
+        $options = '<div class="btn-group float-right" role="group" aria-label="Options">
+                      <button type="button" class="btn btn-danger" onClick="DeleteTransaction('.$row['Uniqueref'].')"><i class="fa fa-trash"></i></button>
+                    </div>';
+        $sub_array = array();
+        $sub_array[] = $row['Name'];
+        $sub_array[] = $row['Plate'];
+        $sub_array[] = $row['Service_Name'];
+        $sub_array[] = '£'.$row['Gross'];
+        $sub_array[] = '£'.$row['Nett'];
+        $sub_array[] = date("d/m/y H:i:s", strtotime($row['Processed_Time']));
+        $sub_array[] = $options;
+        $data[] = $sub_array;
+      }
+      $output = array("data" =>  $data,
+                      "recordsFiltered" => $count_filter,
+                      "recordsTotal" => $count_total);
+
+      echo json_encode($output);
+
+
+
+      $this->mysql = null;
+      $this->user = null;
+    }
   }
 ?>
