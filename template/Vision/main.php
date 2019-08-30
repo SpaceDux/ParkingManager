@@ -277,8 +277,8 @@
           <i class="fa fa-key"></i>
         </a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Open Entry Barrier</a>
-          <a class="dropdown-item" href="#">Open Exit Barrier</a>
+          <a class="dropdown-item" href="#" onClick="BarrierToggle(1)">Open Entry Barrier</a>
+          <a class="dropdown-item" href="#" onClick="BarrierToggle(2)">Open Exit Barrier</a>
         </div>
       </div>
       <div class="Options-Right">
@@ -361,7 +361,7 @@
           <div class="col-md-3">
             <div class="StatBox">
               <div class="Stat">
-                <b id="ALL_Count"></b><small>/200</small>
+                <b>{ALL_COUNT}</b><small>/200</small>
               </div>
               <div class="Text">
                 vehicles <b>parked</b>
@@ -374,7 +374,7 @@
           <div class="col-md-3">
             <div class="StatBox">
               <div class="Stat">
-                <b id="ANPR_Count"></b>
+                <b>{ANPR_COUNT}</b>
               </div>
               <div class="Text">
                 awaiting <b>payment</b>
@@ -385,7 +385,7 @@
             </div>
             <div class="StatBox">
               <div class="Stat">
-                <b id="RENEWAL_Count"></b>
+                <b>{RENEWAL_COUNT}</b>
               </div>
               <div class="Text">
                 awaiting <b>renewal</b>

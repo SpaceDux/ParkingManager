@@ -51,6 +51,9 @@
 				$this->Assign('printers', $this->pm->Printers_DropdownOpt());
 				$this->Assign('list_sites', $this->pm->List_Sites());
 				$this->Assign('list_users', $this->user->List_Users());
+				$this->Assign('anpr_count', $this->vehicles->ANPR_Feed_Count());
+				$this->Assign('renewal_count', $this->vehicles->Renewal_Feed_Count());
+				$this->Assign('all_count', $this->vehicles->Renewal_Feed_Count() + $this->vehicles->ANPR_Feed_Count() + $this->vehicles->Parked_Feed_Count());
 			}
 			$this->user = null;
 			$this->pm = null;

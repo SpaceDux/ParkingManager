@@ -6,7 +6,9 @@
 
   class Ticket {
     public $ImgDir;
-
+    function __construct() {
+      $this->ImgDir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/printerImg/";
+    }
     //Print Columns on ticket.
     function Printer_Columns($leftCol, $rightCol, $leftWidth, $rightWidth, $space = 0)
     {
@@ -26,7 +28,6 @@
     //Determine Ticket
     function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count, $acc_id, $printed, $Processed)
     {
-      $this->ImgDir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/printerImg/";
       if($group == 1) {
         $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed);
       } else if ($group == 2) {
@@ -52,7 +53,7 @@
       $vatnum = $this->pm->Site_Info($campus, "Vatno");
       $img_dir = $this->ImgDir.$campus;
       //Printer connection
-      $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "printer_user").':'.$this->pm->PrinterInfo($printer_id, "printer_pass").'@'.$this->pm->PrinterInfo($printer_id, "printer_ip").'/'.$this->pm->PrinterInfo($printer_id, "printer_sharedname").'');
+      $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
       $printer = new Printer($connector);
       $logo = EscposImage::load($img_dir."/logo.png", false);
       $address = EscposImage::load($img_dir."/address.png", false);
@@ -76,7 +77,7 @@
       //Ticket Code
       try {
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-    		if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+    		if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
     			$printer -> graphics($logo);
     		} else {
     			$printer -> bitImage($logo);
@@ -126,7 +127,7 @@
         $printer -> setReverseColors(FALSE);
         $printer -> selectPrintMode();
         $printer -> feed(1);
-    		if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+    		if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
     			$printer -> graphics($address);
     		} else {
     			$printer -> bitImage($address);
@@ -146,7 +147,7 @@
           while ($i++ <= $shower_count) {
             //Shower Ticket
             $printer -> setJustification(Printer::JUSTIFY_CENTER);
-      			if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+      			if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
       				$printer -> graphics($shower_img);
       			} else {
       				$printer -> bitImage($shower_img);
@@ -161,7 +162,7 @@
           while ($i++ <= $meal_count) {
             //Meal Ticket
             $printer -> setJustification(Printer::JUSTIFY_CENTER);
-      			if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+      			if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
       				$printer -> graphics($meal_img);
       			} else {
       				$printer -> bitImage($meal_img);
@@ -169,7 +170,7 @@
             $printer -> text("\n".$line_info);
             //End Ticket
             $printer -> cut(Printer::CUT_PARTIAL);
-      			if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+      			if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
       				$printer -> graphics($meal_img);
       			} else {
       				$printer -> bitImage($meal_img);
@@ -187,7 +188,7 @@
             } else {
               //Meal Ticket
               $printer -> setJustification(Printer::JUSTIFY_CENTER);
-              if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+              if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
                 $printer -> graphics($discount_img);
               } else {
                 $printer -> bitImage($discount_img);
@@ -207,7 +208,7 @@
         //Merchant Ticket
         if($payment_type == "Cash" || $payment_type == "Card") {
           $printer -> setJustification(Printer::JUSTIFY_CENTER);
-          if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+          if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
             $printer -> graphics($logo);
           } else {
             $printer -> bitImage($logo);
@@ -248,7 +249,7 @@
       //Limit amount of chars in company name.
       $company = substr($company, 0, 9);
       //Printer Connections
-      $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "printer_user").':'.$this->pm->PrinterInfo($printer_id, "printer_pass").'@'.$this->pm->PrinterInfo($printer_id, "printer_ip").'/'.$this->pm->PrinterInfo($printer_id, "printer_sharedname").'');
+      $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
 
       try {
         $printer = new Printer($connector);
@@ -260,7 +261,7 @@
 
         // Name of Ticket
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+        if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
           $printer -> graphics($ticket);
         } else {
           $printer -> bitImage($ticket);
@@ -312,7 +313,7 @@
         $printer -> cut();
         //Merchant Copy
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+        if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
           $printer -> graphics($ticket);
         } else {
           $printer -> bitImage($ticket);
@@ -381,7 +382,7 @@
       try {
 
         //Printer Connection
-        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "printer_user").':'.$this->pm->PrinterInfo($printer_id, "printer_pass").'@'.$this->pm->PrinterInfo($printer_id, "printer_ip").'/'.$this->pm->PrinterInfo($printer_id, "printer_sharedname").'');
+        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
 
         $printer = new Printer($connector);
         $wifi = EscposImage::load($img_dir."/wifi.jpg", false);
@@ -399,7 +400,7 @@
           $code = $this->pm->Create_WiFi_Voucher($campus);
           //Shower Ticket
           $printer -> setJustification(Printer::JUSTIFY_CENTER);
-          if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+          if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
             $printer -> graphics($wifi);
           } else {
             $printer -> bitImage($wifi);
@@ -439,7 +440,7 @@
         //Merchant Ticket
         if($payment_type == "Cash" || $payment_type == "Card")
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+        if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
           $printer -> graphics($logo);
         } else {
           $printer -> bitImage($logo);
@@ -470,23 +471,24 @@
       $this->payment = new Payment;
       $campus = $this->user->Info("Site");
       $printer_id = $this->user->Info("Printer");
-      if($campus == 2) {
+      if($campus == '201908291533552768') {
         $date1 = date("Y-m-d 21:30:00", strtotime($date1));
         $date2 = date("Y-m-d 21:30:00", strtotime($date2));
       } else {
         $date1 = date("Y-m-d 21:00:00", strtotime($date1));
         $date2 = date("Y-m-d 21:00:00", strtotime($date2));
       }
+
       $img_dir = $this->ImgDir.$campus;
 
       try {
         //Printer Connection
-        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "printer_user").':'.$this->pm->PrinterInfo($printer_id, "printer_pass").'@'.$this->pm->PrinterInfo($printer_id, "printer_ip").'/'.$this->pm->PrinterInfo($printer_id, "printer_sharedname").'');
+        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
         $printer = new Printer($connector);
         $logo = EscposImage::load($img_dir."/logo.png", false);
         //Settlement
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        if($this->pm->PrinterInfo($printer_id, "printer_bitImage") == 0) {
+        if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
           $printer -> graphics($logo);
         } else {
           $printer -> bitImage($logo);
@@ -501,7 +503,8 @@
         $printer -> setFont(Printer::FONT_A);
         $printer -> text("END OF DAY PARKING SETTLEMENT\n");
         $printer -> feed();
-        $printer -> text("Time of Settlement - ".date("H:i:s"));
+        $printer -> text("Time of Settlement - ".date("H:i:s")."\n");
+        $printer -> feed();
         $printer -> setTextSize(1, 1);
         $printer -> setFont(Printer::FONT_A);
         $printer -> text(date("d/m/y H:i", strtotime($date1))." - ".date("d/m/y H:i", strtotime($date2)));
@@ -512,7 +515,7 @@
         $printer -> setJustification(Printer::JUSTIFY_LEFT);
         $printer -> feed();
         // Group Cash
-        $group = $this->mysql->dbc->prepare("SELECT * FROM pm_settlement_groups WHERE group_campus = ? AND group_deleted < 1 ORDER BY group_order ASC");
+        $group = $this->mysql->dbc->prepare("SELECT * FROM settlement_groups WHERE Site = ? AND Deleted < 1 ORDER BY Set_Order ASC");
         $group->bindParam(1, $campus);
         $group->execute();
         $group_results = $group->fetchAll();
@@ -525,10 +528,10 @@
           $srv->bindParam(4, $date2);
           $srv->execute();
           foreach($srv->fetchAll() as $service) {
-            $multi = $service['payment_settlement_multi'];
+            $multi = $service['Settlement_Multi'];
             $value += $multi;
           }
-          $line = $this->Printer_Columns($row['group_name']." - ", $value, 30, 10, 4);
+          $line = $this->Printer_Columns($row['Name']." - ", $value, 30, 10, 4);
           $printer -> text($line);
         }
         $printer -> feed();
@@ -546,10 +549,10 @@
           $srv->bindParam(4, $date2);
           $srv->execute();
           foreach($srv->fetchAll() as $service) {
-            $multi = $service['payment_settlement_multi'];
+            $multi = $service['Settlement_Multi'];
             $value += $multi;
           }
-          $line = $this->Printer_Columns($row['group_name']." - ", $value, 30, 10, 4);
+          $line = $this->Printer_Columns($row['Name']." - ", $value, 30, 10, 4);
           $printer -> text($line);
         }
         $printer -> feed();
@@ -567,10 +570,10 @@
           $srv->bindParam(4, $date2);
           $srv->execute();
           foreach($srv->fetchAll() as $service) {
-            $multi = $service['payment_settlement_multi'];
+            $multi = $service['Settlement_Multi'];
             $value += $multi;
           }
-          $line = $this->Printer_Columns($row['group_name']." - ", $value, 30, 10, 4);
+          $line = $this->Printer_Columns($row['Name']." - ", $value, 30, 10, 4);
           $printer -> text($line);
         }
         $printer -> feed();
@@ -588,10 +591,10 @@
           $srv->bindParam(4, $date2);
           $srv->execute();
           foreach($srv->fetchAll() as $service) {
-            $multi = $service['payment_settlement_multi'];
+            $multi = $service['Settlement_Multi'];
             $value += $multi;
           }
-          $line = $this->Printer_Columns($row['group_name']." - ", $value, 30, 10, 4);
+          $line = $this->Printer_Columns($row['Name']." - ", $value, 30, 10, 4);
           $printer -> text($line);
         }
         $printer -> feed(2);

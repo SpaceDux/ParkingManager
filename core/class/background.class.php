@@ -31,7 +31,7 @@
            $parked_expiry = date("Y-m-d H:i:s", strtotime($time.' +135 minutes'));
            echo 'Plate: '.$plate.' | Time IN: '.$timein.' ANPR Date: '.$date.'<br>';
            if($parked_expiry >= $expiry) {
-             $query = $this->mysql->dbc->prepare("SELECT * FROM exit_log WHERE exit_anpr_key = ? AND exit_site = ?");
+             $query = $this->mysql->dbc->prepare("SELECT * FROM automated_exit WHERE ANPR = ? AND Site = ?");
              $query->bindParam(1, $anpr_key);
              $query->bindParam(2, $campus);
              $query->execute();
@@ -41,15 +41,14 @@
                $query->bindParam(1, $date);
                $query->bindParam(2, $id);
                $query->execute();
-
-               $query2 = $this->mysql->dbc->prepare("INSERT INTO exit_log (exit_id, exit_time, exit_anpr_key, exit_site) VALUES (?, ?, ?, ?)");
+               $query2 = $this->mysql->dbc->prepare("INSERT INTO automated_exit VALUES (?, ?, ?, ?)");
                $query2->bindParam(1, $id);
                $query2->bindParam(2, $expiry);
                $query2->bindParam(3, $anpr_key);
                $query2->bindParam(4, $campus);
                $query2->execute();
                if($query2->execute()) {
-                 $this->pm->PM_Notification_Create("ParkingManager has automatically EXIT the vehicle".$plate."", "0");
+                 return json_encode(array("Result" => "1", "Message" => 'ParkingManager has automatically exit: '.$plate));
                }
              }
            } else {

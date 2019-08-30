@@ -205,7 +205,7 @@
     {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_printers WHERE id = ?");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM printers WHERE id = ?");
       $stmt->bindParam(1, $printer);
       $stmt->execute();
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -220,7 +220,7 @@
       //Minutes
       $controllerurl = $this->Site_Info($site, "Unifi_IP");
       $controlleruser = $this->Site_Info($site, "Unifi_User");
-      $controllerpassword = $this->Site_Info($site, "Unifi_Password");
+      $controllerpassword = $this->Site_Info($site, "Unifi_Pass");
       $site_id = $this->Site_Info($site, "Unifi_Site");
       $controllerversion = $this->Site_Info($site, "Unifi_Ver");
 
@@ -392,6 +392,45 @@
       return $html;
 
       $this->mysql = null;
+    }
+    function Barrier_Control($barrier)
+    {
+      $this->user = new User;
+
+      $Site = $this->user->Info("Site");
+
+      $BarrierIN = $this->Site_Info($Site, "Barrier_IN");
+      $BarrierOUT = $this->Site_Info($Site, "Barrier_OUT");
+
+      if($barrier == 1) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $BarrierIN);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+          echo json_encode($return);
+          $return = array('Result' => '0', 'Message' => 'ParkingManager was unable to activate the barrier, please try again.');
+        } else {
+          $return = array('Result' => '1', 'Message' => 'Entry barrier has successfully been activated.');
+          echo json_encode($return);
+        }
+        curl_close($ch);
+      } else {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $BarrierOUT);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+          $return = array('Result' => '0', 'Message' => 'ParkingManager was unable to activate the barrier, please try again.');
+          echo json_encode($return);
+        } else {
+          $return = array('Result' => '1', 'Message' => 'Exit barrier has successfully been activated.');
+          echo json_encode($return);
+        }
+        curl_close($ch);
+      }
+
+      $this->user = null;
     }
   }
 ?>

@@ -66,7 +66,8 @@
         }
         $table .= '</tbody>
                 </table>';
-        $result = array("Feed" => $table);
+        $result = array("Feed" => $table
+      );
         echo json_encode($result);
         $this->mssql = null;
         $this->pm = null;
@@ -75,6 +76,26 @@
         echo "ANPR has been disabled on your account.";
       }
       $this->user = null;
+    }
+    // Count all vehicles in ANPR
+    function ANPR_Feed_Count()
+    {
+      $this->user = new User;
+
+      if($this->user->Info("ANPR") == 1) {
+        $this->mssql = new MSSQL;
+        $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
+        $this->anprCount->execute();
+        return count($this->anprCount->fetchAll());
+
+        $this->mssql = null;
+        $this->anprCount = null;
+      } else {
+        return $this->anprCount = 0;
+      }
+
+      $this->user = null;
+      $this->mssql = null;
     }
     // ANPR Duplicate vehicle, remove from feed.
     function ANPR_Duplicate($ref)
@@ -556,6 +577,36 @@
       }
 
       $this->mysql = null;
+    }
+    // Renewal Counter
+    function Renewal_Feed_Count()
+    {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Site = ? AND Expiry =< CURRENT_TIMESTAMP AND Parked_Column != 2");
+      $stmt->bindValue(1, $this->user->Info("Site"));
+      $stmt->execute();
+
+      return $stmt->rowCount();
+
+      $this->mysql = null;
+      $this->user = null;
+    }
+    // Parked Counter
+    function Parked_Feed_Count()
+    {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Site = ? AND Expiry >= CURRENT_TIMESTAMP AND Parked_Column != 2");
+      $stmt->bindValue(1, $this->user->Info("Site"));
+      $stmt->execute();
+
+      return $stmt->rowCount();
+
+      $this->mysql = null;
+      $this->user = null;
     }
   }
 

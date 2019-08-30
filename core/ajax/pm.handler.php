@@ -10,6 +10,10 @@
     $pm->Update_Site_GET($_POST['Ref']);
   } else if($handler == "PM.Update_Site") {
     $pm->Update_Site(array('Ref' => $_POST['Site_Ref_Update'],'Name' => $_POST['Site_Name_Update'],'BarrierIN' => $_POST['Site_Barrier_IN_Update'],'BarrierOUT' => $_POST['Site_Barrier_OUT_Update'],'Vatno' => $_POST['Site_VAT_Update'],'ANPR_IP' => $_POST['Site_ANPR_IP_Update'],'ANPR_DB' => $_POST['Site_ANPR_DB_Update'],'ANPR_Imgsrv' => $_POST['Site_ANPR_Imgsrv_Update'],'ANPR_User' => $_POST['Site_ANPR_User_Update'],'ANPR_Pass' => $_POST['Site_ANPR_Pass_Update'],'ANPR_Imgstr' => $_POST['Site_ANPR_Imgstr_Update'],'Unifi_Status' => $_POST['Site_Unifi_Status_Update'],'Unifi_User' => $_POST['Site_Unifi_User_Update'],'Unifi_Pass' => $_POST['Site_Unifi_Pass_Update'],'Unifi_IP' => $_POST['Site_Unifi_IP_Update'],'Unifi_Ver' => $_POST['Site_Unifi_Ver_Update'],'Unifi_Site' => $_POST['Site_Unifi_Site_Update'],'ETP_User' => $_POST['Site_ETP_User_Update'],'ETP_Pass' => $_POST['Site_ETP_Pass_Update']));
+  } else if($handler == "PM.EOD_Settlement") {
+    $ticket->EOD_Settlement($_POST['Date1'], $_POST['Date2']);
+  } else if($handler == "PM.Barrier_Toggle") {
+    $pm->Barrier_Control($_POST['Which']);
   }
 
 ?>

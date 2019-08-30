@@ -42,6 +42,9 @@
 	$etp = new PM\ETP();
 	$account = new PM\Account();
 	$background = new PM\Background();
+	$ticket = new PM\Ticket();
+
+	
 
 	//Other Activating
 	session_start();

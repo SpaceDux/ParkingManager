@@ -8,7 +8,13 @@
       data: Data,
       dataType: "json",
       success:function(Res) {
-
+        if(Res.Result == 1) {
+        $.notify(Res.Message, {className:'success',globalPosition: 'top left',});
+          $('#Account_Register_Modal').modal('toggle');
+          $('#Account_Register_Form')[0].reset();
+        } else {
+          $.notify(Res.Message, {className:'error',globalPosition: 'top left',});
+        }
       }
     })
   });
@@ -20,7 +26,6 @@
       data: {Ref:Ref},
       dataType: "json",
       success:function(Res) {
-        $('#Account_Update_Modal').modal('toggle');
         $('#Ref').val(Res.Uniqueref);
         $('#Name').val(Res.Name);
         $('#ShortName').val(Res.ShortName);
@@ -31,6 +36,7 @@
         $('#Shared').val(Res.Shared);
         $('#Discount').val(Res.Discount_Vouchers);
         $('#Status').val(Res.Status);
+        $('#Account_Update_Modal').modal('toggle');
       }
     })
   }
@@ -71,15 +77,22 @@
       }
     })
   }
-  $(document).on('click', '#Account_Update_Save', function() {
+
+  $(document).on('submit', '#Account_Update_Form', function() {
     event.preventDefault();
     var Data = $('#Account_Update_Form').serialize();
     $.ajax({
       url: "{URL}/core/ajax/account.handler.php?handler=Account.Update_Account",
       method: "POST",
       data: Data,
+      dataType: 'json',
       success:function(Res) {
-        $('#Account_Update_Modal').modal('toggle');
+        if(Res.Result == 1) {
+          $.notify(Res.Message, {className:'success',globalPosition: 'top left',});
+          $('#Account_Update_Modal').modal('toggle');
+        } else {
+          $.notify(Res.Message, {className:'error',globalPosition: 'top left',});
+        }
       }
     })
   });

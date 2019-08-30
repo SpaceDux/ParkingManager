@@ -862,13 +862,13 @@
 			} else if($Method == '5') {
 				$Type = "Fuel Card";
 			}
-			$MealCount = $this->Payment_TariffInfo($Service, "service_meal_amount");
-			$ShowerCount = $this->Payment_TariffInfo($Service, "service_shower_amount");
+			$MealCount = $this->Payment_TariffInfo($Service, "Meal_Vouchers");
+			$ShowerCount = $this->Payment_TariffInfo($Service, "Shower_Vouchers");
 			$Group = $result['Service_Group'];
 			$PRef = $result['Parkingref']; // Parking Ref not Payment $Ref is payment
 			$ExitKey = $this->vehicles->Info($PRef, "ExitKey");
-			$DiscCount = $this->Payment_TariffInfo($Service, "service_discount_amount");
-			$WifiCount = $this->Payment_TariffInfo($Service, "service_wifi_amount");
+			$DiscCount = $this->Payment_TariffInfo($Service, "Discount_Vouchers");
+			$WifiCount = $this->Payment_TariffInfo($Service, "Wifi_Vouchers");
 			$Account_ID = $result['AccountID'];
 			$Printed = $result['Ticket_Printed'];
 			$ProcessedTime = $result['Processed_Time'];
@@ -946,7 +946,7 @@
 
 				$options = '<div class="btn-group float-right" role="group" aria-label="Options">
 											<button type="button" class="btn btn-danger" onClick="Print_Ticket('.$ref.')"><i class="fa fa-print"></i></button>
-											<button type="button" class="btn btn-danger" onClick="DeleteTransaction('.$row['Uniqueref'].')"><i class="fa fa-trash"></i></button>
+											<button type="button" class="btn btn-danger" onClick="DeleteTransaction('.$ref.')"><i class="fa fa-trash"></i></button>
 										</div>';
 				if($row['Method'] == 1) {
 					$Method = "Cash";
@@ -1059,11 +1059,65 @@
 							      <th scope="col">Snap</th>
 							      <th scope="col">Fuel</th>
 							      <th scope="col">ETP ID</th>
+							      <th scope="col">Settlement Group</th>
 							      <th scope="col">Status</th>
 							      <th scope="col"><i class="fa fa-cog"></i></th>
 							    </tr>
 							  </thead>
 							  <tbody>';
+
+								$html .= '<tr class="table-primary">
+														<td colspan="22">ALL VEHICLES</td>
+													</tr>';
+			$stmt3 = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Status < 2 AND VehicleType = 0 ORDER BY Expiry, Gross ASC");
+			$stmt3->bindParam(1, $Site);
+			$stmt3->execute();
+			foreach($stmt3->fetchAll() as $row) {
+				$ref = '\''.$row['Uniqueref'].'\'';
+				$html .= '<tr class="">';
+				$html .= '<td>'.$row['Name'].'</td>';
+				$html .= '<td>£'.$row['Gross'].'</td>';
+				$html .= '<td>£'.$row['Nett'].'</td>';
+				$html .= '<td>'.$row['Shower_Vouchers'].'</td>';
+				$html .= '<td>'.$row['Meal_Vouchers'].'</td>';
+				$html .= '<td>'.$row['Discount_Vouchers'].'</td>';
+				$html .= '<td>'.$row['Wifi_Vouchers'].'</td>';
+				if($row['Cash'] == 1) {
+					$html .= '<td class="table-success">Enabled</td>';
+				} else {
+					$html .= '<td class="table-danger">Disabled</td>';
+				}
+				if($row['Card'] == 1) {
+					$html .= '<td class="table-success">Enabled</td>';
+				} else {
+					$html .= '<td class="table-danger">Disabled</td>';
+				}
+				if($row['Account'] == 1) {
+					$html .= '<td class="table-success">Enabled</td>';
+				} else {
+					$html .= '<td class="table-danger">Disabled</td>';
+				}
+				if($row['Snap'] == 1) {
+					$html .= '<td class="table-success">Enabled</td>';
+				} else {
+					$html .= '<td class="table-danger">Disabled</td>';
+				}
+				if($row['Fuel'] == 1) {
+					$html .= '<td class="table-success">Enabled</td>';
+				} else {
+					$html .= '<td class="table-danger">Disabled</td>';
+				}
+				$html .= '<td>'.$row['ETPID'].'</td>';
+				$html .= '<td>'.$row['Settlement_Group'].'</td>';
+				if($row['Status'] == 0) {
+					$html .= '<td class="table-success">Active</td>';
+				} else if($row['Status'] == 1) {
+					$html .= '<td class="table-warning">Disabled</td>';
+				}
+				$html .= '<td>
+										<button onClick="Update_Tariff_Tgl('.$ref.')" class="btn btn-primary"><i class="fa fa-cog"></i></button>
+									</td>';
+			}
 
 			$stmt2 = $this->mysql->dbc->prepare("SELECT * FROM vehicle_types ORDER BY id ASC");
 			$stmt2->execute();
@@ -1073,7 +1127,7 @@
 				$html .= '<tr class="table-primary">';
 				$html .= '<td colspan="22">'.$row['Name'].'</td>';
 				$html .= '<tr>';
-				$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Status < 2 AND VehicleType = ? ORDER BY VehicleType ASC");
+				$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Status < 2 AND VehicleType = ? ORDER BY Expiry, Gross ASC");
 				$stmt->bindParam(1, $Site);
 				$stmt->bindParam(2, $id);
 				$stmt->execute();
@@ -1113,6 +1167,7 @@
 						$html .= '<td class="table-danger">Disabled</td>';
 					}
 					$html .= '<td>'.$row['ETPID'].'</td>';
+					$html .= '<td>'.$row['Settlement_Group'].'</td>';
 					if($row['Status'] == 0) {
 						$html .= '<td class="table-success">Active</td>';
 					} else if($row['Status'] == 1) {
@@ -1139,6 +1194,7 @@
 			$stmt->execute();
 			$result = $stmt->fetchAll();
 			$html = "";
+			$html .= '<option value="0">-- No Group --</option>';
 			foreach($result as $row) {
 				$html .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].'</option>';
 			}
@@ -1245,5 +1301,38 @@
 
 			$this->mysql = null;
 		}
+
+		// function Dave() {
+		//   $this->mysql = new MySQL;
+		//
+		//
+		//   $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_campus = ? AND service_active = 1");
+		//   $stmt->bindValue(1, '2');
+		//   $stmt->execute();
+		//   foreach($stmt->fetchAll() as $row) {
+		//     $Name = $row['service_name'];
+		//     $TicketName = $row['service_ticket_name'];
+		//     $Gross = $row['service_price_gross'];
+		//     $Nett = $row['service_price_net'];
+		//     $Expiry = $row['service_expiry'];
+		//     $Group = $row['service_group'];
+		//     $Cash = $row['service_cash'];
+		//     $Card = $row['service_card'];
+		//     $Account = $row['service_account'];
+		//     $SNAP = $row['service_snap'];
+		//     $Fuel = $row['service_fuel'];
+		//     $ETPID = $row['service_etpid'];
+		//     $Meal = $row['service_meal_amount'];
+		//     $Shower = $row['service_shower_amount'];
+		//     $Discount = $row['service_discount_amount'];
+		//     $WiFi = $row['service_wifi_amount'];
+		//     $VehType = $row['service_vehicles'];
+		// 		$Site = "201908291533552768";
+		// 		$Status = "0";
+		// 		$SettlementGroup = $row['service_settlement_group'];
+		// 		$SettlementMulti = $row['service_settlement_multi'];
+		// 		$this->New_Tariff($Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti);
+		//   }
+		// }
 	}
 ?>

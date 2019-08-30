@@ -50,7 +50,7 @@
     event.preventDefault();
     var Data = $(this).serialize();
     $.ajax({
-      url: "{URL}/core/ajax/user.handler.php?handler=User.UpdatePW",
+      url: "{URL}/core/ajax/user.handler.php?handler=User.Update",
       data: Data,
       method: "POST",
       dataType: "json",
@@ -94,6 +94,27 @@
         window.location.reload();
       }
     });
+  }
+
+  function Update_User(Ref) {
+    $.ajax({
+      url: "{URL}/core/ajax/user.handler.php?handler=User.Update_GET",
+      data: {Ref:Ref},
+      method: "POST",
+      dataType: "json",
+      success:function(Data) {
+        $('#User_Ref').val(Data.Uniqueref);
+        $('#User_FirstName').val(Data.FirstName);
+        $('#User_LastName').val(Data.LastName);
+        $('#User_Email').val(Data.Email);
+        $('#User_Site').val(Data.Site);
+        $('#User_ANPR').val(Data.ANPR);
+        $('#User_Rank').val(Data.User_Rank);
+        $('#User_Printer').val(Data.Printer);
+        $('#User_Status').val(Data.Status);
+        $('#User_Update_Modal').modal('toggle');
+      }
+    })
   }
 
 </script>

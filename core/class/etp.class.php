@@ -136,15 +136,15 @@
       $this->pm = new PM;
 
       $campus = $this->user->Info("Site");
-      
+
       $API = $_CONFIG['ETP']['API'];
       $client = new Client(['base_uri' => $API['api_uri']]);
       //Begin API client
       $response = $client->post('transaction/add', [
         'auth' => array($API['api_user'], $API['api_pass']),
         'json' => [
-          'locationusername' => $this->pm->Site_Info($campus, "ETP_User"),
-          'locationpassword' => $this->pm->Site_Info($campus, "ETP_Pass"),
+          'locationusername' => 'holyhead',
+          'locationpassword' => '2hst36sg',
           'serviceid' => "4439",
           'regno' => $Plate,
           'drivername' => "ISITSNAP",

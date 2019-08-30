@@ -83,4 +83,30 @@
       }
     })
   }
+  function EOD_SettlementToggle() {
+    var Date1 = $('#TL_DateStart').val();
+    var Date2 = $('#TL_DateEnd').val();
+
+    $.ajax({
+      url: "{URL}/core/ajax/pm.handler.php?handler=PM.EOD_Settlement",
+      type: "POST",
+      data: {Date1:Date1, Date2:Date2}
+    });
+  }
+  function BarrierToggle(Which) {
+    event.preventDefault();
+    $.ajax({
+      url: "{URL}/core/ajax/pm.handler.php?handler=PM.Barrier_Toggle",
+      type: "POST",
+      data: {Which:Which},
+      dataType: 'json',
+      success:function(Data) {
+        if(Data.Result == 1) {
+          $.notify(Data.Message, {className:'success',globalPosition: 'top left',});
+        } else {
+          $.notify(Data.Message, {className:'error',globalPosition: 'top left',});
+        }
+      }
+    });
+  }
 </script>

@@ -151,6 +151,13 @@
       $stmt->bindParam(10, $Status);
       $stmt->bindParam(11, $Last_Updated);
       $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $result = array('Result' => '1', 'Message' => 'Account successfully added to ParkingManager');
+      } else {
+        $result = array('Result' => '0', 'Message' => 'Account was NOT added to ParkingManager, please try again');
+      }
+
+      echo json_encode($result);
 
       $this->mysql = null;
     }
@@ -188,6 +195,13 @@
       $stmt->bindParam(10, $Last_Updated);
       $stmt->bindParam(11, $Ref);
       $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $result = array('Result' => '1', 'Message' => 'Account successfully added to ParkingManager');
+      } else {
+        $result = array('Result' => '0', 'Message' => 'Account was NOT added to ParkingManager, please try again');
+      }
+
+      echo json_encode($result);
 
       $this->mysql = null;
     }
@@ -373,5 +387,20 @@
       $this->mysql = null;
       $this->user = null;
     }
+
+
+    // This function quickly adds all current fleets to new structure.
+    // function Dave() {
+    //   $this->mysql = new MySQL;
+    //
+    //
+    //   $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts_fleet WHERE account_id = ?");
+    //   $stmt->bindValue(1, '19');
+    //   $stmt->execute();
+    //   foreach($stmt->fetchAll() as $row) {
+    //     $plate = $row['account_vehicle_plate'];
+    //     $this->Update_Fleet("201908301121502885", $plate);
+    //   }
+    // }
   }
 ?>

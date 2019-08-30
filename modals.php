@@ -321,12 +321,12 @@
           <div class="row">
             <div class="col-md-6">
               <label for="Contact_Email">Company Contact Email</label>
-              <input type="text" class="form-control" name="Contact_Email" id="Contact_Email" value="" placeholder="example@example.com" required>
+              <input type="text" class="form-control" name="Contact_Email" id="Contact_Email" value="" placeholder="example@example.com">
               <hr>
             </div>
             <div class="col-md-6">
               <label for="Billing_Email">Company Billing Email</label>
-              <input type="text" class="form-control" name="Billing_Email" id="Billing_Email" value="" placeholder="example@example.com" required>
+              <input type="text" class="form-control" name="Billing_Email" id="Billing_Email" value="" placeholder="example@example.com">
               <hr>
             </div>
           </div>
@@ -363,7 +363,7 @@
           </div>
           <div class="modal-footer">
             <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="Account_Update_Save">Save</button>
+            <button type="submit" class="btn btn-primary">Save</button>
           </div>
         </form>
       </div>
@@ -371,7 +371,7 @@
   </div>
 </div>
 <!-- Account Fleets -->
-<div class="modal" id="Account_Update_Fleet_Modal" tabindex="-1" role="dialog" aria-labelledby="Account_Update_Modal" aria-hidden="true">
+<div class="modal" id="Account_Update_Fleet_Modal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
