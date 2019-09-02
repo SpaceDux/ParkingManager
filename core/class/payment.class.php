@@ -191,10 +191,13 @@
 			$SNAP = "";
 			$Fuel = "";
 
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND Status < 1 AND VehicleType = ? ORDER BY Gross ASC");
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND Status < 1 AND VehicleType = ? OR Site = ? AND Expiry = 1 AND Status < 1 AND VehicleType = ? ORDER BY Gross ASC");
 			$stmt->bindParam(1, $campus);
 			$stmt->bindParam(2, $Expiry);
 			$stmt->bindParam(3, $Type);
+			$stmt->bindParam(4, $campus);
+			$stmt->bindParam(5, $Type);
+
 			$stmt->execute();
 
 			$stmt2 = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Status < 1 AND VehicleType = 0 ORDER BY Gross ASC");
@@ -999,7 +1002,7 @@
 			$stmt1->bindParam(1, $ref);
 			$stmt1->execute();
 			$record = $stmt1->fetch(\PDO::FETCH_ASSOC);
-			$serviceEx = $this->Payment_TariffInfo($record['Service'], "service_expiry");
+			$serviceEx = $this->Payment_TariffInfo($record['Service'], "Expiry");
 			$parkingref = $record['Parkingref'];
 			$expiry = $this->vehicles->Info($parkingref, "Expiry");
 			$anpr = $this->vehicles->Info($parkingref, "ANPRRef");

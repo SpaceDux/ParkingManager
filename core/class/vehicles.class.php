@@ -608,6 +608,78 @@
       $this->mysql = null;
       $this->user = null;
     }
+
+    function YardCheck()
+    {
+      $this->mysql = new MySQL;
+      $this->mssql = new MSSQL;
+      $this->user = new User;
+
+      $Site = $this->user->Info("Site");
+
+      $stmt1 = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Site = ? AND Parked_Column < 2 ORDER BY Plate ASC");
+      $stmt1->bindParam(1, $Site);
+      $stmt1->execute();
+
+      $stmt2 = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Plate DESC");
+      $stmt2->execute();
+
+      $html = '<table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Plate</th>
+                    <th scope="col" style="width: 20%;">Trailer</th>
+                    <th scope="col">Arrival</th>
+                    <th scope="col" style="text-align: right"><i class="fa fa-cogs"></i></th>
+                  </tr>
+                </thead>
+                <tbody>';
+
+      foreach($stmt1->fetchAll() as $row) {
+        $ref = '\''.$row['Uniqueref'].'\'';
+        $id = "YC".$ref;
+        $html .= '<tr id="'.$id.'">';
+        $html .= '<td>'.$row['Plate'].'</td>';
+        $html .= '<td style="max-width: 0px;">'.$row['Trailer_No'].'</td>';
+        $html .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
+        $html .= '<td>
+                      <div class="btn-group-toggle float-right" data-toggle="buttons">
+                        <label class="btn btn-warning">
+                          <input type="checkbox" name="YCCheck" autocomplete="off"> CONFIRM
+                        </label>
+                        <button type="button" class="btn btn-danger" onClick="QuickExit('.$ref.')"><i class="fa fa-times"></i></button>
+                      </div>
+
+                  </td>';
+        $html .= '</tr>';
+      }
+      foreach($stmt2->fetchAll() as $row2) {
+        $ref = $row2['Uniqueref'];
+        $id = "YC".$ref;
+        $html .= '<tr id="YC'.$ref.'">';
+        $html .= '<td>'.$row2['Plate'].'</td>';
+        $html .= '<td>'.$row2['Notes'].'</td>';
+        $html .= '<td>'.date("d/H:i", strtotime($row2['Capture_Date'])).'</td>';
+        $html .= '<td>
+                      <div class="btn-group-toggle float-right" data-toggle="buttons">
+                        <label class="btn btn-warning">
+                          <input type="checkbox" name="YCCheck" autocomplete="off"> CONFIRM
+                        </label>
+                        <button type="button" onClick="ANPR_Duplicate('.$row2['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                      </div>
+                  </td>';
+        $html .= '</tr>';
+      }
+
+      $html .= '</tbody>
+      </table>';
+
+      return $html;
+
+      $this->mysql = null;
+      $this->mssql = null;
+      $this->user = null;
+    }
   }
 
 ?>

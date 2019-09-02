@@ -54,6 +54,7 @@
 				$this->Assign('anpr_count', $this->vehicles->ANPR_Feed_Count());
 				$this->Assign('renewal_count', $this->vehicles->Renewal_Feed_Count());
 				$this->Assign('all_count', $this->vehicles->Renewal_Feed_Count() + $this->vehicles->ANPR_Feed_Count() + $this->vehicles->Parked_Feed_Count());
+				$this->Assign('yardcheck', $this->vehicles->YardCheck());
 			}
 			$this->user = null;
 			$this->pm = null;

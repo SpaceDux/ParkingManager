@@ -7,7 +7,7 @@
   class Ticket {
     public $ImgDir;
     function __construct() {
-      $this->ImgDir = $_SERVER['DOCUMENT_ROOT']."/ParkingManager/printerImg/";
+      $this->ImgDir = $_SERVER['DOCUMENT_ROOT'].'/printerImg/';
     }
     //Print Columns on ticket.
     function Printer_Columns($leftCol, $rightCol, $leftWidth, $rightWidth, $space = 0)
@@ -28,14 +28,14 @@
     //Determine Ticket
     function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count, $acc_id, $printed, $Processed)
     {
-      if($group == 1) {
+      if($group == 2) {
         $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed);
-      } else if ($group == 2) {
+      } else if ($group == 4) {
         $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type, $exitKey);
       } else if ($group == 3) {
         $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed);
-      } else if ($group == 4) {
-        $this->Printer_Misc($shower_count, $wifi_count, $tid, $payment_type, $Processed);
+      } else if ($group == 1) {
+        $this->Printer_Misc($shower_count, $wifi_count, $tid, $payment_type, $gross, $nett, $Processed);
       }
     }
     //Begin Tickets
@@ -53,7 +53,12 @@
       $vatnum = $this->pm->Site_Info($campus, "Vatno");
       $img_dir = $this->ImgDir.$campus;
       //Printer connection
-      $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
+      if($printer_id == 2) {
+        // Short term fix
+        $connector = new WindowsPrintConnector('pdhollies');
+      } else {
+        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
+      }
       $printer = new Printer($connector);
       $logo = EscposImage::load($img_dir."/logo.png", false);
       $address = EscposImage::load($img_dir."/address.png", false);
@@ -183,10 +188,9 @@
           $i = 1;
           //Discount
           while ($i++ <= $discount_count) {
-            if($this->account->Account_GetInfo($acc_id, "Discount_Vouchers") == 0) {
+            if($payment_type == "Account" AND $this->account->Account_GetInfo($acc_id, "Discount_Vouchers") == 0) {
               //Do nothing
             } else {
-              //Meal Ticket
               $printer -> setJustification(Printer::JUSTIFY_CENTER);
               if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
                 $printer -> graphics($discount_img);
@@ -249,8 +253,12 @@
       //Limit amount of chars in company name.
       $company = substr($company, 0, 9);
       //Printer Connections
-      $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
-
+      if($printer_id == 2) {
+        // Short term fix
+        $connector = new WindowsPrintConnector('pdhollies');
+      } else {
+        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
+      }
       try {
         $printer = new Printer($connector);
         $ticket = EscposImage::load($img_dir."/wash.jpg", false);
@@ -369,7 +377,7 @@
       $this->account = null;
     }
     // Wifi & Shower
-    function Printer_Misc($shower_count, $wifi_count, $tid, $payment_type, $Processed)
+    function Printer_Misc($shower_count, $wifi_count, $tid, $payment_type, $gross, $net, $Processed)
     {
       $this->user = new User;
       $this->pm = new PM;
@@ -382,8 +390,12 @@
       try {
 
         //Printer Connection
-        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
-
+        if($printer_id == 2) {
+          // Short term fix
+          $connector = new WindowsPrintConnector('pdhollies');
+        } else {
+          $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
+        }
         $printer = new Printer($connector);
         $wifi = EscposImage::load($img_dir."/wifi.jpg", false);
         $shower  = EscposImage::load($img_dir."/shower.jpg", false);
@@ -483,7 +495,12 @@
 
       try {
         //Printer Connection
-        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
+        if($printer_id == 2) {
+          // Short term fix
+          $connector = new WindowsPrintConnector('pdhollies');
+        } else {
+          $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
+        }
         $printer = new Printer($connector);
         $logo = EscposImage::load($img_dir."/logo.png", false);
         //Settlement
