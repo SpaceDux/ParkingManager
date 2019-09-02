@@ -287,16 +287,18 @@
         $(this).find('[autofocus]').focus();
       });
 
-      $(document).ready(function() {
-          $('input[name="YCCheck"]').click(function(){
-              if($(this).is(":checked")){
-                  $(this).closest('tr').addClass("table-success");
-              }
-              else if($(this).is(":not(:checked)")){
-                $(this).closest('tr').removeClass("table-success");
-              }
-          });
-      });
+      function Checked(str) {
+        event.preventDefault();
+        if($('#YC'+str).hasClass('table-success')) {
+          $('#YC'+str).removeClass('table-success');
+        } else {
+          $('#YC'+str).addClass('table-success');
+        }
+      }
+
+      window.onbeforeunload = function() {
+          return "Are you sure you want to leave?";
+        }
     </script>
     <?php require("core/ajax/controller.php"); ?>
     <?php require("modals.php"); ?>

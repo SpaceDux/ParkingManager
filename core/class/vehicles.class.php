@@ -644,9 +644,8 @@
         $html .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
         $html .= '<td>
                       <div class="btn-group-toggle float-right" data-toggle="buttons">
-                        <label class="btn btn-warning">
-                          <input type="checkbox" name="YCCheck" autocomplete="off"> CONFIRM
-                        </label>
+
+                        <button type="button" class="btn btn-danger" onClick="Checked('.$ref.')"><i class="fa fa-tick"></i> CONFIRMED </button>
                         <button type="button" class="btn btn-danger" onClick="QuickExit('.$ref.')"><i class="fa fa-times"></i></button>
                       </div>
 
@@ -656,16 +655,14 @@
       foreach($stmt2->fetchAll() as $row2) {
         $ref = $row2['Uniqueref'];
         $id = "YC".$ref;
-        $html .= '<tr id="YC'.$ref.'">';
+        $html .= '<tr id="'.$id.'">';
         $html .= '<td>'.$row2['Plate'].'</td>';
         $html .= '<td>'.$row2['Notes'].'</td>';
         $html .= '<td>'.date("d/H:i", strtotime($row2['Capture_Date'])).'</td>';
         $html .= '<td>
-                      <div class="btn-group-toggle float-right" data-toggle="buttons">
-                        <label class="btn btn-warning">
-                          <input type="checkbox" name="YCCheck" autocomplete="off"> CONFIRM
-                        </label>
-                        <button type="button" onClick="ANPR_Duplicate('.$row2['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                      <div class="btn-group-toggle btn-lg float-right" data-toggle="buttons">
+                        <button type="button" class="btn btn-danger" onClick="Checked('.$ref.')"><i class="fa fa-tick"></i> CONFIRMED </button>
+                        <button type="button" onClick="ANPR_Duplicate('.$ref.')" class="btn btn-danger"><i class="fa fa-times"></i></button>
                       </div>
                   </td>';
         $html .= '</tr>';
