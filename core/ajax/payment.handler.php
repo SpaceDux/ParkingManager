@@ -38,6 +38,8 @@
     $payment->Update_Tariff($_POST['Tariff_Ref_Update'], $_POST['Tariff_Name_Update'], $_POST['Tariff_TicketName_Update'], $_POST['Tariff_Gross_Update'], $_POST['Tariff_Nett_Update'], $_POST['Tariff_Expiry_Update'], $_POST['Tariff_Group_Update'], $_POST['Tariff_Cash_Update'], $_POST['Tariff_Card_Update'], $_POST['Tariff_Account_Update'], $_POST['Tariff_SNAP_Update'], $_POST['Tariff_Fuel_Update'], $_POST['Tariff_ETPID_Update'], $_POST['Tariff_Meal_Update'], $_POST['Tariff_Shower_Update'], $_POST['Tariff_Discount_Update'], $_POST['Tariff_WiFi_Update'], $_POST['Tariff_VehType_Update'], $_POST['Tariff_Site_Update'], $_POST['Tariff_Status_Update'], $_POST['Tariff_SettlementGroup_Update'], $_POST['Tariff_SettlementMulti_Update']);
   } else if($handler == "Payment.Update_Tariff_GET") {
     $payment->Update_Tariff_GET($_POST['Ref']);
+  } else if($handler == "Payment.Search_Payments") {
+    $payment->Search_Payment_Records($_POST['Key']);
   }
 
 ?>

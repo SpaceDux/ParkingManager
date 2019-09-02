@@ -278,4 +278,23 @@
     });
   };
 
+  $(document).on('keyup', '#Search_PM_Str', function() {
+    event.preventDefault();
+    var Key = $(this).val();
+    if(Key == '') {
+      $('#Search_Results').html("No Data");
+    } else {
+      $.ajax({
+        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.Search_Parking",
+        data: {Key:Key},
+        method: "POST",
+        dataType: "json",
+        success:function(Data) {
+          $('#Search_Results').html(Data);
+        }
+      });
+    }
+
+  });
+
 </script>

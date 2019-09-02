@@ -1337,5 +1337,48 @@
 		// 		$this->New_Tariff($Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti);
 		//   }
 		// }
+
+		// Search Payment Records VIA Modal
+		function Search_Payment_Records($key)
+		{
+			$string = "%".$key."%";
+			$this->mysql = new MySQL;
+			$this->user = new User;
+			$this->vehicles = new Vehicles;
+
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Plate LIKE ? OR Name LIKE ? ORDER BY Processed_Time DESC LIMIT 20");
+			$stmt->bindParam(1, $string);
+			$stmt->bindParam(2, $string);
+			$stmt->execute();
+			$html = '<table class="table table-dark">
+								<thead>
+									<tr>
+										<th scope="col" style="width: 20%;">Name</th>
+										<th scope="col">Plate</th>
+										<th scope="col">Processed</th>
+										<th scope="col" style="text-align: right"><i class="fa fa-cogs"></i></th>
+									</tr>
+								</thead>
+								<tbody>';
+
+			foreach($stmt->fetchAll() as $row) {
+				$timein = '\''.$this->vehicles->Info($row['Parkingref'], "Arrival").'\'';
+				$ref = '\''.$row['Parkingref'].'\'';
+				$html .= '<tr>';
+				$html .= '<td>'.$row['Name'].'</td>';
+				$html .= '<td>'.$row['Plate'].'</td>';
+				$html .= '<td>'.date("d/m/y H:i", strtotime($row['Processed_Time'])).'</td>';
+				$html .= '<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Search_Records_Modal" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button></td>';
+			}
+
+			$html .= '</tbody>
+							</table>';
+
+			echo json_encode($html);
+
+			$this->mysql = null;
+			$this->user = null;
+			$this->vehicles = null;
+		}
 	}
 ?>

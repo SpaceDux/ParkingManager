@@ -129,7 +129,7 @@
       </div>
       <div class="Options">
         <a href="#" class="mbl_only" onClick="Navi_Tog()"><i class="fa fa-align-justify"></i></a>
-        <a href="#"><i class="fa fa-search"></i></a>
+        <a href="#" data-toggle="modal" data-target="#Search_Records_Modal"><i class="fa fa-search"></i></a>
         <a href="#" onClick="ANPR_AddPlate()"><i class="fa fa-plus"></i></a>
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-key"></i>
@@ -165,7 +165,7 @@
             VEHICLE TOOLS
           </a>
           <div class="Dropdown_Menu">
-            <a href="#yc">Yard Check</a>
+            <a target="_blank" href="{URL}/yardcheck">Yard Check</a>
           </div>
         </li>
         <li>

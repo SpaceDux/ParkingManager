@@ -645,4 +645,23 @@
       }
     })
   });
+  // Search Payments via Modal
+  $(document).on('keyup', '#Search_Payment_Str', function() {
+    event.preventDefault();
+    var Key = $(this).val();
+    if(Key == '') {
+      $('#Search_Results').html("No Data");
+    } else {
+      $.ajax({
+        url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Search_Payments",
+        data: {Key:Key},
+        method: "POST",
+        dataType: "json",
+        success:function(Data) {
+          $('#Search_Results').html(Data);
+        }
+      });
+    }
+
+  });
 </script>

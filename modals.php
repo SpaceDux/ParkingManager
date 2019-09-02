@@ -1132,3 +1132,40 @@
     </div>
   </div>
 </div>
+<!-- Search Records -->
+<div class="modal" id="Search_Records_Modal" tabindex="-1" role="dialog" aria-labelledby="Search_Records_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Search Records</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <label for="Search_PM_Str">Search Parking Records</label>
+            <input type="text" class="form-control" name="Search_PM_Str" id="Search_PM_Str" placeholder="Search Parking Records..." autofocus>
+          </div>
+          <div class="col">
+            <label for="Search_Payment_Str">Search Payment Records</label>
+            <input type="text" class="form-control" name="Search_Payment_Str" id="Search_Payment_Str" placeholder="Search Payment Records...">
+          </div>
+          <div class="col">
+            <label for="Search_ANPR_Str">Search Payment Records</label>
+            <input type="text" class="form-control" name="Search_ANPR_Str" id="Search_ANPR_Str" placeholder="Search ANPR Records...">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <hr>
+            <div id="Search_Results">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

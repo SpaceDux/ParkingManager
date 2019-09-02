@@ -28,6 +28,8 @@
     $vehicles->QuickExit($_POST['Ref']);
   } else if($handler == "Vehicles.QuickFlag") {
     $vehicles->QuickFlag($_POST['Ref'], $_POST['Flagged']);
+  } else if($handler == "Vehicles.Search_Parking") {
+    $vehicles->Search_Parking_Records($_POST['Key']);
   }
 
 ?>

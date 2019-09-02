@@ -637,25 +637,24 @@
 
       foreach($stmt1->fetchAll() as $row) {
         $ref = '\''.$row['Uniqueref'].'\'';
-        $id = "YC".$ref;
-        $html .= '<tr id="'.$id.'">';
+        $ref2 = $row['Uniqueref'];
+        $id = "YC".$ref2;
+        $html .= '<tr id="YC'.$ref2.'">';
         $html .= '<td>'.$row['Plate'].'</td>';
         $html .= '<td style="max-width: 0px;">'.$row['Trailer_No'].'</td>';
         $html .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
         $html .= '<td>
-                      <div class="btn-group-toggle float-right" data-toggle="buttons">
-
+                      <div class="btn-group-toggle btn-lg float-right" data-toggle="buttons">
                         <button type="button" class="btn btn-danger" onClick="Checked('.$ref.')"><i class="fa fa-tick"></i> CONFIRMED </button>
                         <button type="button" class="btn btn-danger" onClick="QuickExit('.$ref.')"><i class="fa fa-times"></i></button>
                       </div>
-
                   </td>';
         $html .= '</tr>';
       }
       foreach($stmt2->fetchAll() as $row2) {
         $ref = $row2['Uniqueref'];
         $id = "YC".$ref;
-        $html .= '<tr id="'.$id.'">';
+        $html .= '<tr id="YC'.$ref.'">';
         $html .= '<td>'.$row2['Plate'].'</td>';
         $html .= '<td>'.$row2['Notes'].'</td>';
         $html .= '<td>'.date("d/H:i", strtotime($row2['Capture_Date'])).'</td>';
@@ -675,6 +674,49 @@
 
       $this->mysql = null;
       $this->mssql = null;
+      $this->user = null;
+    }
+    // Search Vehicle Records VIA Modal
+    function Search_Parking_Records($key)
+    {
+      $string = "%".$key."%";
+      $this->mysql = new MySQL;
+      $this->user = new User;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate LIKE ? OR Name LIKE ? OR Trailer_No LIKE ? ORDER BY Arrival DESC LIMIT 20");
+      $stmt->bindParam(1, $string);
+      $stmt->bindParam(2, $string);
+      $stmt->bindParam(3, $string);
+      $stmt->execute();
+      $html = '<table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 20%;">Name</th>
+                    <th scope="col">Plate</th>
+                    <th scope="col" style="width: 20%;">Trailer</th>
+                    <th scope="col">Arrival</th>
+                    <th scope="col" style="text-align: right"><i class="fa fa-cogs"></i></th>
+                  </tr>
+                </thead>
+                <tbody>';
+
+      foreach($stmt->fetchAll() as $row) {
+        $ref = '\''.$row['Uniqueref'].'\'';
+        $timein = '\''.$row['Arrival'].'\'';
+        $html .= '<tr>';
+        $html .= '<td>'.$row['Name'].'</td>';
+        $html .= '<td>'.$row['Plate'].'</td>';
+        $html .= '<td>'.$row['Trailer_No'].'</td>';
+        $html .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
+        $html .= '<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Search_Records_Modal" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button></td>';
+      }
+
+      $html .= '</tbody>
+              </table>';
+
+      echo json_encode($html);
+
+      $this->mysql = null;
       $this->user = null;
     }
   }
