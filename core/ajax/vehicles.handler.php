@@ -30,6 +30,8 @@
     $vehicles->QuickFlag($_POST['Ref'], $_POST['Flagged']);
   } else if($handler == "Vehicles.Search_Parking") {
     $vehicles->Search_Parking_Records($_POST['Key']);
+  } else if($handler == "Vehicles.Search_ANPR") {
+    $vehicles->Search_ANPR_Records($_POST['Key']);
   }
 
 ?>

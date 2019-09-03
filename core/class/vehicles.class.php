@@ -227,6 +227,91 @@
       $this->user = null;
       $this->pm = null;
     }
+    // Search ANPR Records VIA Modal
+    function Search_ANPR_Records($key)
+    {
+      $string = "%".$key."%";
+      $this->mssql = new MSSQL;
+      $this->pm = new PM;
+      $this->user = new User;
+      $campus = $this->user->Info("Site");
+
+      $stmt = $this->mssql->dbc->prepare("SELECT TOP 30 Plate, Capture_Date, Patch, Overview, Notes FROM ANPR_REX WHERE Plate LIKE ? OR Notes LIKE ? ORDER BY Capture_Date DESC");
+      $stmt->bindParam(1, $string);
+      $stmt->bindParam(2, $string);
+      $stmt->execute();
+
+      $stmt2 = $this->mssql->dbc->prepare("SELECT TOP 30 Plate, Capture_Date, Patch, Overview, Notes FROM ANPR_REX_Archive WHERE Plate LIKE ? OR Notes LIKE ? ORDER BY Capture_Date DESC");
+      $stmt2->bindParam(1, $string);
+      $stmt2->bindParam(2, $string);
+      $stmt2->execute();
+
+      $html = '<table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Plate</th>
+                    <th scope="col" style="width: 20%;">Trailer</th>
+                    <th scope="col">Capture Date</th>
+                  </tr>
+                </thead>
+                <tbody>';
+
+      foreach($stmt->fetchAll() as $row) {
+        $patch = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $row['Patch']);
+
+        $html .= '<tr>';
+        $html .= '<td>'.$row['Plate'].'</td>';
+        $html .= '<td>'.$row['Notes'].'</td>';
+        $html .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+        $html .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
+      }
+
+      $html .= '</tbody>
+              </table>';
+
+
+      $html2 = '<table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Plate</th>
+                    <th scope="col" style="width: 20%;">Trailer</th>
+                    <th scope="col">Capture Date</th>
+                  </tr>
+                </thead>
+                <tbody>';
+
+      foreach($stmt2->fetchAll() as $row) {
+        $patch = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $row['Patch']);
+
+        $html2 .= '<tr>';
+        $html2 .= '<td>'.$row['Plate'].'</td>';
+        $html2 .= '<td>'.$row['Notes'].'</td>';
+        $html2 .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+        $html2 .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
+      }
+
+      $html2 .= '</tbody>
+              </table>';
+
+      $return = '<ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="rex-tab" data-toggle="tab" href="#rex" role="tab" aria-controls="rex" aria-selected="true">Default</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="arc-tab" data-toggle="tab" href="#arc" role="tab" aria-controls="arc" aria-selected="false">Archived</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="rex" role="tabpanel" aria-labelledby="rex-tab">'.$html.'</div>
+        <div class="tab-pane fade" id="arc" role="tabpanel" aria-labelledby="arc-tab">'.$html2.'</div>
+      </div>';
+
+      echo json_encode($return);
+
+      $this->mssql = null;
+      $this->pm = null;
+      $this->user = null;
+    }
     // ALL VEHICLE TOOLS
     // PAID Feed is called via ajax when ID="PAID_FEED" is loaded in tpl
     function ALLVEH_Feed()
@@ -608,7 +693,7 @@
       $this->mysql = null;
       $this->user = null;
     }
-
+    // Yard Check
     function YardCheck()
     {
       $this->mysql = new MySQL;

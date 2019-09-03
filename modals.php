@@ -1153,7 +1153,7 @@
             <input type="text" class="form-control" name="Search_Payment_Str" id="Search_Payment_Str" placeholder="Search Payment Records...">
           </div>
           <div class="col">
-            <label for="Search_ANPR_Str">Search Payment Records</label>
+            <label for="Search_ANPR_Str">Search ANPR Records</label>
             <input type="text" class="form-control" name="Search_ANPR_Str" id="Search_ANPR_Str" placeholder="Search ANPR Records...">
           </div>
         </div>

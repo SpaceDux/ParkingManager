@@ -29,7 +29,6 @@
            $time = $result['Expiry'];
            $id = $result['Uniqueref'];
            $parked_expiry = date("Y-m-d H:i:s", strtotime($time.' +135 minutes'));
-           echo 'Plate: '.$plate.' | Time IN: '.$timein.' ANPR Date: '.$date.'<br>';
            if($parked_expiry >= $expiry) {
              $query = $this->mysql->dbc->prepare("SELECT * FROM automated_exit WHERE ANPR = ? AND Site = ?");
              $query->bindParam(1, $anpr_key);
@@ -48,14 +47,14 @@
                $query2->bindParam(4, $campus);
                $query2->execute();
                if($query2->execute()) {
-                 return json_encode(array("Result" => "1", "Message" => 'ParkingManager has automatically exit: '.$plate));
+                 echo json_encode(array("Result" => "1", "Message" => 'ParkingManager has automatically exit: '.$plate));
                }
              }
            } else {
                //do nothing
            }
          } else {
-           echo 'FALSE - Plate: '.$plate.' | Time IN: '.$timein.' ANPR Date: '.$date.'<br>';
+           // Do nothing
          }
        }
        $this->mssql = null;

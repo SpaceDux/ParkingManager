@@ -8,7 +8,7 @@
 	$_CONFIG['mysql']['port'] = '3306'; //The username for the database server
 	$_CONFIG['mysql']['user'] = 'root'; //The username for the database server
 	$_CONFIG['mysql']['pass'] = ''; //The password for the datebase server
-	$_CONFIG['mysql']['db'] = 'parking_manager'; //Select the database you want to connect too
+	$_CONFIG['mysql']['db'] = 'parking_manager4'; //Select the database you want to connect too
 
 	// Site Configuration
 	$_CONFIG['site']['url'] = 'http://192.168.3.18/ParkingManager'; //Server URL example.com (DOES NOT END WITH /)
