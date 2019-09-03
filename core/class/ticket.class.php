@@ -7,7 +7,7 @@
   class Ticket {
     public $ImgDir;
     function __construct() {
-      $this->ImgDir = $_SERVER['DOCUMENT_ROOT'].'/printerImg/';
+      $this->ImgDir = $_SERVER['DOCUMENT_ROOT'].'/PM4/printerImg/';
     }
     //Print Columns on ticket.
     function Printer_Columns($leftCol, $rightCol, $leftWidth, $rightWidth, $space = 0)
@@ -539,10 +539,10 @@
         foreach($group_results as $row) {
           $value=0;
           $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method = 1 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
-          $srv->bindParam(1, $campus);
-          $srv->bindParam(2, $row['id']);
-          $srv->bindParam(3, $date1);
-          $srv->bindParam(4, $date2);
+          $srv->bindValue(1, $campus);
+          $srv->bindValue(2, $row['Uniqueref']);
+          $srv->bindValue(3, $date1);
+          $srv->bindValue(4, $date2);
           $srv->execute();
           foreach($srv->fetchAll() as $service) {
             $multi = $service['Settlement_Multi'];
@@ -560,10 +560,10 @@
         foreach($group_results as $row) {
           $value=0;
           $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method = 2 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
-          $srv->bindParam(1, $campus);
-          $srv->bindParam(2, $row['id']);
-          $srv->bindParam(3, $date1);
-          $srv->bindParam(4, $date2);
+          $srv->bindValue(1, $campus);
+          $srv->bindValue(2, $row['Uniqueref']);
+          $srv->bindValue(3, $date1);
+          $srv->bindValue(4, $date2);
           $srv->execute();
           foreach($srv->fetchAll() as $service) {
             $multi = $service['Settlement_Multi'];
@@ -581,10 +581,10 @@
         foreach($group_results as $row) {
           $value=0;
           $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method = 3 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
-          $srv->bindParam(1, $campus);
-          $srv->bindParam(2, $row['id']);
-          $srv->bindParam(3, $date1);
-          $srv->bindParam(4, $date2);
+          $srv->bindValue(1, $campus);
+          $srv->bindValue(2, $row['Uniqueref']);
+          $srv->bindValue(3, $date1);
+          $srv->bindValue(4, $date2);
           $srv->execute();
           foreach($srv->fetchAll() as $service) {
             $multi = $service['Settlement_Multi'];
@@ -602,10 +602,10 @@
         foreach($group_results as $row) {
           $value=0;
           $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method >= 4 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
-          $srv->bindParam(1, $campus);
-          $srv->bindParam(2, $row['id']);
-          $srv->bindParam(3, $date1);
-          $srv->bindParam(4, $date2);
+          $srv->bindValue(1, $campus);
+          $srv->bindValue(2, $row['Uniqueref']);
+          $srv->bindValue(3, $date1);
+          $srv->bindValue(4, $date2);
           $srv->execute();
           foreach($srv->fetchAll() as $service) {
             $multi = $service['Settlement_Multi'];
