@@ -8,12 +8,16 @@
     $vehicles->ALLVEH_Feed();
   } else if($handler == "Vehicles.ANPR_Duplicate") {
     $vehicles->ANPR_Duplicate($_POST['Uniqueref']);
+  } else if($handler == "Vehicles.ANPR_Secondary_Duplicate") {
+    $vehicles->ANPR_Secondary_Duplicate($_POST['Uniqueref']);
   } else if($handler == "Vehicles.ANPR_AddPlate") {
     $vehicles->ANPR_AddPlate($_POST['Plate'], $_POST['Time']);
   } else if($handler == "Vehicles.ANPR_GetImages") {
     $vehicles->ANPR_GetImages($_POST['Ref']);
   } else if($handler == "Vehicles.ANPR_Update") {
     $vehicles->ANPR_Update($_POST['Update_Ref'], $_POST['Update_Plate'], $_POST['Update_Trl'], $_POST['Update_Time']);
+  } else if($handler == "Vehicles.ANPR_Secondary_Update") {
+    $vehicles->ANPR_Secondary_Update($_POST['Update_Secondary_Ref'], $_POST['Update_Secondary_Plate'], $_POST['Update_Secondary_Trl'], $_POST['Update_Secondary_Time']);
   } else if($handler == "Vehicles.TimeCalc") {
     $vehicles->timeCalc($_POST['Time1'], $_POST['Time2']);
   } else if($handler == "Vehicles.Parking_GetImages") {

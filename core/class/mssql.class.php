@@ -4,6 +4,7 @@
   {
     #Variables
     public $dbc;
+    public $dbc2;
     private $mysql;
     private $user;
     private $campus;
@@ -21,8 +22,17 @@
             die("MSSQL Engine Error: ".$e->getMessage());
           }
         } else {
-        //Do nothing, no need to establish any connection
-        //as user is not logged in.
+          // Do nothing
+        }
+
+      if($this->pm->Site_Info($campus, "Secondary_ANPR") == 1) {
+        try {
+          $this->dbc2 = new \PDO('sqlsrv:Server='.$this->pm->Site_Info($campus, 'Secondary_ANPR_IP').';Database='.$this->pm->Site_Info($campus,'Secondary_ANPR_DB').'', $this->pm->Site_Info($campus, 'Secondary_ANPR_User'), $this->pm->Site_Info($campus, 'Secondary_ANPR_Pass'));
+        } catch (\PDOException $e) {
+          die("MSSQL Engine Error: ".$e->getMessage());
+        }
+      } else {
+        //do nothing
       }
       $this->mysql = null;
       $this->user = null;

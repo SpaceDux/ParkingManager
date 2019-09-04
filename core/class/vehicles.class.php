@@ -6,73 +6,248 @@
     protected $mssql;
     // ANPR TOOLS
     // ANPR Feed is called via ajax when ID="ANPR_FEED" is loaded in tpl
+    // function ANPR_Feed1()
+    // {
+    //   //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
+    //   $this->user = new User;
+    //   $campus = $this->user->Info("Site");
+    //   $count_anpr = 0;
+    //   if($this->user->Info("ANPR") == 1) {
+    //     $this->mssql = new MSSQL;
+    //     $this->pm = new PM;
+    //     $query = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+    //     $query->execute();
+    //     $result = $query->fetchAll();
+    //     $table = '<table class="table table-dark table-bordered table-hover">
+    //     <thead>
+    //       <tr>
+    //         <th scope="col">Registration</th>
+    //         <th scope="col">Time IN</th>
+    //         <th scope="col">Patch</th>
+    //         <th scope="col"><i class="fa fa-cog"></i></th>
+    //       </tr>
+    //       </thead>
+    //     <tbody>';
+    //     foreach ($result as $row) {
+    //       $count_anpr++;
+    //       $plate = '\''.$row['Plate'].'\'';
+    //       $trl = '\''.$row['Notes'].'\'';
+    //       $date = '\''.$row['Capture_Date'].'\'';
+    //       //Get The right Path now.
+    //       if(isset($campus)) {
+    //         $patch = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $row['Patch']);
+    //         // $patch = "";
+    //       } else {
+    //         $patch = "";
+    //       }
+    //       $number = $this->pm->Hour($row['Capture_Date'], "");
+    //       $style = "";
+    //       if($number >= 2 && $number < 4) {
+    //         $style = "table-warning";
+    //       } else if ($number >= 4) {
+    //         $style = "table-danger";
+    //       }
+    //       //Begin Table.
+    //       $table .= '<tr id="ANPR_Feed_'.$row['Uniqueref'].'" class="'.$style.'">';
+    //       $table .= '<td>'.$row['Plate'].'</td>';
+    //       $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+    //       $table .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
+    //       $table .= '<td>
+    //                   <div class="btn-group" role="group" aria-label="Options">
+    //                     <button type="button" onClick="ANPR_Update('.$row['Uniqueref'].', '.$plate.', '.$date.', '.$trl.')" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
+    //                     <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', '.$plate.', '.$trl.', '.$date.', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+    //                     <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
+    //                   </div>
+    //                 </td>';
+    //       $table .= '</tr>';
+    //     }
+    //     $table .= '</tbody>
+    //             </table>';
+    //     $result = array("Feed" => $table
+    //   );
+    //     echo json_encode($result);
+    //     $this->mssql = null;
+    //     $this->pm = null;
+    //   } else {
+    //     //nothing yet.
+    //     echo "ANPR has been disabled on your account.";
+    //   }
+    //   $this->user = null;
+    // }
     function ANPR_Feed()
     {
-      //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
       $this->user = new User;
+      $this->pm = new PM;
       $campus = $this->user->Info("Site");
-      $count_anpr = 0;
       if($this->user->Info("ANPR") == 1) {
         $this->mssql = new MSSQL;
-        $this->pm = new PM;
-        $query = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
-        $query->execute();
-        $result = $query->fetchAll();
-        $table = '<table class="table table-dark table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Registration</th>
-            <th scope="col">Time IN</th>
-            <th scope="col">Patch</th>
-            <th scope="col"><i class="fa fa-cog"></i></th>
-          </tr>
-          </thead>
-        <tbody>';
-        foreach ($result as $row) {
-          $count_anpr++;
-          $plate = '\''.$row['Plate'].'\'';
-          $trl = '\''.$row['Notes'].'\'';
-          $date = '\''.$row['Capture_Date'].'\'';
-          //Get The right Path now.
-          if(isset($campus)) {
-            $patch = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $row['Patch']);
-            // $patch = "";
-          } else {
-            $patch = "";
+        $html = '';
+        if($this->pm->Site_Info($campus, "Secondary_ANPR") == 1) {
+          // My Site ANPR Feed
+          $mine = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+          $mine->execute();
+          // Secondary ANPR Feed
+          $sec = $this->mssql->dbc2->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+          $sec->execute();
+          $mine_tbl = '<table class="table table-dark table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Registration</th>
+              <th scope="col">Time IN</th>
+              <th scope="col">Patch</th>
+              <th scope="col"><i class="fa fa-cog"></i></th>
+            </tr>
+            </thead>
+          <tbody>';
+
+          $sec_tbl = '<table class="table table-dark table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Registration</th>
+              <th scope="col">Time IN</th>
+              <th scope="col">Patch</th>
+              <th scope="col"><i class="fa fa-cog"></i></th>
+            </tr>
+            </thead>
+          <tbody>';
+          // Mine Table
+          foreach ($mine->fetchAll() as $row) {
+            $plate = '\''.$row['Plate'].'\'';
+            $trl = '\''.$row['Notes'].'\'';
+            $date = '\''.$row['Capture_Date'].'\'';
+            //Get The right Path now.
+            if(isset($campus)) {
+              $patch = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $row['Patch']);
+              // $patch = "";
+            } else {
+              $patch = "";
+            }
+            $number = $this->pm->Hour($row['Capture_Date'], "");
+            $style = "";
+            if($number >= 2 && $number < 4) {
+              $style = "table-warning";
+            } else if ($number >= 4) {
+              $style = "table-danger";
+            }
+            //Begin Table.
+            $mine_tbl .= '<tr id="ANPR_Feed_'.$row['Uniqueref'].'" class="'.$style.'">';
+            $mine_tbl .= '<td>'.$row['Plate'].'</td>';
+            $mine_tbl .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+            $mine_tbl .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
+            $mine_tbl .= '<td>
+                        <div class="btn-group" role="group" aria-label="Options">
+                          <button type="button" onClick="ANPR_Update('.$row['Uniqueref'].', '.$plate.', '.$date.', '.$trl.')" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
+                          <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', '.$plate.', '.$trl.', '.$date.', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                          <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                        </div>
+                      </td>';
+            $mine_tbl .= '</tr>';
           }
-          $number = $this->pm->Hour($row['Capture_Date'], "");
-          $style = "";
-          if($number >= 2 && $number < 4) {
-            $style = "table-warning";
-          } else if ($number >= 4) {
-            $style = "table-danger";
+          $mine_tbl .= '</tbody>
+                  </table>';
+          // Mine Table
+          foreach ($sec->fetchAll() as $row) {
+            $plate = '\''.$row['Plate'].'\'';
+            $trl = '\''.$row['Notes'].'\'';
+            $date = '\''.$row['Capture_Date'].'\'';
+            //Get The right Path now.
+            if(isset($campus)) {
+              $patch = str_replace($this->pm->Site_Info($campus, 'Secondary_ANPR_Imgstr'), $this->pm->Site_Info($campus, 'Secondary_ANPR_Img'), $row['Patch']);
+              // $patch = "";
+            } else {
+              $patch = "";
+            }
+            $number = $this->pm->Hour($row['Capture_Date'], "");
+            $style = "";
+            if($number >= 2 && $number < 4) {
+              $style = "table-warning";
+            } else if ($number >= 4) {
+              $style = "table-danger";
+            }
+            //Begin Table.
+            $sec_tbl .= '<tr id="ANPR_Secondary_Feed_'.$row['Uniqueref'].'" class="'.$style.'">';
+            $sec_tbl .= '<td>'.$row['Plate'].'</td>';
+            $sec_tbl .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+            $sec_tbl .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
+            $sec_tbl .= '<td>
+                        <div class="btn-group" role="group" aria-label="Options">
+                          <button type="button" onClick="ANPR_Secondary_Update('.$row['Uniqueref'].', '.$plate.', '.$date.', '.$trl.')" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
+                          <button type="button" onClick="ANPR_Secondary_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                        </div>
+                      </td>';
+            $sec_tbl .= '</tr>';
           }
-          //Begin Table.
-          $table .= '<tr id="ANPR_Feed_'.$row['Uniqueref'].'" class="'.$style.'">';
-          $table .= '<td>'.$row['Plate'].'</td>';
-          $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
-          $table .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
-          $table .= '<td>
-                      <div class="btn-group" role="group" aria-label="Options">
-                        <button type="button" onClick="ANPR_Update('.$row['Uniqueref'].', '.$plate.', '.$date.', '.$trl.')" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
-                        <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', '.$plate.', '.$trl.', '.$date.', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
-                        <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                      </div>
-                    </td>';
-          $table .= '</tr>';
+          $sec_tbl .= '</tbody>
+                  </table>';
+
+          $html .= '<ul class="nav nav-tabs" id="myTab2" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="primary-tab" data-toggle="tab" href="#primary" role="tab" aria-controls="primary" aria-selected="true"><i class="fa fa-video red"></i> My ANPR Feed</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="secondary-tab" data-toggle="tab" href="#secondary" role="tab" aria-controls="secondary" aria-selected="false">Secondary ANPR Feed</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent2">
+                      <div class="tab-pane fade show active" id="primary" role="tabpanel" aria-labelledby="primary-tab">'.$mine_tbl.'</div>
+                      <div class="tab-pane fade" id="secondary" role="tabpanel" aria-labelledby="secondary-tab">'.$sec_tbl.'</div>
+                    </div>';
+
+          echo json_encode(array("Feed" => $html));
+        } else {
+          $mine_tbl = '<table class="table table-dark table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Registration</th>
+              <th scope="col">Time IN</th>
+              <th scope="col">Patch</th>
+              <th scope="col"><i class="fa fa-cog"></i></th>
+            </tr>
+            </thead>
+          <tbody>';
+          // My Site ANPR Feed
+          $mine = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+          $mine->execute();
+          // Mine Table
+          foreach ($mine->fetchAll() as $row) {
+            $plate = '\''.$row['Plate'].'\'';
+            $trl = '\''.$row['Notes'].'\'';
+            $date = '\''.$row['Capture_Date'].'\'';
+            //Get The right Path now.
+            if(isset($campus)) {
+              $patch = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $row['Patch']);
+              // $patch = "";
+            } else {
+              $patch = "";
+            }
+            $number = $this->pm->Hour($row['Capture_Date'], "");
+            $style = "";
+            if($number >= 2 && $number < 4) {
+              $style = "table-warning";
+            } else if ($number >= 4) {
+              $style = "table-danger";
+            }
+            //Begin Table.
+            $mine_tbl .= '<tr id="ANPR_Feed_'.$row['Uniqueref'].'" class="'.$style.'">';
+            $mine_tbl .= '<td>'.$row['Plate'].'</td>';
+            $mine_tbl .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+            $mine_tbl .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
+            $mine_tbl .= '<td>
+                        <div class="btn-group" role="group" aria-label="Options">
+                          <button type="button" onClick="ANPR_Update('.$row['Uniqueref'].', '.$plate.', '.$date.', '.$trl.')" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
+                          <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', '.$plate.', '.$trl.', '.$date.', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
+                          <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                        </div>
+                      </td>';
+            $mine_tbl .= '</tr>';
+          }
+          $mine_tbl .= '</tbody>
+                  </table>';
+          echo json_encode(array("Feed" => $mine_tbl));
         }
-        $table .= '</tbody>
-                </table>';
-        $result = array("Feed" => $table
-      );
-        echo json_encode($result);
-        $this->mssql = null;
-        $this->pm = null;
       } else {
-        //nothing yet.
-        echo "ANPR has been disabled on your account.";
+        echo json_encode("Your ANPR has been disabled.");
       }
-      $this->user = null;
     }
     // Count all vehicles in ANPR
     function ANPR_Feed_Count()
@@ -100,6 +275,21 @@
       $this->mssql = new MSSQL;
 
       $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 11 WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $ref);
+      if($stmt->execute()) {
+        print_r("SUCCESSFUL");
+      } else {
+        print_r("SUCCESSFUL");
+      }
+
+      $this->mssql = null;
+    }
+    // ANPR Duplicate vehicle, remove from feed.
+    function ANPR_Secondary_Duplicate($ref)
+    {
+      $this->mssql = new MSSQL;
+
+      $stmt = $this->mssql->dbc2->prepare("UPDATE ANPR_REX SET Status = 11 WHERE Uniqueref = ?");
       $stmt->bindParam(1, $ref);
       if($stmt->execute()) {
         print_r("SUCCESSFUL");
@@ -141,6 +331,27 @@
         $plate = strip_tags(strtoupper($plate));
         $trl = strip_tags(strtoupper($trl));
         $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ?, Capture_Date = ?, Notes = ? WHERE Uniqueref = ?");
+        $stmt->bindParam(1, $plate);
+        $stmt->bindParam(2, $time);
+        $stmt->bindParam(3, $trl);
+        $stmt->bindParam(4, $ref);
+        if($stmt->execute()) {
+          echo "SUCCESSFUL";
+        } else {
+          echo "UNSUCCESSFUL";
+        }
+      }
+
+      $this->mssql = null;
+    }
+    // Update ANPR Secondary Record
+    function ANPR_Secondary_Update($ref, $plate, $trl = '', $time)
+    {
+      $this->mssql = new MSSQL;
+      if(!empty($plate) AND !empty($time)) {
+        $plate = strip_tags(strtoupper($plate));
+        $trl = strip_tags(strtoupper($trl));
+        $stmt = $this->mssql->dbc2->prepare("UPDATE ANPR_REX SET Plate = ?, Capture_Date = ?, Notes = ? WHERE Uniqueref = ?");
         $stmt->bindParam(1, $plate);
         $stmt->bindParam(2, $time);
         $stmt->bindParam(3, $trl);

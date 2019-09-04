@@ -16,6 +16,16 @@
       data: {Uniqueref:str}
     });
   }
+  // Mark a record as Duplicate
+  function ANPR_Secondary_Duplicate(str) {
+    event.preventDefault();
+    $('#ANPR_Secondary_Feed_'+str).addClass('Hide');
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_Secondary_Duplicate",
+      method: "POST",
+      data: {Uniqueref:str}
+    });
+  }
   //Refresh ANPR feed
   function ANPR_Feed_Refresh() {
     event.preventDefault();
@@ -88,6 +98,40 @@
             ANPR_Feed_Refresh();
             $('#ANPR_Update_Form')[0].reset();
             $('#ANPR_Update_Modal').modal('hide');
+          }
+        });
+        return false;
+      }
+    });
+  }
+  function ANPR_Secondary_Update(Ref, Plate, Time, Trl) {
+    $('input[name="Update_Secondary_Ref"]').val(Ref);
+    $('input[name="Update_Secondary_Plate"]').val(Plate);
+    $('input[name="Update_Secondary_Trl"]').val(Trl);
+    $('input[name="Update_Secondary_Time"]').val(Time);
+    $('#ANPR_Secondary_Update_Modal').modal('show');
+    $('#ANPR_Secondary_Update_Modal').find('[autofocus]').focus();
+    // Query
+    $('#ANPR_Secondary_Update_Save').on('click', function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if($('input[name="Update_Secondary_Plate"]').val() == "") {
+        $('input[name="Update_Secondary_Plate"]').addClass("is-invalid");
+      } else if($('input[name="Update_Secondary_Time"]').val() == "") {
+        $('input[name="Update_Secondary_Time"]').addClass("is-invalid");
+      } else {
+        $('input[name="Update_Secondary_Plate"]').removeClass("is-invalid");
+        $('input[name="Update_Secondary_Time"]').removeClass("is-invalid");
+        var Data = $('#ANPR_Secondary_Update_Form').serialize();
+        $.ajax({
+          url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_Secondary_Update",
+          method: "POST",
+          data: Data,
+          dataType: "text",
+          success:function() {
+            ANPR_Feed_Refresh();
+            $('#ANPR_Secondary_Update_Form')[0].reset();
+            $('#ANPR_Secondary_Update_Modal').modal('hide');
           }
         });
         return false;
