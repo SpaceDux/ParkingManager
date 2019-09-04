@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{SITE_NAME}: User Management</title>
+    <title>{SITE_NAME}: YardCheck</title>
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/vision.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/dataTables.bootstrap4.min.css">

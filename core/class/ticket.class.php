@@ -35,7 +35,7 @@
       } else if ($group == 3) {
         $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed);
       } else if ($group == 1) {
-        $this->Printer_Misc($shower_count, $wifi_count, $tid, $payment_type, $gross, $nett, $Processed);
+        $this->Printer_Misc($shower_count, $wifi_count, $tid, $payment_type, $gross, $net, $Processed);
       }
     }
     //Begin Tickets

@@ -4,9 +4,6 @@
   {
     protected $mysql;
     protected $mssql;
-    public $count_paid;
-    public $count_renewal;
-    public $count_anpr;
     // ANPR TOOLS
     // ANPR Feed is called via ajax when ID="ANPR_FEED" is loaded in tpl
     function ANPR_Feed()
