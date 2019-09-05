@@ -77,6 +77,15 @@
     $('input[name="Update_Time"]').val(Time);
     $('#ANPR_Update_Modal').modal('show');
     $('#ANPR_Update_Modal').find('[autofocus]').focus();
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_GetImages",
+      data: {Ref:Ref},
+      method: "POST",
+      dataType: "json",
+      success:function(Response) {
+        $('#ANPR_Update_Img').html(Response);
+      }
+    });
     // Query
     $('#ANPR_Update_Save').on('click', function(e) {
       e.preventDefault();
@@ -111,6 +120,15 @@
     $('input[name="Update_Secondary_Time"]').val(Time);
     $('#ANPR_Secondary_Update_Modal').modal('show');
     $('#ANPR_Secondary_Update_Modal').find('[autofocus]').focus();
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_Secondary_GetImages",
+      data: {Ref:Ref},
+      method: "POST",
+      dataType: "json",
+      success:function(Response) {
+        $('#ANPR_Secondary_Update_Img').html(Response);
+      }
+    });
     // Query
     $('#ANPR_Secondary_Update_Save').on('click', function(e) {
       e.preventDefault();
@@ -353,6 +371,34 @@
         dataType: "json",
         success:function(Data) {
           $('#Search_Results').html(Data);
+        }
+      });
+    }
+  });
+  $(document).on('submit', '#PM_Director_Form', function() {
+    event.preventDefault();
+    var Plate = $('#Director_Plate').val();
+    if(Plate == '') {
+      $.notify('Please enter a valid FULL vehicle registration number!', {className:'error',globalPosition: 'top left',});
+    } else {
+      $.ajax({
+        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.Director",
+        data: {Plate:Plate},
+        method: "POST",
+        dataType: "json",
+        success:function(Data) {
+          if(Data.Result == 1) {
+            // PM Result
+            $('#PM_Director_Modal').modal('toggle');
+            $('#PM_Director_Form')[0].reset();
+            UpdateVehPaneToggle(Data.Ref, Data.Time);
+          } else if(Data.Result == 2) {
+            $('#PM_Director_Modal').modal('toggle');
+            $('#PM_Director_Form')[0].reset();
+            PaymentPaneToggle(Data.Ref, Data.Plate, Data.Trl, Data.Time, Data.Type);
+          } else if(Data.Result == 3) {
+            $.notify(Data.Message, {className:'error',globalPosition: 'top-left',});
+          }
         }
       });
     }

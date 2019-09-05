@@ -30,7 +30,7 @@
            $id = $result['Uniqueref'];
            $parked_expiry = date("Y-m-d H:i:s", strtotime($time.' +135 minutes'));
            if($parked_expiry >= $expiry) {
-             $query = $this->mysql->dbc->prepare("SELECT * FROM automated_exit WHERE ANPR = ? AND Site = ?");
+             $query = $this->mysql->dbc->prepare("SELECT * FROM automated_exit WHERE ANPRRef = ? AND Site = ?");
              $query->bindParam(1, $anpr_key);
              $query->bindParam(2, $campus);
              $query->execute();
@@ -40,10 +40,10 @@
                $query->bindParam(1, $date);
                $query->bindParam(2, $id);
                $query->execute();
-               $query2 = $this->mysql->dbc->prepare("INSERT INTO automated_exit VALUES (?, ?, ?, ?)");
+               $query2 = $this->mysql->dbc->prepare("INSERT INTO automated_exit VALUES ('', ?, ?, ?, ?)");
                $query2->bindParam(1, $id);
-               $query2->bindParam(2, $expiry);
-               $query2->bindParam(3, $anpr_key);
+               $query2->bindParam(2, $anpr_key);
+               $query2->bindParam(3, $expiry);
                $query2->bindParam(4, $campus);
                $query2->execute();
                if($query2->execute()) {

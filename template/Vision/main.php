@@ -411,7 +411,7 @@
             <div class="Title">
               <i class="fa fa-video" style="color: red; padding-right: 10px;"></i>  Live ANPR Feed
               <div class="btn-group float-right" role="group" aria-label="Button group with nested dropdown">
-                <button type="button" class="btn btn-secondary"><i class="fa fa-search"></i></button>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#PM_Director_Modal"><i class="fa fa-search"></i></button>
                 <button type="button" class="btn btn-secondary" onClick="ANPR_AddPlate()"><i class="fa fa-plus"></i></button>
                 <button type="button" class="btn btn-secondary" onClick="ANPR_Feed_Refresh()"><i class="fa fa-redo-alt"></i></button>
               </div>

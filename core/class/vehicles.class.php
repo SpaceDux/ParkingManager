@@ -6,74 +6,6 @@
     protected $mssql;
     // ANPR TOOLS
     // ANPR Feed is called via ajax when ID="ANPR_FEED" is loaded in tpl
-    // function ANPR_Feed1()
-    // {
-    //   //Lane ID is set to 0 for entry on SNAP's new ANPR (Otherwise 1)
-    //   $this->user = new User;
-    //   $campus = $this->user->Info("Site");
-    //   $count_anpr = 0;
-    //   if($this->user->Info("ANPR") == 1) {
-    //     $this->mssql = new MSSQL;
-    //     $this->pm = new PM;
-    //     $query = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
-    //     $query->execute();
-    //     $result = $query->fetchAll();
-    //     $table = '<table class="table table-dark table-bordered table-hover">
-    //     <thead>
-    //       <tr>
-    //         <th scope="col">Registration</th>
-    //         <th scope="col">Time IN</th>
-    //         <th scope="col">Patch</th>
-    //         <th scope="col"><i class="fa fa-cog"></i></th>
-    //       </tr>
-    //       </thead>
-    //     <tbody>';
-    //     foreach ($result as $row) {
-    //       $count_anpr++;
-    //       $plate = '\''.$row['Plate'].'\'';
-    //       $trl = '\''.$row['Notes'].'\'';
-    //       $date = '\''.$row['Capture_Date'].'\'';
-    //       //Get The right Path now.
-    //       if(isset($campus)) {
-    //         $patch = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $row['Patch']);
-    //         // $patch = "";
-    //       } else {
-    //         $patch = "";
-    //       }
-    //       $number = $this->pm->Hour($row['Capture_Date'], "");
-    //       $style = "";
-    //       if($number >= 2 && $number < 4) {
-    //         $style = "table-warning";
-    //       } else if ($number >= 4) {
-    //         $style = "table-danger";
-    //       }
-    //       //Begin Table.
-    //       $table .= '<tr id="ANPR_Feed_'.$row['Uniqueref'].'" class="'.$style.'">';
-    //       $table .= '<td>'.$row['Plate'].'</td>';
-    //       $table .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
-    //       $table .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
-    //       $table .= '<td>
-    //                   <div class="btn-group" role="group" aria-label="Options">
-    //                     <button type="button" onClick="ANPR_Update('.$row['Uniqueref'].', '.$plate.', '.$date.', '.$trl.')" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
-    //                     <button type="button" onClick="PaymentPaneToggle('.$row['Uniqueref'].', '.$plate.', '.$trl.', '.$date.', 1)" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>
-    //                     <button type="button" onClick="ANPR_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
-    //                   </div>
-    //                 </td>';
-    //       $table .= '</tr>';
-    //     }
-    //     $table .= '</tbody>
-    //             </table>';
-    //     $result = array("Feed" => $table
-    //   );
-    //     echo json_encode($result);
-    //     $this->mssql = null;
-    //     $this->pm = null;
-    //   } else {
-    //     //nothing yet.
-    //     echo "ANPR has been disabled on your account.";
-    //   }
-    //   $this->user = null;
-    // }
     function ANPR_Feed()
     {
       $this->user = new User;
@@ -305,6 +237,7 @@
       $this->mssql = new MSSQL;
       //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID, BarcodeExpression)
       $plate = str_replace(" ","", $plate);
+      $plate = str_replace("-","", $plate);
       if(!empty($plate) AND !empty($time)) {
         $plate = strip_tags(strtoupper($plate));
         //Includes latest anpr update.
@@ -314,11 +247,7 @@
         $stmt->bindParam(':createdDate', $time);
         $stmt->bindParam(':plate2', $plate);
         $stmt->bindParam(':capDate2', $time);
-        if($stmt->execute()) {
-          echo "SUCCESSFUL";
-        } else {
-          echo "UNSUCCESSFUL";
-        }
+        $stmt->execute();
       }
 
       $this->mssql = null;
@@ -410,6 +339,39 @@
       $this->user = null;
       $this->pm = null;
     }
+    // get images secondary
+    function ANPR_Secondary_GetImages($ref)
+    {
+      $this->mssql = new MSSQL;
+      $this->user = new User;
+      $this->pm = new PM;
+
+      $campus = $this->user->Info("Site");
+
+      $html = "";
+
+      $stmt = $this->mssql->dbc2->prepare("SELECT Overview, Patch FROM ANPR_REX WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $ref);
+      $stmt->execute();
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+      if(count($result) > 0) {
+        if($result['Patch'] != "") {
+          $patch = str_replace($this->pm->Site_Info($campus, 'Secondary_ANPR_Imgstr'), $this->pm->Site_Info($campus, 'Secondary_ANPR_Img'), $result['Patch']);
+          $overview = str_replace($this->pm->Site_Info($campus, 'Secondary_ANPR_Imgstr'), $this->pm->Site_Info($campus, 'Secondary_ANPR_Img'), $result['Overview']);
+          $html .= '<img src="'.$patch.'" alt="" class="img-thumbnail">';
+          $html .= '<img src="'.$overview.'" alt="" class="img-thumbnail">';
+        } else {
+          $html .= "";
+        }
+        echo json_encode($html);
+      } else {
+        $html .= "";
+      }
+
+      $this->mssql = null;
+      $this->user = null;
+      $this->pm = null;
+    }
     // get images
     function ANPR_Info($ref, $what)
     {
@@ -444,12 +406,12 @@
       $this->user = new User;
       $campus = $this->user->Info("Site");
 
-      $stmt = $this->mssql->dbc->prepare("SELECT TOP 30 Plate, Capture_Date, Patch, Overview, Notes FROM ANPR_REX WHERE Plate LIKE ? OR Notes LIKE ? ORDER BY Capture_Date DESC");
+      $stmt = $this->mssql->dbc->prepare("SELECT TOP 30 Plate, Capture_Date, Patch, Overview, Notes, Lane_Name FROM ANPR_REX WHERE Plate LIKE ? OR Notes LIKE ? ORDER BY Capture_Date DESC");
       $stmt->bindParam(1, $string);
       $stmt->bindParam(2, $string);
       $stmt->execute();
 
-      $stmt2 = $this->mssql->dbc->prepare("SELECT TOP 30 Plate, Capture_Date, Patch, Overview, Notes FROM ANPR_REX_Archive WHERE Plate LIKE ? OR Notes LIKE ? ORDER BY Capture_Date DESC");
+      $stmt2 = $this->mssql->dbc->prepare("SELECT TOP 30 Plate, Capture_Date, Patch, Overview, Notes, Lane_Name FROM ANPR_REX_Archive WHERE Plate LIKE ? OR Notes LIKE ? ORDER BY Capture_Date DESC");
       $stmt2->bindParam(1, $string);
       $stmt2->bindParam(2, $string);
       $stmt2->execute();
@@ -460,6 +422,7 @@
                     <th scope="col">Plate</th>
                     <th scope="col" style="width: 20%;">Trailer</th>
                     <th scope="col">Capture Date</th>
+                    <th scope="col">Lane</th>
                   </tr>
                 </thead>
                 <tbody>';
@@ -471,6 +434,7 @@
         $html .= '<td>'.$row['Plate'].'</td>';
         $html .= '<td>'.$row['Notes'].'</td>';
         $html .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+        $html .= '<td>'.$row['Lane_Name'].'</td>';
         $html .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
       }
 
@@ -484,6 +448,7 @@
                     <th scope="col">Plate</th>
                     <th scope="col" style="width: 20%;">Trailer</th>
                     <th scope="col">Capture Date</th>
+                    <th scope="col">Lane</th>
                   </tr>
                 </thead>
                 <tbody>';
@@ -495,6 +460,7 @@
         $html2 .= '<td>'.$row['Plate'].'</td>';
         $html2 .= '<td>'.$row['Notes'].'</td>';
         $html2 .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+        $html2 .= '<td>'.$row['Lane_Name'].'</td>';
         $html2 .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
       }
 
@@ -1009,6 +975,39 @@
 
       echo json_encode($html);
 
+      $this->mysql = null;
+      $this->user = null;
+    }
+    // Director
+    function Director($Plate)
+    {
+      $this->mssql = new MSSQL;
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      // Params
+      $Site = $this->user->Info("Site");
+
+      // First Check PM Record
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate = ? AND Site = ? AND Parked_Column = 1");
+      $stmt->bindParam(1, $Plate);
+      $stmt->bindParam(2, $Site);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        echo json_encode(array("Result" => "1", "Ref" => $result['Uniqueref'], "Time" => $result['Arrival'], "Plate" => $result['Plate'], "Trl" => $result['Trailer_No']));
+      } else {
+        $stmt2 = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Plate = ? AND Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11", array(\PDO::ATTR_CURSOR => \PDO::CURSOR_SCROLL));
+        $stmt2->bindParam(1, $Plate);
+        $stmt2->execute();
+        if($stmt2->rowCount() > 0) {
+          $result2 = $stmt2->fetch(\PDO::FETCH_ASSOC);
+          echo json_encode(array("Result" => "2", "Ref" => $result2['Uniqueref'], "Time" => $result2['Capture_Date'], "Plate" => $result2['Plate'], "Trl" => $result2['Notes'], "Type" => 1));
+        } else {
+          echo json_encode(array("Result" => "3", "Message" => "Unable to find a record connected to that plate. Please add this vehicle into the ANPR and continue"));
+        }
+      }
+
+      $this->mssql = null;
       $this->mysql = null;
       $this->user = null;
     }

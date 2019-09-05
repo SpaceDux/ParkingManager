@@ -38,20 +38,28 @@
       </div>
       <div class="modal-body">
         <form class="form-row" id="ANPR_Update_Form">
-          <div class="col">
-            <label>Registration Plate</label>
-            <input type="hidden" class="form-control" name="Update_Ref">
-            <input type="text" class="form-control" name="Update_Plate" placeholder="GH11GFD" style="text-transform: uppercase;" autofocus>
+            <div class="row">
+              <div class="col">
+                <label>Registration Plate</label>
+                <input type="hidden" class="form-control" name="Update_Ref">
+                <input type="text" class="form-control" name="Update_Plate" placeholder="GH11GFD" style="text-transform: uppercase;" autofocus>
+              </div>
+              <div class="col">
+                <label>Trailer Number</label>
+                <input type="text" class="form-control" name="Update_Trl" style="text-transform: uppercase;">
+              </div>
+              <div class="col">
+                <label>Time of Arrival</label>
+                <input type="text" class="form-control" name="Update_Time">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div id="ANPR_Update_Img">
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col">
-            <label>Trailer Number</label>
-            <input type="text" class="form-control" name="Update_Trl" style="text-transform: uppercase;">
-          </div>
-          <div class="col">
-            <label>Time of Arrival</label>
-            <input type="text" class="form-control" name="Update_Time">
-          </div>
-        </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <input type="submit" class="btn btn-primary" id="ANPR_Update_Save" value="Save Changes">
@@ -1181,23 +1189,57 @@
       </div>
       <div class="modal-body">
         <form class="form-row" id="ANPR_Secondary_Update_Form">
-          <div class="col">
-            <label>Registration Plate</label>
-            <input type="hidden" class="form-control" name="Update_Secondary_Ref">
-            <input type="text" class="form-control" name="Update_Secondary_Plate" placeholder="GH11GFD" style="text-transform: uppercase;" autofocus>
+          <div class="row">
+            <div class="col">
+              <label>Registration Plate</label>
+              <input type="hidden" class="form-control" name="Update_Secondary_Ref">
+              <input type="text" class="form-control" name="Update_Secondary_Plate" placeholder="GH11GFD" style="text-transform: uppercase;" autofocus>
+            </div>
+            <div class="col">
+              <label>Trailer Number</label>
+              <input type="text" class="form-control" name="Update_Secondary_Trl" style="text-transform: uppercase;">
+            </div>
+            <div class="col">
+              <label>Time of Arrival</label>
+              <input type="text" class="form-control" name="Update_Secondary_Time">
+            </div>
           </div>
-          <div class="col">
-            <label>Trailer Number</label>
-            <input type="text" class="form-control" name="Update_Secondary_Trl" style="text-transform: uppercase;">
-          </div>
-          <div class="col">
-            <label>Time of Arrival</label>
-            <input type="text" class="form-control" name="Update_Secondary_Time">
+          <div class="row">
+            <div class="col">
+              <div id="ANPR_Secondary_Update_Img">
+
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <input type="submit" class="btn btn-primary" id="ANPR_Secondary_Update_Save" value="Save Changes">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- PM Director Modal -->
+<div class="modal" id="PM_Director_Modal" tabindex="-1" role="dialog" aria-labelledby="PM_Director_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Vehicle Director</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-row" id="PM_Director_Form">
+          <div class="col">
+            <label>Registration Plate (Enter in Full)</label>
+            <input type="text" class="form-control" name="Plate" id="Director_Plate" placeholder="GH11GFD" style="text-transform: uppercase;" autofocus>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" id="Director_Submit" value="Save Changes">
         </div>
       </form>
     </div>
