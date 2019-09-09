@@ -984,32 +984,65 @@
       $this->mssql = new MSSQL;
       $this->mysql = new MySQL;
       $this->user = new User;
+      $this->pm = new PM;
       // Params
       $Site = $this->user->Info("Site");
 
-      // First Check PM Record
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate = ? AND Site = ? AND Parked_Column = 1");
+      $Plate = '%'.$Plate.'%';
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate LIKE ? AND Site = ? AND Parked_Column = 1");
       $stmt->bindParam(1, $Plate);
       $stmt->bindParam(2, $Site);
       $stmt->execute();
-      if($stmt->rowCount() > 0) {
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        echo json_encode(array("Result" => "1", "Ref" => $result['Uniqueref'], "Time" => $result['Arrival'], "Plate" => $result['Plate'], "Trl" => $result['Trailer_No']));
-      } else {
-        $stmt2 = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Plate = ? AND Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11", array(\PDO::ATTR_CURSOR => \PDO::CURSOR_SCROLL));
-        $stmt2->bindParam(1, $Plate);
-        $stmt2->execute();
-        if($stmt2->rowCount() > 0) {
-          $result2 = $stmt2->fetch(\PDO::FETCH_ASSOC);
-          echo json_encode(array("Result" => "2", "Ref" => $result2['Uniqueref'], "Time" => $result2['Capture_Date'], "Plate" => $result2['Plate'], "Trl" => $result2['Notes'], "Type" => 1));
-        } else {
-          echo json_encode(array("Result" => "3", "Message" => "Unable to find a record connected to that plate. Please add this vehicle into the ANPR and continue"));
-        }
+      $stmt2 = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Plate LIKE ? AND Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11", array(\PDO::ATTR_CURSOR => \PDO::CURSOR_SCROLL));
+      $stmt2->bindParam(1, $Plate);
+      $stmt2->execute();
+      $data = '';
+      foreach($stmt->fetchAll() as $row) {
+        $ref = '\''.$row['Uniqueref'].'\'';
+        $timein = '\''.$row['Arrival'].'\'';
+        $data .= '<tr>';
+        $data .= '<td>'.$row['Plate'].' <span class="badge badge-primary">PM</span></td>';
+        $data .= '<td>'.date("d/m/y H:i:s", strtotime($row['Arrival'])).'</td>';
+        $data .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$row['Img_Patch'].'"></img></td>';
+        $data .= '<td><button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')" data-toggle="modal" data-target="#PM_Director_Modal"><i class="fa fa-cog"></i></button></td>';
+        $data .= '</tr>';
+      }
+      $html = '<table class="table table-dark table-hover table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Plate</th>
+                    <th scope="col">Arrival</th>
+                    <th scope="col">Patch</th>
+                    <th scope="col"><i class="fa fa-cogs"></i></th>
+                  </tr>
+                </thead>
+                <tbody>';
+
+      foreach($stmt2->fetchAll() as $row) {
+        $patch = str_replace($this->pm->Site_Info($Site, 'ANPR_Imgstr'), $this->pm->Site_Info($Site, 'ANPR_Img'), $row['Patch']);
+
+        $ref = '\''.$row['Uniqueref'].'\'';
+        $trl = '\''.$row['Notes'].'\'';
+        $plate = '\''.$row['Plate'].'\'';
+        $timein = '\''.$row['Capture_Date'].'\'';
+        $data .= '<tr>';
+        $data .= '<td>'.$row['Plate'].' <span class="badge badge-success">ANPR</span></td>';
+        $data .= '<td>'.date("d/m/y H:i:s", strtotime($row['Capture_Date'])).'</td>';
+        $data .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
+        $data .= '<td><button type="button" class="btn btn-danger" onClick="PaymentPaneToggle('.$ref.', '.$plate.', '.$trl.', '.$timein.', 1)" data-toggle="modal" data-target="#PM_Director_Modal"><i class="fa fa-cog"></i></button></td>';
+        $data .= '</tr>';
       }
 
+      $html .= $data;
+      $html .= '</tbody>
+              </table>';
+
+      echo json_encode($html);
       $this->mssql = null;
       $this->mysql = null;
       $this->user = null;
+      $this->pm = null;
     }
   }
 

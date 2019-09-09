@@ -201,19 +201,12 @@
   });
   // Update
   function UpdateVehPaneToggle(Ref, Time) {
+    $('#Director_Plate').val('');
+    $('#Director_Results').html('');
+    // Begin Pane
     $('#Update_Ref').val(Ref);
     $('#Update_Duration').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
     $('#UD_Ref').html(Ref);
-    // Time Prep
-    $.ajax({
-      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",
-      data: {Time1:Time, Time2:""},
-      method: "POST",
-      dataType: "text",
-      success:function(Response) {
-        $('#Update_Duration').html(Response);
-      }
-    });
     // Get Veh Details
     $.ajax({
       url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.GetDetails",
@@ -231,6 +224,16 @@
         $('#Update_Exit').val(Response.Departure);
         $('#Update_Column').val(Response.Parked_Column);
         $('#Update_Notes').val(Response.Notes);
+        // Time Prep
+        $.ajax({
+          url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",
+          data: {Time1:Time, Time2:Response.Departure},
+          method: "POST",
+          dataType: "text",
+          success:function(Response) {
+            $('#Update_Duration').html(Response);
+          }
+        });
         // Payments
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GetVehPayments",
@@ -375,11 +378,11 @@
       });
     }
   });
-  $(document).on('submit', '#PM_Director_Form', function() {
+  $(document).on('keyup', '#Director_Plate', function() {
     event.preventDefault();
-    var Plate = $('#Director_Plate').val();
+    var Plate = $(this).val();
     if(Plate == '') {
-      $.notify('Please enter a valid FULL vehicle registration number!', {className:'error',globalPosition: 'top left',});
+      // Do nothing
     } else {
       $.ajax({
         url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.Director",
@@ -387,18 +390,7 @@
         method: "POST",
         dataType: "json",
         success:function(Data) {
-          if(Data.Result == 1) {
-            // PM Result
-            $('#PM_Director_Modal').modal('toggle');
-            $('#PM_Director_Form')[0].reset();
-            UpdateVehPaneToggle(Data.Ref, Data.Time);
-          } else if(Data.Result == 2) {
-            $('#PM_Director_Modal').modal('toggle');
-            $('#PM_Director_Form')[0].reset();
-            PaymentPaneToggle(Data.Ref, Data.Plate, Data.Trl, Data.Time, Data.Type);
-          } else if(Data.Result == 3) {
-            $.notify(Data.Message, {className:'error',globalPosition: 'top-left',});
-          }
+          $('#Director_Results').html(Data);
         }
       });
     }

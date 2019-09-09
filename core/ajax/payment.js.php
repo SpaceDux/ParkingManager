@@ -1,6 +1,9 @@
 <script type="text/javascript">
   // Ini Payment Portal
   function PaymentPaneToggle(Ref, Plate, Trl, Time, Type) {
+    $('#Director_Plate').val('');
+    $('#Director_Results').html('');
+    // Begin Payment
     var Ref = Ref;
     var Plate = Plate;
     var Type = Type;
@@ -662,6 +665,5 @@
         }
       });
     }
-
   });
 </script>

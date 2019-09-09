@@ -1231,17 +1231,25 @@
         </button>
       </div>
       <div class="modal-body">
-        <form class="form-row" id="PM_Director_Form">
+        <div class="row">
           <div class="col">
             <label>Registration Plate (Enter in Full)</label>
             <input type="text" class="form-control" name="Plate" id="Director_Plate" placeholder="GH11GFD" style="text-transform: uppercase;" autofocus>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <input type="submit" class="btn btn-primary" id="Director_Submit" value="Save Changes">
+        <hr>
+        <div class="row">
+          <div class="col">
+            <div id="Director_Results">
+
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="submit" class="btn btn-primary" id="Director_Submit" value="Save Changes">
+      </div>
     </div>
   </div>
 </div>
