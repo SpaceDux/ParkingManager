@@ -1,5 +1,7 @@
 <?php
   namespace ParkingManager;
+  use PhpOffice\PhpSpreadsheet\Spreadsheet;
+  use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
   class Account
   {
@@ -387,20 +389,203 @@
       $this->mysql = null;
       $this->user = null;
     }
+    // Count the amount of transactions assigned to the account via services
+    function Payment_Count_Account($account, $campus, $service, $dateStart, $dateEnd) {
+      $this->mysql = new MySQL;
+      $query = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Method = 3 AND AccountID = ? AND Service = ? AND Site = ? AND Deleted = 0 AND Processed_Time BETWEEN ? AND ?");
+      $query->bindParam(1, $account);
+      $query->bindParam(2, $service);
+      $query->bindParam(3, $campus);
+      $query->bindParam(4, $dateStart);
+      $query->bindParam(5, $dateEnd);
+      $query->execute();
+      return $query->rowCount();
 
+      $this->mysql = null;
+    }
+    // Download account report as Excel
+    function DownloadReport($account, $dateStart, $dateEnd)
+    {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->vehicle = new Vehicles;
+      $this->payment = new Payment;
+      $this->pm = new PM;
 
-    // This function quickly adds all current fleets to new structure.
-    // function Dave() {
-    //   $this->mysql = new MySQL;
-    //
-    //
-    //   $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_accounts_fleet WHERE account_id = ?");
-    //   $stmt->bindValue(1, '19');
-    //   $stmt->execute();
-    //   foreach($stmt->fetchAll() as $row) {
-    //     $plate = $row['account_vehicle_plate'];
-    //     $this->Update_Fleet("201908301121502885", $plate);
-    //   }
-    // }
+      $account_name = $this->Account_GetInfo($account, "Name");
+      $file_name = $account_name.' RC '.$dateStart.' - '.$dateEnd;
+      $campus = $this->user->Info("Site");
+      $totalParked = 0;
+      $totalTransactions = 0;
+      $total_gross = 0;
+      $total_net = 0;
+      $rows = 2;
+      //Date construction
+      $date1 = date("Y-m-d 00:00:00", strtotime($dateStart));
+      $date2 = date("Y-m-d 23:59:59", strtotime($dateEnd));
+      //object of the Spreadsheet class to create the excel data
+      $spreadsheet = new Spreadsheet();
+      //Spreadsheet information
+      $spreadsheet->getProperties()
+        ->setCreator("ParkingManager")
+        ->setLastModifiedBy("ParkingManager")
+        ->setTitle("ParkingManager Account Report")
+        ->setSubject("Account - $date1 | $date2")
+        ->setDescription("Account transaction and parking history")
+        ->setKeywords("parking manager 4 2019 account reports")
+        ->setCategory("Accounting");
+        //header information.
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$file_name.'.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        //Start Content
+        $sheet = $spreadsheet->getActiveSheet();
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(25);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(25);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(25);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(25);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(25);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+        //Stat content
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'top' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => [
+                    'argb' => 'c41f45',
+                ],
+                'endColor' => [
+                    'argb' => '9b1837',
+                ],
+            ],
+        ];
+        $spreadsheet->getActiveSheet()->getStyle('A'.$rows.':D'.$rows)->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('A'.$rows.':D'.$rows)->getFont()->getColor()->setARGB('FFFFFF');
+        $sheet->setCellValue('A'.$rows, 'Service');
+        $sheet->setCellValue('B'.$rows, 'No. Transactions');
+        $rows++;
+        $query = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Method = 3 AND AccountID = ? AND Deleted = 0 AND Site = ? AND Processed_Time BETWEEN ? AND ? GROUP BY Service ORDER BY Gross ASC");
+        $query->bindParam(1, $account);
+        $query->bindParam(2, $campus);
+        $query->bindParam(3, $date1);
+        $query->bindParam(4, $date2);
+        $query->execute();
+        foreach($query->fetchAll() as $row) {
+          $key = $row['Service'];
+          $count = $this->Payment_Count_Account($account, $campus, $key, $date1, $date2);
+          $net = $this->payment->Payment_TariffInfo($key, "Nett") * $count;
+          $gross = $this->payment->Payment_TariffInfo($key, "Gross") * $count;
+          $sheet->setCellValue('A'.$rows, $this->payment->Payment_TariffInfo($key, "Name"));
+          $sheet->setCellValue('B'.$rows, $count);
+          $rows++;
+        }
+        $rows = $rows + 3;
+        //Main Content
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'top' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => [
+                    'argb' => 'c41f45',
+                ],
+                'endColor' => [
+                    'argb' => '9b1837',
+                ],
+            ],
+        ];
+        $spreadsheet->getActiveSheet()->getStyle('A'.$rows.':G'.$rows)->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('A'.$rows.':G'.$rows)->getFont()->getColor()->setARGB('FFFFFF');
+        // Spreadsheet main content (header)
+        $sheet->setCellValue('A'.$rows, 'Transaction Reference');
+        $sheet->setCellValue('B'.$rows, 'Plate');
+        $sheet->setCellValue('C'.$rows, 'Service');
+        $sheet->setCellValue('D'.$rows, 'Gross');
+        $sheet->setCellValue('E'.$rows, 'Nett');
+        $sheet->setCellValue('F'.$rows, 'Parking Ref');
+        $sheet->setCellValue('G'.$rows, 'Processed Time');
+        $rows++;
+        //Query Data + Grouping
+        $query = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Method = 3 AND AccountID = ? AND Deleted = 0 AND Site = ? AND Processed_Time BETWEEN ? AND ? ORDER BY Processed_Time, Gross ASC");
+        $query->bindParam(1, $account);
+        $query->bindParam(2, $campus);
+        $query->bindParam(3, $date1);
+        $query->bindParam(4, $date2);
+        $query->execute();
+        //Filtering
+        foreach($query->fetchAll() as $row) {
+          $totalTransactions++;
+          $sheet->setCellValue('A'.$rows, 'Ref: '.$row['Uniqueref']);
+          $sheet->setCellValue('B'.$rows, $row['Plate']);
+          $sheet->setCellValue('C'.$rows, $row['Service_Name']);
+          $sheet->setCellValue('D'.$rows, '£'.$row['Gross']);
+          $sheet->setCellValue('E'.$rows, '£'.$row['Nett']);
+          $sheet->setCellValue('F'.$rows, $row['Parkingref']);
+          $sheet->setCellValue('G'.$rows, date("d/m/y H:i:s", strtotime($row['Processed_Time'])));
+          $rows++;
+        }
+        //Footer information
+        $styleArray = [
+                'font' => [
+                  'bold' => true,
+              ],
+              'alignment' => [
+                  'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+              ],
+              'borders' => [
+                  'top' => [
+                      'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                  ],
+              ],
+              'fill' => [
+                  'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                  'rotation' => 90,
+                  'startColor' => [
+                      'argb' => 'c41f45',
+                  ],
+                  'endColor' => [
+                      'argb' => '9b1837',
+                  ],
+              ],
+          ];
+        $spreadsheet->getActiveSheet()->getStyle('A'.$rows.':G'.$rows)->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('A'.$rows.':G'.$rows)->getFont()->getColor()->setARGB('FFFFFF');
+        $sheet->setCellValue('B'.$rows, 'Total Transactions: '.$totalTransactions);
+
+        //End spreadsheets
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output') ;
+        $spreadsheet->disconnectWorksheets();
+        unset($spreadsheet);
+        $this->mysql = null;
+        $this->user = null;
+        $this->vehicle = null;
+        $this->payment = null;
+        die();
+    }
   }
 ?>

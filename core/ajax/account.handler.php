@@ -16,6 +16,8 @@
     $account->Delete_Fleet_Record($_POST['Ref']);
   } else if($handler == "Account.Account_Report") {
     $account->Account_Report($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
+  } else if($handler == "Account.DownloadReport") {
+    $account->DownloadReport($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
   }
 
 

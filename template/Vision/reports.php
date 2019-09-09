@@ -236,31 +236,28 @@
           <div class="jumbotron">
             <h1 class="display-7">Account Reports</h1>
             <p class="lead">To view account transactions, please choose an account and a date range.
-            <div class="row">
-              <div class="col-md-2">
-                <select class="form-control" name="SitePick" id="Report_Account">
-                  <option value="unselected">-- Please choose an Account --</option>
-                  {ACCOUNTS}
-                </select>
-              </div>
-              <div class="col-md-2">
-                <input type="text" class="form-control" placeholder="Date From" id="Report_DateFrom" value="<?php echo date("Y-m-01") ?>">
-              </div>
-              <div class="col-md-2">
-                <input type="text" class="form-control" placeholder="Date Too" id="Report_DateToo" value="<?php echo date("Y-m-31") ?>">
-              </div>
-              <div class="col-md-2">
-                <div class="btn-group dropdown">
-                  <button type="button" id="Report_Generate" class="btn btn-primary">Generate</button>
-                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="sr-only"></span>
-                  </button>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Download</a>
+            <form action="{URL}/download_report.php" method="post">
+              <div class="row">
+                <div class="col-md-2">
+                  <select class="form-control" name="Report_Account" id="Report_Account" required>
+                    <option>-- Please choose an Account --</option>
+                    {ACCOUNTS}
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <input type="text" class="form-control" placeholder="Date From" name="Report_DateFrom" id="Report_DateFrom" value="<?php echo date("Y-m-01") ?>" required>
+                </div>
+                <div class="col-md-2">
+                  <input type="text" class="form-control" placeholder="Date Too" name="Report_DateToo" id="Report_DateToo" value="<?php echo date("Y-m-31") ?>" required>
+                </div>
+                <div class="col-md-2">
+                  <div class="btn-group dropdown">
+                    <button type="button" id="Report_Generate" class="btn btn-primary">Generate</button>
+                    <input type="submit" id="Report_Generate" class="btn btn-primary" value="Download">
                   </div>
                 </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>

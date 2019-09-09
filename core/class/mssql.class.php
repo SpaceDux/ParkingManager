@@ -39,13 +39,13 @@
       $this->pm = new PM;
       $campus = $this->user->Info("Site");
       if($this->pm->Site_Info($campus, "Secondary_ANPR") == 1) {
-        $this->dbc2 = new \PDO('sqlsrv:Server='.$this->pm->Site_Info($campus, 'Secondary_ANPR_IP').';Database='.$this->pm->Site_Info($campus,'Secondary_ANPR_DB').'', $this->pm->Site_Info($campus, 'Secondary_ANPR_User'), $this->pm->Site_Info($campus, 'Secondary_ANPR_Pass'));
-        $this->dbc2->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        if(!$this->dbc2) {
-          echo json_encode(array("Status" => 0, "Msg" => "Data Connection issue"));
-        } else {
-          echo json_encode(array("Status" => 1, "Msg" => "Successful Connection"));
+        try {
+          $this->dbc2 = new \PDO('sqlsrv:Server='.$this->pm->Site_Info($campus, 'Secondary_ANPR_IP').';Database='.$this->pm->Site_Info($campus,'Secondary_ANPR_DB').';LoginTimeout=5', $this->pm->Site_Info($campus, 'Secondary_ANPR_User'), $this->pm->Site_Info($campus, 'Secondary_ANPR_Pass'));
+        } catch (\PDOException $e) {
+          die("MSSQL Secondary Engine Error: ".$e->getMessage());
         }
+      } else {
+
       }
       $this->mysql = null;
       $this->user = null;

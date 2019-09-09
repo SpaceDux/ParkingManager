@@ -157,4 +157,15 @@
       }
     });
   });
+
+  function Download_AccountReport() {
+    var Account = $('#Report_Account').val();
+    var DateStart = $('#Report_DateFrom').val();
+    var DateEnd = $('#Report_DateToo').val();
+    $.ajax({
+      url: "{URL}/core/ajax/account.handler.php?handler=Account.DownloadReport",
+      method: "POST",
+      data: {Account:Account, DateStart:DateStart, DateEnd:DateEnd}
+    })
+  }
 </script>
