@@ -1,0 +1,12 @@
+Error codes;
+
+101 - All good, success.
+103 - Missing required data fields.
+103 - Failure (Usually returned when checks fail)
+
+
+System:       0 = ANPR.
+              1 = ParkingManager (Option to retrieve current payment Expiry is more than current time).
+
+ResponseCode: 1 - Has a valid Ticket available to redeem
+              2 - Needs to pay, has no valid tickets

@@ -8,9 +8,12 @@
   // Require Classes
   require '../global.php';
 
-  if(isset($_POST['Plate']) AND isset($_POST['Site'])) {
-    echo json_encode(array("Status" => '1', "Message" => 'All fields confirmed - '.$_POST['Plate'].' -- '.$_POST['Site'].''));
-  } else {
-    echo json_encode(array("Status" => '0', "Message" => 'Please ensure all required data is present.'));
+  if(isset($_POST['Plate']) AND isset($_POST['Site']))
+  {
+    $vehicles->Initial_Search($_POST['Plate'], $_POST['Site']);
+  }
+  else
+  {
+    echo json_encode(array("Status" => '102', "Message" => 'Please ensure all required data is present.'));
   }
 ?>
