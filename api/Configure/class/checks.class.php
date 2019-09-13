@@ -7,7 +7,7 @@
   class Checks
   {
     protected $mysql;
-
+    // Check the site exists
     function Check_Site_Exists($site)
     {
       $this->mysql = new MySQL;
@@ -23,12 +23,13 @@
 
       $this->mysql = null;
     }
+    // Check SNAP will accept the vehicle
     function Check_On_SNAP($Plate)
     {
       try {
         global $_CONFIG;
         $API = $_CONFIG['ETP']['API'];
-        $client = new Client(['base_uri' => $API['api_uri']]);
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '2.0']);
         //Begin API client
         $response = $client->post('transaction/add', [
           'auth' => array($API['api_user'], $API['api_pass']),
@@ -51,6 +52,7 @@
         return FALSE;
       }
     }
+    // Check vehicle exists in accounts fleet
     function Check_On_Account($Plate)
     {
       $this->mysql = new MySQL;
@@ -72,7 +74,9 @@
       }
       $this->mysql = null;
     }
-    function Site_Info($Site, $What) {
+    // Site Info return
+    function Site_Info($Site, $What)
+    {
       $this->mysql = new MySQL;
 
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM sites WHERE Uniqueref = ?");

@@ -43,7 +43,7 @@
       $this->user = new User;
       $campus = $this->user->Info("Site");
 
-      $sql1 = $this->mysql->dbc->prepare("SELECT Account FROM accounts_trucks WHERE Plate = ?");
+      $sql1 = $this->mysql->dbc->prepare("SELECT Account FROM accounts_trucks WHERE Plate = ? AND Deleted < 1");
       $sql1->bindParam(1, $plate);
       $sql1->execute();
       $result1 = $sql1->fetch(\PDO::FETCH_ASSOC);

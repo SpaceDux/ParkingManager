@@ -4,9 +4,27 @@ Error codes;
 103 - Missing required data fields.
 103 - Failure (Usually returned when checks fail)
 
+105 - System Failure
+
 
 System:       0 = ANPR.
               1 = ParkingManager (Option to retrieve current payment Expiry is more than current time).
 
-ResponseCode: 1 - Has a valid Ticket available to redeem
-              2 - Needs to pay, has no valid tickets
+ResponseCode: 0 - No records found.
+              1 - Has a valid Ticket available to redeem.
+              2 - Needs to pay, has no valid tickets.
+
+ResponseData = Array.
+
+Vehicle Types: 1 - Cab & Trailer
+               2 - Cab Only
+               3 - Trailer Only
+               4 - Rigid
+               5 - Coach
+               8 - Car Transporter
+
+Payment Methods: 1 - Cash
+                 2 - Card
+                 3 - Account
+                 4 - SNAP
+                 5 - Fuel Card

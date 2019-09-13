@@ -372,16 +372,10 @@
       $this->user = null;
       $this->pm = null;
     }
-    // get images
     function ANPR_Info($ref, $what)
     {
       $this->mssql = new MSSQL;
-      $this->user = new User;
-      $this->pm = new PM;
 
-      $campus = $this->user->Info("Site");
-
-      $html = "";
 
       $stmt = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Uniqueref = ?");
       $stmt->bindParam(1, $ref);
@@ -394,8 +388,6 @@
       }
 
       $this->mssql = null;
-      $this->user = null;
-      $this->pm = null;
     }
     // Search ANPR Records VIA Modal
     function Search_ANPR_Records($key)
