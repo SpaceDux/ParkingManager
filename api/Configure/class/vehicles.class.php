@@ -188,6 +188,18 @@
 
       $this->mssql = null;
     }
+    // Update ANPR Record (array)
+    function ANPR_PaymentUpdate($ref, $expiry)
+    {
+      $this->mssql = new MSSQL;
+
+      $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $expiry);
+      $stmt->bindParam(2, $ref);
+      $stmt->execute();
+
+      $this->mssql = null;
+    }
     // Add Parking Record
     function Create_Parking_Rec($Ref, $Site, $Plate, $Trl = '', $Name, $VehicleType, $Account_ID = '', $TimeIN, $Expiry)
     {

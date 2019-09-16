@@ -1305,39 +1305,6 @@
 			$this->mysql = null;
 		}
 
-		// function Dave() {
-		//   $this->mysql = new MySQL;
-		//
-		//
-		//   $stmt = $this->mysql->dbc->prepare("SELECT * FROM pm_services WHERE service_campus = ? AND service_active = 1");
-		//   $stmt->bindValue(1, '2');
-		//   $stmt->execute();
-		//   foreach($stmt->fetchAll() as $row) {
-		//     $Name = $row['service_name'];
-		//     $TicketName = $row['service_ticket_name'];
-		//     $Gross = $row['service_price_gross'];
-		//     $Nett = $row['service_price_net'];
-		//     $Expiry = $row['service_expiry'];
-		//     $Group = $row['service_group'];
-		//     $Cash = $row['service_cash'];
-		//     $Card = $row['service_card'];
-		//     $Account = $row['service_account'];
-		//     $SNAP = $row['service_snap'];
-		//     $Fuel = $row['service_fuel'];
-		//     $ETPID = $row['service_etpid'];
-		//     $Meal = $row['service_meal_amount'];
-		//     $Shower = $row['service_shower_amount'];
-		//     $Discount = $row['service_discount_amount'];
-		//     $WiFi = $row['service_wifi_amount'];
-		//     $VehType = $row['service_vehicles'];
-		// 		$Site = "201908291533552768";
-		// 		$Status = "0";
-		// 		$SettlementGroup = $row['service_settlement_group'];
-		// 		$SettlementMulti = $row['service_settlement_multi'];
-		// 		$this->New_Tariff($Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti);
-		//   }
-		// }
-
 		// Search Payment Records VIA Modal
 		function Search_Payment_Records($key)
 		{

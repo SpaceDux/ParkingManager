@@ -4,10 +4,7 @@
   {
     #Variables
     public $dbc;
-    public $dbc2;
-    private $mysql;
-    private $user;
-    private $campus;
+    private $_CONFIG;
 
     public function __construct() {
       $this->Connection_Primary();

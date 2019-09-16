@@ -17,7 +17,9 @@
 	//ETP API Settings
 	$_CONFIG['ETP']['API'] = array('api_uri' => 'https://api.etpcp.com/trx/',
 											 'api_user' => 'sm394_34lll2345Ae',
-											 'api_pass' => 'P2002laeif[3234JklmNo1A@344_12Qq');
+											 'api_pass' => 'P2002laeif[3234JklmNo1A@344_12Qq',
+									 		 'site_user' => 'holyhead',
+									 		 'site_pass' => '2hst36sg');
 	// Settings
   $_CONFIG['api']['user'] = 'kiosks'; //Site ID Number
   $_CONFIG['api']['pass'] = 'kiosks1923'; //Site ID Number

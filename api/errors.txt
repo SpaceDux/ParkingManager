@@ -1,7 +1,7 @@
 Error codes;
 
 101 - All good, success.
-103 - Missing required data fields.
+102 - Missing required data fields.
 103 - Failure (Usually returned when checks fail)
 
 105 - System Failure

@@ -123,7 +123,7 @@
         return $return['outputtransactionid'];
       } else {
         return FALSE;
-      }#
+      }
       $this->user = null;
       $this->pm = null;
 
