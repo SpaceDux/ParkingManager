@@ -8,13 +8,13 @@
   // Require Classes
   require '../global.php';
 
-  if(isset($_POST['Plate']) AND isset($_POST['Time']) AND isset($_POST['Site']))
+  if(isset($_POST['Plate']) AND isset($_POST['Time']))
   {
     if(!isset($_POST['Trailer'])) {
       $_POST['Trailer'] = '';
-      $vehicles->Add_Vehicle($_POST['Plate'], $_POST['Trailer'], $_POST['Time'], $_POST['Site']);
+      $vehicles->Add_Vehicle($_POST['Plate'], $_POST['Trailer'], $_POST['Time']);
     } else {
-      $vehicles->Add_Vehicle($_POST['Plate'], $_POST['Trailer'], $_POST['Time'], $_POST['Site']);
+      $vehicles->Add_Vehicle($_POST['Plate'], $_POST['Trailer'], $_POST['Time']);
     }
   }
   else

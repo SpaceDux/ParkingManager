@@ -221,7 +221,7 @@
         'rc' => $rc
       ];
 
-      echo json_encode($result);
+      echo $result;
     }
   }
 

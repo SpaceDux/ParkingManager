@@ -8,9 +8,9 @@
   // Require Classes
   require '../global.php';
 
-  if(isset($_POST['Plate']) AND isset($_POST['Site']))
+  if(isset($_POST['Plate']))
   {
-    $vehicles->Initial_Search($_POST['Plate'], $_POST['Site']);
+    $vehicles->Initial_Search($_POST['Plate']);
   }
   else
   {

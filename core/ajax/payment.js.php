@@ -328,7 +328,7 @@
           $.notify("Transaction has successfully been deleted.", {className:'success',globalPosition: 'top left',});
           $('#Payment_Delete_'+Ref).addClass('Hide');
         } else {
-
+          $.notify("Transaction has not been deleted.", {className:'error',globalPosition: 'top left',});
         }
       }
     })

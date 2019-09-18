@@ -20,7 +20,9 @@
 											 'api_pass' => 'P2002laeif[3234JklmNo1A@344_12Qq',
 									 		 'site_user' => 'holyhead',
 									 		 'site_pass' => '2hst36sg');
+	// PM API Settings
+	$_CONFIG['api']['user'] = 'kiosks'; //Site ID Number
+	$_CONFIG['api']['pass'] = 'kiosks1923'; //Site ID Number
 	// Settings
-  $_CONFIG['api']['user'] = 'kiosks'; //Site ID Number
-  $_CONFIG['api']['pass'] = 'kiosks1923'; //Site ID Number
+	$_CONFIG['api']['site'] = '201908151155252628'; //Site Identity Number
 ?>

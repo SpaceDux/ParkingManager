@@ -11,6 +11,78 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   </head>
   <body>
+    <!-- Update Veh Pane START -->
+    <div class="PaymentPane" id="UpdateVehPane" >
+      <div class="Title">
+        update vehicle.
+        <div class="btn-group float-right" role="group">
+          <button type="button" class="btn btn-danger" onClick="UpdateVehPaneClose()"><i class="fa fa-times"></i></button>
+        </div>
+      </div>
+      <div class="Body">
+        <form id="UpdateVehicle_Form">
+          <div class="row">
+            <div class="col">
+              <input type="hidden" name="Update_Ref" id="Update_Ref" class="form-control">
+              <input type="hidden" name="Update_Expiry" id="Update_Expiry" class="form-control">
+              <input type="hidden" name="Update_Flag" id="Update_Flag" class="form-control">
+              <label for="Update_Plate">Update Vehicle Plate</label>
+              <input type="text" class="form-control" name="Update_Plate" id="Update_Plate">
+              <hr>
+              <label for="Update_Name">Update Vehicle Company/Name</label>
+              <input type="text" class="form-control" name="Update_Name" id="Update_Name">
+              <hr>
+              <label for="Update_Trailer">Update Vehicle Trailer</label>
+              <input type="text" class="form-control" name="Update_Trailer" id="Update_Trailer">
+              <hr>
+              <label for="Update_VehType">Update Vehicle Type</label>
+              <select class="form-control" id="Update_VehType" name="Update_VehType">
+                <option value="unselected">Please Choose a Vehicle Type...</option>
+                {VEHTYPES}
+              </select>
+              <hr>
+              <label>ANPR Images</label>
+              <div id="Update_Images">
+
+              </div>
+            </div>
+            <div class="col">
+              <div class="alert alert-primary" id="Update_Duration"></div>
+              <div id="Update_PaymentsTable">
+
+              </div>
+              <label for="Update_Column">Update Vehicle Parking Column</label>
+              <select class="form-control" id="Update_Column" name="Update_Column">
+                <option value="unselected">Please Choose a Parking Column...</option>
+                <option value="1">Paid</option>
+                <option value="2">Exit</option>
+              </select>
+              <hr>
+              <label for="Update_Arrival">Update Time of Arrival</label>
+              <input type="text" class="form-control" name="Update_Arrival" id="Update_Arrival">
+              <hr>
+              <label for="Update_Exit">Update Time of Exit</label>
+              <input type="text" class="form-control" name="Update_Exit" id="Update_Exit">
+              <hr>
+              <label for="Update_Notes">Add a Comment</label>
+              <textarea class="form-control" id="Update_Notes" name="Update_Notes"></textarea>
+              <br><br><hr>
+              <div class="btn-group btn-lg">
+                <button type="button" class="btn btn-dark" onClick="UpdateVehicleRec()">Save <i class="fa fa-save"></i></button>
+                <button type="button" class="btn btn-dark" id="Update_FlagBtn">Flag <i class="fa fa-flag"></i></button>
+                <button type="button" class="btn btn-dark" id="Update_ExitBtn">Exit <i class="fa fa-times"></i></button>
+                <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Delete Vehicle</a>
+                </div>
+              </div>
+              <span class="badge badge-secondary float-right" id="UD_Ref"></span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Update Pane END -->
     <!-- Transaction List START -->
     <div class="PaymentPane" id="TransactionListPane">
       <div class="Title">

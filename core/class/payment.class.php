@@ -1022,7 +1022,7 @@
 					echo $stmt->rowCount();
 					$this->pm->POST_Notifications("A ETP Payment has successfully been deleted, Ref: ".$ref, '0');
 				} else {
-					echo "REFUSED";
+					echo "0";
 				}
 			} else {
 				$stmt = $this->mysql->dbc->prepare("UPDATE transactions SET Deleted = 1, Last_Updated = ? WHERE Uniqueref = ?");

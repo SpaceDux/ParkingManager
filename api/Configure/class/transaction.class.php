@@ -6,86 +6,89 @@
     protected $mssql;
     protected $mysql;
 
-    // Return transactions
-    function GetTariffs($Vehicle, $Expiry, $Method, $Site)
+    // Return tariffs
+    function GetTariffs($Vehicle, $Expiry, $Method)
     {
-        $this->mysql = new MySQL;
+      global $_CONFIG;
+      $this->mysql = new MySQL;
 
-        $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Status = 0 ORDER BY Gross ASC");
-        $stmt->bindParam(1, $Site);
-        $stmt->bindParam(2, $Expiry);
-        $stmt->bindParam(3, $Vehicle);
-        $stmt->execute();
-        $data = array();
-        $response = array();
-        foreach($stmt->fetchAll() as $row) {
-          if($stmt->rowCount() > 0) {
-            // Cash
-            if($Method == '1' AND $row['Cash'] == '1')
-            {
-              $response = array('Tariff_ID' => $row['Uniqueref'],
-                'Name' => $row['Name'],
-                'Gross' => $row['Gross']
-              );
-              $data[] = $response;
-            }
-            // Card
-            else if($Method == '2' AND $row['Card'] == '1')
-            {
-              $response = array('Tariff_ID' => $row['Uniqueref'],
-                'Name' => $row['Name'],
-                'Gross' => $row['Gross']
-              );
-              $data[] = $response;
-            }
-            // Roadking Accounts / KingPay
-            else if($Method == '3' AND $row['Account'] == '1')
-            {
-              $response = array('Tariff_ID' => $row['Uniqueref'],
-                'Name' => $row['Name'],
-                'Gross' => $row['Gross']
-              );
-              $data[] = $response;
-            }
-            // Snap Account
-            else if($Method == '4' AND $row['Snap'] == '1')
-            {
-              $response = array('Tariff_ID' => $row['Uniqueref'],
-                'Name' => $row['Name'],
-                'Gross' => $row['Gross']
-              );
-              $data[] = $response;
-            }
-            // Fuel Card
-            else if($Method == '5' AND $row['Fuel'] == '1')
-            {
-              $response = array('Tariff_ID' => $row['Uniqueref'],
-                'Name' => $row['Name'],
-                'Gross' => $row['Gross']
-              );
-              $data[] = $response;
-            }
-          } else {
-            // Can't find any records
-            echo json_encode(array(
-              "Status" => '101',
-              "Message" => 'Tariffs NOT found.',
-              "SystemCode" => "1",
-              "SystemInfo" => "ParkingManager Records.",
-              "ResponseCode" => "0",
-              "ResponseInfo" => "Tariffs not found."
-            ));
+      $Site = $_CONFIG['api']['site'];
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Status = 0 ORDER BY Gross ASC");
+      $stmt->bindParam(1, $Site);
+      $stmt->bindParam(2, $Expiry);
+      $stmt->bindParam(3, $Vehicle);
+      $stmt->execute();
+      $data = array();
+      $response = array();
+      foreach($stmt->fetchAll() as $row) {
+        if($stmt->rowCount() > 0) {
+          // Cash
+          if($Method == '1' AND $row['Cash'] == '1')
+          {
+            $response = array('Tariff_ID' => $row['Uniqueref'],
+              'Name' => $row['Name'],
+              'Gross' => $row['Gross']
+            );
+            $data[] = $response;
           }
+          // Card
+          else if($Method == '2' AND $row['Card'] == '1')
+          {
+            $response = array('Tariff_ID' => $row['Uniqueref'],
+              'Name' => $row['Name'],
+              'Gross' => $row['Gross']
+            );
+            $data[] = $response;
+          }
+          // Roadking Accounts / KingPay
+          else if($Method == '3' AND $row['Account'] == '1')
+          {
+            $response = array('Tariff_ID' => $row['Uniqueref'],
+              'Name' => $row['Name'],
+              'Gross' => $row['Gross']
+            );
+            $data[] = $response;
+          }
+          // Snap Account
+          else if($Method == '4' AND $row['Snap'] == '1')
+          {
+            $response = array('Tariff_ID' => $row['Uniqueref'],
+              'Name' => $row['Name'],
+              'Gross' => $row['Gross']
+            );
+            $data[] = $response;
+          }
+          // Fuel Card
+          else if($Method == '5' AND $row['Fuel'] == '1')
+          {
+            $response = array('Tariff_ID' => $row['Uniqueref'],
+              'Name' => $row['Name'],
+              'Gross' => $row['Gross']
+            );
+            $data[] = $response;
+          }
+        } else {
+          // Can't find any records
+          echo json_encode(array(
+            "Status" => '101',
+            "Message" => 'Tariffs NOT found.',
+            "SystemCode" => "1",
+            "SystemInfo" => "ParkingManager Records.",
+            "ResponseCode" => "0",
+            "ResponseInfo" => "Tariffs not found."
+          ));
         }
-        echo json_encode(array(
-          "Status" => '101',
-          "Message" => 'Tariffs found.',
-          "ResponseCode" => "1",
-          "ResponseInfo" => "Tariffs found",
-          "ResponseData" => $data
-        ));
+      }
+      echo json_encode(array(
+        "Status" => '101',
+        "Message" => 'Tariffs found.',
+        "ResponseCode" => "1",
+        "ResponseInfo" => "Tariffs found",
+        "ResponseData" => $data
+      ));
 
-        $this->mysql = null;
+      $this->mysql = null;
     }
     // Add payment into db
     function New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Capture_Time, $Expiry, $CardType = '', $CardNo = '', $CardEx = '', $Site)
@@ -138,12 +141,15 @@
       $this->mysql = null;
     }
     // Add Transactions
-    function AddTransaction($System, $Site, $Ref, $Method, $Tariff, $Plate, $Trl = '', $Name, $VehicleType, $FuelStr = '')
+    function AddTransaction($System, $Ref, $Method, $Tariff, $Trl = '', $Name, $VehicleType, $FuelStr = '')
     {
+      global $_CONFIG;
       $this->mysql = new MySQL;
       $this->mssql = new MSSQL;
       $this->vehicles = new Vehicles;
       $this->checks = new Checks;
+
+      $Site = $_CONFIG['api']['site'];
 
       if($FuelStr != '' OR $FuelStr != null) {
         $CardDets = $this->checks->Payment_FC_Break($FuelStr);
@@ -151,6 +157,7 @@
 
       if($System == 0)
       {
+        $Plate = $this->vehicles->ANPR_Info($Ref, "Plate");
         $TimeIN = $this->vehicles->ANPR_Info($Ref, "Capture_Date");
         $Service_Expiry = $this->Payment_TariffInfo($Tariff, "Expiry");
         $ETP = $this->Payment_TariffInfo($Tariff, "ETPID");
@@ -190,12 +197,14 @@
                 echo $this->PrintData($Payment);
               }
             }
+          } else {
+            echo json_encode(array("Status" => '103', "Message" => 'ParkingManager has rejected the transaction, please try again. Or seek alternative method.'));
           }
         } else if($Method == 4) {
           $ETPID = $this->checks->Process_SNAP_Transaction($Plate, $ETP, $Name);
           if($ETPID != FALSE) {
             // Add a parking record.
-            $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account, $TimeIN, $Expiry);
+            $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
             if($VehRec != FALSE) {
               // Add transaction
               $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site);
@@ -205,16 +214,16 @@
               }
             }
           } else {
-            echo json_encode(array("Status" => '102', "Message" => 'ETP have rejected the transaction, please try again.'));
+            echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
           }
         } else if($Method == 5) {
           $CardChk = substr($CardDets['cardno'], "0", "6");
-          if($CardChk == '704310' AND $FuelCardRC == "90") {
+          if($CardChk == '704310' AND $CardDets['rc'] == "90") {
             $CardType = 1; // DKV
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
@@ -226,14 +235,14 @@
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
             }
-          } else if($CardChk == '704310' AND $FuelCardRC != "90") {
+          } else if($CardChk == '704310' AND $CardDets['rc'] != "90") {
             echo json_encode(array("Status" => '103', "Message" => 'Your DKV Card is not RC 90'));
           } else if ($CardChk == '707821') {
 						$CardType = 2; // Key Fuels
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
@@ -250,7 +259,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
@@ -267,7 +276,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
@@ -284,7 +293,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
@@ -301,7 +310,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
@@ -318,7 +327,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
@@ -330,19 +339,60 @@
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
             }
+          } else {
+              echo json_encode(array("Status" => '103', "Message" => 'ParkingManager does not recognize that card. Please use a different card, or seek alternative method.'));
           }
         }
       }
       else if($System == 1)
       {
+        $Plate = $this->vehicles->VehicleInfo($Ref, "Plate");
+        $TimeIN = $this->vehicles->VehicleInfo($Ref, "Arrival");
+        $TimeExpiry = $this->vehicles->VehicleInfo($Ref, "Expiry");
+        $Service_Expiry = $this->Payment_TariffInfo($Tariff, "Expiry");
+        $ETP = $this->Payment_TariffInfo($Tariff, "ETPID");
+        $Expiry = date("Y-m-d H:i:s", strtotime($TimeExpiry.' +'.$Service_Expiry.' hours'));
+        $ANPRRef = $this->vehicles->VehicleInfo($Ref, "ANPRRef");
         if($Method == 1) {
-
+          // Add transaction
+          $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site);
+          $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
+          $this->vehicles->ExpiryUpdate($Ref, $Expiry);
+          if($Payment != FALSE) {
+            echo $this->PrintData($Payment);
+          }
         } else if($Method == 2) {
-
+          // Add transaction
+          $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site);
+          $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
+          $this->vehicles->ExpiryUpdate($Ref, $Expiry);
+          if($Payment != FALSE) {
+            echo $this->PrintData($Payment);
+          } else {
+            echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
+          }
         } else if($Method == 3) {
-
+          $Account = $this->checks->Get_Account($Plate);
+          if($Account != FALSE)
+          {
+            // Add transaction
+            $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site);
+            $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
+            $this->vehicles->ExpiryUpdate($Ref, $Expiry);
+            if($Payment != FALSE) {
+              echo $this->PrintData($Payment);
+            }
+          } else {
+            echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
+          }
         } else if($Method == 4) {
-
+          // Add transaction
+          $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site);
+          $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
+          $this->vehicles->ExpiryUpdate($Ref, $Expiry);
+          if($Payment != FALSE) {
+            echo $this->PrintData($Payment);
+          }
         } else if($Method == 5) {
 
         }
@@ -368,11 +418,15 @@
     }
     function PrintData($Ref)
     {
+      global $_CONFIG;
       $this->mysql = new MySQL;
       $this->checks = new Checks;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Uniqueref = ?");
+      $Site = $_CONFIG['api']['site'];
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Uniqueref = ? AND Site = ?");
       $stmt->bindParam(1, $Ref);
+      $stmt->bindParam(2, $Site);
       $stmt->execute();
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 

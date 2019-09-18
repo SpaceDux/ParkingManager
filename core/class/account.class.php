@@ -364,9 +364,12 @@
 
       foreach($stmt2->fetchAll() as $row) {
         $ref = '\''.$row['Uniqueref'].'\'';
+        $parkingref = '\''.$row['Parkingref'].'\'';
+        $captime = '\''.$row['Vehicle_Capture_Time'].'\'';
 
         $options = '<div class="btn-group float-right" role="group" aria-label="Options">
-                      <button type="button" class="btn btn-danger" onClick="DeleteTransaction('.$row['Uniqueref'].')"><i class="fa fa-trash"></i></button>
+                      <button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$parkingref.', '.$captime.')"><i class="fa fa-cog"></i></button>
+                      <button type="button" class="btn btn-danger" onClick="DeleteTransaction('.$ref.')"><i class="fa fa-trash"></i></button>
                     </div>';
         $sub_array = array();
         $sub_array[] = $row['Name'];

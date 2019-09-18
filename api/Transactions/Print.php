@@ -8,9 +8,9 @@
   // Require Classes
   require '../global.php';
 
-  if(isset($_POST['Expiry']) AND isset($_POST['VehicleType']) AND isset($_POST['Method']))
+  if(isset($_POST['Ref']))
   {
-      $transaction->GetTariffs($_POST['VehicleType'], $_POST['Expiry'], $_POST['Method']);
+      $transaction->PrintData($_POST['Ref']);
   }
   else
   {

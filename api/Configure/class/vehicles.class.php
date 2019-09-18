@@ -7,19 +7,22 @@
     protected $mssql;
 
     // Initial Vehicle Query
-    function Initial_Search($Plate, $Site)
+    function Initial_Search($Plate)
     {
+      global $_CONFIG;
       $this->mysql = new MySQL;
       $this->mssql = new MSSQL;
       $this->checks = new Checks;
 
+      $Site = $_CONFIG['api']['site'];
+
       $Plate = str_replace(" ", "", $Plate);
 
-      if($this->checks->Check_Site_Exists($_POST['Site']) == TRUE)
+      if($this->checks->Check_Site_Exists($Site) == TRUE)
       {
         $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate = ? AND Parked_Column = 1 AND Site = ? AND Deleted < 1 AND Flagged < 1");
-        $stmt->bindValue(1, $_POST['Plate']);
-        $stmt->bindValue(2, $_POST['Site']);
+        $stmt->bindValue(1, $Plate);
+        $stmt->bindValue(2, $Site);
         $stmt->execute();
         if($stmt->rowCount() > 0)
         {
@@ -135,15 +138,17 @@
       $this->checks = null;
     }
     // Add a vehicle into the ANPR
-    function Add_Vehicle($Plate, $Trlno = '', $Time, $Site)
+    function Add_Vehicle($Plate, $Trlno = '', $Time)
     {
       $this->mssql = new MSSQL;
       $this->checks = new Checks;
 
+      $Site = $_CONFIG['api']['site'];
+
       $Plate = str_replace(" ", "", strtoupper($Plate));
       $Trlno = str_replace(" ", "", strtoupper($Trlno));
 
-      if($this->checks->Check_Site_Exists($_POST['Site']) == TRUE)
+      if($this->checks->Check_Site_Exists($Site) == TRUE)
       {
         $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane', :capDate, :createdDate, null, 'RoadKing - Added via PM API', '0', null, '0', :plate2, :Trl, null, :capDate2, null, '', '', '')");
         $stmt->bindParam(':plate', $Plate);
@@ -241,6 +246,34 @@
         return FALSE;
       }
       $this->checks = null;
+      $this->mysql = null;
+    }
+    // Update a vehicles expiry time.
+    function ExpiryUpdate($ref, $time)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Expiry = ? WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $time);
+      $stmt->bindParam(2, $ref);
+      $stmt->execute();
+
+      $this->mysql = null;
+    }
+    // Update a vehicles expiry time.
+    function VehicleInfo($ref, $what)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $ref);
+      if($stmt->execute()) {
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result[$what];
+      } else {
+
+      }
+
       $this->mysql = null;
     }
   }

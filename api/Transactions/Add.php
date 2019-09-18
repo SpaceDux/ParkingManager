@@ -9,11 +9,9 @@
   require '../global.php';
 
   $System = $_POST['System'];
-  $Site = $_POST['Site'];
   $Ref = $_POST['Ref'];
   $Method = $_POST['Method'];
   $Tariff = $_POST['Tariff'];
-  $Plate = $_POST['Plate'];
   $Name = $_POST['Name'];
   $VehicleType = $_POST['VehicleType'];
   if(isset($_POST['Trailer'])) {
@@ -27,9 +25,9 @@
     $FuelStr = '';
   }
 
-  if(isset($System) AND isset($Site) AND isset($Ref) AND isset($Method) AND isset($Tariff) AND isset($Plate) AND isset($Name) AND isset($VehicleType))
+  if(isset($System) AND isset($Ref) AND isset($Method) AND isset($Tariff) AND isset($Name) AND isset($VehicleType))
   {
-    $transaction->AddTransaction($System, $Site, $Ref, $Method, $Tariff, $Plate, $Trailer, $Name, $VehicleType, $FuelStr);
+    $transaction->AddTransaction($System, $Ref, $Method, $Tariff, $Trailer, $Name, $VehicleType, $FuelStr);
   }
   else
   {

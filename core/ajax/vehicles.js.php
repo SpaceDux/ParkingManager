@@ -227,7 +227,7 @@
         // Time Prep
         $.ajax({
           url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",
-          data: {Time1:Time, Time2:Response.Departure},
+          data: {Time1:Response.Arrival, Time2:Response.Departure},
           method: "POST",
           dataType: "text",
           success:function(Response) {
