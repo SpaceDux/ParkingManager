@@ -140,6 +140,7 @@
     // Add a vehicle into the ANPR
     function Add_Vehicle($Plate, $Trlno = '', $Time)
     {
+      global $_CONFIG;
       $this->mssql = new MSSQL;
       $this->checks = new Checks;
 

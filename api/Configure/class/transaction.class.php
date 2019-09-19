@@ -383,18 +383,119 @@
               echo $this->PrintData($Payment);
             }
           } else {
-            echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
+            echo json_encode(array("Status" => '103', "Message" => 'ParkingManager has rejected the transaction, this vehicle is not on any of our fleet records.'));
           }
         } else if($Method == 4) {
-          // Add transaction
-          $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site);
-          $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
-          $this->vehicles->ExpiryUpdate($Ref, $Expiry);
-          if($Payment != FALSE) {
-            echo $this->PrintData($Payment);
+          $ETPID = $this->checks->Process_SNAP_Transaction($Plate, $ETP, $Name);
+          if($ETPID != FALSE) {
+            // Add transaction
+            $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site);
+            $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
+            $this->vehicles->ExpiryUpdate($Ref, $Expiry);
+            if($Payment != FALSE) {
+              echo $this->PrintData($Payment);
+            }
+          } else {
+            echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
           }
         } else if($Method == 5) {
-
+          $CardChk = substr($CardDets['cardno'], "0", "6");
+          if($CardChk == '704310' AND $CardDets['rc'] == "90") {
+            $CardType = 1; // DKV
+            $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
+            if($ETPID != FALSE) {
+              // Add transaction
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
+              $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              if($Payment != FALSE) {
+                echo $this->PrintData($Payment);
+              }
+            } else {
+              echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
+            }
+          } else if($CardChk == '704310' AND $CardDets['rc'] != "90") {
+            echo json_encode(array("Status" => '103', "Message" => 'Your DKV Card is not RC 90'));
+          } else if ($CardChk == '707821') {
+            $CardType = 2; // Key Fuels
+            $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
+            if($ETPID != FALSE) {
+              // Add transaction
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
+              $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              if($Payment != FALSE) {
+                echo $this->PrintData($Payment);
+              }
+            } else {
+              echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
+            }
+          } else if ($CardChk == '789666') {
+            $CardType = 2; // Key Fuels
+            $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
+            if($ETPID != FALSE) {
+              // Add transaction
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
+              $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              if($Payment != FALSE) {
+                echo $this->PrintData($Payment);
+              }
+            } else {
+              echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
+            }
+          } else if ($CardChk == '706000') {
+            $CardType = 3; // UTA
+            $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
+            if($ETPID != FALSE) {
+              // Add transaction
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
+              $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              if($Payment != FALSE) {
+                echo $this->PrintData($Payment);
+              }
+            } else {
+              echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
+            }
+          } else if ($CardChk == '700048') {
+            $CardType = 4; // MORGAN
+            $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
+            if($ETPID != FALSE) {
+              // Add transaction
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
+              $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              if($Payment != FALSE) {
+                echo $this->PrintData($Payment);
+              }
+            } else {
+              echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
+            }
+          } else if ($CardChk == '708284') {
+            $CardType = 4; // MORGAN
+            $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
+            if($ETPID != FALSE) {
+              // Add transaction
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
+              $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              if($Payment != FALSE) {
+                echo $this->PrintData($Payment);
+              }
+            } else {
+              echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
+            }
+          } else if ($CardChk == '700676') {
+            $CardType = 5; // BP
+            $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, $Name, $CardDets['cardno'], $CardDets['expiry']);
+            if($ETPID != FALSE) {
+              // Add transaction
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site);
+              $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              if($Payment != FALSE) {
+                echo $this->PrintData($Payment);
+              }
+            } else {
+              echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
+            }
+          } else {
+            echo json_encode(array("Status" => '103', "Message" => 'ParkingManager does not recognize that card. Please use a different card, or seek alternative method.'));
+          }
         }
       }
 

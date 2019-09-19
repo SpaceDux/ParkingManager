@@ -21,8 +21,7 @@
 									 		 'site_user' => 'holyhead',
 									 		 'site_pass' => '2hst36sg');
 	// PM API Settings
-	$_CONFIG['api']['user'] = 'kiosks'; //Site ID Number
-	$_CONFIG['api']['pass'] = 'kiosks1923'; //Site ID Number
+	$_CONFIG['api']['accesskey'] = 'p12l22k!'; //Site ID Number
 	// Settings
 	$_CONFIG['api']['site'] = '201908151155252628'; //Site Identity Number
 ?>

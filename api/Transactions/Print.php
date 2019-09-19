@@ -7,13 +7,18 @@
   header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
   // Require Classes
   require '../global.php';
+  $accesskey = $_CONFIG['api']['accesskey'];
 
-  if(isset($_POST['Ref']))
-  {
+  if($accesskey == $_POST['AccessKey']) {
+    if(isset($_POST['Ref']))
+    {
       $transaction->PrintData($_POST['Ref']);
-  }
-  else
-  {
-    echo json_encode(array("Status" => '102', "Message" => 'Please ensure all required data is present.'));
+    }
+    else
+    {
+      echo json_encode(array("Status" => '102', "Message" => 'Please ensure all required data is present.'));
+    }
+  } else {
+    echo json_encode(array("Status" => '103', "Message" => 'Access denied, Key does not exist.'));
   }
 ?>

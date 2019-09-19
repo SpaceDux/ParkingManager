@@ -8,17 +8,23 @@
   // Require Classes
   require '../global.php';
 
-  if(isset($_POST['Plate']) AND isset($_POST['Time']))
-  {
-    if(!isset($_POST['Trailer'])) {
-      $_POST['Trailer'] = '';
-      $vehicles->Add_Vehicle($_POST['Plate'], $_POST['Trailer'], $_POST['Time']);
-    } else {
-      $vehicles->Add_Vehicle($_POST['Plate'], $_POST['Trailer'], $_POST['Time']);
+  $accesskey = $_CONFIG['api']['accesskey'];
+
+  if($accesskey == $_POST['AccessKey']) {
+    if(isset($_POST['Plate']) AND isset($_POST['Time']))
+    {
+      if(!isset($_POST['Trailer'])) {
+        $_POST['Trailer'] = '';
+        $vehicles->Add_Vehicle($_POST['Plate'], $_POST['Trailer'], $_POST['Time']);
+      } else {
+        $vehicles->Add_Vehicle($_POST['Plate'], $_POST['Trailer'], $_POST['Time']);
+      }
     }
-  }
-  else
-  {
-    echo json_encode(array("Status" => '102', "Message" => 'Please ensure all required data is present.'));
+    else
+    {
+      echo json_encode(array("Status" => '102', "Message" => 'Please ensure all required data is present.'));
+    }
+  } else {
+    echo json_encode(array("Status" => '103', "Message" => 'Access denied, Key does not exist.'));
   }
 ?>
