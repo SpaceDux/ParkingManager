@@ -80,13 +80,22 @@
           ));
         }
       }
-      echo json_encode(array(
-        "Status" => '101',
-        "Message" => 'Tariffs found.',
-        "ResponseCode" => "1",
-        "ResponseInfo" => "Tariffs found",
-        "ResponseData" => $data
-      ));
+      if(count($data) > 0) {
+        echo json_encode(array(
+          "Status" => '101',
+          "Message" => 'Tariffs found.',
+          "ResponseCode" => "1",
+          "ResponseInfo" => "Tariffs found",
+          "ResponseData" => $data
+        ));
+      } else {
+        echo json_encode(array(
+          "Status" => '101',
+          "Message" => 'Tariffs not found.',
+          "ResponseCode" => "0",
+          "ResponseInfo" => "Tariffs not found"
+        ));
+      }
 
       $this->mysql = null;
     }

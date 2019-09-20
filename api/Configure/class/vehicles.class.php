@@ -98,7 +98,7 @@
 
             $patch = str_replace($this->checks->Site_Info($Site, 'ANPR_Imgstr'), $this->checks->Site_Info($Site, 'ANPR_Img'), $result['Patch']);
             $overview = str_replace($this->checks->Site_Info($Site, 'ANPR_Imgstr'), $this->checks->Site_Info($Site, 'ANPR_Img'), $result['Overview']);
-            $response = array('ID' => $result['Uniqueref'],
+            $response = array('ParkingID' => $result['Uniqueref'],
             'Arrival_Time' => $result['Capture_Date'],
             'Img_Patch' => $patch,
             'Img_Overview' => $overview,
