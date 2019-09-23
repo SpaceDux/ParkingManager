@@ -890,7 +890,7 @@
 			$this->vehicles = null;
 		}
 		// Transaction History
-		function Transaction_List($Start, $End)
+		function Transaction_List($Start, $End, $Cash, $Card, $Account, $Snap, $Fuel)
 		{
 			$this->mysql = new MySQL;
 			$this->user = new User;
@@ -904,11 +904,40 @@
 			$Site = $this->user->Info("Site");
 
 
+			if($Cash == 1) {
+				$IsCash = "1,";
+			} else {
+				$IsCash = "";
+			}
+			if($Card == 1) {
+				$IsCard = "2,";
+			} else {
+				$IsCard = "";
+			}
+			if($Account == 1) {
+				$IsAccount = "3,";
+			} else {
+				$IsAccount = "";
+			}
+			if($Snap == 1) {
+				$IsSnap = "4,";
+			} else {
+				$IsSnap = "";
+			}
+			if($Fuel == 1) {
+				$IsFuel = "5,";
+			} else {
+				$IsFuel = "";
+			}
+
+			$Methods = $IsCash.$IsCard.$IsAccount.$IsSnap.$IsFuel;
+			$Methods = substr_replace($Methods, "", -1);
+
 			$query = 'SELECT * FROM transactions ';
 
 				if(isset($Start) && isset($End) && $Start != '' && $End != '')
 				{
-				 $query .= 'WHERE Site = '.$Site.' AND Processed_Time BETWEEN ? AND ? ';
+				 $query .= 'WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Processed_Time BETWEEN ? AND ? ';
 				}
 				if(isset($_POST['order']))
 				{

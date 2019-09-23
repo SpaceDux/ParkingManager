@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{SITE_NAME}: Dashboard</title>
+    <link rel="stylesheet" href="{URL}/template/{TPL}/css/jquery-ui.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/vision.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/dataTables.bootstrap4.min.css">
@@ -152,7 +153,7 @@
       </div>
     </div>
     <!-- Payment Pane END -->
-    <!-- Payment Pane START -->
+    <!-- Transaction List Pane START -->
     <div class="PaymentPane" id="TransactionListPane">
       <div class="Title">
         view all transactions.
@@ -167,7 +168,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
-            <input type="text" class="form-control" name="TL_DateStart" placeholder="Start Date" data-toggle="datepicker" id="TL_DateStart" value="<?php echo date("d-m-Y", strtotime("- 1 day")) ?>" autocomplete="off">
+            <input type="text" class="form-control" name="TL_DateStart" placeholder="Start Date" id="TL_DateStart" value="<?php echo date("d-m-Y", strtotime("- 1 day")) ?>" autocomplete="off">
           </div>
         </div>
         <div class="col">
@@ -175,11 +176,11 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
-            <input type="text" class="form-control" name="TL_DateEnd" placeholder="End Date" data-toggle="datepicker" id="TL_DateEnd" value="<?php echo date("d-m-Y") ?>" autocomplete="off">
+            <input type="text" class="form-control" name="TL_DateEnd" placeholder="End Date"  id="TL_DateEnd" value="<?php echo date("d-m-Y") ?>" autocomplete="off">
           </div>
         </div>
         <div class="col">
-          <!-- <div class="form-check">
+          <div class="form-check">
             <input class="form-check-input" type="checkbox" name="TL_Cash" id="TL_Cash" value="1" checked="">
             <label class="form-check-label" for="TL_Cash">Cash</label>
           </div>
@@ -190,10 +191,10 @@
           <div class="form-check">
             <input class="form-check-input" type="checkbox" name="TL_Account" id="TL_Account" value="1" checked="">
             <label class="form-check-label" for="TL_Account">Account</label>
-          </div> -->
+          </div>
         </div>
         <div class="col">
-          <!-- <div class="form-check">
+          <div class="form-check">
             <input class="form-check-input" type="checkbox" name="TL_SNAP" id="TL_SNAP" value="1" checked="">
             <label class="form-check-label" for="TL_SNAP">SNAP Account</label>
           </div>
@@ -201,21 +202,17 @@
             <input class="form-check-input" type="checkbox" name="TL_Fuel" id="TL_Fuel" value="1" checked="">
             <label class="form-check-label" for="TL_Fuel">Fuel Card</label>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="TL_9PM" id="TL_9PM" value="1">
-            <label class="form-check-label" for="TL_9PM">9pm to 9pm</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="TL_Deleted" id="TL_Deleted" value="1">
-            <label class="form-check-label" for="TL_Deleted">Hide Deleted</label>
-          </div> -->
         </div>
         <div class="col">
-          <!-- <div class="form-group">
+          <div class="form-group">
             <select class="form-control form-control-lg" name="TL_Group" id="TL_Group" autocomplete="off">
-
+              <option value="unselected">-- Choose a Group --</option>
+              <option value="1">Miscellaneous</option>
+              <option value="2">Parking</option>
+              <option value="3">Parking with Meal</option>
+              <option value="4">Wash</option>
             </select>
-          </div> -->
+          </div>
         </div>
         <div class="col">
           <div class="btn-group float-right" role="group" aria-label="View Sales">
@@ -260,7 +257,7 @@
         </table>
       </div>
     </div>
-    <!-- Payment Pane END -->
+    <!-- Transaction List Pane END -->
     <!-- Top Navigation Bar START -->
     <div class="TopBar">
       <div class="Logo">
@@ -450,6 +447,7 @@
       </div>
     </div>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="{URL}/template/{TPL}/js/jquery-ui.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/vision.js"></script>
     <script type="text/javascript" src="{URL}/template/{TPL}/js/Chart.min.js"></script>
@@ -462,6 +460,11 @@
         $('#ANPR_AddPlate_Form')[0].reset();
         $('#AddPlate_Plate').focus();
         ANPR_AddPlate();
+      });
+
+      $( function() {
+        $( "#TL_DateStart" ).datepicker({dateFormat: "yy-mm-dd"});
+        $( "#TL_DateEnd" ).datepicker({dateFormat: "yy-mm-dd"});
       });
 
       var ctx = document.getElementById('myChart');

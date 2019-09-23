@@ -312,6 +312,9 @@
     {
       $this->mysql = new MySQL;
       $this->user = new User;
+      $this->payment = new Payment;
+
+      $Site = $this->user->Info("Site");
 
       $Start = date("Y-m-d 00:00:00", strtotime($Date1));
       $End = date("Y-m-d 23:59:59", strtotime($Date2));
@@ -319,7 +322,6 @@
       $column = array('Name', 'Plate', 'Service_Name', 'Gross', 'Nett', 'Processed_Time');
       $search = $_POST['search']['value'];
       $search = '%'.$search.'%';
-      $Site = $this->user->Info("Site");
 
 
       $query = 'SELECT * FROM transactions ';
@@ -589,6 +591,55 @@
         $this->vehicle = null;
         $this->payment = null;
         die();
+    }
+    function Totals($Account, $Date1, $Date2)
+    {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->payment = new Payment;
+
+      $Site = $this->user->Info("Site");
+
+      $Start = date("Y-m-d 00:00:00", strtotime($Date1));
+      $End = date("Y-m-d 23:59:59", strtotime($Date2));
+      $query = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Method = 3 AND AccountID = ? AND Deleted = 0 AND Site = ? AND Processed_Time BETWEEN ? AND ? GROUP BY Service ORDER BY Gross ASC");
+      $query->bindParam(1, $Account);
+      $query->bindParam(2, $Site);
+      $query->bindParam(3, $Start);
+      $query->bindParam(4, $End);
+      $query->execute();
+      $totalTable = '<table class="table table-dark">
+                        <thead>
+                          <tr>
+                            <th scope="col">Service</th>
+                            <th scope="col">Count</th>
+                            <th scope="col">Gross</th>
+                            <th scope="col">Nett</th>
+                          </tr>
+                        </thead>
+                        <tbody>';
+      foreach($query->fetchAll() as $row) {
+        $key = $row['Service'];
+        $count = $this->Payment_Count_Account($Account, $Site, $key, $Start, $End);
+        $net = $this->payment->Payment_TariffInfo($key, "Nett") * $count;
+        $gross = $this->payment->Payment_TariffInfo($key, "Gross") * $count;
+        $totalTable .= '<tr>';
+        $totalTable .= '<td>'.$this->payment->Payment_TariffInfo($key, "Name").'</td>';
+        $totalTable .= '<td>'.$count.'</td>';
+        $totalTable .= '<td>'.number_format($gross, 2).'</td>';
+        $totalTable .= '<td>'.number_format($net, 2).'</td>';
+        $totalTable .= '</tr>';
+      }
+
+      $totalTable .= '
+        </tbody>
+      </table>';
+
+      echo json_encode($totalTable);
+
+      $this->mysql = null;
+      $this->user = null;
+      $this->payment = null;
     }
   }
 ?>

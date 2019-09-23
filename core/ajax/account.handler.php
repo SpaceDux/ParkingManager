@@ -18,6 +18,8 @@
     $account->Account_Report($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
   } else if($handler == "Account.DownloadReport") {
     $account->DownloadReport($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
+  } else if($handler == "Account.Totals") {
+    $account->Totals($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
   }
 
 

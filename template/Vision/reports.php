@@ -325,11 +325,18 @@
                 <div class="col-md-2">
                   <div class="btn-group dropdown">
                     <button type="button" id="Report_Generate" class="btn btn-primary">Generate</button>
-                    <input type="submit" id="Report_Generate" class="btn btn-primary" value="Download">
+                    <input type="submit" id="Report_Generate_Download" class="btn btn-primary" value="Download">
                   </div>
                 </div>
               </div>
             </form>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div id="AccountTotals">
+
           </div>
         </div>
       </div>
@@ -376,7 +383,10 @@
       $( function() {
         $( "#Report_DateFrom" ).datepicker({dateFormat: "yy-mm-dd"});
         $( "#Report_DateToo" ).datepicker({dateFormat: "yy-mm-dd"});
+        $( "#TL_DateStart" ).datepicker({dateFormat: "yy-mm-dd"});
+        $( "#TL_DateEnd" ).datepicker({dateFormat: "yy-mm-dd"});
       });
+
       Mousetrap.bind('esc', function() {
         $('#ANPR_AddPlate_Form')[0].reset();
         $('#AddPlate_Plate').focus();

@@ -157,7 +157,20 @@
       }
     });
   });
-
+  $(document).on('click', '#Report_Generate', function() {
+    var Account = $('#Report_Account').val();
+    var DateStart = $('#Report_DateFrom').val();
+    var DateEnd = $('#Report_DateToo').val();
+    $.ajax({
+      url: "{URL}/core/ajax/account.handler.php?handler=Account.Totals",
+      method: "POST",
+      data: {Account:Account, DateStart:DateStart, DateEnd:DateEnd},
+      dataType: "json",
+      success:function(Res) {
+        $('#AccountTotals').html(Res);
+      }
+    })
+  });
   function Download_AccountReport() {
     var Account = $('#Report_Account').val();
     var DateStart = $('#Report_DateFrom').val();

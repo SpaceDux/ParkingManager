@@ -7,7 +7,7 @@
   header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
   // Require Classes
   require '../global.php';
-  
+
   $accesskey = $_CONFIG['api']['accesskey'];
 
   if($accesskey == $_POST['AccessKey']) {
@@ -22,6 +22,11 @@
     } else {
       $Trailer = '';
     }
+    if(isset($_POST['Note'])) {
+      $Note = $_POST['Note'];
+    } else {
+      $Note = '';
+    }
     if(isset($_POST['FuelStr'])) {
       $FuelStr = $_POST['FuelStr'];
     } else {
@@ -30,7 +35,7 @@
 
     if(isset($System) AND isset($Ref) AND isset($Method) AND isset($Tariff) AND isset($Name) AND isset($VehicleType))
     {
-      $transaction->AddTransaction($System, $Ref, $Method, $Tariff, $Trailer, $Name, $VehicleType, $FuelStr);
+      $transaction->AddTransaction($System, $Ref, $Method, $Tariff, $Trailer, $Name, $VehicleType, $FuelStr, $Note);
     }
     else
     {

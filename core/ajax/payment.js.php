@@ -506,7 +506,7 @@
   // List Transactions via Datatables
   $(document).ready(function() {
     fill_datatable();
-    function fill_datatable(DateStart = '', DateEnd = '')
+    function fill_datatable(DateStart = '', DateEnd = '', Cash = '', Card = '', Account = '', Snap = '', Fuel = '')
     {
      var dataTable = $('#PaymentsDataTable').DataTable({
        "createdRow" : function(row, data, index) {
@@ -522,7 +522,7 @@
        url:"{URL}/core/ajax/payment.handler.php?handler=Payment.Transaction_List",
        type:"POST",
        data:{
-        DateStart:DateStart, DateEnd:DateEnd
+        DateStart:DateStart, DateEnd:DateEnd, Cash:Cash, Card:Card, Account:Account, Snap:Snap, Fuel:Fuel
        }
       }
      });
@@ -531,10 +531,16 @@
     {
       var DateStart = $('#TL_DateStart').val();
       var DateEnd = $('#TL_DateEnd').val();
+      var Cash = $('#TL_Cash:checked').val();
+      var Card = $('#TL_Card:checked').val();
+      var Account = $('#TL_Account:checked').val();
+      var Snap = $('#TL_SNAP:checked').val();
+      var Fuel = $('#TL_Fuel:checked').val();
+      var Group = $('#TL_Group').val();
       if(DateStart != '' && DateEnd != '')
       {
         $('#PaymentsDataTable').DataTable().destroy();
-        fill_datatable(DateStart, DateEnd);
+        fill_datatable(DateStart, DateEnd, Cash, Card, Account, Snap, Fuel);
       }
       else
       {

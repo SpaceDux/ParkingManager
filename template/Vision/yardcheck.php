@@ -286,7 +286,10 @@
       $('.modal').on('shown.bs.modal', function() {
         $(this).find('[autofocus]').focus();
       });
-
+      $( function() {
+        $( "#TL_DateStart" ).datepicker({dateFormat: "yy-mm-dd"});
+        $( "#TL_DateEnd" ).datepicker({dateFormat: "yy-mm-dd"});
+      });
       function Checked(str) {
         event.preventDefault();
 

@@ -89,7 +89,6 @@
       if($return['outputstatus'] == 1) {
         return $return['outputtransactionid'];
       } else {
-        die($return['outputmessage']." - ".$etpid);
         return FALSE;
       }
       $this->user = null;
