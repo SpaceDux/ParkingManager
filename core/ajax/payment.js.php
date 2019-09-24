@@ -389,7 +389,6 @@
       }
     });
   }
-
   // Payment Service Dropdown
   $(document).on('change', '#Payment_VehType', function() {
     var Type = $(this).val();
@@ -506,7 +505,7 @@
   // List Transactions via Datatables
   $(document).ready(function() {
     fill_datatable();
-    function fill_datatable(DateStart = '', DateEnd = '', Cash = '', Card = '', Account = '', Snap = '', Fuel = '')
+    function fill_datatable(DateStart = '', DateEnd = '', Cash = '', Card = '', Account = '', Snap = '', Fuel = '', Group = '')
     {
      var dataTable = $('#PaymentsDataTable').DataTable({
        "createdRow" : function(row, data, index) {
@@ -522,7 +521,7 @@
        url:"{URL}/core/ajax/payment.handler.php?handler=Payment.Transaction_List",
        type:"POST",
        data:{
-        DateStart:DateStart, DateEnd:DateEnd, Cash:Cash, Card:Card, Account:Account, Snap:Snap, Fuel:Fuel
+        DateStart:DateStart, DateEnd:DateEnd, Cash:Cash, Card:Card, Account:Account, Snap:Snap, Fuel:Fuel, Group:Group
        }
       }
      });
@@ -540,7 +539,7 @@
       if(DateStart != '' && DateEnd != '')
       {
         $('#PaymentsDataTable').DataTable().destroy();
-        fill_datatable(DateStart, DateEnd, Cash, Card, Account, Snap, Fuel);
+        fill_datatable(DateStart, DateEnd, Cash, Card, Account, Snap, Fuel, Group);
       }
       else
       {

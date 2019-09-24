@@ -432,5 +432,32 @@
 
       $this->user = null;
     }
+    function Stylesheets()
+    {
+      global $_CONFIG;
+      $sheets = '
+          <link rel="stylesheet" href="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/css/jquery-ui.css">
+          <link rel="stylesheet" href="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/css/bootstrap.min.css">
+          <link rel="stylesheet" href="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/css/vision.css">
+          <link rel="stylesheet" href="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/css/dataTables.bootstrap4.min.css">
+          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">';
+      return $sheets;
+    }
+    function Scripts()
+    {
+      global $_CONFIG;
+      $scripts = '
+          <script type="text/javascript" src="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/js/jquery-3.4.1.min.js"></script>
+          <script type="text/javascript" src="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/js/jquery-ui.js"></script>
+          <script type="text/javascript" src="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/js/bootstrap.bundle.min.js"></script>
+          <script type="text/javascript" src="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/js/vision.js"></script>
+          <script type="text/javascript" src="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/js/Chart.min.js"></script>
+          <script type="text/javascript" src="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/js/mousetrap.min.js"></script>
+          <script type="text/javascript" src="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/js/datatables.min.js"></script>
+          <script type="text/javascript" src="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/js/dataTables.bootstrap4.min.js"></script>
+          <script type="text/javascript" src="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/js/notify.min.js"></script>
+                ';
+      return $scripts;
+    }
   }
 ?>

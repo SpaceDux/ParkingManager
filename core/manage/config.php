@@ -21,5 +21,5 @@
 											 'api_pass' => 'P2002laeif[3234JklmNo1A@344_12Qq');
 	// Misc
 	$_CONFIG['misc']['copy'] = 'ParkingManager 4 | Copyright &copy; 2019 Roadking Truckstops'; //Fenrir Template System, Select the Template Directory
-	$_CONFIG['misc']['version'] = '4.0.5';
+	$_CONFIG['misc']['version'] = '4.0.8';
 ?>

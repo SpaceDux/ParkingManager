@@ -1,5 +1,8 @@
 <?php
 	namespace ParkingManager;
+	use PhpOffice\PhpSpreadsheet\Spreadsheet;
+	use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 	class Payment
 	{
 		// Vars
@@ -890,7 +893,7 @@
 			$this->vehicles = null;
 		}
 		// Transaction History
-		function Transaction_List($Start, $End, $Cash, $Card, $Account, $Snap, $Fuel)
+		function Transaction_List($Start, $End, $Cash, $Card, $Account, $Snap, $Fuel, $Group)
 		{
 			$this->mysql = new MySQL;
 			$this->user = new User;
@@ -899,8 +902,6 @@
 			$Start = date("Y-m-d 00:00:00", strtotime($Start));
 			$End = date("Y-m-d 23:59:59", strtotime($End));
 			$column = array('Name', 'Plate', 'Service_Name', 'Gross', 'Nett', 'Method', 'Processed_Time', 'AccountID', 'Author');
-			$search = $_POST['search']['value'];
-			$search = '%'.$search.'%';
 			$Site = $this->user->Info("Site");
 
 
@@ -935,9 +936,14 @@
 
 			$query = 'SELECT * FROM transactions ';
 
+
 				if(isset($Start) && isset($End) && $Start != '' && $End != '')
 				{
-				 $query .= 'WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Processed_Time BETWEEN ? AND ? ';
+					if($Group != "unselected") {
+						$query .= 'WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Service_Group = '.$Group.' AND Processed_Time BETWEEN ? AND ? ';
+					} else {
+						$query .= 'WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Processed_Time BETWEEN ? AND ? ';
+					}
 				}
 				if(isset($_POST['order']))
 				{
@@ -1333,7 +1339,6 @@
 
 			$this->mysql = null;
 		}
-
 		// Search Payment Records VIA Modal
 		function Search_Payment_Records($key)
 		{
@@ -1342,9 +1347,10 @@
 			$this->user = new User;
 			$this->vehicles = new Vehicles;
 
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Plate LIKE ? OR Name LIKE ? ORDER BY Processed_Time DESC LIMIT 20");
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Plate LIKE ? OR Name LIKE ? OR Uniqueref = ? ORDER BY Processed_Time DESC LIMIT 20");
 			$stmt->bindParam(1, $string);
 			$stmt->bindParam(2, $string);
+			$stmt->bindParam(3, $key);
 			$stmt->execute();
 			$html = '<table class="table table-dark">
 								<thead>
@@ -1375,6 +1381,154 @@
 			$this->mysql = null;
 			$this->user = null;
 			$this->vehicles = null;
+		}
+		// Download as Excel
+		function Download_Sales($Start, $End, $Cash, $Card, $Account, $Snap, $Fuel, $Group)
+		{
+			$this->mysql = new MySQL;
+			$this->user = new User;
+
+			$Start = date("Y-m-d 00:00:00", strtotime($Start));
+			$End = date("Y-m-d 23:59:59", strtotime($End));
+
+			$Site = $this->user->Info("Site");
+
+			if($Cash == 1) {
+				$IsCash = "1,";
+			} else {
+				$IsCash = "";
+			}
+			if($Card == 1) {
+				$IsCard = "2,";
+			} else {
+				$IsCard = "";
+			}
+			if($Account == 1) {
+				$IsAccount = "3,";
+			} else {
+				$IsAccount = "";
+			}
+			if($Snap == 1) {
+				$IsSnap = "4,";
+			} else {
+				$IsSnap = "";
+			}
+			if($Fuel == 1) {
+				$IsFuel = "5,";
+			} else {
+				$IsFuel = "";
+			}
+
+			$Methods = $IsCash.$IsCard.$IsAccount.$IsSnap.$IsFuel;
+			$Methods = substr_replace($Methods, "", -1);
+
+			if($Group != "unselected") {
+				$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Service_Group = '.$Group.' AND Deleted < 1 AND Processed_Time BETWEEN ? AND ? ORDER BY Processed_Time ASC");
+			} else {
+				$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Deleted < 1 AND Processed_Time BETWEEN ? AND ? ORDER BY Processed_Time ASC");
+			}
+			$stmt->bindParam(1, $Start);
+			$stmt->bindParam(2, $End);
+			$stmt->execute();
+
+			$file_name = "Sales Report ".$Start." - ".$End;
+
+			$spreadsheet = new Spreadsheet();
+			//Spreadsheet information
+			$spreadsheet->getProperties()
+				->setCreator("ParkingManager")
+				->setLastModifiedBy("ParkingManager")
+				->setTitle("ParkingManager Sales Report")
+				->setSubject("Account - $Start | $End")
+				->setDescription("Sales History")
+				->setKeywords("parking manager 4 2019 account reports")
+				->setCategory("Accounting");
+				//header information.
+				header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+				header('Content-Disposition: attachment;filename="'.$file_name.'.xlsx"');
+				header('Cache-Control: max-age=0');
+				// If you're serving to IE 9, then the following may be needed
+				header('Cache-Control: max-age=1');
+				//Start Content
+				$sheet = $spreadsheet->getActiveSheet();
+				$spreadsheet->getActiveSheet()->getStyle('A'.$rows.':H'.$rows)->applyFromArray($styleArray)->getFont()->getColor()->setARGB('FFFFFF');
+				$spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(25);
+				$spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(25);
+				$spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+				$spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(25);
+				$spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(25);
+				$spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(25);
+				$spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+				$spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(25);
+				//Stat content
+				$styleArray = [
+						'font' => [
+								'bold' => true,
+						],
+						'alignment' => [
+								'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+						],
+						'borders' => [
+								'top' => [
+										'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+								],
+						],
+						'fill' => [
+								'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+								'rotation' => 90,
+								'startColor' => [
+										'argb' => 'c41f45',
+								],
+								'endColor' => [
+										'argb' => '9b1837',
+								],
+						],
+				];
+
+			$rows = 3;
+			$sheet->setCellValue('A'.$rows, 'Name');
+			$sheet->setCellValue('B'.$rows, 'Registration');
+			$sheet->setCellValue('C'.$rows, 'Service');
+			$sheet->setCellValue('D'.$rows, 'Gross');
+			$sheet->setCellValue('E'.$rows, 'Nett');
+			$sheet->setCellValue('F'.$rows, 'Method');
+			$sheet->setCellValue('G'.$rows, 'Processed');
+			$sheet->setCellValue('H'.$rows, 'Account');
+
+			foreach($stmt->fetchAll() as $row)
+			{
+				if($row['Method'] == 1) {
+					$m = "Cash";
+				} else if($row['Method'] == 2) {
+					$m = "Card";
+				} else if($row['Method'] == 3) {
+					$m = "Account";
+				} else if($row['Method'] == 4) {
+					$m = "SNAP";
+				} else if($row['Method'] == 4) {
+					$m = "Fuel Card";
+				}
+
+				$sheet->setCellValue('A'.$rows, $row['Name']);
+				$sheet->setCellValue('B'.$rows, $row['Plate']);
+				$sheet->setCellValue('C'.$rows, $row['Service_Name']);
+				$sheet->setCellValue('D'.$rows, '£'.$row['Gross']);
+				$sheet->setCellValue('E'.$rows, '£'.$row['Nett']);
+				$sheet->setCellValue('F'.$rows, $m);
+				$sheet->setCellValue('G'.$rows, date("d/m/y H:i:s", strtotime($row['Processed_Time'])));
+				$sheet->setCellValue('H'.$rows, $row['AccountID']);
+				$rows++;
+			}
+
+			//End spreadsheets
+			$writer = new Xlsx($spreadsheet);
+			$writer->save('php://output');
+			$spreadsheet->disconnectWorksheets();
+			unset($spreadsheet);
+			die();
+
+			$this->mysql = null;
+			$this->user = null;
 		}
 	}
 ?>

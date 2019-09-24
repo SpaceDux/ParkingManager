@@ -41,6 +41,8 @@
 			$this->Assign('tpl', $_CONFIG['site']['template']); //{TPL} Skin Name
 			$this->Assign('site_name', $_CONFIG['site']['name']); //{SITE_NAME} Site Name
 			$this->Assign('copy', $_CONFIG['misc']['copy']); //{SITE_NAME} Site Name
+			$this->Assign('scripts', $this->pm->Scripts());
+			$this->Assign('stylesheets', $this->pm->Stylesheets());
 			if(isset($_SESSION['id'])) {
 				$this->Assign('fname', $this->user->Info("FirstName")); //{FNAME} Active User's first name
 				$this->Assign('vehtypes', $this->pm->Vehicle_Types_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
