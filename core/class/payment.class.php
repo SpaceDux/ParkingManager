@@ -819,7 +819,7 @@
 				<tr id="Payment_Delete_'.$row['Uniqueref'].'">
 					<td>'.$row['Service_Name'].'</td>
 					<td>'.$Method.'</td>
-					<td>'.date("d/H:i", strtotime($row['Processed_Time'])).'</td>
+					<td>'.date("d/m/y H:i", strtotime($row['Processed_Time'])).'</td>
 					<td>'.$row['Ticket_Printed'].'</td>
 					<td>'.$row['Author'].'</td>
 					<td>
@@ -1387,6 +1387,7 @@
 		{
 			$this->mysql = new MySQL;
 			$this->user = new User;
+			$this->account = new Account;
 
 			$Start = date("Y-m-d 00:00:00", strtotime($Start));
 			$End = date("Y-m-d 23:59:59", strtotime($End));
@@ -1423,15 +1424,16 @@
 			$Methods = substr_replace($Methods, "", -1);
 
 			if($Group != "unselected") {
-				$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Service_Group = '.$Group.' AND Deleted < 1 AND Processed_Time BETWEEN ? AND ? ORDER BY Processed_Time ASC");
+				$query = 'SELECT * FROM transactions WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Service_Group = '.$Group.' AND Deleted < 1 AND Processed_Time BETWEEN ? AND ? ORDER BY Processed_Time ASC';
 			} else {
-				$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Deleted < 1 AND Processed_Time BETWEEN ? AND ? ORDER BY Processed_Time ASC");
+				$query = 'SELECT * FROM transactions WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Deleted < 1 AND Processed_Time BETWEEN ? AND ? ORDER BY Processed_Time ASC';
 			}
+			$stmt = $this->mysql->dbc->prepare($query);
 			$stmt->bindParam(1, $Start);
 			$stmt->bindParam(2, $End);
 			$stmt->execute();
 
-			$file_name = "Sales Report ".$Start." - ".$End;
+			$file_name = "Sales Report";
 
 			$spreadsheet = new Spreadsheet();
 			//Spreadsheet information
@@ -1439,53 +1441,52 @@
 				->setCreator("ParkingManager")
 				->setLastModifiedBy("ParkingManager")
 				->setTitle("ParkingManager Sales Report")
-				->setSubject("Account - $Start | $End")
+				->setSubject("Sales History")
 				->setDescription("Sales History")
 				->setKeywords("parking manager 4 2019 account reports")
 				->setCategory("Accounting");
-				//header information.
-				header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-				header('Content-Disposition: attachment;filename="'.$file_name.'.xlsx"');
-				header('Cache-Control: max-age=0');
-				// If you're serving to IE 9, then the following may be needed
-				header('Cache-Control: max-age=1');
-				//Start Content
-				$sheet = $spreadsheet->getActiveSheet();
-				$spreadsheet->getActiveSheet()->getStyle('A'.$rows.':H'.$rows)->applyFromArray($styleArray)->getFont()->getColor()->setARGB('FFFFFF');
-				$spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(25);
-				$spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(25);
-				$spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(25);
-				$spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(25);
-				$spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(25);
-				$spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(25);
-				$spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(25);
-				$spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(25);
-				//Stat content
-				$styleArray = [
-						'font' => [
-								'bold' => true,
-						],
-						'alignment' => [
-								'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-						],
-						'borders' => [
-								'top' => [
-										'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-								],
-						],
-						'fill' => [
-								'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
-								'rotation' => 90,
-								'startColor' => [
-										'argb' => 'c41f45',
-								],
-								'endColor' => [
-										'argb' => '9b1837',
-								],
-						],
-				];
+			//header information.
+			header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+			header('Content-Disposition: attachment;filename="'.$file_name.'.xlsx"');
+			header('Cache-Control: max-age=0');
+			// If you're serving to IE 9, then the following may be needed
+			header('Cache-Control: max-age=1');
 
 			$rows = 3;
+			$sheet = $spreadsheet->getActiveSheet();
+			$spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(25);
+			$styleArray = [
+					'font' => [
+							'bold' => true,
+					],
+					'alignment' => [
+							'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+					],
+					'borders' => [
+							'top' => [
+									'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							],
+					],
+					'fill' => [
+							'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+							'rotation' => 90,
+							'startColor' => [
+									'argb' => 'c41f45',
+							],
+							'endColor' => [
+									'argb' => '9b1837',
+							],
+					],
+			];
+			$spreadsheet->getActiveSheet()->getStyle('A'.$rows.':H'.$rows)->applyFromArray($styleArray);
+			$spreadsheet->getActiveSheet()->getStyle('A'.$rows.':H'.$rows)->getFont()->getColor()->setARGB('FFFFFF');
 			$sheet->setCellValue('A'.$rows, 'Name');
 			$sheet->setCellValue('B'.$rows, 'Registration');
 			$sheet->setCellValue('C'.$rows, 'Service');
@@ -1494,41 +1495,39 @@
 			$sheet->setCellValue('F'.$rows, 'Method');
 			$sheet->setCellValue('G'.$rows, 'Processed');
 			$sheet->setCellValue('H'.$rows, 'Account');
-
-			foreach($stmt->fetchAll() as $row)
+			$rows++;
+			foreach($stmt->fetchAll() as $data)
 			{
-				if($row['Method'] == 1) {
-					$m = "Cash";
-				} else if($row['Method'] == 2) {
-					$m = "Card";
-				} else if($row['Method'] == 3) {
-					$m = "Account";
-				} else if($row['Method'] == 4) {
-					$m = "SNAP";
-				} else if($row['Method'] == 4) {
-					$m = "Fuel Card";
+				if($data['Method'] == 1) {
+					$m = 'Cash';
+				} else if($data['Method'] == 2) {
+					$m = 'Card';
+				} else if($data['Method'] == 3) {
+					$m = 'Account';
+				} else if($data['Method'] == 4) {
+					$m = 'SNAP';
+				} else if($data['Method'] == 5) {
+					$m = 'Fuel Card';
 				}
-
-				$sheet->setCellValue('A'.$rows, $row['Name']);
-				$sheet->setCellValue('B'.$rows, $row['Plate']);
-				$sheet->setCellValue('C'.$rows, $row['Service_Name']);
-				$sheet->setCellValue('D'.$rows, '£'.$row['Gross']);
-				$sheet->setCellValue('E'.$rows, '£'.$row['Nett']);
+				$sheet->setCellValue('A'.$rows, $data['Name']);
+				$sheet->setCellValue('B'.$rows, $data['Plate']);
+				$sheet->setCellValue('C'.$rows, $data['Service_Name']);
+				$sheet->setCellValue('D'.$rows, '£'.$data['Gross']);
+				$sheet->setCellValue('E'.$rows, '£'.$data['Nett']);
 				$sheet->setCellValue('F'.$rows, $m);
-				$sheet->setCellValue('G'.$rows, date("d/m/y H:i:s", strtotime($row['Processed_Time'])));
-				$sheet->setCellValue('H'.$rows, $row['AccountID']);
+				$sheet->setCellValue('G'.$rows, date("d/m/Y H:i:s", strtotime($data['Processed_Time'])));
+				$sheet->setCellValue('H'.$rows, $this->account->Account_GetInfo($data['AccountID'], "Name"));
 				$rows++;
 			}
-
 			//End spreadsheets
 			$writer = new Xlsx($spreadsheet);
-			$writer->save('php://output');
+			$writer->save('php://output') ;
 			$spreadsheet->disconnectWorksheets();
 			unset($spreadsheet);
-			die();
 
 			$this->mysql = null;
 			$this->user = null;
+			$this->account = null;
 		}
 	}
 ?>

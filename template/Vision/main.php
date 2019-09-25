@@ -198,10 +198,10 @@
             <input class="form-check-input" type="checkbox" name="TL_Fuel" id="TL_Fuel" value="1" checked="">
             <label class="form-check-label" for="TL_Fuel">Fuel Card</label>
           </div>
-          <div class="form-check">
+          <!-- <div class="form-check">
             <input class="form-check-input" type="checkbox" name="TL_Deleted" id="TL_Deleted" value="1" checked="">
             <label class="form-check-label" for="TL_Deleted">Hide Deleted</label>
-          </div>
+          </div> -->
         </div>
         <div class="col">
           <div class="form-group">

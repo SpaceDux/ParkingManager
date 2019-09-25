@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="Body">
-        <form class="form-row" action="" method="post" id="TransactionListForm">
+        <form class="form-row" action="{URL}/download_sales.php" method="POST" id="TransactionListForm">
         <div class="col">
           <div class="input-group input-group-lg mb-3">
             <div class="input-group-prepend">
@@ -56,6 +56,10 @@
             <input class="form-check-input" type="checkbox" name="TL_Fuel" id="TL_Fuel" value="1" checked="">
             <label class="form-check-label" for="TL_Fuel">Fuel Card</label>
           </div>
+          <!-- <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="TL_Deleted" id="TL_Deleted" value="1" checked="">
+            <label class="form-check-label" for="TL_Deleted">Hide Deleted</label>
+          </div> -->
         </div>
         <div class="col">
           <div class="form-group">
@@ -71,6 +75,7 @@
         <div class="col">
           <div class="btn-group float-right" role="group" aria-label="View Sales">
             <button type="button" id="TL_ViewSales" class="btn btn-lg btn-secondary">View Sales</button>
+            <button type="submit" class="btn btn-lg btn-secondary"><i class="fa fa-download"></i></button>
             <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">

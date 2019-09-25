@@ -425,7 +425,7 @@
         $html .= '<tr>';
         $html .= '<td>'.$row['Plate'].'</td>';
         $html .= '<td>'.$row['Notes'].'</td>';
-        $html .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+        $html .= '<td>'.date("d/m/y H:i", strtotime($row['Capture_Date'])).'</td>';
         $html .= '<td>'.$row['Lane_Name'].'</td>';
         $html .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
       }
@@ -451,7 +451,7 @@
         $html2 .= '<tr>';
         $html2 .= '<td>'.$row['Plate'].'</td>';
         $html2 .= '<td>'.$row['Notes'].'</td>';
-        $html2 .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+        $html2 .= '<td>'.date("d/m/y H:i", strtotime($row['Capture_Date'])).'</td>';
         $html2 .= '<td>'.$row['Lane_Name'].'</td>';
         $html2 .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
       }
@@ -958,7 +958,7 @@
         $html .= '<td>'.$row['Name'].'</td>';
         $html .= '<td>'.$row['Plate'].'</td>';
         $html .= '<td>'.$row['Trailer_No'].'</td>';
-        $html .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
+        $html .= '<td>'.date("d/m/y H:i", strtotime($row['Arrival'])).'</td>';
         $html .= '<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Search_Records_Modal" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button></td>';
       }
 
