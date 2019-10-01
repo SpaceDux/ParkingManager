@@ -217,7 +217,7 @@
             $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
             if($VehRec != FALSE) {
               // Add transaction
-              $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site), $Note;
+              $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment);

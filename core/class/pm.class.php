@@ -459,5 +459,43 @@
                 ';
       return $scripts;
     }
+    function ExitCode($Code)
+    {
+      $this->mysql = new MySQL;
+      // $current = date("Y-m-d H:i:s", strtotime('+ 2 hours'));
+      $time = date("Y-m-d H:i:s");
+
+      //Alter string
+      $string = str_replace("£", "", $Code);
+      $string = str_replace("#", "", $Code);
+
+      if(strlen($string) == 5) {
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE ExitKey = ? AND Parked_Column < 2 ORDER BY id DESC LIMIT 1");
+        $stmt->bindParam(1, $string);
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $id = $result['Uniqueref'];
+        $expiry = date("Y-m-d H:i:s", strtotime($result['Expiry'].'+ 2 hours'));
+        if($expiry >= $time) {
+          $exit = $this->mysql->dbc->prepare("UPDATE parking_records SET Parked_Column = '2', Departure = ?, Last_Updated = ? WHERE Uniqueref = ?");
+          $exit->bindParam(1, $time);
+          $exit->bindParam(2, $time);
+          $exit->bindParam(3, $id);
+          $exit->execute();
+          if($exit->rowCount() > 0) {
+            echo 1;
+            $this->Barrier_Control(2);
+          } else {
+            echo 0;
+          }
+        } else {
+          echo 0;
+        }
+      } else if($string == "6868") {
+        $this->Barrier_Control(2);
+      }
+
+      $this->mysql = null;
+    }
   }
 ?>

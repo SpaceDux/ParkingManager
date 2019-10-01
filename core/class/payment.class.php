@@ -424,7 +424,8 @@
 						if($Payment != "UNSUCCESSFUL") {
 							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 							$this->pm->POST_Notifications("A SNAP Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-
+						} else {
+							echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 						}
 					} else {
 						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the transaction, please try again or seek alternative payment method.'));
@@ -444,6 +445,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A DKV Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -463,6 +466,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -480,6 +485,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -497,6 +504,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A UTA Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -514,6 +523,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -531,6 +542,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -548,6 +561,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A BP Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -600,7 +615,8 @@
 						if($Payment != "UNSUCCESSFUL") {
 							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 							$this->pm->POST_Notifications("A SNAP Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-
+						} else {
+							echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 						}
 					} else {
 						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the transaction, please try again or seek alternative payment method.'));
@@ -620,6 +636,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A DKV Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -639,6 +657,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -656,6 +676,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -673,6 +695,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A UTA Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo  json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -690,6 +714,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -707,6 +733,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -724,6 +752,8 @@
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
 								$this->pm->POST_Notifications("A BP Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							} else {
+								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
@@ -825,6 +855,7 @@
 					<td>
 						<div class="btn-group float-right" role="group" aria-label="Options">
 							<button type="button" class="btn btn-danger" onClick="Print_Ticket('.$ref.')"><i class="fa fa-print"></i></button>
+							<button type="button" class="btn btn-danger" onClick="Payment_Update('.$ref.')"><i class="fa fa-cog"></i></button>
 							<button type="button" class="btn btn-danger" onClick="DeleteTransaction('.$ref.')"><i class="fa fa-trash"></i></button>
 						</div>
 					</td>
@@ -1528,6 +1559,37 @@
 			$this->mysql = null;
 			$this->user = null;
 			$this->account = null;
+		}
+		//
+		function UpdatePayment_GET($Ref)
+		{
+			$this->mysql = new MySQL;
+
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Uniqueref = ?");
+			$stmt->bindParam(1, $Ref);
+			$stmt->execute();
+			$result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+			echo json_encode($result);
+
+			$this->mysql = null;
+		}
+		function UpdatePayment($Ref, $Time)
+		{
+			$this->mysql = new MySQL;
+
+			$stmt = $this->mysql->dbc->prepare("UPDATE transactions SET Processed_Time = ? WHERE Uniqueref = ?");
+			$stmt->bindParam(1, $Time);
+			$stmt->bindParam(2, $Ref);
+			$stmt->execute();
+
+			if($stmt->rowCount() > 0) {
+				echo 1;
+			} else {
+				echo 0;
+			}
+
+			$this->mysql = null;
 		}
 	}
 ?>

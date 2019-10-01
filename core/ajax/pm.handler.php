@@ -14,6 +14,8 @@
     $ticket->EOD_Settlement($_POST['Date1'], $_POST['Date2']);
   } else if($handler == "PM.Barrier_Toggle") {
     $pm->Barrier_Control($_POST['Which']);
+  } else if($handler == "PM.ExitCode") {
+    $pm->ExitCode($_POST['Code']);
   }
 
 ?>

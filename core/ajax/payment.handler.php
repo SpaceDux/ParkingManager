@@ -40,6 +40,10 @@
     $payment->Update_Tariff_GET($_POST['Ref']);
   } else if($handler == "Payment.Search_Payments") {
     $payment->Search_Payment_Records($_POST['Key']);
+  } else if($handler == "Payment.UpdatePayment_GET") {
+    $payment->UpdatePayment_GET($_POST['Ref']);
+  } else if($handler == "Payment.UpdatePayment") {
+    $payment->UpdatePayment($_POST['Ref'], $_POST['Time']);
   }
 
 ?>
