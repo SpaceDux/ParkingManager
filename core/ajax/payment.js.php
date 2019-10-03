@@ -397,8 +397,8 @@
       method: "POST",
       dataType: "json",
       success:function(Response) {
-        $('#Payment_Uniqueref').val(Response.Uniqueref);
-        $('#Payment_Processed_Time').val(Response.Processed_Time);
+        $('#Payment_Uniqueref_Update').val(Response.Uniqueref);
+        $('#Payment_Processed_Time_Update').val(Response.Processed_Time);
         $('#Payment_UpdateModal').modal('toggle');
       }
     });
@@ -688,8 +688,8 @@
   // Search Payments via Modal
   $(document).on('click', '#Payment_Update', function() {
     event.preventDefault();
-    var Ref = $('#Payment_Uniqueref').val();
-    var Time = $('#Payment_Processed_Time').val();
+    var Ref = $('#Payment_Uniqueref_Update').val();
+    var Time = $('#Payment_Processed_Time_Update').val();
     $.ajax({
       url: "{URL}/core/ajax/payment.handler.php?handler=Payment.UpdatePayment",
       data: {Ref:Ref, Time:Time},

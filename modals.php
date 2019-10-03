@@ -1266,9 +1266,9 @@
       <div class="modal-body">
         <div class="row">
           <div class="col">
-            <input type="hidden" class="form-control" name="Payment_Uniqueref" id="Payment_Uniqueref" style="text-transform: uppercase;" autofocus>
+            <input type="hidden" class="form-control" name="Payment_Uniqueref_Update" id="Payment_Uniqueref_Update" style="text-transform: uppercase;" autofocus>
             <label>Update Processed Time</label>
-            <input type="text" class="form-control" name="Payment_Processed_Time" id="Payment_Processed_Time" style="text-transform: uppercase;" autofocus>
+            <input type="text" class="form-control" name="Payment_Processed_Time_Update" id="Payment_Processed_Time_Update" style="text-transform: uppercase;" autofocus>
           </div>
         </div>
       </div>

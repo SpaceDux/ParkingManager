@@ -1454,6 +1454,9 @@
 			$Methods = $IsCash.$IsCard.$IsAccount.$IsSnap.$IsFuel;
 			$Methods = substr_replace($Methods, "", -1);
 
+			$totalNett = 0;
+			$totalGross = 0;
+
 			if($Group != "unselected") {
 				$query = 'SELECT * FROM transactions WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Service_Group = '.$Group.' AND Deleted < 1 AND Processed_Time BETWEEN ? AND ? ORDER BY Processed_Time ASC';
 			} else {
@@ -1529,6 +1532,9 @@
 			$rows++;
 			foreach($stmt->fetchAll() as $data)
 			{
+				$totalNett += $data['Nett'];
+				$totalGross += $data['Gross'];
+
 				if($data['Method'] == 1) {
 					$m = 'Cash';
 				} else if($data['Method'] == 2) {
@@ -1550,6 +1556,43 @@
 				$sheet->setCellValue('H'.$rows, $this->account->Account_GetInfo($data['AccountID'], "Name"));
 				$rows++;
 			}
+			$spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+			$spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(25);
+			$styleArray = [
+					'font' => [
+							'bold' => true,
+					],
+					'alignment' => [
+							'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+					],
+					'borders' => [
+							'top' => [
+									'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+							],
+					],
+					'fill' => [
+							'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+							'rotation' => 90,
+							'startColor' => [
+									'argb' => 'c41f45',
+							],
+							'endColor' => [
+									'argb' => '9b1837',
+							],
+					],
+			];
+			$spreadsheet->getActiveSheet()->getStyle('A'.$rows.':H'.$rows)->applyFromArray($styleArray);
+			$spreadsheet->getActiveSheet()->getStyle('A'.$rows.':H'.$rows)->getFont()->getColor()->setARGB('FFFFFF');
+			$sheet->setCellValue('A'.$rows, 'Totals: ');
+			$sheet->setCellValue('D'.$rows, '£'.number_format($totalGross, 2));
+			$sheet->setCellValue('E'.$rows, '£'.number_format($totalNett, 2));
+			// $rows++;
 			//End spreadsheets
 			$writer = new Xlsx($spreadsheet);
 			$writer->save('php://output') ;

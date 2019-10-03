@@ -248,7 +248,7 @@
       //VAT Information
       $vat_rate = "20";
       $vat_pay = ($gross - $net);
-      $vatnum = $this->pm->Site_Info($campus, "site_vat");
+      $vatnum = $this->pm->Site_Info($campus, "Vatno");
       $img_dir = $this->ImgDir.$campus;
       //Limit amount of chars in company name.
       $company = substr($company, 0, 9);
