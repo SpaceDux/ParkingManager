@@ -9,6 +9,9 @@
   require '../global.php';
 
   $accesskey = $_CONFIG['api']['accesskey'];
+  if(!isset($_POST['AccessKey'])) {
+    $_POST['AccessKey'] == "";
+  }
 
   if($accesskey == $_POST['AccessKey']) {
     $System = $_POST['System'];

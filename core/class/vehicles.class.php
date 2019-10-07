@@ -18,6 +18,9 @@
           // My Site ANPR Feed
           $mine = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
           $mine->execute();
+          // My Site ANPR Feed
+          $mine2 = $this->mssql->dbc->prepare("SELECT TOP 100 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 1 AND Lane_ID = 2 ORDER BY Capture_Date DESC");
+          $mine2->execute();
           // Secondary ANPR Feed
           $sec = $this->mssql->dbc2->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
           $sec->execute();
@@ -28,6 +31,15 @@
               <th scope="col">Time IN</th>
               <th scope="col">Patch</th>
               <th scope="col"><i class="fa fa-cog"></i></th>
+            </tr>
+            </thead>
+          <tbody>';
+          $mine2_tbl = '<table class="table table-dark table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Registration</th>
+              <th scope="col">Time IN</th>
+              <th scope="col">Patch</th>
             </tr>
             </thead>
           <tbody>';
@@ -77,6 +89,27 @@
           }
           $mine_tbl .= '</tbody>
                   </table>';
+          // Mine2 Table
+          foreach ($mine2->fetchAll() as $row) {
+            $plate = '\''.$row['Plate'].'\'';
+            $trl = '\''.$row['Notes'].'\'';
+            $date = '\''.$row['Capture_Date'].'\'';
+            //Get The right Path now.
+            if(isset($campus)) {
+              $patch = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $row['Patch']);
+              // $patch = "";
+            } else {
+              $patch = "";
+            }
+            //Begin Table.
+            $mine2_tbl .= '<tr id="ANPR_Feed_'.$row['Uniqueref'].'">';
+            $mine2_tbl .= '<td>'.$row['Plate'].'</td>';
+            $mine2_tbl .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+            $mine2_tbl .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
+            $mine2_tbl .= '</tr>';
+          }
+          $mine2_tbl .= '</tbody>
+                  </table>';
           // Mine Table
           foreach ($sec->fetchAll() as $row) {
             $plate = '\''.$row['Plate'].'\'';
@@ -117,11 +150,15 @@
                         <a class="nav-link active" id="primary-tab" data-toggle="tab" href="#primary" role="tab" aria-controls="primary" aria-selected="true"><i class="fa fa-video red"></i> My ANPR Feed</a>
                       </li>
                       <li class="nav-item">
+                        <a class="nav-link" id="primary2-tab" data-toggle="tab" href="#primary2" role="tab" aria-controls="primary2" aria-selected="false">Exit ANPR Feed</a>
+                      </li>
+                      <li class="nav-item">
                         <a class="nav-link" id="secondary-tab" data-toggle="tab" href="#secondary" role="tab" aria-controls="secondary" aria-selected="false">Secondary ANPR Feed</a>
                       </li>
                     </ul>
                     <div class="tab-content" id="myTabContent2">
                       <div class="tab-pane fade show active" id="primary" role="tabpanel" aria-labelledby="primary-tab">'.$mine_tbl.'</div>
+                      <div class="tab-pane fade" id="primary2" role="tabpanel" aria-labelledby="primary2-tab">'.$mine2_tbl.'</div>
                       <div class="tab-pane fade" id="secondary" role="tabpanel" aria-labelledby="secondary-tab">'.$sec_tbl.'</div>
                     </div>';
 
@@ -175,7 +212,53 @@
           }
           $mine_tbl .= '</tbody>
                   </table>';
-          echo json_encode(array("Feed" => $mine_tbl));
+          // My Site ANPR Feed
+          $mine2 = $this->mssql->dbc->prepare("SELECT TOP 100 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 1 AND Lane_ID = 2 ORDER BY Capture_Date DESC");
+          $mine2->execute();
+          $mine2_tbl = '<table class="table table-dark table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Registration</th>
+              <th scope="col">Time IN</th>
+              <th scope="col">Patch</th>
+            </tr>
+            </thead>
+          <tbody>';
+          // Mine2 Table
+          foreach ($mine2->fetchAll() as $row) {
+            $plate = '\''.$row['Plate'].'\'';
+            $trl = '\''.$row['Notes'].'\'';
+            $date = '\''.$row['Capture_Date'].'\'';
+            //Get The right Path now.
+            if(isset($campus)) {
+              $patch = str_replace($this->pm->Site_Info($campus, 'ANPR_Imgstr'), $this->pm->Site_Info($campus, 'ANPR_Img'), $row['Patch']);
+              // $patch = "";
+            } else {
+              $patch = "";
+            }
+            //Begin Table.
+            $mine2_tbl .= '<tr id="ANPR_Feed_'.$row['Uniqueref'].'">';
+            $mine2_tbl .= '<td>'.$row['Plate'].'</td>';
+            $mine2_tbl .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+            $mine2_tbl .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
+            $mine2_tbl .= '</tr>';
+          }
+          $mine2_tbl .= '</tbody>
+                  </table>';
+
+          $html .= '<ul class="nav nav-tabs" id="myTab3" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="primary-tab" data-toggle="tab" href="#primary" role="tab" aria-controls="primary" aria-selected="true"><i class="fa fa-video red"></i> My ANPR Feed</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="primary2-tab" data-toggle="tab" href="#primary2" role="tab" aria-controls="primary2" aria-selected="false">Exit ANPR Feed</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent3">
+                      <div class="tab-pane fade show active" id="primary" role="tabpanel" aria-labelledby="primary-tab">'.$mine_tbl.'</div>
+                      <div class="tab-pane fade" id="primary2" role="tabpanel" aria-labelledby="primary2-tab">'.$mine2_tbl.'</div>
+                    </div>';
+          echo json_encode(array("Feed" => $html));
         }
       } else {
         echo json_encode("Your ANPR has been disabled.");

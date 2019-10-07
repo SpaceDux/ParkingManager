@@ -1,8 +1,11 @@
 <?php
   namespace ParkingManager_API;
   use GuzzleHttp\Client;
-  use GuzzleHttp\Exception\RequestException;
+  use GuzzleHttp\Handler\MockHandler;
+  use GuzzleHttp\HandlerStack;
+  use GuzzleHttp\Psr7\Response;
   use GuzzleHttp\Psr7\Request;
+  use GuzzleHttp\Exception\RequestException;
 
   class Checks
   {
@@ -48,8 +51,10 @@
         } else {
           return FALSE;
         }
-      } catch(\PDOException $e) {
-        return FALSE;
+      } catch(RequestException $e) {
+        if($e->getResponse()->getStatusCode() == 400) {
+          return 0;
+        }
       }
     }
     // Check vehicle exists in accounts fleet
@@ -161,7 +166,10 @@
         } else {
           return FALSE;
         }
-      } catch(\PDOException $e) {
+      } catch(RequestException $e) {
+        if($e->getResponse()->getStatusCode() !== 200)
+        return FALSE;
+      } catch(\Exception $e) {
         return FALSE;
       }
     }
@@ -190,7 +198,10 @@
         } else {
           return FALSE;
         }
-      } catch(\PDOException $e) {
+      } catch(RequestException $e) {
+        if($e->getResponse()->getStatusCode() !== 200)
+        return FALSE;
+      } catch(\Exception $e) {
         return FALSE;
       }
     }

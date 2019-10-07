@@ -25,4 +25,6 @@
 
 	date_default_timezone_set('Europe/London');
 
+	error_reporting(1);
+
 ?>
