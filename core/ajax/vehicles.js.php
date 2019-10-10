@@ -224,6 +224,7 @@
         $('#Update_Exit').val(Response.Departure);
         $('#Update_Column').val(Response.Parked_Column);
         $('#Update_Notes').val(Response.Notes);
+        $('#UD_ExitKey').html(Response.ExitKey);
         // Time Prep
         $.ajax({
           url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.TimeCalc",

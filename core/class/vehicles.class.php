@@ -18,12 +18,62 @@
           // My Site ANPR Feed
           $mine = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
           $mine->execute();
-          // My Site ANPR Feed
+          // My Site  Exit ANPR Feed
           $mine2 = $this->mssql->dbc->prepare("SELECT TOP 100 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 1 AND Lane_ID = 2 ORDER BY Capture_Date DESC");
           $mine2->execute();
-          // Secondary ANPR Feed
-          $sec = $this->mssql->dbc2->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
-          $sec->execute();
+
+          $sec_tbl = '<table class="table table-dark table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Registration</th>
+              <th scope="col">Time IN</th>
+              <th scope="col">Patch</th>
+              <th scope="col"><i class="fa fa-cog"></i></th>
+            </tr>
+            </thead>
+          <tbody>';
+          if($this->mssql->dbc2 != null)
+          {
+            // Secondary ANPR Feed
+            $sec = $this->mssql->dbc2->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+            $sec->execute();
+            // Mine Table
+            foreach ($sec->fetchAll() as $row) {
+              $plate = '\''.$row['Plate'].'\'';
+              $trl = '\''.$row['Notes'].'\'';
+              $date = '\''.$row['Capture_Date'].'\'';
+              //Get The right Path now.
+              if(isset($campus)) {
+                $patch = str_replace($this->pm->Site_Info($campus, 'Secondary_ANPR_Imgstr'), $this->pm->Site_Info($campus, 'Secondary_ANPR_Img'), $row['Patch']);
+                // $patch = "";
+              } else {
+                $patch = "";
+              }
+              $number = $this->pm->Hour($row['Capture_Date'], "");
+              $style = "";
+              if($number >= 2 && $number < 4) {
+                $style = "table-warning";
+              } else if ($number >= 4) {
+                $style = "table-danger";
+              }
+              //Begin Table.
+              $sec_tbl .= '<tr id="ANPR_Secondary_Feed_'.$row['Uniqueref'].'" class="'.$style.'">';
+              $sec_tbl .= '<td>'.$row['Plate'].'</td>';
+              $sec_tbl .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
+              $sec_tbl .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
+              $sec_tbl .= '<td>
+                          <div class="btn-group" role="group" aria-label="Options">
+                            <button type="button" onClick="ANPR_Secondary_Update('.$row['Uniqueref'].', '.$plate.', '.$date.', '.$trl.')" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
+                            <button type="button" onClick="ANPR_Secondary_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                          </div>
+                        </td>';
+              $sec_tbl .= '</tr>';
+            }
+            $sec_tbl .= '</tbody>
+                    </table>';
+          } else {
+            $sec_tbl .= "";
+          }
           $mine_tbl = '<table class="table table-dark table-bordered table-hover">
           <thead>
             <tr>
@@ -40,17 +90,6 @@
               <th scope="col">Registration</th>
               <th scope="col">Time IN</th>
               <th scope="col">Patch</th>
-            </tr>
-            </thead>
-          <tbody>';
-
-          $sec_tbl = '<table class="table table-dark table-bordered table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Registration</th>
-              <th scope="col">Time IN</th>
-              <th scope="col">Patch</th>
-              <th scope="col"><i class="fa fa-cog"></i></th>
             </tr>
             </thead>
           <tbody>';
@@ -109,40 +148,6 @@
             $mine2_tbl .= '</tr>';
           }
           $mine2_tbl .= '</tbody>
-                  </table>';
-          // Mine Table
-          foreach ($sec->fetchAll() as $row) {
-            $plate = '\''.$row['Plate'].'\'';
-            $trl = '\''.$row['Notes'].'\'';
-            $date = '\''.$row['Capture_Date'].'\'';
-            //Get The right Path now.
-            if(isset($campus)) {
-              $patch = str_replace($this->pm->Site_Info($campus, 'Secondary_ANPR_Imgstr'), $this->pm->Site_Info($campus, 'Secondary_ANPR_Img'), $row['Patch']);
-              // $patch = "";
-            } else {
-              $patch = "";
-            }
-            $number = $this->pm->Hour($row['Capture_Date'], "");
-            $style = "";
-            if($number >= 2 && $number < 4) {
-              $style = "table-warning";
-            } else if ($number >= 4) {
-              $style = "table-danger";
-            }
-            //Begin Table.
-            $sec_tbl .= '<tr id="ANPR_Secondary_Feed_'.$row['Uniqueref'].'" class="'.$style.'">';
-            $sec_tbl .= '<td>'.$row['Plate'].'</td>';
-            $sec_tbl .= '<td>'.date("d/H:i", strtotime($row['Capture_Date'])).'</td>';
-            $sec_tbl .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
-            $sec_tbl .= '<td>
-                        <div class="btn-group" role="group" aria-label="Options">
-                          <button type="button" onClick="ANPR_Secondary_Update('.$row['Uniqueref'].', '.$plate.', '.$date.', '.$trl.')" class="btn btn-danger" data-id="'.$row['Uniqueref'].'"><i class="fa fa-cog"></i></button>
-                          <button type="button" onClick="ANPR_Secondary_Duplicate('.$row['Uniqueref'].')" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                        </div>
-                      </td>';
-            $sec_tbl .= '</tr>';
-          }
-          $sec_tbl .= '</tbody>
                   </table>';
 
           $html .= '<ul class="nav nav-tabs" id="myTab2" role="tablist">

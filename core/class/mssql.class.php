@@ -11,7 +11,7 @@
 
     public function __construct() {
       $this->Connection_Primary();
-      $this->Connection_Secondary();
+      // $this->Connection_Secondary();
     }
     public function Connection_Primary() {
       //Start Class files
@@ -22,6 +22,7 @@
       if(isset($campus)) {
         try {
           $this->dbc = new \PDO('sqlsrv:Server='.$this->pm->Site_Info($campus, 'ANPR_IP').';Database='.$this->pm->Site_Info($campus,'ANPR_DB').'', $this->pm->Site_Info($campus, 'ANPR_User'), $this->pm->Site_Info($campus, 'ANPR_Password'));
+          $this->dbc->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
           die("MSSQL Engine Error: ".$e->getMessage());
         }
@@ -40,9 +41,12 @@
       $campus = $this->user->Info("Site");
       if($this->pm->Site_Info($campus, "Secondary_ANPR") == 1) {
         try {
-          $this->dbc2 = new \PDO('sqlsrv:Server='.$this->pm->Site_Info($campus, 'Secondary_ANPR_IP').';Database='.$this->pm->Site_Info($campus,'Secondary_ANPR_DB').';LoginTimeout=5', $this->pm->Site_Info($campus, 'Secondary_ANPR_User'), $this->pm->Site_Info($campus, 'Secondary_ANPR_Pass'));
+          $this->dbc2 = new \PDO('sqlsrv:Server='.$this->pm->Site_Info($campus, 'Secondary_ANPR_IP').';Database='.$this->pm->Site_Info($campus,'Secondary_ANPR_DB').';LoginTimeout=1', $this->pm->Site_Info($campus, 'Secondary_ANPR_User'), $this->pm->Site_Info($campus, 'Secondary_ANPR_Pass'));
+          $this->dbc2->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
-          die("MSSQL Secondary Engine Error: ".$e->getMessage());
+          if(substr($e->getCode(), 0, 2) != 00) {
+            $this->dbc2 = null;
+          }
         }
       } else {
 

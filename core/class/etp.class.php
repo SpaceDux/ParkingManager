@@ -1,8 +1,10 @@
 <?php
   namespace ParkingManager;
   use GuzzleHttp\Client;
-  use GuzzleHttp\Exception\RequestException;
+  use GuzzleHttp\Psr7\Response;
   use GuzzleHttp\Psr7\Request;
+  use GuzzleHttp\Exception\RequestException;
+  use GuzzleHttp\Exception\ConnectException;
 
   class ETP {
     //Add SNAP transaction
@@ -67,97 +69,126 @@
     //Process SNAP transaction
     public function Proccess_Transaction_SNAP($etpid, $plate, $name)
     {
-      global $_CONFIG;
-      $this->user = new User;
-      $this->pm = new PM;
-      $campus = $this->user->Info("Site");
-      $API = $_CONFIG['ETP']['API'];
+      try {
+        global $_CONFIG;
+        $this->user = new User;
+        $this->pm = new PM;
+        $campus = $this->user->Info("Site");
+        $API = $_CONFIG['ETP']['API'];
 
-      $client = new Client(['base_uri' => $API['api_uri']]);
-      //Begin API client
-      $response = $client->post('transaction/add', [
-        'auth' => array($API['api_user'], $API['api_pass']),
-        'json' => [
-          'locationusername' => $this->pm->Site_Info($campus, "ETP_User"),
-          'locationpassword' => $this->pm->Site_Info($campus, "ETP_Pass"),
-          'serviceid' => $etpid,
-          'regno' => $plate,
-          'drivername' => $name
-        ]
-      ]);
-      $return = json_decode($response->getBody(), true);
-      if($return['outputstatus'] == 1) {
-        return $return['outputtransactionid'];
-      } else {
-        return FALSE;
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '5.0']);
+        //Begin API client
+        $response = $client->post('transaction/add', [
+          'auth' => array($API['api_user'], $API['api_pass']),
+          'json' => [
+            'locationusername' => $this->pm->Site_Info($campus, "ETP_User"),
+            'locationpassword' => $this->pm->Site_Info($campus, "ETP_Pass"),
+            'serviceid' => $etpid,
+            'regno' => $plate,
+            'drivername' => $name
+          ]
+        ]);
+        $return = json_decode($response->getBody(), true);
+        if($return['outputstatus'] == 1) {
+          return $return['outputtransactionid'];
+        } else {
+          return FALSE;
+        }
+        $this->user = null;
+        $this->pm = null;
+      } catch(RequestException $e) {
+        if($e->getResponse() != null) {
+          if($e->getResponse()->getStatusCode() != 200) {
+            return FASLSE;
+          }
+        } else {
+          return FALSE;
+        }
       }
-      $this->user = null;
-      $this->pm = null;
     }
     //Process Fuelcard Transaction
     public function Proccess_Transaction_Fuel($etpid, $plate, $name, $Card, $Expiry)
     {
-      global $_CONFIG;
-      $this->user = new User;
-      $this->pm = new PM;
-      $campus = $this->user->Info("Site");
-      $API = $_CONFIG['ETP']['API'];
+      try {
+        global $_CONFIG;
+        $this->user = new User;
+        $this->pm = new PM;
+        $campus = $this->user->Info("Site");
+        $API = $_CONFIG['ETP']['API'];
 
-      $client = new Client(['base_uri' => $API['api_uri']]);
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '5.0']);
 
-      $response = $client->post('transaction/add', [
-        'auth' => array($API['api_user'], $API['api_pass']),
-        'json' => [
-          'locationusername' => $this->pm->Site_Info($campus, "ETP_User"),
-          'locationpassword' => $this->pm->Site_Info($campus, "ETP_Pass"),
-          'serviceid' => $etpid,
-          'regno' => $plate,
-          'drivername' => $name,
-          'cardno' => $Card,
-          'cardexpiry' => $Expiry
-        ]
-      ]);
-      $return = json_decode($response->getBody(), true);
-      if($return['outputstatus'] == 1) {
-        return $return['outputtransactionid'];
-      } else {
-        return FALSE;
+        $response = $client->post('transaction/add', [
+          'auth' => array($API['api_user'], $API['api_pass']),
+          'json' => [
+            'locationusername' => $this->pm->Site_Info($campus, "ETP_User"),
+            'locationpassword' => $this->pm->Site_Info($campus, "ETP_Pass"),
+            'serviceid' => $etpid,
+            'regno' => $plate,
+            'drivername' => $name,
+            'cardno' => $Card,
+            'cardexpiry' => $Expiry
+          ]
+        ]);
+        $return = json_decode($response->getBody(), true);
+        if($return['outputstatus'] == 1) {
+          return $return['outputtransactionid'];
+        } else {
+          return FALSE;
+        }
+        $this->user = null;
+        $this->pm = null;
+      } catch(RequestException $e) {
+        if($e->getResponse() != null) {
+          if($e->getResponse()->getStatusCode() != 200) {
+            return FASLSE;
+          }
+        } else {
+          return FALSE;
+        }
       }
-      $this->user = null;
-      $this->pm = null;
-
     }
     //check is SNAP
     public function Check_SNAP($Plate)
     {
-      global $_CONFIG;
-      $this->user = new User;
-      $this->pm = new PM;
+      try {
+        global $_CONFIG;
+        $this->user = new User;
+        $this->pm = new PM;
 
-      $campus = $this->user->Info("Site");
+        $campus = $this->user->Info("Site");
 
-      $API = $_CONFIG['ETP']['API'];
-      $client = new Client(['base_uri' => $API['api_uri']]);
-      //Begin API client
-      $response = $client->post('transaction/add', [
-        'auth' => array($API['api_user'], $API['api_pass']),
-        'json' => [
-          'locationusername' => 'holyhead',
-          'locationpassword' => '2hst36sg',
-          'serviceid' => "4439",
-          'regno' => $Plate,
-          'drivername' => "ISITSNAP",
-          'committransaction' => '0'
-        ]
-      ]);
-      $return = json_decode($response->getBody(), true);
-      if($return['outputstatus'] > 0) {
-        return TRUE;
-      } else {
-        return FALSE;
+        $API = $_CONFIG['ETP']['API'];
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '5.0']);
+        //Begin API client
+        $response = $client->post('transaction/add', [
+          'auth' => array($API['api_user'], $API['api_pass']),
+          'json' => [
+            'locationusername' => 'holyhead',
+            'locationpassword' => '2hst36sg',
+            'serviceid' => "4439",
+            'regno' => $Plate,
+            'drivername' => "ISITSNAP",
+            'committransaction' => '0'
+          ]
+        ]);
+        $return = json_decode($response->getBody(), true);
+        if($return['outputstatus'] > 0) {
+          return TRUE;
+        } else {
+          return FALSE;
+        }
+        $this->user  = null;
+        $this->pm = null;
+      } catch(RequestException $e) {
+        if($e->getResponse() != null) {
+          if($e->getResponse()->getStatusCode() != 200) {
+            return "ERROR";
+          }
+        } else {
+          return "ERROR";
+        }
       }
-      $this->user  = null;
-      $this->pm = null;
     }
     //Process SNAP transaction
     public function DeleteTransaction($tid)

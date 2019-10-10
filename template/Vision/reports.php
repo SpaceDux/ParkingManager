@@ -79,6 +79,76 @@
       </div>
     </div>
     <!-- Update Pane END -->
+    <!-- Payment Pane START -->
+    <div class="PaymentPane" id="PaymentPane">
+      <div class="Title">
+        new transaction.
+        <div class="btn-group float-right" role="group">
+          <button type="button" class="btn btn-danger" onClick="PaymentPaneClose()"><i class="fa fa-times"></i></button>
+        </div>
+      </div>
+      <div class="Body">
+        <form id="PaymentPane_Form">
+          <div class="row">
+            <div class="col">
+              <input type="hidden" name="Payment_Type" id="Payment_Type" class="form-control">
+              <input type="hidden" name="Payment_Ref" id="Payment_Ref" class="form-control">
+              <input type="hidden" name="Payment_CaptureDate" id="Payment_CaptureDate" class="form-control">
+              <label>Vehicle Registration Plate</label>
+              <input type="text" name="Payment_Plate" id="Payment_Plate" class="form-control" placeholder="E.G CY15GHX" style="text-transform: uppercase;" readonly>
+              <hr>
+              <label>Company / Name</label>
+              <input type="text" name="Payment_Name" id="Payment_Name" class="form-control" placeholder="E.G EXAMPLE TRANSPORT" style="text-transform: uppercase;">
+              <hr>
+              <label>Vehicle Trailer Number</label>
+              <input type="text" name="Payment_Trl" class="form-control" id="Payment_Trl" placeholder="E.G TRL001" style="text-transform: uppercase;">
+              <hr>
+              <label>Vehicle Type</label>
+              <select class="form-control" id="Payment_VehType" name="Payment_VehType">
+                <option value="unselected">Please Choose a Vehicle Type...</option>
+                {VEHTYPES}
+              </select>
+              <hr>
+              <div id="ANPR_Images">
+
+              </div>
+            </div>
+            <div class="col">
+              <div class="alert alert-primary" id="Payment_TimeCalculation"></div>
+              <label>How many days parking</label><br>
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary active">
+                  <input type="radio" name="Payment_Services_Expiry" value="24" autocomplete="off" checked=""> 1 Day
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="48" autocomplete="off"> 2 Days
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="72" autocomplete="off"> 3 Days
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="96" autocomplete="off"> 4 Days
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="120" autocomplete="off"> 5 Days
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="144" autocomplete="off"> 6 Days
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="Payment_Services_Expiry" value="168" autocomplete="off"> 7 Days
+                </label>
+              </div>
+              <hr>
+              <div id="PaymentOptions">
+
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Payment Pane END -->
     <!-- Transaction List Pane START -->
     <div class="PaymentPane" id="TransactionListPane">
       <div class="Title">

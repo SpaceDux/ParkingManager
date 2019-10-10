@@ -32,7 +32,7 @@
       try {
         global $_CONFIG;
         $API = $_CONFIG['ETP']['API'];
-        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '2.0']);
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '5.0']);
         //Begin API client
         $response = $client->post('transaction/add', [
           'auth' => array($API['api_user'], $API['api_pass']),
@@ -52,7 +52,11 @@
           return FALSE;
         }
       } catch(RequestException $e) {
-        if($e->getResponse()->getStatusCode() == 400) {
+        if($e->getResponse() != null) {
+          if($e->getResponse()->getStatusCode() != 200) {
+            return 0;
+          }
+        } else {
           return 0;
         }
       }
@@ -148,7 +152,7 @@
       try {
         global $_CONFIG;
         $API = $_CONFIG['ETP']['API'];
-        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '2.0']);
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '5.0']);
         //Begin API client
         $response = $client->post('transaction/add', [
           'auth' => array($API['api_user'], $API['api_pass']),
@@ -167,10 +171,13 @@
           return FALSE;
         }
       } catch(RequestException $e) {
-        if($e->getResponse()->getStatusCode() !== 200)
-        return FALSE;
-      } catch(\Exception $e) {
-        return FALSE;
+        if($e->getResponse() != null) {
+          if($e->getResponse()->getStatusCode() != 200) {
+            return FASLSE;
+          }
+        } else {
+          return FALSE;
+        }
       }
     }
     function Process_Fuel_Transaction($Plate, $ID, $Name, $Cardno, $Expiry)
@@ -178,7 +185,7 @@
       try {
         global $_CONFIG;
         $API = $_CONFIG['ETP']['API'];
-        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '2.0']);
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '5.0']);
         //Begin API client
         $response = $client->post('transaction/add', [
           'auth' => array($API['api_user'], $API['api_pass']),
@@ -199,10 +206,13 @@
           return FALSE;
         }
       } catch(RequestException $e) {
-        if($e->getResponse()->getStatusCode() !== 200)
-        return FALSE;
-      } catch(\Exception $e) {
-        return FALSE;
+        if($e->getResponse() != null) {
+          if($e->getResponse()->getStatusCode() != 200) {
+            return FASLSE;
+          }
+        } else {
+          return FALSE;
+        }
       }
     }
 

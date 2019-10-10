@@ -20,6 +20,13 @@
 
       if($this->checks->Check_Site_Exists($Site) == TRUE)
       {
+        $snap = $this->checks->Check_On_SNAP($Plate);
+        if($snap != 0) {
+          $ETPCk = $snap;
+        } else {
+          $ETPCk = FALSE;
+        }
+
         $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate = ? AND Parked_Column = 1 AND Site = ? AND Deleted < 1 AND Flagged < 1");
         $stmt->bindValue(1, $Plate);
         $stmt->bindValue(2, $Site);
@@ -34,6 +41,7 @@
           // $stmt->bindParam(3, $ref);
           // $stmt->bindParam(4, $Site);
           $stmt->execute();
+
           $trans = $stmt->fetch(\PDO::FETCH_ASSOC);
 
           $response = array('ParkingID' => $ref,
@@ -42,7 +50,7 @@
           'Img_Patch' => $result['Img_Patch'],
           'Img_Overview' => $result['Img_Overview'],
           'Accept_Account' => $this->checks->Check_On_Account($Plate),
-          'Accept_SNAP' => $this->checks->Check_On_SNAP($Plate)
+          'Accept_SNAP' => $ETPCk
           );
           if($trans['Vehicle_Expiry_Time'] >= date("Y-m-d H:i:s"))
           {
@@ -103,7 +111,7 @@
             'Img_Patch' => $patch,
             'Img_Overview' => $overview,
             'Accept_Account' => $this->checks->Check_On_Account($Plate),
-            'Accept_SNAP' => $this->checks->Check_On_SNAP($Plate)
+            'Accept_SNAP' => $ETPCk
             );
 
             echo json_encode(array(

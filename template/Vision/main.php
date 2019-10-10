@@ -73,6 +73,7 @@
                 </div>
               </div>
               <span class="badge badge-secondary float-right" id="UD_Ref"></span>
+              <span class="badge badge-primary float-right" id="UD_ExitKey"></span>
             </div>
           </div>
         </form>

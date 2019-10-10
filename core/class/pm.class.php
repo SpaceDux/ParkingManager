@@ -393,11 +393,12 @@
 
       $this->mysql = null;
     }
-    function Barrier_Control($barrier)
+    function Barrier_Control($barrier, $Site = '')
     {
       $this->user = new User;
-
-      $Site = $this->user->Info("Site");
+      if($Site == '') {
+        $Site = $this->user->Info("Site");
+      }
 
       $BarrierIN = $this->Site_Info($Site, "Barrier_IN");
       $BarrierOUT = $this->Site_Info($Site, "Barrier_OUT");
@@ -476,6 +477,7 @@
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         $id = $result['Uniqueref'];
         $expiry = date("Y-m-d H:i:s", strtotime($result['Expiry'].'+ 2 hours'));
+        $Site = $result['Site'];
         if($expiry >= $time) {
           $exit = $this->mysql->dbc->prepare("UPDATE parking_records SET Parked_Column = '2', Departure = ?, Last_Updated = ? WHERE Uniqueref = ?");
           $exit->bindParam(1, $time);
@@ -484,7 +486,7 @@
           $exit->execute();
           if($exit->rowCount() > 0) {
             echo 1;
-            $this->Barrier_Control(2);
+            $this->Barrier_Control(2, $Site);
           } else {
             echo 0;
           }
@@ -492,7 +494,9 @@
           echo 0;
         }
       } else if($string == "6868") {
-        $this->Barrier_Control(2);
+        $this->Barrier_Control(2, '201908151155252628');
+      } else if($string == "0419") {
+        $this->Barrier_Control(2, '201908291533552768');
       }
 
       $this->mysql = null;
