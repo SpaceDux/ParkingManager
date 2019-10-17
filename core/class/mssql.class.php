@@ -11,7 +11,7 @@
 
     public function __construct() {
       $this->Connection_Primary();
-      // $this->Connection_Secondary();
+      $this->Connection_Secondary();
     }
     public function Connection_Primary() {
       //Start Class files

@@ -485,12 +485,27 @@
           $exit->bindParam(3, $id);
           $exit->execute();
           if($exit->rowCount() > 0) {
-            echo 1;
+            // echo 1;
+            $notice = $this->mysql->dbc->prepare("INSERT INTO exitcode_log (id, Site, Code, Status, Processed) VALUES ('', ?, ?, '1', ?)");
+            $notice->bindParam(1, $Site);
+            $notice->bindParam(2, $string);
+            $notice->bindParam(3, $time);
+            $notice->execute();
             $this->Barrier_Control(2, $Site);
           } else {
+            $notice = $this->mysql->dbc->prepare("INSERT INTO exitcode_log (id, Site, Code, Status, Processed) VALUES ('', ?, ?, '0', ?)");
+            $notice->bindParam(1, $Site);
+            $notice->bindParam(2, $string);
+            $notice->bindParam(3, $time);
+            $notice->execute();
             echo 0;
           }
         } else {
+          $notice = $this->mysql->dbc->prepare("INSERT INTO exitcode_log (id, Site, Code, Status, Processed) VALUES ('', ?, ?, '0', ?)");
+          $notice->bindParam(1, $Site);
+          $notice->bindParam(2, $string);
+          $notice->bindParam(3, $time);
+          $notice->execute();
           echo 0;
         }
       } else if($string == "6868") {
