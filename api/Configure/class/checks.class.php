@@ -173,7 +173,7 @@
       } catch(RequestException $e) {
         if($e->getResponse() != null) {
           if($e->getResponse()->getStatusCode() != 200) {
-            return FASLSE;
+            return FALSE;
           }
         } else {
           return FALSE;
@@ -208,7 +208,7 @@
       } catch(RequestException $e) {
         if($e->getResponse() != null) {
           if($e->getResponse()->getStatusCode() != 200) {
-            return FASLSE;
+            return FALSE;
           }
         } else {
           return FALSE;

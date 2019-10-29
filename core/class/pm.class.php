@@ -116,6 +116,8 @@
       $html .= '<option value="2">Parking</option>';
       $html .= '<option value="3">Parking with Meal</option>';
       $html .= '<option value="4">Wash</option>';
+      $html .= '<option value="5">Hi-Sec / Oversized</option>';
+      $html .= '<option value="6">Hi-Sec / Oversized with Meal</option>';
 
 
       return $html;

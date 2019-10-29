@@ -14,10 +14,10 @@
       $this->user = new User;
       $this->pm = new PM;
 
-      $Site = $this->user->Info("Site");
-
-      $ETP_User = $this->pm->Site_Info($Site, "ETP_User");
-      $ETP_Pass = $this->pm->Site_Info($Site, "ETP_Pass");
+      // $Site = $this->user->Info("Site");
+      //
+      // $ETP_User = $this->pm->Site_Info($Site, "ETP_User");
+      // $ETP_Pass = $this->pm->Site_Info($Site, "ETP_Pass");
 
       $API = $_CONFIG['ETP']['API'];
       //Begin API client
@@ -26,8 +26,8 @@
       $response = $client->post('services/list', [
         'auth' => array($API['api_user'], $API['api_pass']),
         'json' => [
-          'locationusername' => $ETP_User,
-          'locationpassword' => $ETP_Pass
+          'locationusername' => 'hollies',
+          'locationpassword' => 'hollies'
           ]
       ]);
 
@@ -69,14 +69,14 @@
     //Process SNAP transaction
     public function Proccess_Transaction_SNAP($etpid, $plate, $name)
     {
+      $this->user = new User;
+      $this->pm = new PM;
+      global $_CONFIG;
       try {
-        global $_CONFIG;
-        $this->user = new User;
-        $this->pm = new PM;
         $campus = $this->user->Info("Site");
         $API = $_CONFIG['ETP']['API'];
 
-        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '5.0']);
+        $client = new Client(['base_uri' => $API['api_uri']]);
         //Begin API client
         $response = $client->post('transaction/add', [
           'auth' => array($API['api_user'], $API['api_pass']),
@@ -90,33 +90,32 @@
         ]);
         $return = json_decode($response->getBody(), true);
         if($return['outputstatus'] == 1) {
-          return $return['outputtransactionid'];
+          $result = array('Status' => TRUE, 'Message' => 'ETP has accepted the transaction. ETPID; '.$return['outputtransactionid'], 'TID' => $return['outputtransactionid']);
+          return $result;
         } else {
-          return FALSE;
+          $result = array('Status' => FALSE, 'Message' => 'ETP has rejected the transaction. Response by ETP; '.$return['outputmessage']);
+          return $result;
         }
-        $this->user = null;
-        $this->pm = null;
       } catch(RequestException $e) {
-        if($e->getResponse() != null) {
-          if($e->getResponse()->getStatusCode() != 200) {
-            return FASLSE;
-          }
-        } else {
-          return FALSE;
+        if($e->getResponse() == null) {
+          $result = array('Status' => FALSE, 'Message' => 'Unable to read response provided by ETP, please check your ETP application and ensure the transaction has not been made.');
+          return $result;
         }
       }
+      $this->user = null;
+      $this->pm = null;
     }
     //Process Fuelcard Transaction
     public function Proccess_Transaction_Fuel($etpid, $plate, $name, $Card, $Expiry)
     {
+      $this->user = new User;
+      $this->pm = new PM;
+      global $_CONFIG;
       try {
-        global $_CONFIG;
-        $this->user = new User;
-        $this->pm = new PM;
         $campus = $this->user->Info("Site");
         $API = $_CONFIG['ETP']['API'];
 
-        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '5.0']);
+        $client = new Client(['base_uri' => $API['api_uri']]);
 
         $response = $client->post('transaction/add', [
           'auth' => array($API['api_user'], $API['api_pass']),
@@ -132,29 +131,28 @@
         ]);
         $return = json_decode($response->getBody(), true);
         if($return['outputstatus'] == 1) {
-          return $return['outputtransactionid'];
+          $result = array('Status' => TRUE, 'Message' => 'ETP has accepted the transaction. ETPID; '.$return['outputtransactionid'], 'TID' => $return['outputtransactionid']);
+          return $result;
         } else {
-          return FALSE;
+          $result = array('Status' => FALSE, 'Message' => 'ETP has rejected the transaction. Response by ETP; '.$return['outputmessage']);
+          return $result;
         }
-        $this->user = null;
-        $this->pm = null;
       } catch(RequestException $e) {
-        if($e->getResponse() != null) {
-          if($e->getResponse()->getStatusCode() != 200) {
-            return FASLSE;
-          }
-        } else {
-          return FALSE;
+        if($e->getResponse() == null) {
+          $result = array('Status' => FALSE, 'Message' => 'Unable to read response provided by ETP, please check your ETP application and ensure the transaction has not been made.');
+          return $result;
         }
       }
+      $this->user = null;
+      $this->pm = null;
     }
     //check is SNAP
     public function Check_SNAP($Plate)
     {
+      $this->user = new User;
+      $this->pm = new PM;
+      global $_CONFIG;
       try {
-        global $_CONFIG;
-        $this->user = new User;
-        $this->pm = new PM;
 
         $campus = $this->user->Info("Site");
 
@@ -193,9 +191,9 @@
     //Process SNAP transaction
     public function DeleteTransaction($tid)
     {
-      global $_CONFIG;
       $this->user = new User;
       $this->pm = new PM;
+      global $_CONFIG;
       $campus = $this->user->Info("Site");
 
       $API = $_CONFIG['ETP']['API'];

@@ -65,10 +65,7 @@
           <div class="form-group">
             <select class="form-control form-control-lg" name="TL_Group" id="TL_Group" autocomplete="off">
               <option value="unselected">-- Choose a Group --</option>
-              <option value="1">Miscellaneous</option>
-              <option value="2">Parking</option>
-              <option value="3">Parking with Meal</option>
-              <option value="4">Wash</option>
+              {TARIFF_GROUPS}
             </select>
           </div>
         </div>

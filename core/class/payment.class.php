@@ -517,11 +517,11 @@
 				} else if($Method == 4) {
 					$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 					$ETP = $this->etp->Proccess_Transaction_SNAP($ETPID, $Plate, $Name);
-					if($ETP != FALSE) {
+					if($ETP['Status'] != FALSE) {
 						// Create Parking Record
 						$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
 						// Create Payment Record
-						$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry);
+						$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry);
 						$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 						if($Payment != "UNSUCCESSFUL") {
 							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
@@ -530,7 +530,7 @@
 							echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 						}
 					} else {
-						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the transaction, please try again or seek alternative payment method.'));
+						echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
 					}
 				} else if($Method == 5) {
 					$CardChk = substr($FuelCardNo, "0", "6");
@@ -538,11 +538,11 @@
 						$CardType = 1; // DKV
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							// Create Parking Record
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
 							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
@@ -559,11 +559,11 @@
 						$CardType = 2; // Key Fuels
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							// Create Parking Record
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
 							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
@@ -578,11 +578,11 @@
 						$CardType = 2; // Key Fuels
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							// Create Parking Record
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
 							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
@@ -597,11 +597,11 @@
 						$CardType = 3; // UTA
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							// Create Parking Record
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
 							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
@@ -616,11 +616,11 @@
 						$CardType = 4; // MORGAN
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							// Create Parking Record
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
 							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
@@ -635,11 +635,11 @@
 						$CardType = 4; // MORGAN
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							// Create Parking Record
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
 							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
@@ -654,11 +654,11 @@
 						$CardType = 5; // BP
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							// Create Parking Record
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
 							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
 								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
@@ -708,10 +708,10 @@
 				} else if($Method == 4) {
 					$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 					$ETP = $this->etp->Proccess_Transaction_SNAP($ETPID, $Plate, $Name);
-					if($ETP != FALSE) {
+					if($ETP['Status'] != FALSE) {
 						$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 						// Create Payment Record
-						$Payment = $this->New_Transaction($Ref, $Method, $Plate,  $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null);
+						$Payment = $this->New_Transaction($Ref, $Method, $Plate,  $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null);
 						$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 						if($Payment != "UNSUCCESSFUL") {
@@ -721,7 +721,7 @@
 							echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 						}
 					} else {
-						echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the transaction, please try again or seek alternative payment method.'));
+						echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
 					}
 				} else if($Method == 5) {
 					$CardChk = substr($FuelCardNo, "0", "6");
@@ -729,10 +729,10 @@
 						$CardType = 1; // DKV
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
@@ -750,10 +750,10 @@
 						$CardType = 2; // Key Fuels
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
@@ -769,10 +769,10 @@
 						$CardType = 2; // Key Fuels
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
@@ -788,10 +788,10 @@
 						$CardType = 3; // UTA
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
@@ -807,10 +807,10 @@
 						$CardType = 4; // MORGAN
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
@@ -826,10 +826,10 @@
 						$CardType = 4; // MORGAN
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
@@ -845,10 +845,10 @@
 						$CardType = 5; // BP
 						$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
-						if($ETP != FALSE) {
+						if($ETP['Status'] != FALSE) {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP, $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
 							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
 							if($Payment != "UNSUCCESSFUL") {
@@ -1480,10 +1480,11 @@
 			$this->user = new User;
 			$this->vehicles = new Vehicles;
 
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Plate LIKE ? OR Name LIKE ? OR Uniqueref = ? ORDER BY Processed_Time DESC LIMIT 20");
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Plate LIKE ? OR Name LIKE ? OR Uniqueref = ? OR ETPID = ? ORDER BY Processed_Time DESC LIMIT 20");
 			$stmt->bindParam(1, $string);
 			$stmt->bindParam(2, $string);
 			$stmt->bindParam(3, $key);
+			$stmt->bindParam(4, $key);
 			$stmt->execute();
 			$html = '<table class="table table-dark">
 								<thead>
