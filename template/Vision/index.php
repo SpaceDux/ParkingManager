@@ -6,6 +6,7 @@
     <title>{SITE_NAME}: Login</title>
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{URL}/template/{TPL}/css/vision.css">
+    <link rel="shortcut icon" href="{URL}/PMIcon.png">
   </head>
   <body>
     <div class="Login_Body">

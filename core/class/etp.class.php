@@ -89,11 +89,13 @@
           ]
         ]);
         $return = json_decode($response->getBody(), true);
+        $ETPMsg = $return['outputmessage'];
+        $MSG = str_replace("[User]The specified [UserName] and [Password] are valid^[User]", "", $ETPMsg);
         if($return['outputstatus'] == 1) {
-          $result = array('Status' => TRUE, 'Message' => 'ETP has accepted the transaction. ETPID; '.$return['outputtransactionid'], 'TID' => $return['outputtransactionid']);
+          $result = array('Status' => TRUE, 'Message' => 'ETP has accepted the transaction. ETPID; '.$return['outputtransactionid'].' <br><br> Message: '.$MSG.'', 'TID' => $return['outputtransactionid']);
           return $result;
         } else {
-          $result = array('Status' => FALSE, 'Message' => 'ETP has rejected the transaction. Response by ETP; '.$return['outputmessage']);
+          $result = array('Status' => FALSE, 'Message' => 'ETP have rejected the transaction. Response; <br> '.$MSG);
           return $result;
         }
       } catch(RequestException $e) {
@@ -130,11 +132,13 @@
           ]
         ]);
         $return = json_decode($response->getBody(), true);
+        $ETPMsg = $return['outputmessage'];
+        $MSG = str_replace("[User]The specified [UserName] and [Password] are valid^Invalid Card No^[User]", "", $ETPMsg);
         if($return['outputstatus'] == 1) {
           $result = array('Status' => TRUE, 'Message' => 'ETP has accepted the transaction. ETPID; '.$return['outputtransactionid'], 'TID' => $return['outputtransactionid']);
           return $result;
         } else {
-          $result = array('Status' => FALSE, 'Message' => 'ETP has rejected the transaction. Response by ETP; '.$return['outputmessage']);
+          $result = array('Status' => FALSE, 'Message' => 'ETP has rejected the transaction. Response by ETP; '.$MSG);
           return $result;
         }
       } catch(RequestException $e) {

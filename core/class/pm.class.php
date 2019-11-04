@@ -443,7 +443,8 @@
           <link rel="stylesheet" href="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/css/bootstrap.min.css">
           <link rel="stylesheet" href="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/css/vision.css">
           <link rel="stylesheet" href="'.$_CONFIG['site']['url'].'/template/'.$_CONFIG['site']['template'].'/css/dataTables.bootstrap4.min.css">
-          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">';
+          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+          <link rel="shortcut icon" href="'.$_CONFIG['site']['url'].'/PMIcon.png">';
       return $sheets;
     }
     function Scripts()
