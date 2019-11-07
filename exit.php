@@ -1,7 +1,3 @@
-<?php
-  // require(__DIR__.'/global.php');
-
-?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -33,7 +29,7 @@
             type: "POST",
             data: {Code:Code},
             success:function(data) {
-              if(data == "1") {
+              if(data.Result == "1") {
                 $('#ExitForm')[0].reset();
               } else {
                 $('#ExitForm')[0].reset();

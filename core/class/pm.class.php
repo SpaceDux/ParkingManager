@@ -471,7 +471,7 @@
 
       //Alter string
       $string = str_replace("£", "", $Code);
-      $string = str_replace("#", "", $Code);
+      $string = str_replace("#", "", $string);
 
       if(strlen($string) == 5) {
         $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE ExitKey = ? AND Parked_Column < 2 ORDER BY id DESC LIMIT 1");
