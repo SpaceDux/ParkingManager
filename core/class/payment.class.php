@@ -930,7 +930,12 @@
 	                    <th scope="col">Processed</th>
 	                    <th scope="col">Printed</th>
 	                    <th scope="col">Author</th>
-	                    <th scope="col"><button type="button" class="btn btn-sm btn-danger float-right" id="PaymentOnUpdate"><i class="fa fa-pound-sign"></i> New Payment</button></th>
+	                    <th scope="col">
+												<div class="btn-group float-right" role="group">
+													<button type="button" class="btn btn-sm btn-danger" id="PaymentOnUpdate"><i class="fa fa-pound-sign"></i> New Payment</button>
+												  <button type="button" class="btn btn-sm btn-danger" id="RefreshUpdatePayments"><i class="fa fa-sync"></i></button>
+												</div>
+											</th>
 	                  </tr>
 	                </thead>
                 <tbody>';

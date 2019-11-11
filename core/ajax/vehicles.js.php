@@ -396,5 +396,18 @@
       });
     }
   });
-
+  // Payment Refresh
+  $(document).on('click', '#RefreshUpdatePayments', function() {
+    var Ref = $('#Update_Ref').val();
+    $('#Update_PaymentsTable').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+    $.ajax({
+      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GetVehPayments",
+      data: {Ref:Ref},
+      method: "POST",
+      dataType: "text",
+      success:function(Response) {
+        $('#Update_PaymentsTable').html(Response);
+      }
+    });
+  });
 </script>

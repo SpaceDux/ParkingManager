@@ -503,7 +503,7 @@
     var Time = $('#Update_Expiry').val();
     var Type = $('#Update_VehType').val();
     PaymentPaneToggle(Ref, Plate, Trl, Time, "2");
-    UpdateVehPaneClose();
+    // UpdateVehPaneClose();
   });
   // Send print job to the ticket class.
   $(document).on('click', '.Modal_PrintBtn_true', function() {

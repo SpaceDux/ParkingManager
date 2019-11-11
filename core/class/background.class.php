@@ -62,5 +62,19 @@
        $this->user = null;
        $this->pm = null;
      }
+     function Notification_Manager()
+     {
+       $this->mysql = new MySQL;
+
+
+       $this->mysql = null;
+     }
+     function Notification_Create($Type, $Message)
+     {
+       $this->mysql = new MySQL;
+
+       
+       $this->mysql = null;
+     }
   }
 ?>
