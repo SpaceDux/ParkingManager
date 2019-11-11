@@ -253,14 +253,22 @@
 
       $Plate = str_replace(" ", "", strtoupper($Plate));
 
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO accounts_trucks VALUES('', ?, ?, ?, '0', ?)");
-      $stmt->bindParam(1, $Uniqueref);
-      $stmt->bindParam(2, $Ref);
-      $stmt->bindParam(3, $Plate);
-      $stmt->bindParam(4, $Last_Updated);
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM accounts_trucks WHERE Account = ? AND Plate = ? AND Deleted = 0");
+      $stmt->bindParam(1, $Ref);
+      $stmt->bindParam(2, $Plate);
       $stmt->execute();
+      if($stmt->rowCount() < 1) {
+        $stmt2 = $this->mysql->dbc->prepare("INSERT INTO accounts_trucks VALUES('', ?, ?, ?, '0', ?)");
+        $stmt2->bindParam(1, $Uniqueref);
+        $stmt2->bindParam(2, $Ref);
+        $stmt2->bindParam(3, $Plate);
+        $stmt2->bindParam(4, $Last_Updated);
+        $stmt2->execute();
+        echo json_encode(array('Status' => 1, 'Message' => 'Vehicle has been added to your account fleet lists.'));
+      } else {
+        echo json_encode(array('Status' => 0, 'Message' => 'Vehicle has not been added to your account fleet lists.'));
+      }
 
-      echo $stmt->rowCount();
 
       $this->mysql = null;
     }

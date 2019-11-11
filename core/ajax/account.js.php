@@ -104,8 +104,10 @@
       url: "{URL}/core/ajax/account.handler.php?handler=Account.Update_Fleet",
       method: "POST",
       data: {Ref:Ref, Plate:Plate},
+      dataType: 'json',
       success:function(Res) {
-        if(Res > 0) {
+        if(Res.Status > 0) {
+          $.notify(Res.Message, {className:'success',globalPosition: 'top left',});
           $('#Plate').val('');
           $.ajax({
             url: "{URL}/core/ajax/account.handler.php?handler=Account.Update_Fleet_GET",
@@ -116,6 +118,9 @@
               $('#FleetListTbl').html(Res);
             }
           })
+        } else {
+          $('#Plate').val('');
+          $.notify(Res.Message, {className:'error',globalPosition: 'top left',});
         }
       }
     })
