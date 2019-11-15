@@ -299,7 +299,7 @@
       if($stmt->execute()) {
         print_r("SUCCESSFUL");
       } else {
-        print_r("SUCCESSFUL");
+        print_r("UNSUCCESSFUL");
       }
 
       $this->mssql = null;
@@ -314,7 +314,7 @@
       if($stmt->execute()) {
         print_r("SUCCESSFUL");
       } else {
-        print_r("SUCCESSFUL");
+        print_r("UNSUCCESSFUL");
       }
 
       $this->mssql = null;
@@ -323,11 +323,13 @@
     function ANPR_AddPlate($plate, $time)
     {
       $this->mssql = new MSSQL;
+      $this->pm = new PM;
       //(Uniqueref, UID, Plate, ANPR, Overview, Patch, Area, Lane_ID, Lane_Name, Capture_Date, Station_ID, Station_Name, Direction_Travel, Confidence, Status, Original_Plate, Notes, Link_Uniqueref, Expiry, EuroSalesID, BarcodeExpression)
       $plate = str_replace(" ","", $plate);
       $plate = str_replace("-","", $plate);
       if(!empty($plate) AND !empty($time)) {
-        $plate = strip_tags(strtoupper($plate));
+        $plate = strip_tags(stripslashes(strtoupper($plate)));
+        $plate = $this->pm->RemoveSlashes($plate);
         //Includes latest anpr update.
         $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane 01', :capDate, :createdDate, null, 'RoadKing - Added VIA PM', '0', null, '0', :plate2, null, null, :capDate2, null, '', '', '')");
         $stmt->bindParam(':plate', $plate);
@@ -339,27 +341,36 @@
       }
 
       $this->mssql = null;
+      $this->pm = null;
     }
     // Update ANPR Record
     function ANPR_Update($ref, $plate, $trl = '', $time)
     {
       $this->mssql = new MSSQL;
+      $this->pm = new PM;
       if(!empty($plate) AND !empty($time)) {
         $plate = strip_tags(strtoupper($plate));
         $trl = strip_tags(strtoupper($trl));
+        $plate = $this->pm->RemoveSlashes($plate);
+        $trl = $this->pm->RemoveSlashes($trl);
         $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Plate = ?, Capture_Date = ?, Notes = ? WHERE Uniqueref = ?");
         $stmt->bindParam(1, $plate);
         $stmt->bindParam(2, $time);
         $stmt->bindParam(3, $trl);
         $stmt->bindParam(4, $ref);
         if($stmt->execute()) {
-          echo "SUCCESSFUL";
+          if($stmt->rowCount() > 0) {
+            echo json_encode(array('Status' => 1, 'Message' => 'Successfully updated registration '.$plate));
+          } else {
+            echo json_encode(array('Status' => 0, 'Message' => $plate.' has not been updated, please check and try again.'));
+          }
         } else {
-          echo "UNSUCCESSFUL";
+          echo json_encode(array('Status' => 0, 'Message' => $plate.' has not been updated, please check and try again.'));
         }
       }
 
       $this->mssql = null;
+      $this->pm = null;
     }
     // Update ANPR Secondary Record
     function ANPR_Secondary_Update($ref, $plate, $trl = '', $time)

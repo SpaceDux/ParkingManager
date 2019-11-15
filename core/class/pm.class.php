@@ -519,5 +519,13 @@
 
       $this->mysql = null;
     }
+    function RemoveSlashes($string)
+    {
+        $string=implode("",explode("\\",$string));
+        $string=implode("",explode("//",$string));
+        $string=implode("",explode(":",$string));
+        $string=implode("",explode(";",$string));
+        return stripslashes(trim($string));
+    }
   }
 ?>

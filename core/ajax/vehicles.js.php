@@ -102,11 +102,16 @@
           url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ANPR_Update",
           method: "POST",
           data: Data,
-          dataType: "text",
-          success:function() {
-            ANPR_Feed_Refresh();
-            $('#ANPR_Update_Form')[0].reset();
-            $('#ANPR_Update_Modal').modal('hide');
+          dataType: "json",
+          success:function(Response) {
+            if(Response.Status > 0) {
+              ANPR_Feed_Refresh();
+              $('#ANPR_Update_Form')[0].reset();
+              $('#ANPR_Update_Modal').modal('hide');
+              $.notify(Response.Message, {className:'success',globalPosition: 'top left',});
+            } else {
+              $.notify(Response.Message, {className:'error',globalPosition: 'top left',});
+            }
           }
         });
         return false;

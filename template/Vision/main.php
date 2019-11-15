@@ -144,6 +144,8 @@
               <div id="PaymentOptions">
 
               </div>
+              <hr>
+              <span class="badge badge-secondary float-right" id="Payment_CaptureDate_Bg"></span>
             </div>
           </div>
         </form>

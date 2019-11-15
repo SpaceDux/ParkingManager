@@ -12,6 +12,7 @@
     $('#Payment_Plate').val(Plate);
     $('#Payment_Trl').val(Trl);
     $('#Payment_CaptureDate').val(Time);
+    $('#Payment_CaptureDate_Bg').html(Time);
     $('#Payment_Name').focus();
     // If vehicle isnt a duplicate
     if(Type == 1) {

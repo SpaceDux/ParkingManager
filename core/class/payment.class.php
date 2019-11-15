@@ -898,12 +898,16 @@
 		}
 		function Payment_FC_Break($string)
 		{
+			$this->pm = new PM;
+
 			$Card = $this->Fuel_String_Prepare($string, ";", "=");
 			$expiry = $this->Fuel_String_Prepare($string, "=", "?");
 			$expiry_yr = substr($expiry, "0", "2");
 			$expiry_m = substr($expiry, "2", "2");
 			$rc = substr($expiry, "6", "2");
 			$expiry = $expiry_m."/20".$expiry_yr;
+
+			$Card = $this->pm->RemoveSlashes($Card);
 
 			$result = [
 				'cardno' => $Card,
@@ -912,6 +916,8 @@
 			];
 
 			echo json_encode($result);
+
+			$this->pm = null;
 		}
 		// List all payments attached to vehicle
 		function PerVehPayments($ref)

@@ -314,7 +314,7 @@
         $printer -> setTextSize(1, 1);
         //VAT info
         $printer -> feed(2);
-        if($campus == "2") {
+        if($campus == "201908291533552768") {
           $printer -> text("THIS TRUCKWASH IS OPERATED BY:\n");
           $printer -> text("M&L Truck Wash Services Ltd.\n");
         } else {
