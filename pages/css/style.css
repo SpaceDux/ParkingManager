@@ -1,0 +1,33 @@
+body {
+  padding: 0;
+  margin: 0;
+  background: #efefef;
+}
+.ControlBar {
+  height: 30px;
+  width: 100%;
+  background: #2d2d2d;
+  display: block;
+}
+.ControlBar .Settings {
+  width: auto;
+  height: 30px;
+  float: right;
+  display: inline-block;
+  color: #f2f2f2;
+  background: #1e1c1c;
+}
+.ControlBar .Setting-Btn {
+  display: inline-block;
+  padding: 0px 7px;
+  color: #fff;
+  line-height: 30px;
+}
+.ControlBar .Setting-Btn:hover {
+  background: #3f3f3f;
+}
+.TopBar {
+  height: 50px;
+  width: 100%;
+  background: #fff;
+}
