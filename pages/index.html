@@ -1,29 +1,54 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <title>ParkingManager - Login</title>
+    <link rel="shortcut icon" href="img/PMIcon.png">
+    <title>ParkingManager</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
+    <!-- HEADER BARS -->
     <div class="ControlBar">
-      <!-- START: Settings -->
       <div class="Settings">
+        <div class="Setting-Btn" id="Setting-Cog">Ryan Williams <i class="fas fa-cogs"></i></div>
         <div class="Setting-Btn" id="Setting-Mini"><i class="far fa-window-minimize"></i></div>
         <div class="Setting-Btn" id="Setting-Maxi"><i class="far fa-window-maximize"></i></div>
         <div class="Setting-Btn" id="Setting-Close"><i class="fas fa-times"></i></div>
       </div>
-      <!-- END: Settings -->
     </div>
     <div class="TopBar">
-      <button type="button" id="next">NEXGT</button>
+      <div class="Brand">
+        Parking<b>Manager</b>
+      </div>
+      <div class="MenuOptions">
+        <div class="Opt"><i class="fa fa-align-justify"></i></div>
+        <div class="Opt"><i class="fa fa-search"></i></div>
+        <div class="Opt"><i class="fa fa-key"></i></div>
+      </div>
     </div>
+    <div class="SideBar">
+      <div class="Container">
+        <a href="#">Option</a>
+        <a href="#">Option</a>
+        <a href="#">Option</a>
+        <button class="dropdown-btn">Dropdown
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-container">
+          <a href="#">Link 1</a>
+          <a href="#">Link 2</a>
+          <a href="#">Link 3</a>
+        </div>
+        <a href="#">Option</a>
+      </div>
+    </div>
+    <!-- END: HEADER BARS -->
     <script>window.$ = window.jQuery = require('jquery');</script>
     <script src="./core/tasks.js"></script>
+    <script src="js/style.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
     <script src="js/all.min.js"></script>
   </body>

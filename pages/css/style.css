@@ -2,12 +2,30 @@ body {
   padding: 0;
   margin: 0;
   background: #efefef;
+  font-family: 'Segoe UI';
+}
+a {
+  color: inherit;
+  text-decoration: none;
+
+}
+a:hover, a:active {
+  color: inherit;
+  text-decoration: none;
 }
 .ControlBar {
   height: 30px;
   width: 100%;
   background: #2d2d2d;
   display: block;
+  position: fixed;
+  -webkit-app-region: drag;
+}
+.ControlBar .PageTitle {
+  color: #f2f2f2;
+  display: inline-block;
+  padding-left: 10px;
+  text-align: center;
 }
 .ControlBar .Settings {
   width: auto;
@@ -16,12 +34,14 @@ body {
   display: inline-block;
   color: #f2f2f2;
   background: #1e1c1c;
+  -webkit-app-region: no-drag;
 }
 .ControlBar .Setting-Btn {
   display: inline-block;
   padding: 0px 7px;
   color: #fff;
   line-height: 30px;
+  cursor: pointer;
 }
 .ControlBar .Setting-Btn:hover {
   background: #3f3f3f;
@@ -30,4 +50,69 @@ body {
   height: 50px;
   width: 100%;
   background: #fff;
+  position: fixed;
+  margin-top: 30px;
 }
+.TopBar .Brand {
+  height: 50px;
+  width: 240px;
+  line-height: 20px;
+  position: fixed;
+  font-size: 25px;
+  background: #2d2d2d;
+  display: inline-block;
+  color: #f2f2f2;
+  cursor: default;
+  user-select: none;
+  text-align: center;
+  -webkit-app-region: drag;
+}
+.TopBar .MenuOptions {
+  display: block;
+  margin-left: 240px;
+  width: auto;
+  height: 50px;
+  line-height: 50px;
+  font-size: 23px;
+}
+.TopBar .MenuOptions .Opt {
+  display: inline-block;
+  padding: 0px 7px;
+  border-right: 0.5px solid #efefef;
+  margin-right: -6px;
+  cursor: pointer;
+  color: #484848;
+}
+.TopBar .MenuOptions .Opt:hover {
+  background: #efefef;
+}
+.SideBar {
+  width: 240px;
+  height: 100vh;
+  background: #2d2d2d;
+  /* margin-left: -240px; */
+}
+.SideBar .Container {
+  padding-top: 80px;
+  height: auto;
+}
+.SideBar a {
+  width: 100%;
+  height: 30px;
+  color: #fff;
+  display: block;
+}
+/*
+
+ */
+ .dropdown-container {
+   display: none;
+   background-color: #262626;
+   padding-left: 8px;
+ }
+
+ /* Optional: Style the caret down icon */
+ .fa-caret-down {
+   float: right;
+   padding-right: 8px;
+ }

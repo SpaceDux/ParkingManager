@@ -15,7 +15,12 @@ function createWindow () {
     }
   })
 
+  // Setting the maximum window size.
   win.setMinimumSize(800, 600)
+
+  // Set the application icon, seen in the taskbar, tray
+  // and in the task manager
+  win.setIcon('pages/img/PMIcon.png');
 
   // and load the index.html of the app.
   win.loadFile('pages/index.html')
