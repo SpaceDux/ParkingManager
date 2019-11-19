@@ -108,6 +108,12 @@ a:hover, a:active {
   padding-right: 10px;
   line-height: 50px;
 }
+.SideBar a:hover {
+  background: #ececec;
+}
+.SideBar .Dropdown-Btn:hover {
+  background: #ececec;
+}
 .SideBar .Dropdown-Btn {
   width: 100%;
   height: 50px;
