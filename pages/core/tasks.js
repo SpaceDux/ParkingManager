@@ -1,23 +1,39 @@
 const {BrowserWindow} = require('electron').remote;
-$(document).ready(function(){
+// Window Controller
+$(document).ready(function() {
   // Close Window (focused)
   $(document).on('click', '#Setting-Close', function(e) {
-    var window = BrowserWindow.getFocusedWindow();
-    window.close();
+    try {
+      var window = BrowserWindow.getFocusedWindow();
+      window.close();
+      console.log("Window has been successfully closed.");
+    } catch(err) {
+      console.error("Window can not be closed - "+err);
+    }
   });
   // Maximize Window (focused)
   $(document).on('click', '#Setting-Maxi', function(e) {
-    var window = BrowserWindow.getFocusedWindow();
-    if(window.isMaximized()) {
-      window.unmaximize();
-    } else{
-      window.maximize();
+    try {
+      var window = BrowserWindow.getFocusedWindow();
+      if(window.isMaximized()) {
+        window.unmaximize();
+        console.log("Window has been successfully unmaximized.");
+      } else{
+        window.maximize();
+        console.log("Window has been successfully maximized.");
+      }
+    } catch(err) {
+      console.error("Window can not be maximized/unmaximized - "+err);
     }
   });
   // Minimize Window (focused)
   $(document).on('click', '#Setting-Mini', function(e) {
-    var window = BrowserWindow.getFocusedWindow();
-    window.minimize();
+    try {
+      var window = BrowserWindow.getFocusedWindow();
+      window.minimize();
+      console.log("Window has been successfully minimized.");
+    } catch(err) {
+      console.error("Window can not be minimized - "+err);
+    }
   });
-  console.log("ParkingManager Electron build & launch successfully.");
 });

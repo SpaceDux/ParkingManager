@@ -31,25 +31,46 @@
     </div>
     <div class="SideBar">
       <div class="Container">
-        <a href="#">Option</a>
-        <a href="#">Option</a>
-        <a href="#">Option</a>
-        <button class="dropdown-btn">Dropdown
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
+        <a href="#">DASHBOARD <i class="fas fa-tachometer-alt"></i></a>
+        <button class="Dropdown-Btn">VEHICLE TOOLS <i class="fas fa-truck"></i></button>
+        <div class="Dropdown-Container">
           <a href="#">Link 1</a>
           <a href="#">Link 2</a>
           <a href="#">Link 3</a>
         </div>
-        <a href="#">Option</a>
+        <button class="Dropdown-Btn">PAYMENT TOOLS <i class="fa fa-pound-sign"></i></button>
+        <div class="Dropdown-Container">
+          <a href="#">Link 1</a>
+          <a href="#">Link 2</a>
+          <a href="#">Link 3</a>
+        </div>
+        <button class="Dropdown-Btn">ACCOUNT TOOLS <i class="fa fa-file"></i></button>
+        <div class="Dropdown-Container">
+          <a href="#">Link 1</a>
+          <a href="#">Link 2</a>
+          <a href="#">Link 3</a>
+        </div>
+        <button class="Dropdown-Btn">P<b>M</b> TOOLS <i class="fa fa-cogs"></i></button>
+        <div class="Dropdown-Container">
+          <a href="#">Link 1</a>
+          <a href="#">Link 2</a>
+          <a href="#">Link 3</a>
+        </div>
       </div>
     </div>
     <!-- END: HEADER BARS -->
     <script>window.$ = window.jQuery = require('jquery');</script>
     <script src="./core/tasks.js"></script>
+    <script src="./core/user.js"></script>
     <script src="js/style.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
     <script src="js/all.min.js"></script>
+    <script type="text/javascript">
+      if(LoggedIn() === "FALSE") {
+        window.location.replace('login.html');
+      } else {
+        console.log("PMAuth: User Session is set. "+sessionStorage.getItem("Name"));
+      }
+    </script>
   </body>
 </html>
