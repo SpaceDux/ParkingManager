@@ -18,8 +18,13 @@
     $Ref = $_POST['Ref'];
     $Method = $_POST['Method'];
     $Tariff = $_POST['Tariff'];
-    $Name = $_POST['Name'];
     $VehicleType = $_POST['VehicleType'];
+
+    if(isset($_POST['Name'])) {
+      $Name = $_POST['Name'];
+    } else {
+      $Name = ' ';
+    }
     if(isset($_POST['Trailer'])) {
       $Trailer = $_POST['Trailer'];
     } else {
@@ -36,7 +41,7 @@
       $FuelStr = '';
     }
 
-    if(isset($System) AND isset($Ref) AND isset($Method) AND isset($Tariff) AND isset($Name) AND isset($VehicleType))
+    if(isset($System) AND isset($Ref) AND isset($Method) AND isset($Tariff) AND isset($VehicleType))
     {
       $transaction->AddTransaction($System, $Ref, $Method, $Tariff, $Trailer, $Name, $VehicleType, $FuelStr, $Note);
     }
