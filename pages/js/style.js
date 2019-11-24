@@ -12,3 +12,18 @@ for (i = 0; i < dropdown.length; i++) {
     }
   });
 }
+function Navi_Tog() {
+  var pane = document.getElementById("Navi");
+  var wrap = document.getElementById("Wrapper");
+  if (pane.style.left === "0px") {
+     pane.style.left = "-240px";
+     pane.style.transition = "0.2s ease-in-out";
+     wrap.style.paddingLeft = "0px";
+     wrap.style.transition = "0.2s ease-in-out";
+  } else {
+     pane.style.left = "0px";
+     pane.style.transition = "0.2s ease-in-out";
+     wrap.style.paddingLeft = "240px";
+     wrap.style.transition = "0.2s ease-in-out";
+  }
+}

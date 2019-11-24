@@ -24,12 +24,12 @@
         Parking<b>Manager</b>
       </div>
       <div class="MenuOptions">
-        <div class="Opt"><i class="fa fa-align-justify"></i></div>
+        <div class="Opt" onClick="Navi_Tog()"><i class="fa fa-align-justify"></i></div>
         <div class="Opt"><i class="fa fa-search"></i></div>
         <div class="Opt"><i class="fa fa-key"></i></div>
       </div>
     </div>
-    <div class="SideBar">
+    <div class="SideBar" id="Navi">
       <div class="Container">
         <a href="#">DASHBOARD <i class="fas fa-tachometer-alt"></i></a>
         <button class="Dropdown-Btn">VEHICLE TOOLS <i class="fas fa-truck"></i></button>
@@ -58,7 +58,20 @@
         </div>
       </div>
     </div>
-    <!-- END: HEADER BARS -->
+    <!-- BEGIN CONTENT -->
+    <div class="Wrapper" id="Wrapper">
+      <div class="StatBar">
+        
+      </div>
+    </div>
+    <!-- FIXED BOTTOM BAR -->
+    <div class="BottomBar">
+      <div class="Right-Content">
+        <div class="Option">
+          <i class="fa fa-bell"></i>
+        </div>
+      </div>
+    </div>
     <script>window.$ = window.jQuery = require('jquery');</script>
     <script src="./core/tasks.js"></script>
     <script src="./core/user.js"></script>

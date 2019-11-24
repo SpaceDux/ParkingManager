@@ -7,8 +7,8 @@ let win
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1000,
-    height: 700,
+    width: 800,
+    height: 600,
     frame: false,
     webPreferences: {
       nodeIntegration: true
@@ -23,7 +23,7 @@ function createWindow () {
   win.setIcon('pages/img/PMIcon.png');
 
   // and load the index.html of the app.
-  win.loadFile('pages/index.html')
+  win.loadFile('pages/login.html')
 
   // Open the DevTools.
   win.webContents.openDevTools()
