@@ -24,4 +24,5 @@
 	$_CONFIG['api']['accesskey'] = 'p12l22k!'; //Site ID Number
 	// Settings
 	$_CONFIG['api']['site'] = '201908151155252628'; //Site Identity Number
+	$_CONFIG['api']['wifi_tariff'] = '201909012036451675'; //Site ID Number
 ?>

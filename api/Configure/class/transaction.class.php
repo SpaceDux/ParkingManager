@@ -1,5 +1,6 @@
 <?php
   namespace ParkingManager_API;
+  use UniFi_API;
 
   class Transaction
   {
@@ -248,7 +249,7 @@
           } else if($CardChk == '704310' AND $CardDets['rc'] != "90") {
             echo json_encode(array("Status" => '103', "Message" => 'Your DKV Card is not RC 90'));
           } else if ($CardChk == '707821') {
-						$CardType = 2; // Key Fuels
+  					$CardType = 2; // Key Fuels
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
@@ -265,7 +266,7 @@
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
             }
           } else if ($CardChk == '789666') {
-						$CardType = 2; // Key Fuels
+  					$CardType = 2; // Key Fuels
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
@@ -282,7 +283,7 @@
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
             }
           } else if ($CardChk == '706000') {
-						$CardType = 3; // UTA
+  					$CardType = 3; // UTA
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
@@ -299,7 +300,7 @@
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
             }
           } else if ($CardChk == '700048') {
-						$CardType = 4; // MORGAN
+  					$CardType = 4; // MORGAN
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
@@ -333,7 +334,7 @@
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
             }
           } else if ($CardChk == '700676') {
-						$CardType = 5; // BP
+  					$CardType = 5; // BP
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID != FALSE) {
               // Add a parking record.
@@ -598,6 +599,53 @@
       $this->mysql = null;
       $this->checks = null;
     }
+    function Create_Wifi_Voucher()
+    {
+      $this->checks = new Checks;
+
+      $site = $_CONFIG['api']['site'];
+
+      $controllerurl = $this->checks->Site_Info($site, "Unifi_IP");
+      $controlleruser = $this->checks->Site_Info($site, "Unifi_User");
+      $controllerpassword = $this->checks->Site_Info($site, "Unifi_Pass");
+      $site_id = $this->checks->Site_Info($site, "Unifi_Site");
+      $controllerversion = $this->checks->Site_Info($site, "Unifi_Ver");
+
+      $voucher_expiration = 1440;
+      //Unifi creds
+      $unifi_connection = new UniFi_API\Client($controlleruser, $controllerpassword, $controllerurl, $site_id, $controllerversion);
+      $loginresults = $unifi_connection->login();
+      //Make Voucher
+      $voucher_result = $unifi_connection->create_voucher($voucher_expiration, 1, 1, 'PM Generated '.date("d/m/y H:i"), '512', '2048');
+      $vouchers = $unifi_connection->stat_voucher($voucher_result[0]->create_time);
+      $vouchers = json_encode($vouchers);
+      $code = json_decode($vouchers, true);
+
+      foreach($code as $row) {
+        echo $row['code'];
+      }
+
+      $this->checks = null;
+    }
+    function Wifi_Transaction($Method, $Note)
+    {
+      $site = $_CONFIG['api']['site'];
+      $Service = $_CONFIG['api']['wifi_tariff'];
+
+      try {
+        $Code = $this->Create_Wifi_Voucher();
+        die($Code);
+        if($Code != null OR $Code != "")
+        {
+          $this->New_Transaction("", $Method, "WiFi", "WiFi", $Service, '', '', '', '', $CardType = '', $CardNo = '', $CardEx = '', $site, $Note);
+          echo json_encode(array("Status" => '101', "Message" => 'WiFi transaction has been accepted.', "Code" => $Code));
+        } else {
+          echo json_encode(array("Status" => '105', "Message" => 'WiFi Transaction has not been added, please try again or seek assistance. Wifi System Offline'));
+        }
+      } catch(\PDOException $e) {
+        echo json_encode(array("Status" => '105', "Message" => 'WiFi Transaction has not been added, please try again or seek assistance.'));
+      }
+    }
   }
 
-?>
+  ?>

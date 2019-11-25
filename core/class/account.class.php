@@ -248,23 +248,33 @@
     {
       $this->mysql = new MySQL;
 
-      $Uniqueref = date("YmdHis").mt_rand(1111, 9999);
-      $Last_Updated = date("Y-m-d H:i:s");
-
-      $Plate = str_replace(" ", "", strtoupper($Plate));
+      $array = preg_split("/\r\n|\n|\r/", $Plate);
 
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM accounts_trucks WHERE Account = ? AND Plate = ? AND Deleted = 0");
       $stmt->bindParam(1, $Ref);
       $stmt->bindParam(2, $Plate);
       $stmt->execute();
       if($stmt->rowCount() < 1) {
-        $stmt2 = $this->mysql->dbc->prepare("INSERT INTO accounts_trucks VALUES('', ?, ?, ?, '0', ?)");
-        $stmt2->bindParam(1, $Uniqueref);
-        $stmt2->bindParam(2, $Ref);
-        $stmt2->bindParam(3, $Plate);
-        $stmt2->bindParam(4, $Last_Updated);
-        $stmt2->execute();
-        echo json_encode(array('Status' => 1, 'Message' => 'Vehicle has been added to your account fleet lists.'));
+        try {
+          foreach ($array as $key) {
+            $key = str_replace(" ", "", $key);
+            $key = str_replace("-", "", $key);
+            $key = strtoupper($key);
+            if($key != null OR $key != "") {
+              $Uniqueref = date("YmdHisv").mt_rand(1111, 9999);
+              $Last_Updated = date("Y-m-d H:i:s");
+              $stmt2 = $this->mysql->dbc->prepare("INSERT INTO accounts_trucks VALUES('', ?, ?, ?, '0', ?)");
+              $stmt2->bindParam(1, $Uniqueref);
+              $stmt2->bindParam(2, $Ref);
+              $stmt2->bindParam(3, $key);
+              $stmt2->bindParam(4, $Last_Updated);
+              $stmt2->execute();
+            }
+          }
+          echo json_encode(array('Status' => 1, 'Message' => 'Vehicles has been added to your account fleet lists.'));
+        } catch(\PDOException $e) {
+          echo json_encode(array('Status' => 0, 'Message' => 'Vehicle has not been added to your account fleet lists. Message: '.$e->getMessage()));
+        }
       } else {
         echo json_encode(array('Status' => 0, 'Message' => 'Vehicle has not been added to your account fleet lists.'));
       }

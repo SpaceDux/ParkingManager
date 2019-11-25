@@ -394,7 +394,14 @@
             <div class="col-md-12">
               <label for="Name">Add a Vehicle</label>
               <input type="hidden" class="form-control" name="Ref" id="Acc_Ref">
-              <input type="text" class="form-control" name="Plate" id="Plate" placeholder="EX43PLE" autofocus>
+              <div class="row">
+                <div class="col-md-10">
+                  <textarea class="form-control" name="Plate" id="Plate" placeholder="EX43PLE" autofocus></textarea>
+                </div>
+                <div class="col-md-2">
+                  <input type="submit" class="btn btn-primary" style="width: 100%;" id="Save_Fleet" value="Save">
+                </div>
+              </div>
               <hr>
               <div id="FleetListTbl">
 
