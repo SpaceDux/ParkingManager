@@ -1,4 +1,9 @@
 const {BrowserWindow} = require('electron').remote;
+const config = require('../core/manage/config.json');
+const mysql = require('mysql');
+$.getScript("../core/class/user.js", function() {
+  console.log("User Class has loaded successfully.");
+});
 // Window Controller
 $(document).ready(function() {
   // Close Window (focused)
