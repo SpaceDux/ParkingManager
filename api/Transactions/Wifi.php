@@ -14,7 +14,18 @@
   }
 
   if($accesskey == $_POST['AccessKey']) {
-    $transaction->Wifi_Transaction($Method, $Note);
+    if(!isset($_POST['Note'])) {
+      $_POST['Note'] = '';
+    }
+    if(isset($_POST['Method']) AND isset($_POST['Note'])) {
+      if($_POST['Method'] < 3) {
+        $transaction->Wifi_Transaction($_POST['Method'], $_POST['Note']);
+      } else {
+        echo json_encode(array("Status" => '103', "Message" => 'This service is available for Cash or Card only.'));
+      }
+    } else {
+      echo json_encode(array("Status" => '102', "Message" => 'Please ensure all required data is present.'));
+    }
   } else {
     echo json_encode(array("Status" => '103', "Message" => 'Access denied, Key does not exist.'));
   }
