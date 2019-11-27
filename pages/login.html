@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script src="../loader.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="shortcut icon" href="img/PMIcon.png">
@@ -9,33 +11,6 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <!-- SCRIPTS -->
-    <script>window.$ = window.jQuery = require('jquery');</script>
-    <script src="../loader.js"></script>
-    <script src="js/style.js"></script>
-    <script src="js/bootstrap.bundle.js"></script>
-    <script src="js/all.min.js"></script>
-    <script type="text/javascript">
-      if(user_LoggedIn() === "TRUE") {
-        window.location.replace('index.html');
-      }
-      // Login
-      $(document).on('submit', '#LoginForm', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var email = $('#Email').val();
-        var password = $('#Password').val();
-        if(email == "" || password == "") {
-          console.warn("No credentials where entered.");
-        } else {
-          user_Login(email, password, function(response) {
-            if(response.Status < "1") {
-              $('#notice').html(response.Message);
-            }
-          });
-        }
-      });
-    </script>
   </head>
   <body>
     <!-- HEADER BARS -->
@@ -52,6 +27,9 @@
           <img src="img/Roadking.png"></img>
         </div>
         <div class="LoginForm">
+          <div id="notice">
+
+          </div>
           <form id="LoginForm" method="post">
             <input type="text" class="form-control LoginForm_B dark" name="Email" id="Email" placeholder="Email Address" autofocus>
             <br>
@@ -59,12 +37,36 @@
             <hr>
             <input type="submit" class="btn btn-primary" value="Login" style="width: 100%;">
           </form>
-          <div id="notice">
-
-          </div>
         </div>
       </div>
     </div>
-    <!-- END: HEADER BARS -->
+
+
+    <script type="text/javascript">
+      if(user_LoggedIn() === "TRUE") {
+        window.location.replace('index.html');
+      }
+      // Login
+      $(document).on('submit', '#LoginForm', function(e) {
+        e.preventDefault();
+        var email = $('#Email').val();
+        var password = $('#Password').val();
+        if(email == "" || password == "") {
+          console.warn("No credentials where entered.");
+        } else {
+          user_Login(email, password, function(response) {
+            if(response.Status < "1") {
+              $('#notice').html('<div class="alert alert-warning" role="alert">'+response.Message+'</div><br>');
+            } else {
+              $('#notice').html('<div class="alert alert-success" role="alert">'+response.Message+'</div><br>');
+            }
+          });
+        }
+      });
+    </script>
+    <!-- STYLE BASED SCRIPTS -->
+    <script src="js/style.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/all.min.js"></script>
   </body>
 </html>

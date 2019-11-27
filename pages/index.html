@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script src="../loader.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="shortcut icon" href="img/PMIcon.png">
@@ -9,19 +11,6 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <!-- SCRIPTS -->
-    <script>window.$ = window.jQuery = require('jquery');</script>
-    <script src="../loader.js"></script>
-    <script src="js/style.js"></script>
-    <script src="js/bootstrap.bundle.js"></script>
-    <script src="js/all.min.js"></script>
-    <script type="text/javascript">
-      if(user_LoggedIn() === "FALSE") {
-        window.location.replace('login.html');
-      } else {
-        console.log("User Session is set. "+sessionStorage.getItem("Name"));
-      }
-    </script>
   </head>
   <body>
     <!-- HEADER BARS -->
@@ -45,7 +34,7 @@
     </div>
     <div class="SideBar" id="Navi">
       <div class="Container">
-        <a href="#">DASHBOARD <i class="fas fa-tachometer-alt"></i></a>
+        <a href="index.html">DASHBOARD <i class="fas fa-tachometer-alt"></i></a>
         <button class="Dropdown-Btn">VEHICLE TOOLS <i class="fas fa-truck"></i></button>
         <div class="Dropdown-Container">
           <a href="#">Link 1</a>
@@ -73,18 +62,85 @@
       </div>
     </div>
     <!-- BEGIN CONTENT -->
-    <div class="Wrapper" id="Wrapper">
-      <div class="StatBar">
+    <div class="StatBar">
+      <div class="StatContent">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="StatBox">
+              <div class="Stat">
+                <b>71</b><small>/200</small>
+              </div>
+              <div class="Text">
+                vehicles <b>parked</b>
+              </div>
+              <div class="Icon">
+                <i class="fa fa-road"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="StatBox">
+              <div class="Stat">
+                <b>30</b>
+              </div>
+              <div class="Text">
+                awaiting <b>payment</b>
+              </div>
+              <div class="Icon">
+                <i class="fa fa-shopping-basket"></i>
+              </div>
+            </div>
+            <div class="StatBox">
+              <div class="Stat">
+                <b>0</b>
+              </div>
+              <div class="Text">
+                awaiting <b>renewal</b>
+              </div>
+              <div class="Icon">
+                <i class="fa fa-clock"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="StatBox-LG">
 
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+    <div class="Wrapper" id="Wrapper">
     </div>
     <!-- FIXED BOTTOM BAR -->
     <div class="BottomBar">
       <div class="Right-Content">
-        <div class="Option">
+        <div class="Option" onClick="tasks_LoadNotifications()">
           <i class="fa fa-bell"></i>
         </div>
       </div>
     </div>
+
+
+
+
+
+    <div class="NotificationPane" style="height: 0px;" id="Notifications">
+      <div class="Wrapper" id="NotificationsList">
+
+      </div>
+    </div>
+    <!-- Style based scripts -->
+    <script src="js/style.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/all.min.js"></script>
+    <script src="js/jquery-dateformat.min.js"></script>
+    <script type="text/javascript">
+    if(user_LoggedIn() === "FALSE") {
+      window.location.replace('index.html');
+    } else {
+      console.log("User Session is set. "+sessionStorage.getItem("Name"));
+    }
+    </script>
   </body>
 </html>

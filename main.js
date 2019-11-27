@@ -7,7 +7,7 @@ let win
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
+    width: 900,
     height: 600,
     frame: false,
     webPreferences: {
@@ -16,7 +16,7 @@ function createWindow () {
   })
 
   // Setting the maximum window size.
-  win.setMinimumSize(800, 600)
+  win.setMinimumSize(900, 600)
 
   // Set the application icon, seen in the taskbar, tray
   // and in the task manager
@@ -26,7 +26,7 @@ function createWindow () {
   win.loadFile('pages/login.html')
 
   // Open the DevTools.
-  win.webContents.openDevTools()
+  win.webContents.openDevTools({detached: true})
 
   // Emitted when the window is closed.
   win.on('closed', () => {

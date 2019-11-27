@@ -1,10 +1,13 @@
 const {BrowserWindow} = require('electron').remote;
 const session = sessionStorage;
-
 const config = require('../core/manage/config.json');
 const mysql = require('mysql');
+// Load Class Files
 $.getScript("../core/class/user.js", function() {
   console.log("User Class has loaded successfully.");
+});
+$.getScript("../core/class/tasks.js", function() {
+  console.log("Task Class has loaded successfully.");
 });
 // Window Controller
 $(document).ready(function() {
