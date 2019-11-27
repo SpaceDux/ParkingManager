@@ -4,7 +4,7 @@
     "Host": "localhost",
     "User": "root",
     "Pass": "",
-    "Database": "parking_manager4"
+    "Database": "parking_manager"
   },
   "App":
   {

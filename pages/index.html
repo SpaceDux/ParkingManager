@@ -5,15 +5,29 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="shortcut icon" href="img/PMIcon.png">
     <title>ParkingManager</title>
+    <!-- STYLESHEETS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <!-- SCRIPTS -->
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script src="../loader.js"></script>
+    <script src="js/style.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/all.min.js"></script>
+    <script type="text/javascript">
+      if(user_LoggedIn() === "FALSE") {
+        window.location.replace('login.html');
+      } else {
+        console.log("User Session is set. "+sessionStorage.getItem("Name"));
+      }
+    </script>
   </head>
   <body>
     <!-- HEADER BARS -->
     <div class="ControlBar">
       <div class="Settings">
-        <div class="Setting-Btn" id="Setting-Cog">Ryan Williams <i class="fas fa-cogs"></i></div>
+        <div class="Setting-Btn" id="Setting-Cog"><script>document.write(session.getItem("Name"));</script> <i class="fas fa-cogs"></i></div>
         <div class="Setting-Btn" id="Setting-Mini"><i class="far fa-window-minimize"></i></div>
         <div class="Setting-Btn" id="Setting-Maxi"><i class="far fa-window-maximize"></i></div>
         <div class="Setting-Btn" id="Setting-Close"><i class="fas fa-times"></i></div>
@@ -72,17 +86,5 @@
         </div>
       </div>
     </div>
-    <script>window.$ = window.jQuery = require('jquery');</script>
-    <script src="../../loader.js"></script>
-    <script src="js/style.js"></script>
-    <script src="js/bootstrap.bundle.js"></script>
-    <script src="js/all.min.js"></script>
-    <script type="text/javascript">
-      if(LoggedIn() === "FALSE") {
-        window.location.replace('login.html');
-      } else {
-        console.log("PMAuth: User Session is set. "+sessionStorage.getItem("Name"));
-      }
-    </script>
   </body>
 </html>
