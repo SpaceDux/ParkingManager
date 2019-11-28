@@ -205,8 +205,8 @@ a:hover, a:active {
 .Wrapper {
   width: 100%;
   height: auto;
-  padding-top: 80px;
-  padding-bottom: 35px;
+  padding: 10px;
+  overflow-x: hidden;
 }
 .StatBar {
   height: auto;
@@ -324,14 +324,13 @@ a:hover, a:active {
   border-bottom:0.2px solid #484848;
 }
 .NotificationPane {
-  max-height: 500px;
-  height: 0px;
+  height: 500px;
   width: 300px;
   background: #424242;
   position: fixed;
   z-index: 1000;
-  bottom: 25px;
   right: 0;
+  bottom: 25px;
   border-left: 0.2px solid #484848;
   border-right: 0.2px solid #484848;
   border-top: 0.2px solid #484848;
@@ -341,4 +340,37 @@ a:hover, a:active {
   height: 100%;
   padding: 5px;
   overflow-y: auto;
+}
+.Box {
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border: 0.5px solid #ececec;
+  margin-bottom: 10px;
+}
+.Box .Title {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  font-size: 20px;
+  color: #f2f2f2;
+  background: #232323;
+  padding: 0px 10px;
+}
+.Box .Body {
+  padding: 5px 10px;
+}
+.Box .ButtonHolder {
+  width: auto;
+  float: right;
+}
+.Box .Button {
+  padding: 0 10px;
+  height: 30px;
+  line-height: 30px;
+  display: inline-block;
+  cursor: pointer;
+}
+.Box .Button:hover {
+  background: #484848;
 }

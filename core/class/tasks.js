@@ -1,12 +1,9 @@
 function tasks_LoadNotifications()
 {
   var pane = document.getElementById("Notifications");
-  var wrapper = document.getElementById("NotificationsList");
-  if (pane.style.height === "0px") {
-     pane.style.height = "500px";
+  if (pane.style.display === "none") {
+     pane.style.display = "block";
      pane.style.transition = "0.2s ease-in-out";
-     wrapper.style.height = "500px";
-     wrapper.style.padding = "5px";
      $('#NotificationsList').html('<img src="img/loading.gif" style="height: 80px; width:80px;margin:150px auto; display:block;"></img>');
      user_getInfo(session.getItem("User_ID"), function(response) {
      var connection = mysql.createConnection({
@@ -41,10 +38,8 @@ function tasks_LoadNotifications()
        });
      });
   } else {
-    pane.style.height = "0px";
+    pane.style.display = "none";
     pane.style.transition = "0.2s ease-in-out";
-    wrapper.style.height = "0px";
-    wrapper.style.padding = "0px";
 
   }
 }
