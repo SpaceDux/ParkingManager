@@ -1037,7 +1037,7 @@
 			$this->vehicles = null;
 		}
 		// Transaction History
-		function Transaction_List($Start, $End, $Cash, $Card, $Account, $Snap, $Fuel, $Group)
+		function Transaction_List($Start, $End, $Cash, $Card, $Account, $Snap, $Fuel, $Group, $SettlementGroup)
 		{
 			$this->mysql = new MySQL;
 			$this->user = new User;
@@ -1085,6 +1085,8 @@
 				{
 					if($Group != "unselected") {
 						$query .= 'WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Service_Group = '.$Group.' AND Processed_Time BETWEEN ? AND ? ';
+					} else if ($SettlementGroup != "unselected") {
+						$query .= 'WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Settlement_Group = '.$SettlementGroup.' AND Processed_Time BETWEEN ? AND ? ';
 					} else {
 						$query .= 'WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Processed_Time BETWEEN ? AND ? ';
 					}
@@ -1384,6 +1386,27 @@
 			echo $html;
 
 			$this->mysql = null;
+		}
+		function Settlement_Groups()
+		{
+			$this->mysql = new MySQL;
+			$this->user = new User;
+			$Site = $this->user->Info("Site");
+
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM settlement_groups WHERE Site = ? ORDER BY Set_Order ASC");
+			$stmt->bindParam(1, $Site);
+			$stmt->execute();
+			$result = $stmt->fetchAll();
+			$html = "";
+			$html .= '<option value="unselected">-- Settlement Group --</option>';
+			foreach($result as $row) {
+				$html .= '<option value="'.$row['Uniqueref'].'">'.$row['Name'].'</option>';
+			}
+
+			return $html;
+
+			$this->mysql = null;
+			$this->user = null;
 		}
 		// add a new tariff to pm
 		function New_Tariff($Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti)

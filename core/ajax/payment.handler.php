@@ -25,7 +25,7 @@
   } else if($handler == "Payment.Print_Ticket") {
     $payment->PrintTicket($_POST['Ref']);
   } else if($handler == "Payment.Transaction_List") {
-    $payment->Transaction_List($_POST['DateStart'], $_POST['DateEnd'], $_POST['Cash'], $_POST['Card'], $_POST['Account'], $_POST['Snap'], $_POST['Fuel'], $_POST['Group']);
+    $payment->Transaction_List($_POST['DateStart'], $_POST['DateEnd'], $_POST['Cash'], $_POST['Card'], $_POST['Account'], $_POST['Snap'], $_POST['Fuel'], $_POST['Group'], $_POST['Settlement_Group']);
   } else if($handler == "Payment.DeleteTransaction") {
     $payment->Payment_Delete($_POST['Ref']);
   } else if($handler == "Payment.GetTariffs") {

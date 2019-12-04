@@ -36,6 +36,7 @@
 			$this->pm = new PM;
 			$this->vehicles = new Vehicles;
 			$this->account = new Account;
+			$this->payment = new Payment;
 
 			$this->Assign('url', $_CONFIG['site']['url']); //{URL} Site URL
 			$this->Assign('tpl', $_CONFIG['site']['template']); //{TPL} Skin Name
@@ -57,11 +58,13 @@
 				$this->Assign('renewal_count', $this->vehicles->Renewal_Feed_Count());
 				$this->Assign('all_count', $this->vehicles->Renewal_Feed_Count() + $this->vehicles->ANPR_Feed_Count() + $this->vehicles->Parked_Feed_Count());
 				$this->Assign('yardcheck', $this->vehicles->YardCheck());
+				$this->Assign('settlement_groups', $this->payment->Settlement_Groups());
 			}
 			$this->user = null;
 			$this->pm = null;
 			$this->vehicles = null;
 			$this->account = null;
+			$this->payment = null;
 		}
 		//This function takes the set params and turns them into an actual function
 		function Assign($_searchString, $_replaceString)

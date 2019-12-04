@@ -68,6 +68,11 @@
               {TARIFF_GROUPS}
             </select>
           </div>
+          <div class="form-group">
+            <select class="form-control form-control-lg" name="TL_Settlement_Group" id="TL_Settlement_Group" autocomplete="off">
+              {SETTLEMENT_GROUPS}
+            </select>
+          </div>
         </div>
         <div class="col">
           <div class="btn-group float-right" role="group" aria-label="View Sales">
