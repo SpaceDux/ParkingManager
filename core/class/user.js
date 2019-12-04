@@ -35,6 +35,7 @@ function user_Login(email, password, callback)
             // Set session
             sessionStorage.setItem("User_ID", result[0].Uniqueref);
             sessionStorage.setItem("Name", result[0].FirstName+' '+result[0].LastName);
+            sessionStorage.setItem("Site", result[0].Site);
             setTimeout(function() {
               window.location.replace("index.html");
             }, 3000);

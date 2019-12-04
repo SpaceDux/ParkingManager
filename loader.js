@@ -2,12 +2,19 @@ const {BrowserWindow} = require('electron').remote;
 const session = sessionStorage;
 const config = require('../core/manage/config.json');
 const mysql = require('mysql');
+const mssql = require('mssql')
 // Load Class Files
 $.getScript("../core/class/user.js", function() {
   console.log("User Class has loaded successfully.");
 });
 $.getScript("../core/class/tasks.js", function() {
   console.log("Task Class has loaded successfully.");
+});
+$.getScript("../core/class/settings.js", function() {
+  console.log("Settings Class has loaded successfully.");
+});
+$.getScript("../core/class/vehicles.js", function() {
+  console.log("Vehicles Class has loaded successfully.");
 });
 // Window Controller
 $(document).ready(function() {
