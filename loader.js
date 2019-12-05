@@ -2,7 +2,7 @@ const {BrowserWindow} = require('electron').remote;
 const session = sessionStorage;
 const config = require('../core/manage/config.json');
 const mysql = require('mysql');
-const mssql = require('mssql')
+const mssql = require('tedious');
 // Load Class Files
 $.getScript("../core/class/user.js", function() {
   console.log("User Class has loaded successfully.");
