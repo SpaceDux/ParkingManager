@@ -260,6 +260,9 @@
       if($printer_id == 2) {
         // Short term fix
         $connector = new WindowsPrintConnector('pdhollies');
+      } else if ($printer_id == 4) {
+        // Short term fix
+        $connector = new WindowsPrintConnector('smb://192.168.12.117/Truckwash');
       } else {
         $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
       }
