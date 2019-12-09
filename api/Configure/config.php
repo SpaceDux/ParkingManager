@@ -22,8 +22,9 @@
 									 		 'site_pass' => '2hst36sg');
 	// PM API Settings
 	$_CONFIG['api']['accesskey'] = 'p12l22k!'; //Site ID Number
-	$_CONFIG['api']['ver'] = '1.0.4'; // API Version
+	$_CONFIG['api']['ver'] = '1.0.5'; // API Version
 	// Settings
 	$_CONFIG['api']['site'] = '201908151155252628'; //Site Identity Number
 	$_CONFIG['api']['wifi_tariff'] = '201909012036451675'; //Site ID Number
+	$_CONFIG['api']['changeover_tariff'] = '201909012036457723'; //Site ID Number
 ?>
