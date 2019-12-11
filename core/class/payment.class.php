@@ -958,9 +958,14 @@
 				} else if($row['Method'] == "5") {
 					$Method = "Fuel Card";
 				}
+				if($row['Kiosk'] == 1) {
+					$kiosk = '<i class="fas fa-user-edit" style="color: red; font-size: 25px;"></i>';
+				} else {
+					$kiosk = '';
+				}
 				$html .= '
 				<tr id="Payment_Delete_'.$row['Uniqueref'].'">
-					<td>'.$row['Service_Name'].'</td>
+					<td>'.$kiosk.' '.$row['Service_Name'].'</td>
 					<td>'.$Method.'</td>
 					<td>'.date("d/m/y H:i", strtotime($row['Processed_Time'])).'</td>
 					<td>'.$row['Ticket_Printed'].'</td>
@@ -1143,8 +1148,13 @@
 				} else if($row['Method'] == 5) {
 					$Method = "Fuel Card";
 				}
+				if($row['Kiosk'] == 1) {
+					$kiosk = '<i class="fas fa-user-edit" style="color: red; font-size: 25px;"></i>';
+				} else {
+					$kiosk = '';
+				}
 				$sub_array = array();
-				$sub_array[] = $row['Name'];
+				$sub_array[] = $kiosk.' '.$row['Name'];
 				$sub_array[] = $row['Plate'];
 				$sub_array[] = $row['Service_Name'];
 				$sub_array[] = '£'.$row['Gross'];
@@ -1532,10 +1542,16 @@
 								<tbody>';
 
 			foreach($stmt->fetchAll() as $row) {
+				if($row['Kiosk'] == 1) {
+					$kiosk = '<i class="fas fa-user-edit" style="color: red; font-size: 25px;"></i>';
+				} else {
+					$kiosk = '';
+				}
+
 				$timein = '\''.$this->vehicles->Info($row['Parkingref'], "Arrival").'\'';
 				$ref = '\''.$row['Parkingref'].'\'';
 				$html .= '<tr>';
-				$html .= '<td>'.$row['Name'].'</td>';
+				$html .= '<td>'.$kiosk.' '.$row['Name'].'</td>';
 				$html .= '<td>'.$row['Plate'].'</td>';
 				$html .= '<td>'.date("d/m/y H:i", strtotime($row['Processed_Time'])).'</td>';
 				$html .= '<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Search_Records_Modal" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button></td>';

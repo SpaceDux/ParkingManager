@@ -643,6 +643,8 @@
 
         if($flag == "1") {
           $flagIco = '<i style="color: red;" class="far fa-flag"></i>';
+        } else if($flag == "2") {
+          $flagIco = '<i class="fas fa-user-edit" style="color: red; font-size: 25px;"></i>';
         } else {
           $flagIco = '';
         }

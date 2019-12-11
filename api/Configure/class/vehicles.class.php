@@ -27,7 +27,7 @@
           $ETPCk = FALSE;
         }
 
-        $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate = ? AND Parked_Column = 1 AND Site = ? AND Deleted < 1 AND Flagged < 1");
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate = ? AND Parked_Column = 1 AND Site = ? AND Deleted < 1");
         $stmt->bindValue(1, $Plate);
         $stmt->bindValue(2, $Site);
         $stmt->execute();
@@ -233,7 +233,7 @@
       $time = date("Y-m-d H:i:s");
 
 
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, AccountID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Last_Updated) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '0', '0', '', ?, ?, ?, ?)");
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, AccountID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Last_Updated) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '2', '0', '', ?, ?, ?, ?)");
       $stmt->bindParam(1, $Uniqueref);
       $stmt->bindParam(2, $Ref);
       $stmt->bindParam(3, $Site);
@@ -257,12 +257,12 @@
       $this->checks = null;
       $this->mysql = null;
     }
-    // Update a vehicles expiry time.
+    // Update a vehicles expiry time. And Flag status
     function ExpiryUpdate($ref, $time)
     {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Expiry = ? WHERE Uniqueref = ?");
+      $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Expiry = ?, Flagged = '2' WHERE Uniqueref = ?");
       $stmt->bindParam(1, $time);
       $stmt->bindParam(2, $ref);
       $stmt->execute();
