@@ -1477,6 +1477,7 @@
 
 			$this->mysql = null;
 		}
+		//
 		function Update_Tariff($Ref, $Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti)
 		{
 			$this->mysql = new MySQL;
