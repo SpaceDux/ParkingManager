@@ -159,7 +159,7 @@
 
       if($this->checks->Check_Site_Exists($Site) == TRUE)
       {
-        $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane', :capDate, :createdDate, null, 'RoadKing - Added via PM API', '0', null, '0', :plate2, :Trl, null, :capDate2, null, '', '', '')");
+        $stmt = $this->mssql->dbc->prepare("INSERT INTO ANPR_REX VALUES ('1', :plate, null, null, null, null, '1', 'Entry Lane', :capDate, :createdDate, null, 'RoadKing - Added via API', '0', null, '0', :plate2, :Trl, null, :capDate2, null, '', '', '')");
         $stmt->bindParam(':plate', $Plate);
         $stmt->bindParam(':capDate', $Time);
         $stmt->bindParam(':createdDate', $Time);

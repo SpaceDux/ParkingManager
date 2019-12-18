@@ -161,7 +161,8 @@
             'locationpassword' => $API['site_pass'],
             'serviceid' => $ID,
             'regno' => $Plate,
-            'drivername' => $Name
+            'drivername' => $Name,
+            'committransaction' => '0'
           ]
         ]);
         $return = json_decode($response->getBody(), true);
@@ -197,6 +198,7 @@
             'drivername' => $Name,
             'cardno' => $Cardno,
             'cardexpiry' => $Expiry
+            // 'committransaction' => '0'
           ]
         ]);
         $return = json_decode($response->getBody(), true);
@@ -227,6 +229,14 @@
       $len = strpos($string, $end, $ini) - $ini;
       return substr($string, $ini, $len);
     }
+    function RemoveSlashes($string)
+    {
+      $string=implode("",explode("\\",$string));
+      $string=implode("",explode("//",$string));
+      $string=implode("",explode(":",$string));
+      $string=implode("",explode(";",$string));
+      return stripslashes(trim($string));
+    }
     function Payment_FC_Break($string)
     {
       $Card = $this->Fuel_String_Prepare($string, ";", "=");
@@ -236,13 +246,15 @@
       $rc = substr($expiry, "6", "2");
       $expiry = $expiry_m."/20".$expiry_yr;
 
+      $Card = $this->RemoveSlashes($Card);
+
       $result = [
         'cardno' => $Card,
         'expiry' => $expiry,
         'rc' => $rc
       ];
 
-      echo $result;
+      return $result;
     }
   }
 

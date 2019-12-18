@@ -162,10 +162,6 @@
 
       $Site = $_CONFIG['api']['site'];
 
-      if($FuelStr != '' OR $FuelStr != null) {
-        $CardDets = $this->checks->Payment_FC_Break($FuelStr);
-      }
-
       if($System == 0)
       {
         $Plate = $this->vehicles->ANPR_Info($Ref, "Plate");
@@ -228,6 +224,8 @@
             echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
           }
         } else if($Method == 5) {
+          $CardDets = $this->checks->Payment_FC_Break($FuelStr);
+
           $CardChk = substr($CardDets['cardno'], "0", "6");
           if($CardChk == '704310' AND $CardDets['rc'] == "90") {
             $CardType = 1; // DKV
@@ -410,6 +408,7 @@
             echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
           }
         } else if($Method == 5) {
+          $CardDets = $this->checks->Payment_FC_Break($FuelStr);
           $CardChk = substr($CardDets['cardno'], "0", "6");
           if($CardChk == '704310' AND $CardDets['rc'] == "90") {
             $CardType = 1; // DKV
