@@ -1042,7 +1042,7 @@
 			$this->vehicles = null;
 		}
 		// Transaction History
-		function Transaction_List($Start, $End, $Cash, $Card, $Account, $Snap, $Fuel, $Group, $SettlementGroup)
+		function Transaction_List($Start, $End, $Cash, $Card, $Account, $Snap, $Fuel, $Group, $SettlementGroup, $Deleted)
 		{
 			$this->mysql = new MySQL;
 			$this->user = new User;
@@ -1079,6 +1079,11 @@
 			} else {
 				$IsFuel = "";
 			}
+			if($Deleted == 1) {
+				$IsDeleted = "1";
+			} else {
+				$IsDeleted = "";
+			}
 
 			$Methods = $IsCash.$IsCard.$IsAccount.$IsSnap.$IsFuel;
 			$Methods = substr_replace($Methods, "", -1);
@@ -1096,6 +1101,10 @@
 						$query .= 'WHERE Site = '.$Site.' AND Method IN ('.$Methods.') AND Processed_Time BETWEEN ? AND ? ';
 					}
 				}
+				if($IsDeleted == "1") {
+					$query .= 'AND Deleted = 0 ';
+				}
+
 				if(isset($_POST['order']))
 				{
 				 $query .= 'ORDER BY '.$column[$_POST['order']['0']['column']].' '.$_POST['order']['0']['dir'].' ';

@@ -520,7 +520,7 @@
   // List Transactions via Datatables
   $(document).ready(function() {
     fill_datatable();
-    function fill_datatable(DateStart = '', DateEnd = '', Cash = '', Card = '', Account = '', Snap = '', Fuel = '', Group = '', Settlement_Group = '')
+    function fill_datatable(DateStart = '', DateEnd = '', Cash = '', Card = '', Account = '', Snap = '', Fuel = '', Group = '', Settlement_Group = '', Deleted = '')
     {
      var dataTable = $('#PaymentsDataTable').DataTable({
        "createdRow" : function(row, data, index) {
@@ -536,7 +536,7 @@
        url:"{URL}/core/ajax/payment.handler.php?handler=Payment.Transaction_List",
        type:"POST",
        data:{
-        DateStart:DateStart, DateEnd:DateEnd, Cash:Cash, Card:Card, Account:Account, Snap:Snap, Fuel:Fuel, Group:Group, Settlement_Group:Settlement_Group
+        DateStart:DateStart, DateEnd:DateEnd, Cash:Cash, Card:Card, Account:Account, Snap:Snap, Fuel:Fuel, Group:Group, Settlement_Group:Settlement_Group, Deleted:Deleted
        }
       }
      });
@@ -552,10 +552,11 @@
       var Fuel = $('#TL_Fuel:checked').val();
       var Group = $('#TL_Group').val();
       var Settlement_Group = $('#TL_Settlement_Group').val();
+      var Deleted = $('#TL_Deleted:checked').val();
       if(DateStart != '' && DateEnd != '')
       {
         $('#PaymentsDataTable').DataTable().destroy();
-        fill_datatable(DateStart, DateEnd, Cash, Card, Account, Snap, Fuel, Group, Settlement_Group);
+        fill_datatable(DateStart, DateEnd, Cash, Card, Account, Snap, Fuel, Group, Settlement_Group, Deleted);
       }
       else
       {
