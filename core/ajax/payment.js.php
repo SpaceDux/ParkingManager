@@ -404,6 +404,24 @@
       }
     });
   }
+
+  $(document).on('click', '#Tariff_Repeat', function() {
+    event.preventDefault();
+    var Data = $('#New_Tariff_Form').serialize();
+    $.ajax({
+      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.New_Tariff",
+      type: "POST",
+      data: Data,
+      dataType: "json",
+      success:function(Data) {
+        if(Data.Result == 1) {
+          $.notify(Data.Message, {className:'success',globalPosition: 'top left',});
+        } else {
+          $.notify(Data.Message, {className:'error',globalPosition: 'top left',});
+        }
+      }
+    })
+  });
   // Payment Service Dropdown
   $(document).on('change', '#Payment_VehType', function() {
     var Type = $(this).val();

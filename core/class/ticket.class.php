@@ -215,22 +215,24 @@
         }
         //Merchant Ticket
         if($payment_type == "Cash" || $payment_type == "Card") {
-          $printer -> setJustification(Printer::JUSTIFY_CENTER);
-          if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
-            $printer -> graphics($logo);
-          } else {
-            $printer -> bitImage($logo);
+          if($this->pm->Site_Info($Site, "Enable_MerchantCopy") == 1) {
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+            if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
+              $printer -> graphics($logo);
+            } else {
+              $printer -> bitImage($logo);
+            }
+            $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
+            $printer -> feed(1);
+            $printer -> text($tid."\n");
+            $printer -> feed(1);
+            $printer -> text($priceGN."\n");
+            $printer -> feed(1);
+            $printer -> text($line_merch);
+            $printer -> selectPrintMode();
+            //End Ticket
+            $printer -> cut(Printer::CUT_PARTIAL);
           }
-          $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
-          $printer -> feed(1);
-          $printer -> text($tid."\n");
-          $printer -> feed(1);
-          $printer -> text($priceGN."\n");
-          $printer -> feed(1);
-          $printer -> text($line_merch);
-          $printer -> selectPrintMode();
-          //End Ticket
-          $printer -> cut(Printer::CUT_PARTIAL);
         }
 
       } finally {
@@ -458,24 +460,24 @@
         }
         //Merchant Ticket
         if($payment_type == "Cash" || $payment_type == "Card") {
-          $printer -> setJustification(Printer::JUSTIFY_CENTER);
-          if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
-            $printer -> graphics($logo);
-          } else {
-            $printer -> bitImage($logo);
+          if($this->pm->Site_Info($Site, "Enable_MerchantCopy") == 1) {
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+            if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
+              $printer -> graphics($logo);
+            } else {
+              $printer -> bitImage($logo);
+            }
+            $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
+            $printer -> feed(1);
+            $printer -> text($tid."\n");
+            $printer -> feed(1);
+            $printer -> text($priceGN."\n");
+            $printer -> feed(1);
+            $printer -> text($line_merch);
+            $printer -> selectPrintMode();
+            //End Ticket
+            $printer -> cut(Printer::CUT_PARTIAL);
           }
-          $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
-          $printer -> feed(1);
-          $printer -> text($tid."\n");
-          $printer -> feed(1);
-          $printer -> text($priceGN."\n");
-          $printer -> feed(1);
-          $printer -> text($line_merch);
-          $printer -> selectPrintMode();
-          //End Ticket
-          $printer -> cut(Printer::CUT_PARTIAL);
-        } else {
-
         }
       } finally {
         $printer -> close();

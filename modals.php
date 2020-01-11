@@ -573,8 +573,18 @@
           </div>
           </div>
           <div class="modal-footer">
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+              <button type="submit" class="btn btn-primary">Save</button>
+
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop12356" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop12356">
+                  <a class="dropdown-item" href="#" id="Tariff_Repeat">Save & Repeat</a>
+                </div>
+              </div>
+            </div>
             <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save</button>
           </div>
         </form>
       </div>
