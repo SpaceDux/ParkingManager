@@ -177,7 +177,7 @@
             $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
             $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
             if($Payment != FALSE) {
-              echo $this->PrintData($Payment);
+              echo $this->PrintData($Payment, 0);
             }
           }
         } else if($Method == 2) {
@@ -188,7 +188,7 @@
             $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
             $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
             if($Payment != FALSE) {
-              echo $this->PrintData($Payment);
+              echo $this->PrintData($Payment, 0);
             }
           }
         } else if($Method == 3) {
@@ -201,7 +201,7 @@
               $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
-                echo $this->PrintData($Payment);
+                echo $this->PrintData($Payment, 0);
               }
             }
           } else {
@@ -217,7 +217,7 @@
               $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
-                echo $this->PrintData($Payment);
+                echo $this->PrintData($Payment, 0);
               }
             }
           } else {
@@ -238,7 +238,7 @@
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
-                  echo $this->PrintData($Payment);
+                  echo $this->PrintData($Payment, 0);
                 }
               }
             } else {
@@ -257,7 +257,7 @@
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
-                  echo $this->PrintData($Payment);
+                  echo $this->PrintData($Payment, 0);
                 }
               }
             } else {
@@ -274,7 +274,7 @@
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
-                  echo $this->PrintData($Payment);
+                  echo $this->PrintData($Payment, 0);
                 }
               }
             } else {
@@ -291,7 +291,7 @@
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
-                  echo $this->PrintData($Payment);
+                  echo $this->PrintData($Payment, 0);
                 }
               }
             } else {
@@ -308,7 +308,7 @@
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
-                  echo $this->PrintData($Payment);
+                  echo $this->PrintData($Payment, 0);
                 }
               }
             } else {
@@ -325,7 +325,7 @@
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
-                  echo $this->PrintData($Payment);
+                  echo $this->PrintData($Payment, 0);
                 }
               }
             } else {
@@ -342,7 +342,7 @@
                 $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
-                  echo $this->PrintData($Payment);
+                  echo $this->PrintData($Payment, 0);
                 }
               }
             } else {
@@ -368,7 +368,7 @@
           $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
           $this->vehicles->ExpiryUpdate($Ref, $Expiry);
           if($Payment != FALSE) {
-            echo $this->PrintData($Payment);
+            echo $this->PrintData($Payment, 0);
           }
         } else if($Method == 2) {
           // Add transaction
@@ -376,7 +376,7 @@
           $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
           $this->vehicles->ExpiryUpdate($Ref, $Expiry);
           if($Payment != FALSE) {
-            echo $this->PrintData($Payment);
+            echo $this->PrintData($Payment, 0);
           } else {
             echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
           }
@@ -389,7 +389,7 @@
             $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
             $this->vehicles->ExpiryUpdate($Ref, $Expiry);
             if($Payment != FALSE) {
-              echo $this->PrintData($Payment);
+              echo $this->PrintData($Payment, 0);
             }
           } else {
             echo json_encode(array("Status" => '103', "Message" => 'ParkingManager has rejected the transaction, this vehicle is not on any of our fleet records.'));
@@ -402,7 +402,7 @@
             $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
             $this->vehicles->ExpiryUpdate($Ref, $Expiry);
             if($Payment != FALSE) {
-              echo $this->PrintData($Payment);
+              echo $this->PrintData($Payment, 0);
             }
           } else {
             echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -418,7 +418,7 @@
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
-                echo $this->PrintData($Payment);
+                echo $this->PrintData($Payment, 0);
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -433,7 +433,7 @@
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
-                echo $this->PrintData($Payment);
+                echo $this->PrintData($Payment, 0);
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -446,7 +446,7 @@
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
-                echo $this->PrintData($Payment);
+                echo $this->PrintData($Payment, 0);
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -459,7 +459,7 @@
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
-                echo $this->PrintData($Payment);
+                echo $this->PrintData($Payment, 0);
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -472,7 +472,7 @@
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
-                echo $this->PrintData($Payment);
+                echo $this->PrintData($Payment, 0);
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -485,7 +485,7 @@
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
-                echo $this->PrintData($Payment);
+                echo $this->PrintData($Payment, 0);
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -498,7 +498,7 @@
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
-                echo $this->PrintData($Payment);
+                echo $this->PrintData($Payment, 0);
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
