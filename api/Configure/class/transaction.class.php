@@ -527,7 +527,7 @@
 
      $this->mysql = null;
     }
-    function PrintData($Ref)
+    function PrintData($Ref, $Print)
     {
       global $_CONFIG;
       $this->mysql = new MySQL;
@@ -539,61 +539,73 @@
       $stmt->bindParam(1, $Ref);
       $stmt->bindParam(2, $Site);
       $stmt->execute();
+
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-      $ExitCode = $this->checks->Vehicle_Info($result['Parkingref'], "ExitKey");
-
       $Printed = $result['Ticket_Printed'] += 1;
 
-      if($result['Method'] == 1) {
-        $Method = 'Cash';
-      } else if($result['Method'] == 2) {
-        $Method = 'Card';
-      } else if($result['Method'] == 3) {
-        $Method = 'Account';
-      } else if($result['Method'] == 4) {
-        $Method = 'SNAP';
-      } else if($result['Method'] == 5) {
-        $Method = 'Fuel Card';
-      }
+      if($Print == 1) {
+        $stmt2 = $this->mysql->dbc->prepare("UPDATE transactions SET Ticket_Printed = ? WHERE Uniqueref = ?");
+        $stmt2->bindParam(1, $Printed);
+        $stmt2->bindParam(2, $Ref);
+        $stmt2->execute();
 
-      if($Method == 3) {
-        $AllowedDiscounts = $this->checks->Account_GetInfo($result['AccountID'], "Discount_Vouchers");
-        if($AllowedDiscounts > 0) {
-          $DiscountCount = $this->Payment_TariffInfo($result['Service'], "Discount_Vouchers");
-          // $MealCount = $this->Payment_TariffInfo($result['Service'], "Meal_Vouchers");
-          $ShowerCount = $this->Payment_TariffInfo($result['Service'], "Shower_Vouchers");
+        $response = array (
+                          'Status' => "101"
+                          );
+
+        echo json_encode($response);
+      } else {
+
+        $ExitCode = $this->checks->Vehicle_Info($result['Parkingref'], "ExitKey");
+
+        if($result['Method'] == 1) {
+          $Method = 'Cash';
+        } else if($result['Method'] == 2) {
+          $Method = 'Card';
+        } else if($result['Method'] == 3) {
+          $Method = 'Account';
+        } else if($result['Method'] == 4) {
+          $Method = 'SNAP';
+        } else if($result['Method'] == 5) {
+          $Method = 'Fuel Card';
+        }
+
+        if($Method == 3) {
+          $AllowedDiscounts = $this->checks->Account_GetInfo($result['AccountID'], "Discount_Vouchers");
+          if($AllowedDiscounts > 0) {
+            $DiscountCount = $this->Payment_TariffInfo($result['Service'], "Discount_Vouchers");
+            // $MealCount = $this->Payment_TariffInfo($result['Service'], "Meal_Vouchers");
+            $ShowerCount = $this->Payment_TariffInfo($result['Service'], "Shower_Vouchers");
+          } else {
+            $DiscountCount = 0;
+            $ShowerCount = $this->Payment_TariffInfo($result['Service'], "Shower_Vouchers");
+          }
         } else {
-          $DiscountCount = 0;
+          $DiscountCount = $this->Payment_TariffInfo($result['Service'], "Discount_Vouchers");
+          $MealCount = $this->Payment_TariffInfo($result['Service'], "Meal_Vouchers");
           $ShowerCount = $this->Payment_TariffInfo($result['Service'], "Shower_Vouchers");
         }
-      } else {
-        $DiscountCount = $this->Payment_TariffInfo($result['Service'], "Discount_Vouchers");
-        $MealCount = $this->Payment_TariffInfo($result['Service'], "Meal_Vouchers");
-        $ShowerCount = $this->Payment_TariffInfo($result['Service'], "Shower_Vouchers");
+        $TimeIN = date("d/m/Y H:i", strtotime($result['Vehicle_Capture_Time']));
+        $Expiry = date("d/m/Y H:i", strtotime($result['Vehicle_Expiry_Time']));
+
+        $response = array (
+                          'Status' => "101",
+                          'TicketName' => $result['Service_Ticket_Name'],
+                          'Gross' => $result['Gross'],
+                          'Nett' => $result['Nett'],
+                          'Time' => $TimeIN,
+                          'Expiry' => $Expiry,
+                          'Name' => $result['Name'],
+                          'Plate' => $result['Plate'],
+                          'Shower_Count' => $ShowerCount,
+                          'Discount_Count' => $DiscountCount,
+                          'Meal_Count' => $MealCount,
+                          'Method' => $Method,
+                          'ExitCode' => '*'.$ExitCode.'#'
+                          );
+
+        echo json_encode($response);
       }
-
-      $response = array (
-                        'TicketName' => $result['Service_Ticket_Name'],
-                        'Gross' => $result['Gross'],
-                        'Nett' => $result['Nett'],
-                        'Time' => $result['Vehicle_Capture_Time'],
-                        'Expiry' => $result['Vehicle_Expiry_Time'],
-                        'Name' => $result['Name'],
-                        'Plate' => $result['Plate'],
-                        'Shower_Count' => $ShowerCount,
-                        'Discount_Count' => $DiscountCount,
-                        'Meal_Count' => $MealCount,
-                        'Method' => $Method,
-                        'ExitCode' => '*'.$ExitCode.'#'
-                        );
-
-      $stmt2 = $this->mysql->dbc->prepare("UPDATE transactions SET Ticket_Printed = ? WHERE Uniqueref = ?");
-      $stmt2->bindParam(1, $Printed);
-      $stmt2->bindParam(2, $Ref);
-      $stmt2->execute();
-
-      echo json_encode($response);
 
       $this->mysql = null;
       $this->checks = null;

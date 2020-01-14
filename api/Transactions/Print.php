@@ -11,11 +11,14 @@
   if(!isset($_POST['AccessKey'])) {
     $_POST['AccessKey'] == "";
   }
-  
+  if(!isset($_POST['Printed'])) {
+    $_POST['Printed'] == "0";
+  }
+
   if($accesskey == $_POST['AccessKey']) {
     if(isset($_POST['Ref']))
     {
-      $transaction->PrintData($_POST['Ref']);
+      $transaction->PrintData($_POST['Ref'], $_POST['Printed']);
     }
     else
     {
