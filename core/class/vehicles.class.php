@@ -673,7 +673,7 @@
             $style = "table-danger";
           }
           $html_renew .= '<tr class="'.$style.'">';
-          $html_renew .= '<td>'.$row['Name'].'</td>';
+          $html_renew .= '<td>'.$flagIco.' '.$row['Name'].'</td>';
           $html_renew .= '<td>'.$row['Plate'].'</td>';
           $html_renew .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
           $html_renew .= '<td>'.$this->pm->GET_VehicleType($row['Type']).'</td>';
@@ -693,7 +693,7 @@
         $timein = '\''.$row['Arrival'].'\'';
 
         $html_exit .= '<tr>';
-        $html_exit .= '<td>'.$row['Name'].'</td>';
+        $html_exit .= '<td>'.$flagIco.' '.$row['Name'].'</td>';
         $html_exit .= '<td>'.$row['Plate'].'</td>';
         $html_exit .= '<td>'.date("d/H:i", strtotime($row['Departure'])).'</td>';
         $html_exit .= '<td>'.$this->pm->GET_VehicleType($row['Type']).'</td>';

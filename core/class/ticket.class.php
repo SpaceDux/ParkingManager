@@ -50,12 +50,16 @@
       $this->pm = new PM;
       $this->account = new Account;
 
+
       $campus = $this->user->Info("Site");
       $printer_id = $this->user->Info("Printer");
       //VAT Information
       $vat_pay = ($gross - $net);
       $vatnum = $this->pm->Site_Info($campus, "Vatno");
+      $MerchantEn = $this->pm->Site_Info($campus, "Enable_MerchantCopy");
+
       $img_dir = $this->ImgDir.$campus;
+
       //Printer connection
       if($printer_id == 2) {
         // Short term fix
@@ -215,7 +219,7 @@
         }
         //Merchant Ticket
         if($payment_type == "Cash" || $payment_type == "Card") {
-          if($this->pm->Site_Info($Site, "Enable_MerchantCopy") == 1) {
+          if($MerchantEn == "1") {
             $printer -> setJustification(Printer::JUSTIFY_CENTER);
             if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
               $printer -> graphics($logo);
@@ -393,6 +397,7 @@
 
       $campus = $this->user->Info("Site");
       $printer_id = $this->user->Info("Printer");
+      $MerchantEn = $this->pm->Site_Info($campus, "Enable_MerchantCopy");
 
       $img_dir = $this->ImgDir.$campus;
 
@@ -460,7 +465,7 @@
         }
         //Merchant Ticket
         if($payment_type == "Cash" || $payment_type == "Card") {
-          if($this->pm->Site_Info($Site, "Enable_MerchantCopy") == 1) {
+          if($MerchantEn == "1") {
             $printer -> setJustification(Printer::JUSTIFY_CENTER);
             if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
               $printer -> graphics($logo);
