@@ -4,13 +4,11 @@
     "Host": "localhost",
     "User": "root",
     "Pass": "",
-    "Database": "parking_manager4"
+    "Database": "parking_manager"
   },
   "App":
   {
     "Name": "ParkingManager",
-    "Version": "1.0.0",
-    "ETPAPI_User": "",
-    "ETPAPI_Pass": ""
+    "Version": "1.0.0"
   }
 }

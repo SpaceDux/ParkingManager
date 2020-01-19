@@ -31,19 +31,18 @@ function anprFeed(callback)
          console.log(err);
        } else {
          console.log(rowCount + ' rows');
+         data.push('<table class="table table-dark"><thead><tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead><tbody>');
+         request.on('rows', function(rows) {
+           rows.forEach(function(row) {
+             data.push('<tr>'+
+             '<td>'+row.Plate+'</td>'+
+             '<td>LOL</td>'+
+             '</tr>');
+           });
+         });
+         callback(data);
        }
      });
-     request.on('row', function(rows) {
-       data.push('<table class="table table-dark"><thead><tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead><tbody>');
-       rows.forEach(function(row) {
-         data.push('<tr>'+
-                       '<td>'+row.Plate+'</td>'+
-                       '<td>LOL</td>'+
-                     '</tr>');
-       });
-
-       callback(data);
-    });
 
     connection.execSql(request);
     });
