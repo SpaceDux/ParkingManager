@@ -26,6 +26,10 @@
         } else {
           $ETPCk = FALSE;
         }
+        $accCk = $this->checks->Check_On_Account($Plate);
+        if($accCk == TRUE) {
+          $ETPCk = FALSE;
+        }
 
         $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate = ? AND Parked_Column = 1 AND Site = ? AND Deleted < 1");
         $stmt->bindValue(1, $Plate);
@@ -35,7 +39,7 @@
         {
           $result = $stmt->fetch(\PDO::FETCH_ASSOC);
           $ref = $result['Uniqueref'];
-          $stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Parkingref = ? AND Site = ? AND Service_Group IN (2,3) AND Ticket_Printed < 1 AND Deleted < 1 ORDER BY Processed_Time DESC LIMIT 1");
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Parkingref = ? AND Site = ? AND Service_Group IN (2,3,5,6) AND Ticket_Printed < 1 AND Deleted < 1 ORDER BY Processed_Time DESC LIMIT 1");
           $stmt->bindParam(1, $ref);
           $stmt->bindParam(2, $Site);
           // $stmt->bindParam(3, $ref);
@@ -49,7 +53,7 @@
           'Arrival_Time' => $result['Arrival'],
           'Img_Patch' => $result['Img_Patch'],
           'Img_Overview' => $result['Img_Overview'],
-          'Accept_Account' => $this->checks->Check_On_Account($Plate),
+          'Accept_Account' => $accCk,
           'Accept_SNAP' => $ETPCk
           );
           if($trans['Vehicle_Expiry_Time'] >= date("Y-m-d H:i:s"))
@@ -110,7 +114,7 @@
             'Arrival_Time' => $result['Capture_Date'],
             'Img_Patch' => $patch,
             'Img_Overview' => $overview,
-            'Accept_Account' => $this->checks->Check_On_Account($Plate),
+            'Accept_Account' => $accCk,
             'Accept_SNAP' => $ETPCk
             );
 

@@ -570,15 +570,16 @@
           $Method = 'Fuel Card';
         }
 
-        if($Method == 3) {
+        if($Method == 'Account') {
           $AllowedDiscounts = $this->checks->Account_GetInfo($result['AccountID'], "Discount_Vouchers");
           if($AllowedDiscounts > 0) {
             $DiscountCount = $this->Payment_TariffInfo($result['Service'], "Discount_Vouchers");
-            // $MealCount = $this->Payment_TariffInfo($result['Service'], "Meal_Vouchers");
             $ShowerCount = $this->Payment_TariffInfo($result['Service'], "Shower_Vouchers");
+            $MealCount = $this->Payment_TariffInfo($result['Service'], "Meal_Vouchers");
           } else {
-            $DiscountCount = 0;
+            $DiscountCount = "0";
             $ShowerCount = $this->Payment_TariffInfo($result['Service'], "Shower_Vouchers");
+            $MealCount = $this->Payment_TariffInfo($result['Service'], "Meal_Vouchers");
           }
         } else {
           $DiscountCount = $this->Payment_TariffInfo($result['Service'], "Discount_Vouchers");
