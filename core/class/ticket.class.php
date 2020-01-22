@@ -436,7 +436,7 @@
           $printer -> text('WiFi Code: '.$code);
           $printer -> feed();
           $printer -> setTextSize(1, 1);
-          if($campus != 1) {
+          if($campus == "201908291533552768") {
             $printer -> text("Please connect to; Customer Lorry Park");
           } else {
             $printer -> text("Please connect to; Parc-Cybi-Car-Park");

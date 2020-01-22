@@ -557,6 +557,7 @@
       } else {
 
         $ExitCode = $this->checks->Vehicle_Info($result['Parkingref'], "ExitKey");
+        $VehType = $this->checks->Vehicle_Info($result['Parkingref'], "Type");
 
         if($result['Method'] == 1) {
           $Method = 'Cash';
@@ -588,11 +589,11 @@
         }
         $TimeIN = date("d/m/Y H:i", strtotime($result['Vehicle_Capture_Time']));
         $Expiry = date("d/m/Y H:i", strtotime($result['Vehicle_Expiry_Time']));
-
+        $TicketName = strtoupper($result['Service_Ticket_Name']);
         $response = array (
                           'Status' => "101",
                           'PaymentID' => $result['Uniqueref'],
-                          'TicketName' => $result['Service_Ticket_Name'],
+                          'TicketName' => $TicketName,
                           'Gross' => $result['Gross'],
                           'Nett' => $result['Nett'],
                           'Time' => $TimeIN,
@@ -603,7 +604,9 @@
                           'Discount_Count' => $DiscountCount,
                           'Meal_Count' => $MealCount,
                           'Method' => $Method,
-                          'ExitCode' => '*'.$ExitCode.'#'
+                          'ExitCode' => '*'.$ExitCode.'#',
+                          'Tariff_ID' => $result['Service'],
+                          'VehicleType' => $VehicleType
                           );
 
         echo json_encode($response);
