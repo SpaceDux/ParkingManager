@@ -17,10 +17,15 @@ function user_Login(email, password, callback)
       password: config.MySQL.Pass,
       database: config.MySQL.Database
   });
-  connection.connect();
+  connection.connect(function(err) {
+    if (err) {
+      alert("MYSQL: "+err);
+      return;
+    }
+  });
 
   connection.query("SELECT * FROM users WHERE Email = ? LIMIT 1", [email], function(error, result, fields) {
-    if (error) throw error;
+    if(error) throw error;
     if(result.length > 0) {
       if(result[0].Status < 1) {
         var pass = result[0].Password;
