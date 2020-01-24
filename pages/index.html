@@ -135,7 +135,11 @@
             </div>
             <div class="Body">
               <div id="ANPR_Feed">
-
+                <script type="text/javascript">
+                  ANPR_Feed(function(callback, err) {
+                    $('#ANPR_Feed').html(callback);
+                  });
+                </script>
               </div>
             </div>
           </div>
