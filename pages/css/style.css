@@ -205,7 +205,7 @@ a:hover, a:active {
 .Wrapper {
   width: 100%;
   height: auto;
-  padding: 10px;
+  padding: 10px 10px 50px 10px;
   overflow-x: hidden;
 }
 .StatBar {
@@ -350,24 +350,25 @@ a:hover, a:active {
 }
 .Box .Title {
   width: 100%;
-  height: 30px;
-  line-height: 30px;
+  height: 50px;
+  line-height: 50px;
   font-size: 20px;
   color: #f2f2f2;
   background: #232323;
   padding: 0px 10px;
 }
 .Box .Body {
-  padding: 5px 10px;
+  background: #fff;
+  padding: 5px;
 }
 .Box .ButtonHolder {
   width: auto;
   float: right;
 }
 .Box .Button {
-  padding: 0 10px;
-  height: 30px;
-  line-height: 30px;
+  padding: 0 15px;
+  height: 50px;
+  line-height: 50px;
   display: inline-block;
   cursor: pointer;
 }

@@ -26,7 +26,7 @@ function createWindow () {
   win.loadFile('pages/login.html')
 
   // Open the DevTools.
-  win.webContents.openDevTools({detached: true})
+  win.webContents.openDevTools({detach: true})
 
   // Emitted when the window is closed.
   win.on('closed', () => {

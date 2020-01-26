@@ -17,46 +17,61 @@ function vehicles_ANPR_Feed(callback)
          alert("MSSQL: "+err);
          return;
        }
-       console.log("ANPR Rows: "+data.rowsAffected[0]);
-       var thead = '<table class="table table-dark table-hover table-bordered"><thead><tr><th>Plate</th><th>Patch</th><th>Arrival</th><th>COG</th></thead><tbody>';
-       var tfoot = '</tbody></table>';
-       var feed = '';
-       data.recordset.forEach(function(row) {
-         var capdate = moment(row.Capture_Date);
-         var curTime = moment();
-         var stay = curTime.diff(capdate, "hours");
-         var patch = row.Patch;
-         var distime =  moment(capdate).format("DD/HH:mm");
-         if(patch !== null) {
-           var correct_patch = patch.replace('D:\\ETP ANPR\\images\\', 'file://Z:/');
-           var final_patch = correct_patch.replace(/\\/g, '/');
-         } else {
-           var final_patch = '';
-         }
-         if(stay >= 2 && stay < 4) {
-           feed += '<tr class="table-warning" style="color:black;"><td>'+row.Plate+'</td>'+
-           '<td><img style="max-width: 120px; max-height: 50px;" src="'+final_patch+'"></img></td>'+
-           '<td>'+distime+'</td>'+
-           '<td>OPT</td>';
-         } else if(stay >= 4) {
-           feed += '<tr class="table-danger" style="color:black;"><td>'+row.Plate+'</td>'+
-           '<td><img style="max-width: 120px; max-height: 50px;" src="'+final_patch+'"></img></td>'+
-           '<td>'+distime+'</td>'+
-           '<td>OPT</td>';
-         } else {
-           feed += '<tr><td>'+row.Plate+'</td>'+
-           '<td><img style="max-width: 120px; max-height: 50px;" src="'+final_patch+'"></img></td>'+
-           '<td>'+distime+'</td>'+
-           '<td>'+
-            '<div class="btn-group" role="group">'+
-              '<button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>'+
-              '<button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>'+
-              '<button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>'+
-            '</div>'
-           +'</td>';
-         }
-       });
-       callback(thead+feed+tfoot);
+       if(data.rowsAffected[0] > 0) {
+         var thead = '<table class="table table-dark table-hover table-bordered"><thead><tr><th>Plate</th><th>Patch</th><th>Arrival</th><th><i class="fa fa-cogs"></i></th></thead><tbody>';
+         var tfoot = '</tbody></table>';
+         var feed = '';
+         data.recordset.forEach(function(row) {
+           var capdate = moment(row.Capture_Date);
+           var curTime = moment();
+           var stay = curTime.diff(capdate, "hours");
+           var patch = row.Patch;
+           var distime =  moment(capdate).format("DD/HH:mm");
+           if(patch !== null) {
+             var correct_patch = patch.replace('D:\\ETP ANPR\\images\\', 'file://Z:/');
+             var final_patch = correct_patch.replace(/\\/g, '/');
+           } else {
+             var final_patch = '';
+           }
+           if(stay >= 2 && stay < 4) {
+             feed += '<tr class="table-warning" style="color:black;"><td>'+row.Plate+'</td>'+
+             '<td><img style="max-width: 120px; max-height: 50px;" src="'+final_patch+'"></img></td>'+
+             '<td>'+distime+'</td>'+
+             '<td>'+
+             '<div class="btn-group" role="group">'+
+             '<button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>'+
+             '<button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>'+
+             '<button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>'+
+             '</div>'
+             +'</td>';
+           } else if(stay >= 4) {
+             feed += '<tr class="table-danger" style="color:black;"><td>'+row.Plate+'</td>'+
+             '<td><img style="max-width: 120px; max-height: 50px;" src="'+final_patch+'"></img></td>'+
+             '<td>'+distime+'</td>'+
+             '<td>'+
+             '<div class="btn-group" role="group">'+
+             '<button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>'+
+             '<button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>'+
+             '<button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>'+
+             '</div>'
+             +'</td>';
+           } else {
+             feed += '<tr><td>'+row.Plate+'</td>'+
+             '<td><img style="max-width: 120px; max-height: 50px;" src="'+final_patch+'"></img></td>'+
+             '<td>'+distime+'</td>'+
+             '<td>'+
+             '<div class="btn-group" role="group">'+
+             '<button type="button" class="btn btn-danger"><i class="fa fa-cog"></i></button>'+
+             '<button type="button" class="btn btn-danger"><i class="fa fa-pound-sign"></i></button>'+
+             '<button type="button" class="btn btn-danger"><i class="fa fa-times"></i></button>'+
+             '</div>'
+             +'</td>';
+           }
+         });
+         callback(thead+feed+tfoot);
+       } else {
+         callback('<p><center>No records found.</center></p>');
+       }
        con.close();
      });
 

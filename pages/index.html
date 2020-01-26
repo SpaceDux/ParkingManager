@@ -117,46 +117,60 @@
         <div class="col-md-7">
           <div class="Box">
             <div class="Title">
-              <div class="row">
-                <div class="col-md-6">
-                  <i class="fa fa-video" style="color: red; margin-right: 10px;"></i> ANPR Feed
-                </div>
-                <div class="col-md-6">
-                  <div class="ButtonHolder">
-                    <div class="Button">
-                      <i class="fa fa-search"></i>
-                    </div>
-                    <div class="Button">
-                      <i class="fa fa-plus"></i>
-                    </div>
+              <div class="col">
+                <i class="fa fa-video" style="color: red; margin-right: 10px;"></i> ANPR Feed
+                <div class="ButtonHolder">
+                  <div class="Button">
+                    <i class="fa fa-search"></i>
+                  </div>
+                  <div class="Button">
+                    <i class="fa fa-plus"></i>
                   </div>
                 </div>
               </div>
             </div>
             <div class="Body">
               <div id="ANPR_Feed">
+                <img src="img/loading.gif" style="max-width: 80px; max-height: 80px; display: block; margin: 0 auto;" alt="">
                 <script type="text/javascript">
-                  vehicles_ANPR_Feed(function(callback, err) {
-                    $('#ANPR_Feed').html(callback);
-                  });
+                vehicles_ANPR_Feed(function(callback, err) {
+                  $('#ANPR_Feed').html(callback);
+                });
                 </script>
+              </div>
+            </div>
+          </div>
+          <!-- PAID -->
+          <div class="Box">
+            <div class="Title">
+              PAID VEHICLES
+            </div>
+            <div class="Body">
+              <div id="PAID_Feed">
+                <img src="img/loading.gif" style="max-width: 80px; max-height: 80px; display: block; margin: 0 auto;" alt="">
+
               </div>
             </div>
           </div>
         </div>
         <div class="col-md-5">
           <div class="Box">
+            <div class="Title">
+              RENEWALS
+            </div>
+            <div id="RENEWAL_Feed">
+              <img src="img/loading.gif" style="max-width: 80px; max-height: 80px; display: block; margin: 0 auto;" alt="">
 
+            </div>
           </div>
-        </div>
-        <div class="col-md-7">
           <div class="Box">
+            <div class="Title">
+              RECENTLY EXIT
+            </div>
+            <div id="EXIT_Feed">
+              <img src="img/loading.gif" style="max-width: 80px; max-height: 80px; display: block; margin: 0 auto;" alt="">
 
-          </div>
-        </div>
-        <div class="col-md-5">
-          <div class="Box">
-
+            </div>
           </div>
         </div>
       </div>
