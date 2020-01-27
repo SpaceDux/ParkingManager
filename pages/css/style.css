@@ -18,6 +18,8 @@ a:hover, a:active {
 /* Scroll Bar */
 ::-webkit-scrollbar {
     width: 10px;
+    margin-top: 30px;
+    display: block;
 }
 ::-webkit-scrollbar-track {
     background: #36393d;
@@ -27,6 +29,14 @@ a:hover, a:active {
 }
 ::-webkit-scrollbar-thumb:hover {
     background: #292929;
+}
+.Containment {
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: block;
+  width: 100%;
+  height: auto;
+  position: absolute;
 }
 .ControlBar {
   height: 30px;
@@ -350,7 +360,7 @@ a:hover, a:active {
 }
 .Box .Title {
   width: 100%;
-  height: 50px;
+  height: 58px;
   line-height: 50px;
   font-size: 20px;
   color: #f2f2f2;
