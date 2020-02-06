@@ -60,13 +60,8 @@
 
       $img_dir = $this->ImgDir.$campus;
 
-      //Printer connection
-      if($printer_id == 2) {
-        // Short term fix
-        $connector = new WindowsPrintConnector('pdhollies');
-      } else {
-        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
-      }
+      $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
+
       $printer = new Printer($connector);
       $logo = EscposImage::load($img_dir."/logo.png", false);
       $address = EscposImage::load($img_dir."/address.png", false);
