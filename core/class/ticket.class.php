@@ -60,6 +60,7 @@
 
       $img_dir = $this->ImgDir.$campus;
 
+      //Printer connection
       $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
 
       $printer = new Printer($connector);
@@ -257,16 +258,9 @@
       $img_dir = $this->ImgDir.$campus;
       //Limit amount of chars in company name.
       $company = substr($company, 0, 9);
-      //Printer Connections
-      if($printer_id == 2) {
-        // Short term fix
-        $connector = new WindowsPrintConnector('pdhollies');
-      } else if ($printer_id == 4) {
-        // Short term fix
-        $connector = new WindowsPrintConnector('smb://192.168.12.117/Truckwash');
-      } else {
-        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
-      }
+      //Printer connection
+      $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
+
       try {
         $printer = new Printer($connector);
         $ticket = EscposImage::load($img_dir."/wash.jpg", false);
@@ -398,13 +392,9 @@
 
       try {
 
-        //Printer Connection
-        if($printer_id == 2) {
-          // Short term fix
-          $connector = new WindowsPrintConnector('pdhollies');
-        } else {
-          $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
-        }
+        //Printer connection
+        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
+
         $printer = new Printer($connector);
         $wifi = EscposImage::load($img_dir."/wifi.jpg", false);
         $shower  = EscposImage::load($img_dir."/shower.jpg", false);
@@ -505,13 +495,9 @@
       $img_dir = $this->ImgDir.$campus;
 
       try {
-        //Printer Connection
-        if($printer_id == 2) {
-          // Short term fix
-          $connector = new WindowsPrintConnector('pdhollies');
-        } else {
-          $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
-        }
+        //Printer connection
+        $connector = new WindowsPrintConnector('smb://'.$this->pm->PrinterInfo($printer_id, "User").':'.$this->pm->PrinterInfo($printer_id, "Pass").'@'.$this->pm->PrinterInfo($printer_id, "IP").'/'.$this->pm->PrinterInfo($printer_id, "SharedName").'');
+
         $printer = new Printer($connector);
         $logo = EscposImage::load($img_dir."/logo.png", false);
         //Settlement
