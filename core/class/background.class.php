@@ -73,7 +73,22 @@
      {
        $this->mysql = new MySQL;
 
-       
+
+       $this->mysql = null;
+     }
+     function Parking_Reinstate()
+     {
+       $this->mssql = new MSSQL;
+       $this->mysql = new MySQL;
+
+       $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+       $stmt->execute();
+       foreach($stmt->fetchAll() as $row) {
+         $timein = $row['Capture_Date'];
+         $stmt = $this->mysql->dbc->prepare("SELECT ");
+       }
+
+       $this->mssql = null;
        $this->mysql = null;
      }
   }

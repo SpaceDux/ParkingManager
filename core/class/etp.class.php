@@ -46,15 +46,17 @@
                 </thead>
                 <tbody>";
       foreach($return['results'] as $row) {
-        $html .= "<tr>";
-        $html .= '<td>'.$row['ServiceId'].'</td>';
-        $html .= '<td>'.$row['ServiceType'].'</td>';
-        $html .= '<td>'.$row['Service'].'</td>';
-        $html .= '<td>'.$row['Nett'].'</td>';
-        $html .= '<td>'.$row['Gross'].'</td>';
-        $html .= '<td>'.$row['Snap'].'</td>';
-        $html .= '<td>'.$row['FuelCard'].'</td>';
-        $html .= "</tr>";
+        if($row['ServiceType'] == "Washing") {
+          $html .= "<tr>";
+          $html .= '<td>'.$row['ServiceId'].'</td>';
+          $html .= '<td>'.$row['ServiceType'].'</td>';
+          $html .= '<td>'.$row['Service'].'</td>';
+          $html .= '<td>'.$row['Nett'].'</td>';
+          $html .= '<td>'.$row['Gross'].'</td>';
+          $html .= '<td>'.$row['Snap'].'</td>';
+          $html .= '<td>'.$row['FuelCard'].'</td>';
+          $html .= "</tr>";
+        }
 
         // echo $row['ServiceType']." - ".$row['Service']." - ".$row['Nett']." - ".$row['Gross']." - Allow SNAP: ".$row['Snap']." -
         //  Allow Fuel Card: ".$row['FuelCard']." - ServiceID: ".$row['ServiceId']."<br>";
