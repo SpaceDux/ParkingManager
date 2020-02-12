@@ -4,6 +4,8 @@
 
   if($handler == "Background.Automation_Exit") {
     $background->Automation_Exit();
+  } else if($handler == "Background.Parking_Reinstate") {
+    $background->Parking_Reinstate();
   }
 
 

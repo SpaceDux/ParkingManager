@@ -12,7 +12,7 @@
        // $this->user = null;
        $expiry = date("Y-m-d H:i:s");
 
-       $anpr = $this->mssql->dbc->prepare("SELECT TOP 20 * FROM ANPR_REX_Archive WHERE Lane_ID = 2 ORDER BY Capture_Date DESC");
+       $anpr = $this->mssql->dbc->prepare("SELECT TOP 10 * FROM ANPR_REX_Archive WHERE Lane_ID = 2 ORDER BY Capture_Date DESC");
        $anpr->execute();
        foreach ($anpr->fetchAll() as $row) {
          $plate = $row['Plate'];
@@ -81,15 +81,39 @@
        $this->mssql = new MSSQL;
        $this->mysql = new MySQL;
 
-       $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date, Patch, Notes FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+       $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
        $stmt->execute();
        foreach($stmt->fetchAll() as $row) {
-         $timein = $row['Capture_Date'];
-         $stmt = $this->mysql->dbc->prepare("SELECT ");
+         $anpr_timein = $row['Capture_Date'];
+         $anpr_plate = $row['Plate'];
+         $anpr_ref = $row['Uniqueref'];
+         $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate = ? AND Parked_Column = 2 ORDER BY Departure DESC LIMIT 1");
+         $stmt->bindParam(1, $anpr_plate);
+         $stmt->execute();
+         $result = $stmt->fetchAll();
+         if($stmt->rowCount() > 0) {
+           foreach($result as $row) {
+             $Departed = $row['Departure'];
+             $Uniqueref = $row['Uniqueref'];
+             $Expiry = $row['Expiry'];
+             $Departure = date("Y-m-d H:i:s", strtotime($Departed.'+ 2 hours'));
+             if($anpr_timein <= $Departure) {
+               // Reinstate parking record.
+               $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Parked_Column = 1 AND Departure = '' WHERE Uniqueref = ?");
+               $stmt->bindParam(1, $Uniqueref);
+               $stmt->execute();
+               $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
+               $stmt->bindParam(1, $Expiry);
+               $stmt->bindParam(2, $anpr_ref);
+               $stmt->execute();
+               echo json_encode(array("Result" => "1", "Message" => 'Left within 2 hours. Reinstated parking record for: '.$anpr_plate));
+             }
+           }
+         }
        }
 
-       $this->mssql = null;
        $this->mysql = null;
+       $this->mssql = null;
      }
   }
 ?>

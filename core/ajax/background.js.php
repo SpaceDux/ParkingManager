@@ -11,5 +11,17 @@
         }
       }
     })
-  }, 15000);
+  }, 5000);
+  setInterval(function(){
+    $.ajax({
+      url: "{URL}/core/ajax/background.handler.php?handler=Background.Parking_Reinstate",
+      type: "POST",
+      dataType: 'json',
+      success:function(Data) {
+        if(Data.Result == 1) {
+          $.notify(Data.Message, {className:'warning',globalPosition: 'top left',});
+        }
+      }
+    })
+  }, 5000);
 </script>
