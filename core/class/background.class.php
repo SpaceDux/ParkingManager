@@ -96,11 +96,12 @@
              $Departed = $row['Departure'];
              $Uniqueref = $row['Uniqueref'];
              $Expiry = $row['Expiry'];
-             $Departure = date("Y-m-d H:i:s", strtotime($Departed.'+ 2 hours'));
-             if($anpr_timein <= $Departure) {
+             $Departure = date("Y-m-d H:i:s", strtotime($Departed.'+ 3 hours'));
+             if($anpr_timein <= $Departure AND $Departed < $anpr_timein) {
                // Reinstate parking record.
-               $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Parked_Column = 1 AND Departure = '' WHERE Uniqueref = ?");
-               $stmt->bindParam(1, $Uniqueref);
+               $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Parked_Column = 1, Departure = '', ANPRRef = ? WHERE Uniqueref = ?");
+               $stmt->bindParam(1, $anpr_ref);
+               $stmt->bindParam(2, $Uniqueref);
                $stmt->execute();
                $stmt = $this->mssql->dbc->prepare("UPDATE ANPR_REX SET Status = 100, Expiry = ? WHERE Uniqueref = ?");
                $stmt->bindParam(1, $Expiry);
