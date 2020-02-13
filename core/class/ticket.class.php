@@ -29,22 +29,22 @@
     function Direction($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $group, $exitKey, $discount_count, $wifi_count, $acc_id, $printed, $Processed)
     {
       if($group == 2) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $wifi_count, $acc_id, $printed, $Processed);
       } else if ($group == 4) {
         $this->Printer_TruckWash($ticket_name, $gross, $net, $company, $reg, $tid, $date, $payment_type, $exitKey);
       } else if ($group == 3) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $wifi_count, $acc_id, $printed, $Processed);
       } else if ($group == 1) {
         $this->Printer_Misc($shower_count, $wifi_count, $tid, $payment_type, $gross, $net, $Processed);
       } else if($group == 5) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $wifi_count, $acc_id, $printed, $Processed);
       } else if($group == 6) {
-        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed);
+        $this->Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $wifi_count, $acc_id, $printed, $Processed);
       }
     }
     //Begin Tickets
     //Print parking ticket
-    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $acc_id, $printed, $Processed)
+    function Printer_ParkingTicket($ticket_name, $gross, $net, $company, $reg, $tid, $date, $expiry, $payment_type, $meal_count, $shower_count, $exitKey, $discount_count, $wifi_count, $acc_id, $printed, $Processed)
     {
       $this->user = new User;
       $this->pm = new PM;
@@ -69,6 +69,7 @@
       $shower_img = EscposImage::load($img_dir."/shower.jpg", false);
       $meal_img = EscposImage::load($img_dir."/meal4.jpg", false);
       $discount_img = EscposImage::load($img_dir."/discount.jpg", false);
+      $wifi = EscposImage::load($img_dir."/wifi.jpg", false);
       $date = date("d/m/Y H:i", strtotime($date));
       $expiry = date("d/m/Y H:i", strtotime($expiry));
       $Processed = date("d/m/Y H:i", strtotime($Processed));
@@ -211,6 +212,34 @@
               //End Ticket
               $printer -> cut(Printer::CUT_PARTIAL);
             }
+          }
+          $i = 1;
+          // Wifi voucher
+          while ($i++ <= $wifi_count) {
+            // Generate Voucher
+            $code = $this->pm->Create_WiFi_Voucher($campus);
+            //Shower Ticket
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+            if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
+              $printer -> graphics($wifi);
+            } else {
+              $printer -> bitImage($wifi);
+            }
+            $printer -> feed();
+            $printer -> setTextSize(2, 2);
+            $printer -> text('WiFi Code: '.$code);
+            $printer -> feed();
+            $printer -> setTextSize(1, 1);
+            if($campus == "201908291533552768") {
+              $printer -> text("Please connect to; Customer Lorry Park");
+            } else {
+              $printer -> text("Please connect to; Parc-Cybi-Car-Park");
+            }
+            $printer -> feed(1);
+            $printer -> text("TID: ".$tid);
+            $printer -> feed();
+            //End Ticket
+            $printer -> cut(Printer::CUT_PARTIAL);
           }
         }
         //Merchant Ticket
