@@ -11,7 +11,7 @@
         }
       }
     })
-  }, 5000);
+  }, 10000);
   setInterval(function(){
     $.ajax({
       url: "{URL}/core/ajax/background.handler.php?handler=Background.Parking_Reinstate",
@@ -23,5 +23,5 @@
         }
       }
     })
-  }, 5000);
+  }, 10000);
 </script>
