@@ -135,6 +135,7 @@
     function Register_Account($Name, $Short, $Address, $Contact, $Billing, $Site, $Shared, $Discount, $Status)
     {
       $this->mysql = new MySQL;
+      $this->pm = new PM;
 
       $Uniqueref = date("YmdHis").mt_rand(1111, 9999);
       $Last_Updated = date("Y-m-d H:i:s");
@@ -155,6 +156,7 @@
       $stmt->execute();
       if($stmt->rowCount() > 0) {
         $result = array('Result' => '1', 'Message' => 'Account successfully added to ParkingManager');
+        $this->pm->LogWriter("Registered a new account", "1", $Uniqueref);
       } else {
         $result = array('Result' => '0', 'Message' => 'Account was NOT added to ParkingManager, please try again');
       }
@@ -162,6 +164,7 @@
       echo json_encode($result);
 
       $this->mysql = null;
+      $this->pm = null;
     }
     // Update a account get data
     function Update_Account_GET($Ref)

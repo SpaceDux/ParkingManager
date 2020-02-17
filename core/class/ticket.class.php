@@ -7,7 +7,7 @@
   class Ticket {
     public $ImgDir;
     function __construct() {
-      $this->ImgDir = $_SERVER['DOCUMENT_ROOT'].'/printerImg/';
+      $this->ImgDir = $_SERVER['DOCUMENT_ROOT'].'/ParkingManager/printerImg/';
     }
     //Print Columns on ticket.
     function Printer_Columns($leftCol, $rightCol, $leftWidth, $rightWidth, $space = 0)
@@ -345,8 +345,8 @@
           $printer -> text("THIS TRUCKWASH IS OPERATED BY:\n");
           $printer -> text("M&L Truck Wash Services Ltd.\n");
         } else {
-          $printer -> text("Thank you for staying with us!\n");
-          $printer -> text("www.rktruckstops.co.uk");
+          $printer -> text("THIS TRUCKWASH IS OPERATED BY:\n");
+          $printer -> text("Soap & Shine Truckwashing.\n");
         }
         $printer -> feed();
         $printer -> cut();
@@ -529,6 +529,7 @@
 
         $printer = new Printer($connector);
         $logo = EscposImage::load($img_dir."/logo.png", false);
+        // PARKING SETTLEMENT
         //Settlement
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
         if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
@@ -558,7 +559,145 @@
         $printer -> setJustification(Printer::JUSTIFY_LEFT);
         $printer -> feed();
         // Group Cash
-        $group = $this->mysql->dbc->prepare("SELECT * FROM settlement_groups WHERE Site = ? AND Deleted < 1 ORDER BY Set_Order ASC");
+        $group = $this->mysql->dbc->prepare("SELECT * FROM settlement_groups WHERE Site = ? AND Deleted < 1 AND Type = 1 ORDER BY Set_Order ASC");
+        $group->bindParam(1, $campus);
+        $group->execute();
+        $group_results = $group->fetchAll();
+        foreach($group_results as $row) {
+          $value=0;
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method = 1 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
+          $srv->bindValue(1, $campus);
+          $srv->bindValue(2, $row['Uniqueref']);
+          $srv->bindValue(3, $date1);
+          $srv->bindValue(4, $date2);
+          $srv->execute();
+          foreach($srv->fetchAll() as $service) {
+            $multi = $service['Settlement_Multi'];
+            $value += $multi;
+          }
+          $line = $this->Printer_Columns($row['Name']." - ", $value, 30, 10, 4);
+          $printer -> text($line);
+        }
+        $printer -> feed();
+        $printer -> selectPrintMode();
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text("Card Figures");
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        $printer -> feed();
+        foreach($group_results as $row) {
+          $value=0;
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method = 2 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
+          $srv->bindValue(1, $campus);
+          $srv->bindValue(2, $row['Uniqueref']);
+          $srv->bindValue(3, $date1);
+          $srv->bindValue(4, $date2);
+          $srv->execute();
+          foreach($srv->fetchAll() as $service) {
+            $multi = $service['Settlement_Multi'];
+            $value += $multi;
+          }
+          $line = $this->Printer_Columns($row['Name']." - ", $value, 30, 10, 4);
+          $printer -> text($line);
+        }
+        $printer -> feed();
+        $printer -> selectPrintMode();
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text("ETP Figures");
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        $printer -> feed();
+        foreach($group_results as $row) {
+          $value=0;
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method >= 4 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
+          $srv->bindValue(1, $campus);
+          $srv->bindValue(2, $row['Uniqueref']);
+          $srv->bindValue(3, $date1);
+          $srv->bindValue(4, $date2);
+          $srv->execute();
+          foreach($srv->fetchAll() as $service) {
+            $multi = $service['Settlement_Multi'];
+            $value += $multi;
+          }
+          $line = $this->Printer_Columns($row['Name']." - ", $value, 30, 10, 4);
+          $printer -> text($line);
+        }
+        $printer -> feed();
+        $printer -> selectPrintMode();
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text("Account Figures");
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        $printer -> feed();
+        foreach($group_results as $row) {
+          $value=0;
+          $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method = 3 AND Settlement_Group = ? AND Deleted < 1 AND Processed_Time BETWEEN ? AND ?");
+          $srv->bindValue(1, $campus);
+          $srv->bindValue(2, $row['Uniqueref']);
+          $srv->bindValue(3, $date1);
+          $srv->bindValue(4, $date2);
+          $srv->execute();
+          foreach($srv->fetchAll() as $service) {
+            $multi = $service['Settlement_Multi'];
+            $value += $multi;
+          }
+          $line = $this->Printer_Columns($row['Name']." - ", $value, 30, 10, 4);
+          $printer -> text($line);
+        }
+        $printer -> feed(2);
+        // temp
+        $printer -> text("Cash & Card Sales via Kiosks");
+        $printer -> feed();
+        $CashValue = 0;
+        $CardValue = 0;
+        $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method < 3 AND Deleted < 1  AND Kiosk = 1 AND Processed_Time BETWEEN ? AND ?");
+        $srv->bindValue(1, $campus);
+        $srv->bindValue(2, $date1);
+        $srv->bindValue(3, $date2);
+        $srv->execute();
+        foreach($srv->fetchAll() as $row) {
+          if($row['Method'] == 1) {
+            $CashValue += $row['Gross'];
+          }
+          if($row['Method'] == 2) {
+            $CardValue += $row['Gross'];
+          }
+        }
+        $line1 = $this->Printer_Columns("Cash Sales ", "£".number_format($CashValue, 2), 30, 10, 4);
+        $line2 = $this->Printer_Columns("Card Sales ", "£".number_format($CardValue, 2), 30, 10, 4);
+        $printer -> text($line1);
+        $printer -> text($line2);
+        $printer -> feed(2);
+
+        $printer -> cut(Printer::CUT_PARTIAL);
+        // WASH SETTLEMENT
+        //Settlement
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        if($this->pm->PrinterInfo($printer_id, "BitImage") == 0) {
+          $printer -> graphics($logo);
+        } else {
+          $printer -> bitImage($logo);
+        }
+        $printer -> feed();
+        $printer -> selectPrintMode(Printer::MODE_EMPHASIZED);
+        $printer -> setTextSize(1, 1);
+        // Name of Ticket
+        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> setTextSize(1, 2);
+        $printer -> setFont(Printer::FONT_A);
+        $printer -> text("END OF DAY WASH SETTLEMENT\n");
+        $printer -> feed();
+        $printer -> text("Time of Settlement - ".date("H:i:s")."\n");
+        $printer -> feed();
+        $printer -> setTextSize(1, 1);
+        $printer -> setFont(Printer::FONT_A);
+        $printer -> text(date("d/m/y H:i", strtotime($date1))." - ".date("d/m/y H:i", strtotime($date2)));
+        $printer -> feed(2);
+        $printer -> selectPrintMode();
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text("Cash Figures");
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        $printer -> feed();
+        // Group Cash
+        $group = $this->mysql->dbc->prepare("SELECT * FROM settlement_groups WHERE Site = ? AND Deleted < 1 AND Type = 2 ORDER BY Set_Order ASC");
         $group->bindParam(1, $campus);
         $group->execute();
         $group_results = $group->fetchAll();
