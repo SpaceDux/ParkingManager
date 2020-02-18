@@ -219,6 +219,7 @@
     //Generate WiFi voucher.
     function Create_WiFi_Voucher($site)
     {
+      $this->pm = new PM;
       //Minutes
       $controllerurl = $this->Site_Info($site, "Unifi_IP");
       $controlleruser = $this->Site_Info($site, "Unifi_User");
@@ -239,6 +240,10 @@
       foreach($code as $row) {
         return $row['code'];
       }
+
+      $this->pm->LogWriter('A WiFi has been generated.', "3", "");
+
+      $this->pm = null;
     }
     // Get All Sites
     function List_Sites()
@@ -288,6 +293,7 @@
     function New_Site($Data)
     {
       $this->mysql = new MySQL;
+      $this->pm = new PM;
 
       //die($Data['Name']);
 
@@ -319,6 +325,7 @@
       $stmt->execute();
       if($stmt->rowCount() > 0) {
         $result = array('Result' => '1', 'Message' => 'Site has successfully been added into ParkingManager.');
+        $this->pm->LogWriter('A new site has been added.', "3", "");
       } else {
         $result = array('Result' => '0', 'Message' => 'Site has NOT been added into ParkingManager. Please try again.');
       }
@@ -327,10 +334,12 @@
       unset($Uniqueref);
 
       $this->mysql = null;
+      $this->pm = null;
     }
     function Update_Site($Data)
     {
       $this->mysql = new MySQL;
+      $this->pm = new PM;
 
       $Time = date("Y-m-d H:i:s");
 
@@ -358,6 +367,7 @@
       $stmt->execute();
       if($stmt->rowCount() > 0) {
         $result = array('Result' => '1', 'Message' => 'Site has successfully been updated in ParkingManager.');
+        $this->pm->LogWriter('A site has been updated.', "3", "");
       } else {
         $result = array('Result' => '0', 'Message' => 'Site has NOT been updated in ParkingManager. Please try again.');
       }
@@ -365,6 +375,7 @@
       echo json_encode($result);
 
       $this->mysql = null;
+      $this->pm = null;
     }
     function Update_Site_GET($Ref)
     {
@@ -495,12 +506,14 @@
             $notice->bindParam(3, $time);
             $notice->execute();
             $this->Barrier_Control(2, $Site);
+            $this->LogWriter('Exit Code has been used, record set & barrier has been lifted.', "3", "");
           } else {
             $notice = $this->mysql->dbc->prepare("INSERT INTO exitcode_log (id, Site, Code, Status, Processed) VALUES ('', ?, ?, '0', ?)");
             $notice->bindParam(1, $Site);
             $notice->bindParam(2, $string);
             $notice->bindParam(3, $time);
             $notice->execute();
+            $this->LogWriter('Exit Code has been used, but has expired.', "3", "");
             echo 0;
           }
         } else {
@@ -509,12 +522,16 @@
           $notice->bindParam(2, $string);
           $notice->bindParam(3, $time);
           $notice->execute();
+          $this->LogWriter('Exit Code has been used, however unable to locate the record.', "3", "");
+
           echo 0;
         }
       } else if($string == "6868") {
         $this->Barrier_Control(2, '201908151155252628');
+        $this->LogWriter('Holyhead Override Code has been used at the barrier.', "3", "");
       } else if($string == "0419") {
         $this->Barrier_Control(2, '201908291533552768');
+        $this->LogWriter('Cannock Override Code has been used at the barrier.', "3", "");
       }
 
       $this->mysql = null;

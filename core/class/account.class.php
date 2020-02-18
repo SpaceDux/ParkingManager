@@ -202,6 +202,8 @@
       $stmt->execute();
       if($stmt->rowCount() > 0) {
         $result = array('Result' => '1', 'Message' => 'Account successfully added to ParkingManager');
+        $this->pm->LogWriter('Updated Account "'.$Name.'"', "1", $Ref);
+
       } else {
         $result = array('Result' => '0', 'Message' => 'Account was NOT added to ParkingManager, please try again');
       }
@@ -250,7 +252,8 @@
     function Update_Fleet($Ref, $Plate)
     {
       $this->mysql = new MySQL;
-
+      $this->pm = new PM;
+      $Name = $this->Account_GetInfo($Ref, "Name");
       $array = preg_split("/\r\n|\n|\r/", $Plate);
 
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM accounts_trucks WHERE Account = ? AND Plate = ? AND Deleted = 0");
@@ -275,6 +278,7 @@
             }
           }
           echo json_encode(array('Status' => 1, 'Message' => 'Vehicles has been added to your account fleet lists.'));
+          $this->pm->LogWriter('Updated Account: "'.$Name.'" fleet.', "1", $Ref);
         } catch(\PDOException $e) {
           echo json_encode(array('Status' => 0, 'Message' => 'Vehicle has not been added to your account fleet lists. Message: '.$e->getMessage()));
         }
@@ -284,11 +288,13 @@
 
 
       $this->mysql = null;
+      $this->pm = null;
     }
     // Delete Fleet Vehicle
     function Delete_Fleet_Record($Ref)
     {
       $this->mysql = new MySQL;
+      $this->pm = new PM;
 
       $Last_Updated = date("Y-m-d H:i:s");
 
@@ -297,9 +303,11 @@
       $stmt->bindParam(2, $Ref);
       $stmt->execute();
 
+      $this->pm->LogWriter('Deleted a vehicle from a fleet list.', "1", $Ref);
       echo $stmt->rowCount();
 
       $this->mysql = null;
+      $this->pm = null;
     }
     // Account Dropdown
     function Account_DropdownOpt()

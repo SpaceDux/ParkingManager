@@ -264,6 +264,7 @@
           }
         }
 
+        $this->pm->LogWriter('A parking ticket has been printed.', "3", "");
       } finally {
         $printer -> close();
       }
@@ -400,6 +401,7 @@
         $printer -> feed();
         $printer -> cut(Printer::CUT_PARTIAL);
 
+        $this->pm->LogWriter('A wash ticket has been printed.', "3", "");
       } finally {
         $printer -> close();
       }
@@ -498,6 +500,8 @@
             $printer -> cut(Printer::CUT_PARTIAL);
           }
         }
+
+        $this->pm->LogWriter('A misc ticket has been printed.', "3", "");
       } finally {
         $printer -> close();
       }
@@ -805,10 +809,15 @@
         $printer -> feed(2);
 
         $printer -> cut(Printer::CUT_PARTIAL);
+        $this->pm->LogWriter('A EOD has been printed.', "3", "");
+
       } finally {
         $printer -> close();
       }
       $this->mysql = null;
+      $this->user = null;
+      $this->pm = null;
+      $this->payment = null;
     }
   }
 ?>
