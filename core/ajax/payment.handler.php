@@ -44,16 +44,6 @@
     $payment->UpdatePayment_GET($_POST['Ref']);
   } else if($handler == "Payment.UpdatePayment") {
     $payment->UpdatePayment($_POST['Ref'], $_POST['Time']);
-  } else if($handler == "Payment.GetSettlementGroup") {
-    $payment->List_SettlementGroups($_POST['Site'], $_POST['Type']);
-  } else if($handler == "Payment.Update_SettlementGroup_Get") {
-    $payment->Update_Settlement_Group_GET($_POST['Ref']);
-  } else if($handler == "Payment.SettlementGroup_Update") {
-    $payment->Update_Settlement_Group($_POST['Ref'], $_POST['Name'], $_POST['Order'], $_POST['Type'], $_POST['Site']);
-  } else if($handler == "Payment.SettlementGroup_Add") {
-    $payment->New_Settlement_Group($_POST['Name'], $_POST['Order'], $_POST['Type'], $_POST['Site']);
-  } else if($handler == "Payment.Delete_Settlement_Group") {
-    $payment->Delete_Settlement_Group($_POST['Ref']);
   }
 
 ?>

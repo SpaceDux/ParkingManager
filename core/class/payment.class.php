@@ -423,7 +423,6 @@
 		{
 			$this->mysql = new MySQL;
 			$this->user = new User;
-			$this->pm = new PM;
 
 			$Site = $this->user->Info("Site");
 			$Author = $this->user->Info("FirstName");
@@ -464,15 +463,13 @@
 			$stmt->bindParam(23, $CardEx);
 			$stmt->bindParam(24, $Processed);
 			if($stmt->execute()) {
-				$this->pm->LogWriter('Transaction has been added via PM: '.$Plate, "2", $Uniqueref);
 				return $Uniqueref;
 			} else {
-				echo "UNSUCCESSFUL";
+				echo "UNSUCCESSFUL Payment";
 			}
 
 			$this->mysql = null;
 			$this->user = null;
-			$this->pm = null;
 		}
 		// Authorise Transaction / Payment
 		function Proccess_Transaction($Method, $Type, $Ref, $Plate, $Name = '', $Trl = '', $Time, $VehType, $Service, $Account_ID = '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '')
@@ -1041,7 +1038,6 @@
 			$stmt2->bindParam(2, $Ref);
 			$stmt2->execute();
 
-
 			$this->mysql = null;
 			$this->ticket = null;
 			$this->vehicles = null;
@@ -1226,7 +1222,6 @@
 					$this->vehicles->ANPR_PaymentUpdate($anpr, $new_Expiry);
 					echo $stmt->rowCount();
 					$this->pm->POST_Notifications("A ETP Payment has successfully been deleted, Ref: ".$ref, '0');
-					$this->pm->LogWriter('An ETP transaction has been deleted', "2", $ref);
 				} else {
 					echo "0";
 				}
@@ -1239,7 +1234,6 @@
 				$this->vehicles->ANPR_PaymentUpdate($anpr, $new_Expiry);
 				echo $stmt->rowCount();
 				$this->pm->POST_Notifications("A Payment has successfully been deleted, Ref: ".$ref, '0');
-				$this->pm->LogWriter('An transaction has been deleted', "2", $ref);
 			}
 
 
@@ -1439,7 +1433,6 @@
 		function New_Tariff($Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti)
 		{
 			$this->mysql = new MySQL;
-			$this->pm = new PM;
 
 			$Uniqueref = date("YmdHis").mt_rand(1111, 9999);
 			$Time = date("Y-m-d H:i:s");
@@ -1472,7 +1465,6 @@
 			$stmt->execute();
 			if($stmt->rowCount() > 0) {
 				$result = array('Result' => '1', 'Message' => 'New Tariff has successfully been added into ParkingManager.');
-				$this->pm->LogWriter('A new tariff has been added.', "2", $Uniqueref);
 			} else {
 				$result = array('Result' => '0', 'Message' => 'New Tariff has NOT been added into ParkingManager. Please try again.');
 			}
@@ -1481,7 +1473,6 @@
 			unset($Uniqueref);
 
 			$this->mysql = null;
-			$this->pm = null;
 		}
 		// Update existing Tariff
 		// Get and Return Tariff data
@@ -1508,7 +1499,6 @@
 		function Update_Tariff($Ref, $Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti)
 		{
 			$this->mysql = new MySQL;
-			$this->pm = new PM;
 
 			$Time = date("Y-m-d H:i:s");
 			$stmt = $this->mysql->dbc->prepare("UPDATE tariffs SET Name = ?, TicketName = ?, Gross = ?, Nett = ?, Expiry = ?, Tariff_Group = ?, Cash = ?, Card = ?, Account = ?, Snap = ?, Fuel = ?, ETPID = ?, Meal_Vouchers = ?, Shower_Vouchers = ?, Discount_Vouchers = ?, Wifi_Vouchers = ?, VehicleType = ?, Site = ?, Status = ?, Settlement_Group = ?, Settlement_Multi = ?, Last_Updated = ? WHERE Uniqueref = ?");
@@ -1538,14 +1528,12 @@
 			$stmt->execute();
 			if($stmt->rowCount() > 0) {
 				$result = array('Result' => '1', 'Message' => 'Tariff has successfully been updated in ParkingManager.');
-				$this->pm->LogWriter('A tariff has been updated.', "2", $Ref);
 			} else {
 				$result = array('Result' => '0', 'Message' => 'Tariff has NOT been updated in ParkingManager. Please try again.');
 			}
 			echo json_encode($result);
 
 			$this->mysql = null;
-			$this->pm = null;
 		}
 		// Search Payment Records VIA Modal
 		function Search_Payment_Records($key)
@@ -1804,7 +1792,6 @@
 		function UpdatePayment($Ref, $Time)
 		{
 			$this->mysql = new MySQL;
-			$this->pm = new MySQL;
 
 			$stmt = $this->mysql->dbc->prepare("UPDATE transactions SET Processed_Time = ? WHERE Uniqueref = ?");
 			$stmt->bindParam(1, $Time);
@@ -1813,138 +1800,11 @@
 
 			if($stmt->rowCount() > 0) {
 				echo 1;
-				$this->pm->LogWriter('A payment has been updated.', "2", $Ref);
 			} else {
 				echo 0;
 			}
 
 			$this->mysql = null;
-			$this->pm = null;
-		}
-		//Settlement Config
-		function List_SettlementGroups($Site, $Type)
-		{
-			$this->mysql = new MySQL;
-
-			if(isset($Site) AND isset($Type)) {
-				$html = '
-								<div class="Box">
-								<table class="table table-bordered table-hover">
-									<thead class="thead-dark">
-										<tr>
-											<th scope="col">Name</th>
-											<th scope="col">Last Updated</th>
-											<th scope="col">Order</th>
-											<th scope="col"><i class="fa fa-cog"></i></th>
-										</tr>
-									</thead>
-									<tbody>';
-
-					$stmt = $this->mysql->dbc->prepare("SELECT * FROM settlement_groups WHERE Site = ? AND Type = ? AND Deleted < 1 ORDER BY Set_Order ASC");
-					$stmt->bindParam(1, $Site);
-					$stmt->bindParam(2, $Type);
-					$stmt->execute();
-					foreach($stmt->fetchAll() as $row) {
-						$ref = '\''.$row['Uniqueref'].'\'';
-						$html .= '<tr>';
-						$html .= '<td>'.$row['Name'].'</td>';
-						$html .= '<td>'.$row['Last_Updated'].'</td>';
-						$html .= '<td>'.$row['Set_Order'].'</td>';
-						$html .= '<td>
-												<div class="btn-group float-right" role="group" aria-label="Button group with nested dropdown">
-													<button type="button" class="btn btn-secondary" onClick="Update_Settlement_Group('.$ref.')"><i class="fa fa-cog"></i></button>
-													<button type="button" class="btn btn-secondary" onClick="Delete_Settlement_Group('.$ref.')"><i class="fa fa-trash"></i></button>
-												</div>
-											</td>';
-						$html .= '</tr>';
-					}
-					$html .= '</tbody></thead></div>';
-					echo $html;
-			}
-
-			$this->mysql = null;
-		}
-		function Update_Settlement_Group_GET($Ref)
-		{
-			$this->mysql = new MySQL;
-
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM settlement_groups WHERE Uniqueref = ?");
-			$stmt->bindParam(1, $Ref);
-			$stmt->execute();
-
-			echo json_encode($stmt->fetch(\PDO::FETCH_ASSOC));
-
-			$this->mysql = null;
-		}
-		function Update_Settlement_Group($Ref, $Name, $Order, $Type, $Site)
-		{
-			$this->mysql = new MySQL;
-			$this->pm = new PM;
-
-			$Date = date("Y-m-d H:i:s");
-			$stmt = $this->mysql->dbc->prepare("UPDATE settlement_groups SET Name = ?, Set_Order = ?, Type = ?, Site = ?, Last_Updated = ? WHERE Uniqueref = ?");
-			$stmt->bindParam(1, $Name);
-			$stmt->bindParam(2, $Order);
-			$stmt->bindParam(3, $Type);
-			$stmt->bindParam(4, $Site);
-			$stmt->bindParam(5, $Date);
-			$stmt->bindParam(6, $Ref);
-			$stmt->execute();
-
-			if($stmt->rowCount() > 0) {
-				$this->pm->LogWriter('A settlement group has been updated.', "3", $Ref);
-				echo 1;
-			} else {
-				echo 0;
-			}
-
-			$this->mysql = null;
-			$this->pm = null;
-		}
-		function New_Settlement_Group($Name, $Order, $Type, $Site)
-		{
-			$this->mysql = new MySQL;
-			$this->pm = new PM;
-
-			$Uniqueref = date("YmdHis").mt_rand(1111, 9999);
-			$Date = date("Y-m-d H:i:s");
-
-			$stmt = $this->mysql->dbc->prepare("INSERT INTO settlement_groups VALUES('', ?, ?, ?, ?, '0', ?, ?)");
-			$stmt->bindParam(1, $Uniqueref);
-			$stmt->bindParam(2, $Site);
-			$stmt->bindParam(3, $Name);
-			$stmt->bindParam(4, $Order);
-			$stmt->bindParam(5, $Date);
-			$stmt->bindParam(6, $Type);
-			$stmt->execute();
-			if($stmt->rowCount() > 0) {
-				$this->pm->LogWriter('A settlement group has been added.', "3", $Uniqueref);
-				echo 1;
-			} else {
-				echo 0;
-			}
-
-			$this->mysql = null;
-			$this->pm = null;
-		}
-		function Delete_Settlement_Group($Ref)
-		{
-			$this->mysql = new MySQL;
-			$this->pm = new PM;
-
-			$stmt = $this->mysql->dbc->prepare("UPDATE settlement_groups SET Deleted = 1 WHERE Uniqueref = ?");
-			$stmt->bindParam(1, $Ref);
-			$stmt->execute();
-			if($stmt->rowCount() > 0) {
-				echo 1;
-				$this->pm->LogWriter('A settlement group has been deleted.', "3", $Ref);
-
-			} else {
-				echo 0;
-			}
-
-			$this->mysql = null;
-			$this->pm = null;
 		}
 	}
 ?>

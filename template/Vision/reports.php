@@ -320,7 +320,7 @@
           </a>
           <div class="Dropdown_Menu">
             <a onClick="ListTransactionsPane()">Transaction History</a>
-            <a href="{URL}/settlement">Settlement Structure</a>
+            <a href="#">Settlement Structure</a>
             <a href="{URL}/tariffs">Tariffs</a>
           </div>
         </li>

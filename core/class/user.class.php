@@ -163,7 +163,6 @@
     function Register($Data)
     {
       $this->mysql = new MySQL;
-      $this->pm = new PM;
 
       $Uniqueref = date("YmdHis").mt_rand(1111, 9999);
       $Time = date("Y-m-d H:i:s");
@@ -186,7 +185,6 @@
         $stmt->execute();
         if($stmt->rowCount() > 0) {
           $result = array('Result' => '1', 'Message' => 'User has successfully been registered to ParkingManager');
-          $this->pm->LogWriter('A user has been registered.', "3", "");
         } else {
           $result = array('Result' => '0', 'Message' => 'User has not been registered to ParkingManager. Please try again.');
         }
@@ -197,7 +195,6 @@
       echo json_encode($result);
 
       $this->mysql = null;
-      $this->pm = null;
     }
     function Update_GET($Ref)
     {
@@ -217,7 +214,6 @@
     function Update($Data)
     {
       $this->mysql = new MySQL;
-      $this->pm = new PM;
 
       $stmt = $this->mysql->dbc->prepare("UPDATE users SET FirstName = ?, LastName = ?, Email = ?, Site = ?, ANPR = ?, User_Rank = ?, Printer = ?, Status = ? WHERE Uniqueref = ?");
       $stmt->bindValue(1, $Data['FirstName']);
@@ -232,7 +228,6 @@
       $stmt->execute();
       if($stmt->rowCount() > 0) {
         $result = array('Result' => '1', 'Message' => 'User has successfully been updated.');
-        $this->pm->LogWriter('A user has been updated.', "3", "");
       } else {
         $result = array('Result' => '0', 'Message' => 'User has not been updated. Please try again.');
       }
@@ -240,12 +235,10 @@
       echo json_encode($result);
 
       $this->mysql = null;
-      $this->pm = null;
     }
     function UpdatePW($Ref, $Password, $ConfPass)
     {
       $this->mysql = new MySQL;
-      $this->pm = new PM;
 
       if($Password === $ConfPass) {
         $stmt = $this->mysql->dbc->prepare("UPDATE users SET Password = ? WHERE Uniqueref = ?");
@@ -254,7 +247,6 @@
         $stmt->execute();
         if($stmt->rowCount() > 0) {
           $result = array('Result' => '1', 'Message' => 'User has successfully been updated.');
-          $this->pm->LogWriter('A user password has been registered.', "3", "");
         } else {
           $result = array('Result' => '0', 'Message' => 'User has not been updated. Please try again.');
         }
@@ -266,7 +258,6 @@
       echo json_encode($result);
 
       $this->mysql = null;
-      $this->pm = null;
     }
   }
 

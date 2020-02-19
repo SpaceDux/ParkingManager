@@ -163,7 +163,7 @@
         $campus = $this->user->Info("Site");
 
         $API = $_CONFIG['ETP']['API'];
-        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '1.0']);
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '5.0']);
         //Begin API client
         $response = $client->post('transaction/add', [
           'auth' => array($API['api_user'], $API['api_pass']),
@@ -182,23 +182,17 @@
         } else {
           return FALSE;
         }
-        $this->pm->LogWriter('SNAP Connection Successful', "3", "");
-
         $this->user  = null;
         $this->pm = null;
       } catch(RequestException $e) {
         if($e->getResponse() != null) {
           if($e->getResponse()->getStatusCode() != 200) {
             return "ERROR";
-            $this->pm->LogWriter('SNAP Connection Unsuccessful - Response not 200', "3", "");
           }
         } else {
-          $this->pm->LogWriter('SNAP Connection Unsuccessful - Response returned null', "3", "");
           return "ERROR";
         }
       }
-      $this->user = null;
-      $this->pm = null;
     }
     //Process SNAP transaction
     public function DeleteTransaction($tid)

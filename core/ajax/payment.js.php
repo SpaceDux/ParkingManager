@@ -406,54 +406,7 @@
       }
     });
   }
-  function Delete_Settlement_Group(Ref) {
-    $.ajax({
-      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Delete_Settlement_Group",
-      data: {Ref:Ref},
-      method: "POST",
-      dataType: "text",
-      success:function(Data) {
-        if(Data == 1) {
-          $.notify("Settlement Group has successfully been added.", {className:'success',globalPosition: 'top left',});
-          var Type = $('#Settlement_Type').val();
-          var Site = $('#Settlement_Site').val();
-          if(Site != 'unselected') {
-            $('#Settlement_Tbl').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
-            $.ajax({
-              url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GetSettlementGroup",
-              type: "POST",
-              data: {Site:Site, Type:Type},
-              dataType: "text",
-              success:function(Data) {
-                $('#Settlement_Tbl').html(Data);
-              }
-            })
-          }
-        } else {
-          $.notify("Settlement Group has not been added.", {className:'danger',globalPosition: 'top left',});
-        }
-      }
-    });
-  }
-  // Update Settlement Group
-  function Update_Settlement_Group(Ref) {
-    $.ajax({
-      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Update_SettlementGroup_Get",
-      data: {Ref:Ref},
-      method: "POST",
-      dataType: "json",
-      success:function(Response) {
-        $('#SettlementGroup_Ref_Update').val(Response.Uniqueref);
-        $('#SettlementGroup_Name_Update').val(Response.Name);
-        $('#SettlementGroup_Order_Update').val(Response.Set_Order);
-        $('#SettlementGroup_Type_Update').val(Response.Type);
-        $('#SettlementGroup_Site_Update').val(Response.Site);
-        $('#SettlementGroup_UpdateModal').modal('toggle');
-      }
-    });
-  }
 
-  // Repeat tariff add
   $(document).on('click', '#Tariff_Repeat', function() {
     event.preventDefault();
     var Data = $('#New_Tariff_Form').serialize();
@@ -791,7 +744,7 @@
       });
     }
   });
-  // Update Payment modal save
+  // Search Payments via Modal
   $(document).on('click', '#Payment_Update', function() {
     event.preventDefault();
     var Ref = $('#Payment_Uniqueref_Update').val();
@@ -806,114 +759,6 @@
           $('#Payment_UpdateModal').modal('toggle');
         } else {
 
-        }
-      }
-    });
-  });
-// Settlement Designer
-  // Choose site
-  $(document).on('change', '#Settlement_Site', function(e) {
-    e.preventDefault();
-    var Site = $(this).val();
-    var Type = $('#Settlement_Type').val();
-    if(Site != 'unselected') {
-      $('#Settlement_Tbl').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
-      $.ajax({
-        url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GetSettlementGroup",
-        type: "POST",
-        data: {Site:Site, Type:Type},
-        dataType: "text",
-        success:function(Data) {
-          $('#Settlement_Tbl').html(Data);
-        }
-      })
-    }
-  })
-  // Choose Type
-  $(document).on('change', '#Settlement_Type', function(e) {
-    e.preventDefault();
-    var Type = $(this).val();
-    var Site = $('#Settlement_Site').val();
-    if(Site != 'unselected') {
-      $('#Settlement_Tbl').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
-      $.ajax({
-        url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GetSettlementGroup",
-        type: "POST",
-        data: {Site:Site, Type:Type},
-        dataType: "text",
-        success:function(Data) {
-          $('#Settlement_Tbl').html(Data);
-        }
-      })
-    }
-  })
-  $(document).on('click', '#SettlementGroup_Update', function() {
-    event.preventDefault();
-    var Ref = $('#SettlementGroup_Ref_Update').val();
-    var Name = $('#SettlementGroup_Name_Update').val();
-    var Order = $('#SettlementGroup_Order_Update').val();
-    var Type = $('#SettlementGroup_Type_Update').val();
-    var Site = $('#SettlementGroup_Site_Update').val();
-    $.ajax({
-      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.SettlementGroup_Update",
-      data: {Ref:Ref, Name:Name, Order:Order, Type:Type, Site:Site},
-      method: "POST",
-      dataType: "json",
-      success:function(Data) {
-        if(Data == 1) {
-          $.notify("Settlement Group has successfully been updated.", {className:'success',globalPosition: 'top left',});
-          $('#SettlementGroup_UpdateModal').modal('toggle');
-          var Type = $('#Settlement_Type').val();
-          var Site = $('#Settlement_Site').val();
-          if(Site != 'unselected') {
-            $('#Settlement_Tbl').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
-            $.ajax({
-              url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GetSettlementGroup",
-              type: "POST",
-              data: {Site:Site, Type:Type},
-              dataType: "text",
-              success:function(Data) {
-                $('#Settlement_Tbl').html(Data);
-              }
-            })
-          }
-        } else {
-          $.notify("Settlement Group has not been updated.", {className:'danger',globalPosition: 'top left',});
-        }
-      }
-    });
-  });
-  $(document).on('click', '#SettlementGroup_Add', function() {
-    event.preventDefault();
-    var Name = $('#SettlementGroup_Name').val();
-    var Order = $('#SettlementGroup_Order').val();
-    var Type = $('#SettlementGroup_Type').val();
-    var Site = $('#SettlementGroup_Site').val();
-    $.ajax({
-      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.SettlementGroup_Add",
-      data: {Name:Name, Order:Order, Type:Type, Site:Site},
-      method: "POST",
-      dataType: "json",
-      success:function(Data) {
-        if(Data == 1) {
-          $.notify("Settlement Group has successfully been added.", {className:'success',globalPosition: 'top left',});
-          $('#SettlementGroup_AddModal').modal('toggle');
-          var Type = $('#Settlement_Type').val();
-          var Site = $('#Settlement_Site').val();
-          if(Site != 'unselected') {
-            $('#Settlement_Tbl').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
-            $.ajax({
-              url: "{URL}/core/ajax/payment.handler.php?handler=Payment.GetSettlementGroup",
-              type: "POST",
-              data: {Site:Site, Type:Type},
-              dataType: "text",
-              success:function(Data) {
-                $('#Settlement_Tbl').html(Data);
-              }
-            })
-          }
-        } else {
-          $.notify("Settlement Group has not been added.", {className:'danger',globalPosition: 'top left',});
         }
       }
     });

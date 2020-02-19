@@ -738,7 +738,6 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->pm = new PM;
-
       $site = $this->user->Info("Site");
       $uid = $this->user->Info("id");
       $Author = $this->user->Info("FirstName");
@@ -771,7 +770,6 @@
       $stmt->bindParam(14, $Overview);
       $stmt->bindParam(15, $time);
       if($stmt->execute()) {
-        $this->pm->LogWriter('A parking record has been added.', "1", $Uniqueref);
         return $Uniqueref;
       } else {
         echo "UNSUCCESSFUL Parking";
@@ -824,17 +822,13 @@
     function ExpiryUpdate($ref, $time)
     {
       $this->mysql = new MySQL;
-      $this->pm = new PM;
 
       $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Expiry = ? WHERE Uniqueref = ?");
       $stmt->bindParam(1, $time);
       $stmt->bindParam(2, $ref);
       $stmt->execute();
 
-      $this->pm->LogWriter('A parking record expiry has been updated.', "1", "");
-
       $this->mysql = null;
-      $this->pm = null;
     }
     // Get all details for updating record
     function GetDetails($ref)
@@ -873,7 +867,6 @@
       $stmt->bindParam(10, $ref);
       if($stmt->execute()) {
         $this->pm->POST_Notifications("A vehicle record has been updated @ ".date("d/H:i:s").", Ref: ".$ref, '0');
-        $this->pm->LogWriter('A parking record has been updated.', "1", $ref);
       } else {
         echo "UNSUCCESSFUL";
       }
