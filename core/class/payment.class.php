@@ -480,7 +480,6 @@
 			$this->user = new User;
 			$name = $this->user->Info("FirstName");
 			$Service_Expiry = $this->Payment_TariffInfo($Service, "Expiry");
-			$Time = $this->vehicles->Info($Ref, "Expiry");
 			$Expiry = date("Y-m-d H:i:s", strtotime($Time.' +'.$Service_Expiry.' hours'));
 
 			if($Type == 1) {
@@ -675,7 +674,7 @@
 					}
 				}
 			} else if($Type == 2) {
-				// If $TYPE is 2 (Renewal)
+				// If $TYPE is 1 (First time record)
 				if($Method == 1) {
 					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null);
@@ -1389,13 +1388,12 @@
 			$this->mysql = null;
 		}
 		// Settlemet Groups dropdown
-		function Settlement_DropdownOpt($Site, $Type)
+		function Settlement_DropdownOpt($Site)
 		{
 			$this->mysql = new MySQL;
 
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM settlement_groups WHERE Site = ? AND Type = ? ORDER BY Set_Order ASC");
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM settlement_groups WHERE Site = ? ORDER BY Set_Order ASC");
 			$stmt->bindParam(1, $Site);
-			$stmt->bindParam(2, $Type);
 			$stmt->execute();
 			$result = $stmt->fetchAll();
 			$html = "";
@@ -1483,15 +1481,8 @@
 			$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Uniqueref = ?");
 			$stmt->bindParam(1, $Ref);
 			$stmt->execute();
-			$arr = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM settlement_groups WHERE Uniqueref = ?");
-			$stmt->bindParam(1, $arr['Settlement_Group']);
-			$stmt->execute();
-			$result = $stmt->fetch(\PDO::FETCH_ASSOC);
-			$arr['Settlement_Type']=$result['Type'];
-
-			echo json_encode($arr);
+			echo json_encode($stmt->fetch(\PDO::FETCH_ASSOC));
 
 			$this->mysql = null;
 		}

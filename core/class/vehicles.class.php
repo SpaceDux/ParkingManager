@@ -657,7 +657,7 @@
           $html_paid .= '<td>'.$this->pm->GET_VehicleType($row['Type']).'</td>';
           $html_paid .= '<td>
                           <div class="btn-group" role="group" aria-label="Options">
-                            <button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$date.')"><i class="fa fa-cog"></i></button>
+                            <button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')"><i class="fa fa-cog"></i></button>
                             <button type="button" class="btn btn-danger" onClick="QuickExit('.$ref.')"><i class="fa fa-times"></i></button>
                           </div>
                           </td>';

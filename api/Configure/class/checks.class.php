@@ -256,27 +256,6 @@
 
       return $result;
     }
-    function LogWriter($Text, $Type, $Affected = '')
-    {
-      $this->mysql = new MySQL;
-      $this->user = new User;
-
-      $Site = $this->user->Info("Site");
-      $Author = $this->user->Info("Uniqueref");
-      $Date = date("Y-m-d H:i:s");
-
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO logs VALUES ('', ?, ?, ?, ?, ?, ?)");
-      $stmt->bindParam(1, $Text);
-      $stmt->bindParam(2, $Type);
-      $stmt->bindParam(3, $Date);
-      $stmt->bindParam(4, $Site);
-      $stmt->bindParam(5, $Affected);
-      $stmt->bindParam(6, $Author);
-      $stmt->execute();
-
-      $this->mysql = null;
-      $this->user = null;
-    }
   }
 
 ?>

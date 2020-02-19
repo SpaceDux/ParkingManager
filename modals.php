@@ -560,20 +560,13 @@
           </div>
           <hr>
           <div class="row">
-            <div class="col">
-              <label for="Tariff_SettlementType ">Settlement Type</label>
-              <select class="form-control" name="Tariff_SettlementType" id="Tariff_SettlementType">
-                <option value="1">Parking</option>
-                <option value="2">Wash</option>
-              </select>
-            </div>
-            <div class="col">
+            <div class="col-md-6">
               <label for="Tariff_SettlementGroup">Settlement Group</label>
               <select class="form-control" name="Tariff_SettlementGroup" id="Tariff_SettlementGroup">
 
               </select>
             </div>
-            <div class="col">
+            <div class="col-md-6">
               <label for="Tariff_SettlementMulti">Settlement Multiply</label>
               <input type="number" class="form-control" name="Tariff_SettlementMulti" id="Tariff_SettlementMulti" value="" placeholder="" required>
             </div>
@@ -741,20 +734,13 @@
           </div>
           <hr>
           <div class="row">
-            <div class="col">
-              <label for="Tariff_SettlementGroup">Settlement Type</label>
-              <select class="form-control" name="Tariff_SettlementType_Update" id="Tariff_SettlementType_Update">
-                <option value="1">Parking</option>
-                <option value="2">Wash</option>
-              </select>
-            </div>
-            <div class="col">
+            <div class="col-md-6">
               <label for="Tariff_SettlementGroup">Settlement Group</label>
               <select class="form-control" name="Tariff_SettlementGroup_Update" id="Tariff_SettlementGroup_Update">
 
               </select>
             </div>
-            <div class="col">
+            <div class="col-md-6">
               <label for="Tariff_SettlementMulti">Settlement Multiply</label>
               <input type="number" class="form-control" name="Tariff_SettlementMulti_Update" id="Tariff_SettlementMulti_Update" value="" placeholder="" required>
             </div>
