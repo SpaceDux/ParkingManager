@@ -355,10 +355,11 @@
       dataType: 'json',
       success:function(Data) {
         var Site = Data.Site;
+        var Type = Data.Settlement_Type;
         $.ajax({
           url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Settlement_DropdownOpt",
           type: "POST",
-          data: {Site:Site},
+          data: {Site:Site, Type:Type},
           dataType: "text",
           success:function(Res) {
             $('#Update_Tariff_Modal').modal('toggle');
@@ -383,6 +384,7 @@
             $('#Tariff_VehType_Update').val(Data.VehicleType);
             $('#Tariff_Site_Update').val(Data.Site);
             $('#Tariff_Status_Update').val(Data.Status);
+            $('#Tariff_SettlementType_Update').val(Data.Settlement_Type);
             $('#Tariff_SettlementGroup_Update').val(Data.Settlement_Group);
             $('#Tariff_SettlementMulti_Update').val(Data.Settlement_Multi);
           }
@@ -604,13 +606,31 @@
   // Choose site & fill settlement dropdown
   $(document).on('change', '#Tariff_Site', function(e) {
     e.preventDefault();
+    var Site = $(this).val();
+    var Type = $('#Tariff_SettlementType').val();
+    if(Site != 'unselected') {
+      $('#Tariff_SettlementGroup').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+      $.ajax({
+        url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Settlement_DropdownOpt",
+        type: "POST",
+        data: {Site:Site, Type:Type},
+        dataType: "text",
+        success:function(Data) {
+          $('#Tariff_SettlementGroup').html(Data);
+        }
+      })
+    }
+  })
+  $(document).on('change', '#Tariff_SettlementType', function(e) {
+    e.preventDefault();
+    var Type = $(this).val();
     var Site = $('#Tariff_Site').val();
     if(Site != 'unselected') {
       $('#Tariff_SettlementGroup').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
       $.ajax({
         url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Settlement_DropdownOpt",
         type: "POST",
-        data: {Site:Site},
+        data: {Site:Site, Type:Type},
         dataType: "text",
         success:function(Data) {
           $('#Tariff_SettlementGroup').html(Data);
@@ -621,13 +641,31 @@
   // Choose site & fill settlement dropdown
   $(document).on('change', '#Tariff_Site_Update', function(e) {
     e.preventDefault();
-    var Site = $('#Tariff_Site_Update').val();
+    var Site = $(this).val();
+    var Type = $('#Tariff_SettlementType_Update').val();
     if(Site != 'unselected') {
       $('#Tariff_SettlementGroup_Update').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
       $.ajax({
         url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Settlement_DropdownOpt",
         type: "POST",
-        data: {Site:Site},
+        data: {Site:Site, Type:Type},
+        dataType: "text",
+        success:function(Data) {
+          $('#Tariff_SettlementGroup_Update').html(Data);
+        }
+      })
+    }
+  })
+  $(document).on('change', '#Tariff_SettlementType_Update', function(e) {
+    e.preventDefault();
+    var Site = $('#Tariff_Site_Update').val();
+    var Type = $(this).val();
+    if(Site != 'unselected') {
+      $('#Tariff_SettlementGroup_Update').html('<img style="width: 90px;display: block;margin: 0 auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
+      $.ajax({
+        url: "{URL}/core/ajax/payment.handler.php?handler=Payment.Settlement_DropdownOpt",
+        type: "POST",
+        data: {Site:Site, Type:Type},
         dataType: "text",
         success:function(Data) {
           $('#Tariff_SettlementGroup_Update').html(Data);

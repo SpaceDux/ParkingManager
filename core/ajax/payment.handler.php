@@ -31,7 +31,7 @@
   } else if($handler == "Payment.GetTariffs") {
     $payment->List_Tariffs($_POST['Site']);
   } else if($handler == "Payment.Settlement_DropdownOpt") {
-    $payment->Settlement_DropdownOpt($_POST['Site']);
+    $payment->Settlement_DropdownOpt($_POST['Site'], $_POST['Type']);
   } else if($handler == "Payment.New_Tariff") {
     $payment->New_Tariff($_POST['Tariff_Name'], $_POST['Tariff_TicketName'], $_POST['Tariff_Gross'], $_POST['Tariff_Nett'], $_POST['Tariff_Expiry'], $_POST['Tariff_Group'], $_POST['Tariff_Cash'], $_POST['Tariff_Card'], $_POST['Tariff_Account'], $_POST['Tariff_SNAP'], $_POST['Tariff_Fuel'], $_POST['Tariff_ETPID'], $_POST['Tariff_Meal'], $_POST['Tariff_Shower'], $_POST['Tariff_Discount'], $_POST['Tariff_WiFi'], $_POST['Tariff_VehType'], $_POST['Tariff_Site'], $_POST['Tariff_Status'], $_POST['Tariff_SettlementGroup'], $_POST['Tariff_SettlementMulti']);
   } else if($handler == "Payment.Update_Tariff") {
