@@ -483,8 +483,12 @@
 			$this->user = new User;
 			$name = $this->user->Info("FirstName");
 			$Service_Expiry = $this->Payment_TariffInfo($Service, "Expiry");
-			$Time = $this->vehicles->Info($Ref, "Expiry");
-			$Expiry = date("Y-m-d H:i:s", strtotime($Time.' +'.$Service_Expiry.' hours'));
+			if($Type != 1) {
+				$Time = $this->vehicles->Info($Ref, "Expiry");
+				$Expiry = date("Y-m-d H:i:s", strtotime($Time.' +'.$Service_Expiry.' hours'));
+			} else {
+				$Expiry = date("Y-m-d H:i:s", strtotime($Time.' +'.$Service_Expiry.' hours'));
+			}
 
 			if($Type == 1) {
 				// If $TYPE is 1 (First time record)
