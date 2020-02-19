@@ -47,6 +47,7 @@
                $query2->bindParam(4, $campus);
                $query2->execute();
                if($query2->execute()) {
+                 $this->pm->LogWriter('ParkingManager has automatically exit vehicle: '.$plate, "1", "");
                  echo json_encode(array("Result" => "1", "Message" => 'ParkingManager has automatically exit: '.$plate));
                }
              }
@@ -62,24 +63,11 @@
        $this->user = null;
        $this->pm = null;
      }
-     function Notification_Manager()
-     {
-       $this->mysql = new MySQL;
-
-
-       $this->mysql = null;
-     }
-     function Notification_Create($Type, $Message)
-     {
-       $this->mysql = new MySQL;
-
-
-       $this->mysql = null;
-     }
      function Parking_Reinstate()
      {
        $this->mssql = new MSSQL;
        $this->mysql = new MySQL;
+       $this->pm = new PM;
 
        $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref, Plate, Capture_Date FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
        $stmt->execute();
@@ -107,6 +95,7 @@
                $stmt->bindParam(1, $Expiry);
                $stmt->bindParam(2, $anpr_ref);
                $stmt->execute();
+               $this->pm->LogWriter('ParkingManager has reinstated parking record for: '.$anpr_plate, "1", "");
                echo json_encode(array("Result" => "1", "Message" => 'Left within 2 hours. Reinstated parking record for: '.$anpr_plate));
              }
            }
@@ -115,6 +104,7 @@
 
        $this->mysql = null;
        $this->mssql = null;
+       $this->pm = null;
      }
   }
 ?>
