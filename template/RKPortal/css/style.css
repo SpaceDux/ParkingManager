@@ -1,0 +1,353 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700|Poppins:300,400,600i&display=swap');
+body {
+  padding: 0;
+  margin: 0;
+  background: #efefef;
+  -webkit-user-select: none;
+  font-family: 'Segoe UI';
+}
+a {
+  color: inherit;
+  text-decoration: none;
+
+}
+a:hover, a:active {
+  color: inherit;
+  text-decoration: none;
+}
+/* Scroll Bar */
+::-webkit-scrollbar {
+    width: 10px;
+    margin-top: 30px;
+    display: block;
+}
+::-webkit-scrollbar-track {
+    background: #36393d;
+}
+::-webkit-scrollbar-thumb {
+    background: #292929;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #292929;
+}
+.Containment {
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: block;
+  width: 100%;
+  height: auto;
+  position: absolute;
+}
+.TopBar {
+  height: 50px;
+  width: 100%;
+  background: #f4f4f4;
+  position: fixed;
+  cursor: default;
+  margin-top: 30px;
+  z-index: 999;
+  border-bottom: 0.5px solid #e0e0e0;
+}
+.TopBar .Brand {
+  height: 50px;
+  width: 240px;
+  line-height: 20px;
+  position: fixed;
+  font-size: 25px;
+  background: #2d2d2d;
+  display: inline-block;
+  color: #f2f2f2;
+  cursor: default;
+  user-select: none;
+  text-align: center;
+  -webkit-app-region: drag;
+  z-index: 999;
+}
+.TopBar .MenuOptions {
+  display: block;
+  margin-left: 240px;
+  width: auto;
+  height: 50px;
+  line-height: 50px;
+  font-size: 23px;
+}
+.TopBar .MenuOptions .Opt {
+  display: inline-block;
+  height: 100%;
+  width: auto;
+  padding: 0px 10px;
+  color: #4c4c4c;
+  font-size: 22px;
+  border-right: 0.5px solid #e0e0e0;
+  margin-right: -7px;
+  text-align: center;
+  cursor: pointer;
+}
+.TopBar .MenuOptions .Opt:hover {
+  background: #e0e0e0;
+}
+.SideBar {
+  width: 240px;
+  height: 100vh;
+  background: #fff;
+  left: -240px;
+  display: block;
+  position: fixed;
+  overflow-y: auto;
+  z-index: 500;
+  border-right: 0.5px solid #e0e0e0;
+}
+.SideBar .Container {
+  margin-top: 80px;
+  height: auto;
+}
+.SideBar a {
+  width: 100%;
+  height: 50px;
+  color: #2f2f2f;
+  display: block;
+  border-bottom: 1px solid #efefef;
+  background: #fff;
+  text-align: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  line-height: 50px;
+  text-align: left;
+}
+.SideBar a:hover {
+  background: #ececec;
+}
+.SideBar .Dropdown-Btn:hover {
+  background: #ececec;
+}
+.SideBar .Dropdown-Btn {
+  width: 100%;
+  height: 50px;
+  color: #2f2f2f;
+  background: #fff;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #efefef;
+  text-align: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: left;
+}
+.SideBar .Dropdown-Container {
+  width: 100%;
+  display: none;
+  background-color: #262626;
+}
+.SideBar .Dropdown-Container a {
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 40px;
+  line-height: 40px;
+}
+.BottomBar {
+  height: 25px;
+  width: 100%;
+  background: #2d2d2d;
+  bottom: 0px;
+  position: fixed;
+  color: #fff;
+}
+.BottomBar .Left-Content {
+  width: 48%;
+  height: auto;
+  float: left;
+  display: inline-block;
+}
+.BottomBar .Right-Content {
+  width: 48%;
+  height: auto;
+  float: right;
+  display: inline-block;
+  text-align: right;
+}
+.BottomBar .Option {
+  height: 30px;
+  width: auto;
+  padding: 0 20px;
+  display: inline-block;
+  border-left: 0.5px solid #595959;
+}
+.BottomBar .Option:hover {
+  background: #3f3f3f;
+  cursor: pointer;
+}
+/*  */
+.Wrapper {
+  width: 100%;
+  height: auto;
+  padding: 10px 10px 50px 10px;
+  overflow-x: hidden;
+}
+.StatBar {
+  height: auto;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding-top: 90px;
+  padding-bottom: 10px;
+  background: #292929;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  color: #f2f2f2;
+}
+.StatBar .StatContent {
+  width: 95%;
+  margin: 0 auto;
+}
+.StatBar .StatContent .StatBox {
+  height: 80px;
+  width: 100%;
+  background: #333333;
+  display: block;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+.StatBar .StatContent .StatBox .Icon {
+  display: inline-block;
+  height: 100%;
+  width: 30%;
+  float: right;
+  text-align: center;
+  font-size: 35px;
+  line-height: 80px;
+  background: #232323;
+}
+.StatBar .StatContent .StatBox .Stat {
+  height: 50px;
+  width: 70%;
+  display: inline-block;
+  position: absolute;
+  box-sizing: border-box;
+  line-height: 50px;
+  text-align: center;
+  font-size: 28px;
+}
+.StatBar .StatContent .StatBox .Text {
+  height: 30px;
+  width: 70%;
+  display: inline-block;
+  position: absolute;
+  box-sizing: border-box;
+  line-height: 30px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 300;
+  padding-top: 45px;
+}
+.StatBar .StatContent .StatBox .Text b {
+  font-weight: 700;
+}
+.StatBar .StatContent .StatBox-LG {
+  height: 170px;
+  width: 100%;
+  background: #333333;
+  display: block;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+.LoginWrapper {
+  background:url("../img/login_bg.jpg");
+  height: 100vh;
+  width: 100%;
+}
+.LoginPane {
+  background-color: #2d2d2d;
+  width: 300px;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  border: 0.5px 0.5px 0.5px 0.5px #1d1d1d;
+}
+.LoginPane .Logo {
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px;
+}
+.LoginPane .Logo img {
+  max-width: 160px;
+  max-height: 160px;
+}
+.LoginPane .LoginForm {
+  padding: 20px;
+  color: #fff;
+}
+.LoginPane .LoginForm hr {
+  background: #646464;
+}
+/* Bootstrap Controls */
+.LoginForm_B[type="text"], .LoginForm_B[type="password"] {
+  border-left: 0.1px solid #efefef;
+  border-radius: 0;
+}
+.LoginForm_B[type="text"]::placeholder, .LoginForm_B[type="password"]::placeholder {
+  color: inherit;
+}
+.dark {
+  background: #424242;
+  color: #dcdcdc;
+  border-left: 0.2px solid #484848;
+  border-right: 0.2px solid #484848;
+  border-top: 0.2px solid #484848;
+  border-bottom:0.2px solid #484848;
+}
+.NotificationPane {
+  height: 500px;
+  width: 300px;
+  background: #424242;
+  position: fixed;
+  z-index: 1000;
+  right: 0;
+  bottom: 25px;
+  border-left: 0.2px solid #484848;
+  border-right: 0.2px solid #484848;
+  border-top: 0.2px solid #484848;
+}
+.NotificationPane .Wrapper {
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  overflow-y: auto;
+}
+.Box {
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border: 0.5px solid #ececec;
+  margin-bottom: 10px;
+}
+.Box .Title {
+  width: 100%;
+  height: 58px;
+  line-height: 50px;
+  font-size: 20px;
+  color: #f2f2f2;
+  background: #232323;
+  padding: 0px 10px;
+}
+.Box .Body {
+  background: #fff;
+  padding: 5px;
+}
+.Box .ButtonHolder {
+  width: auto;
+  float: right;
+}
+.Box .Button {
+  padding: 0 15px;
+  height: 50px;
+  line-height: 50px;
+  display: inline-block;
+  cursor: pointer;
+}
+.Box .Button:hover {
+  background: #484848;
+}

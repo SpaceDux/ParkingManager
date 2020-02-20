@@ -32,39 +32,11 @@
 		function SetParams()
 		{
 			global $_CONFIG;
-			$this->user = new User;
-			$this->pm = new PM;
-			$this->vehicles = new Vehicles;
-			$this->account = new Account;
-			$this->payment = new Payment;
 
 			$this->Assign('url', $_CONFIG['site']['url']); //{URL} Site URL
 			$this->Assign('tpl', $_CONFIG['site']['template']); //{TPL} Skin Name
 			$this->Assign('site_name', $_CONFIG['site']['name']); //{SITE_NAME} Site Name
 			$this->Assign('copy', $_CONFIG['misc']['copy']); //{SITE_NAME} Site Name
-			$this->Assign('scripts', $this->pm->Scripts());
-			$this->Assign('stylesheets', $this->pm->Stylesheets());
-			if(isset($_SESSION['id'])) {
-				$this->Assign('fname', $this->user->Info("FirstName")); //{FNAME} Active User's first name
-				$this->Assign('vehtypes', $this->pm->Vehicle_Types_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
-				$this->Assign('sites', $this->pm->Sites_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
-				$this->Assign('accounts', $this->account->Account_DropdownOpt()); //{VEHICLE_TYPES} returns the <option>'s
-				$this->Assign('list_accounts', $this->account->List_Accounts()); //{ACCOUNTS} returns the full html list of accounts
-				$this->Assign('tariff_groups', $this->pm->Tariff_Groups_DowndownOpt());
-				$this->Assign('printers', $this->pm->Printers_DropdownOpt());
-				$this->Assign('list_sites', $this->pm->List_Sites());
-				$this->Assign('list_users', $this->user->List_Users());
-				$this->Assign('anpr_count', $this->vehicles->ANPR_Feed_Count());
-				$this->Assign('renewal_count', $this->vehicles->Renewal_Feed_Count());
-				$this->Assign('all_count', $this->vehicles->Renewal_Feed_Count() + $this->vehicles->ANPR_Feed_Count() + $this->vehicles->Parked_Feed_Count());
-				$this->Assign('yardcheck', $this->vehicles->YardCheck());
-				$this->Assign('settlement_groups', $this->payment->Settlement_Groups());
-			}
-			$this->user = null;
-			$this->pm = null;
-			$this->vehicles = null;
-			$this->account = null;
-			$this->payment = null;
 		}
 		//This function takes the set params and turns them into an actual function
 		function Assign($_searchString, $_replaceString)
