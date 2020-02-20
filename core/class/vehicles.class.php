@@ -770,6 +770,7 @@
       $stmt->bindParam(14, $Overview);
       $stmt->bindParam(15, $time);
       if($stmt->execute()) {
+        $this->pm->LogWriter('Vehicle record has been added: '.$Plate, "1", $Uniqueref);
         return $Uniqueref;
       } else {
         echo "UNSUCCESSFUL Parking";
