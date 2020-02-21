@@ -12,7 +12,7 @@
         if(Response.Result < 1) {
           $('#User_JoinModal_Error').html(Response.Message);
         } else {
-          $.notify("Worked");
+          $('#User_JoinModal_Error').html(Response.Message);
         }
       }
     });
