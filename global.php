@@ -9,6 +9,11 @@
 	require_once(__DIR__.'/core/class/template.class.php');
 	require_once(__DIR__.'/core/class/mysql.class.php');
 	require_once(__DIR__.'/core/class/user.class.php');
+	require_once(__DIR__.'/core/class/mailer.class.php');
+
+
+	// Composer
+	require_once(__DIR__.'/vendor/autoload.php');
 
 	//Begin Activating the Engine
 	use ParkingManager as PM;
@@ -25,6 +30,7 @@
 	}
 
 	$user = new PM\User;
+	$mailer = new PM\Mailer;
 
 
 	//Other Activating

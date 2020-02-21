@@ -10,9 +10,9 @@
       success:function(Response)
       {
         if(Response.Result < 1) {
-          $('#User_JoinModal_Error').html(Response.Message);
+          $('#User_JoinModal_Error').html('<div class="alert alert-danger">'+Response.Message+'</div>');
         } else {
-          $('#User_JoinModal_Error').html(Response.Message);
+          $('#User_JoinModal_Error').html('<div class="alert alert-success">'+Response.Message+'</div>');
         }
       }
     });
