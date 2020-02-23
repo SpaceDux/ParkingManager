@@ -5,10 +5,10 @@ require 'global.php';
 		header("Location: index");
 	}
 
-	if($_GET['page'] != "index" AND !isset($_SESSION['id'])) {
+	if($_GET['page'] != "index" AND !isset($_SESSION['ID'])) {
 		header("Location: index");
-	} else if ($_GET['page'] == "index" AND isset($_SESSION['id'])) {
-		header("Location: main");
+	} else if ($_GET['page'] == "index" AND isset($_SESSION['ID'])) {
+		header("Location: home");
 	}
 
 	// $user->Logout();

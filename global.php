@@ -30,7 +30,7 @@
 	}
 
 	$user = new PM\User;
-	$mailer = new PM\Mailer;
+	// $mailer = new PM\Mailer;
 
 
 	//Other Activating

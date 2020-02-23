@@ -19,7 +19,7 @@
           <div id="User_LoginForm_Error"></div>
           <form id="LoginForm">
             <label for="Email">Email Address</label>
-            <input type="text" class="form-control LoginForm_B dark" name="Email" id="Email" placeholder="Email Address" value="" autofocus>
+            <input type="email" class="form-control LoginForm_B dark" name="Email" id="Email" placeholder="Email Address" value="" autofocus>
             <br>
             <label for="Password">Password</label>
             <input type="password" class="form-control LoginForm_B dark" name="Password" id="Password" placeholder="Password">

@@ -284,11 +284,11 @@ a:hover, a:active {
   background: #646464;
 }
 /* Bootstrap Controls */
-.LoginForm_B[type="text"], .LoginForm_B[type="password"] {
+.LoginForm_B[type="email"], .LoginForm_B[type="password"] {
   border-left: 0.1px solid #efefef;
   border-radius: 0;
 }
-.LoginForm_B[type="text"]::placeholder, .LoginForm_B[type="password"]::placeholder {
+.LoginForm_B[type="email"]::placeholder, .LoginForm_B[type="password"]::placeholder {
   color: inherit;
 }
 .dark {
