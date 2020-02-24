@@ -6,6 +6,7 @@
 
   class Mailer
   {
+    // SEND ACTIVATION EMAIL
     function SendActivation($Too)
     {
       global $_CONFIG;
@@ -37,7 +38,7 @@
       if (!$mail->send()) {
         return "0";
       } else {
-          return "1";
+        return "1";
       }
     }
   }

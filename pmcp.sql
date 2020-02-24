@@ -23,18 +23,36 @@ CREATE TABLE IF NOT EXISTS `bans` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+-- Dumping structure for table pmcp.bookings
+CREATE TABLE IF NOT EXISTS `bookings` (
+  `id` int(16) NOT NULL AUTO_INCREMENT,
+  `Uniqueref` varchar(68) NOT NULL,
+  `Site` int(16) NOT NULL,
+  `Plate` varchar(68) NOT NULL,
+  `Date` datetime NOT NULL,
+  `ETA` datetime NOT NULL,
+  `ETD` datetime NOT NULL,
+  `Requestee` varchar(68) NOT NULL,
+  `Last_Updated` datetime NOT NULL,
+  `Status` int(3) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
 -- Dumping structure for table pmcp.settings
 CREATE TABLE IF NOT EXISTS `settings` (
   `id` int(16) NOT NULL AUTO_INCREMENT,
   `SiteName` varchar(58) NOT NULL,
   `SiteSpaces` int(16) NOT NULL,
   `ActiveBookings` int(3) NOT NULL,
-  `Address` int(3) NOT NULL,
+  `Address` text NOT NULL,
   `AccessKey` varchar(112) NOT NULL,
   `Email` varchar(168) NOT NULL,
   `Information` text,
+  `API_User` varchar(112) NOT NULL,
+  `API_Password` varchar(112) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table pmcp.users

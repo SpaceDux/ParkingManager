@@ -1,4 +1,5 @@
 <script type="text/javascript">
+  // Registration form submit
   $(document).on('click', '#JoinForm_Submit', function() {
     event.preventDefault();
     var Data = $('#JoinForm').serialize();
@@ -18,6 +19,7 @@
     });
     return false;
   });
+  // Login Form submit
   $(document).on('submit', '#LoginForm', function() {
     event.preventDefault();
     var Data = $('#LoginForm').serialize();
@@ -40,4 +42,5 @@
     });
     return false;
   });
+  // Get USER info
 </script>

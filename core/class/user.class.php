@@ -102,6 +102,7 @@
     function User_Login($Email, $Password)
     {
       $this->mysql = new MySQL;
+      $this->mailer = new Mailer;
 
       $IPAddress = $_SERVER['REMOTE_ADDR'];
 
@@ -140,7 +141,12 @@
                 echo json_encode(array('Result' => 0, 'Message' => 'Your account has been banned.'));
               }
             } else {
-              echo json_encode(array('Result' => 0, 'Message' => 'Your account has not been activated. Check your emails.'));
+              $resend = $this->mailer->SendActivation($Email);
+              if($resend == 1) {
+                echo json_encode(array('Result' => 0, 'Message' => 'Your account has not been activated. We have resent the activation email.'));
+              } else {
+                echo json_encode(array('Result' => 0, 'Message' => 'Your account has not been activated. Check your emails.'));
+              }
             }
           } else {
             echo json_encode(array('Result' => 0, 'Message' => 'Sorry, we can\'t find an account associated with that email address.'));
@@ -151,6 +157,49 @@
       } else {
         echo json_encode(array('Result' => 0, 'Message' => 'You have been blocked from this service.'));
       }
+
+      $this->mysql = null;
+      $this->mailer = null;
+    }
+    // Logout & kill session
+    function User_Logout()
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE users SET LoggedIn = '0' WHERE Uniqueref = ?");
+      $stmt->bindValue(1, $_SESSION['ID']);
+      if($stmt->execute()) {
+        session_destroy();
+        header('Location: index');
+      } else {
+        session_destroy();
+      }
+
+      $this->mysql = null;
+    }
+    // User information (For tpl etc)
+    function User_Info($What)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM users WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $_SESSION['ID']);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result[$What];
+      } else {
+        return "No Result";
+      }
+
+
+      $this->mysql = null;
+    }
+    // Update User Account information
+    function User_UpdateInfo_Update($First, $Last, $Email, $Telephone)
+    {
+      $this->mysql = new MySQL;
+      
 
       $this->mysql = null;
     }
