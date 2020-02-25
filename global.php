@@ -10,6 +10,8 @@
 	require_once(__DIR__.'/core/class/mysql.class.php');
 	require_once(__DIR__.'/core/class/user.class.php');
 	require_once(__DIR__.'/core/class/mailer.class.php');
+	require_once(__DIR__.'/core/class/vehicles.class.php');
+	require_once(__DIR__.'/core/class/booking.class.php');
 
 
 	// Composer
@@ -30,7 +32,8 @@
 	}
 
 	$user = new PM\User;
-	// $mailer = new PM\Mailer;
+	$vehicles = new PM\Vehicles;
+	$booking = new PM\Booking;
 
 
 	//Other Activating

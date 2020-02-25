@@ -294,6 +294,9 @@ a:hover, a:active {
   font-weight: 400;
   margin-bottom: 10px !important;
 }
+.container {
+  padding-top: 10px;
+}
 /* RESPONSE 700px */
 @media only screen and (max-width: 800px) {
   .TopBar .mobile-opt {

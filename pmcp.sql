@@ -23,16 +23,31 @@ CREATE TABLE IF NOT EXISTS `bans` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+-- Dumping structure for table pmcp.bays
+CREATE TABLE IF NOT EXISTS `bays` (
+  `id` int(16) NOT NULL AUTO_INCREMENT,
+  `Site` int(16) NOT NULL,
+  `Number` varchar(50) NOT NULL,
+  `Expiry` datetime NOT NULL,
+  `Author` varchar(68) NOT NULL,
+  `Last_Updated` datetime NOT NULL,
+  `Status` int(3) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
 -- Dumping structure for table pmcp.bookings
 CREATE TABLE IF NOT EXISTS `bookings` (
   `id` int(16) NOT NULL AUTO_INCREMENT,
   `Uniqueref` varchar(68) NOT NULL,
   `Site` int(16) NOT NULL,
   `Plate` varchar(68) NOT NULL,
+  `VehicleType` varchar(68) NOT NULL,
   `Date` datetime NOT NULL,
   `ETA` datetime NOT NULL,
   `ETD` datetime NOT NULL,
-  `Requestee` varchar(68) NOT NULL,
+  `Bay` int(16) NOT NULL,
+  `Author` varchar(68) NOT NULL,
   `Last_Updated` datetime NOT NULL,
   `Status` int(3) NOT NULL,
   PRIMARY KEY (`id`)
@@ -49,10 +64,10 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `AccessKey` varchar(112) NOT NULL,
   `Email` varchar(168) NOT NULL,
   `Information` text,
-  `API_User` varchar(112) NOT NULL,
-  `API_Password` varchar(112) NOT NULL,
+  `API_User` varchar(112) DEFAULT NULL,
+  `API_Password` varchar(112) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table pmcp.users
@@ -75,6 +90,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `Last_IP` varchar(58) NOT NULL,
   `Status` int(3) NOT NULL,
   `Activated` int(3) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+-- Dumping structure for table pmcp.vehicles
+CREATE TABLE IF NOT EXISTS `vehicles` (
+  `id` int(16) NOT NULL AUTO_INCREMENT,
+  `Uniqueref` varchar(68) NOT NULL,
+  `Plate` varchar(68) NOT NULL,
+  `Name` varchar(68) NOT NULL,
+  `Assigned_Account` varchar(68) DEFAULT NULL,
+  `Date` datetime NOT NULL,
+  `Last_Updated` datetime NOT NULL,
+  `Owner` varchar(50) NOT NULL,
+  `Status` int(3) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 

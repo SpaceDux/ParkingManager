@@ -43,16 +43,17 @@
               Update Your Account
             </div>
             <div class="Body">
-              <form>
+              <form id="Update_UserForm">
                 <div class="container">
+                  <div id="Update_UserError"></div>
                   <div class="row">
                     <div class="col">
                       <label for="Update_User_FirstName">First Name</label>
-                      <input type="text" class="form-control" name="Update_User_FirstName" value="{FIRST_NAME}">
+                      <input type="text" class="form-control" name="First" value="{FIRST_NAME}" required>
                     </div>
                     <div class="col">
                       <label for="Update_User_LastName">Last Name</label>
-                      <input type="text" class="form-control" name="Update_User_LastName" value="{LAST_NAME}">
+                      <input type="text" class="form-control" name="Last" value="{LAST_NAME}" required>
                     </div>
                   </div>
                 </div>
@@ -61,11 +62,20 @@
                   <div class="row">
                     <div class="col">
                       <label for="Update_User_Email">Email Address</label>
-                      <input type="email" class="form-control" name="Update_User_Email" value="{EMAIL}">
+                      <input type="email" class="form-control" name="Email" value="{EMAIL}" required>
                     </div>
                     <div class="col">
                       <label for="Update_User_Telephone">Telephone</label>
-                      <input type="text" class="form-control" name="Update_User_Telephone" value="{TELEPHONE}">
+                      <input type="text" class="form-control" name="Telephone" value="{TELEPHONE}" required>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <label for="Update_User_Email">Enter your Password</label>
+                      <input type="password" class="form-control" name="Password" placeholder="Enter your current password" required>
                     </div>
                   </div>
                 </div>
@@ -87,7 +97,32 @@
               Update Your Vehicles
             </div>
             <div class="Body">
-
+              <div class="container">
+                <form id="AddPlates">
+                  <div id="AddPlate_Error"></div>
+                  <div class="row">
+                    <div class="col-md-5">
+                      <label>Enter a Vehicle Registration</label>
+                      <input type="text" class="form-control" name="Plate" placeholder="EX43 PLE" style="text-transform: uppercase;" required>
+                    </div>
+                    <div class="col-md-5">
+                      <label>Choose a name for this plate (E.G; My Scania)</label>
+                      <input type="text" class="form-control" name="Name" placeholder="Assign a name" required>
+                    </div>
+                    <div class="col">
+                      <input type="submit" class="btn btn-primary" style="margin-top: 10px;width: 100%;" value="Save Plate">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <hr>
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <div id="MYPLATES-TABLE"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

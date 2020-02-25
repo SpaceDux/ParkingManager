@@ -196,13 +196,47 @@
       $this->mysql = null;
     }
     // Update User Account information
-    function User_UpdateInfo_Update($First, $Last, $Email, $Telephone)
+    function User_Info_Update($First, $Last, $Email, $Telephone, $Password)
     {
       $this->mysql = new MySQL;
-      
+
+      $IPAddress = $_SERVER['REMOTE_ADDR'];
+
+      if(!empty($First) AND !empty($Last) AND !empty($Email) AND !empty($Telephone)) {
+        if(!empty($Password)) {
+          $stmt = $this->mysql->dbc->prepare("SELECT Password FROM users WHERE Uniqueref = ?");
+          $stmt->bindValue(1, $_SESSION['ID']);
+          if($stmt->execute()) {
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+            $verify = password_verify($Password, $result['Password']);
+            if($verify == TRUE) {
+              $stmt = $this->mysql->dbc->prepare("UPDATE users SET FirstName = ?, LastName = ?, EmailAddress = ?, Telephone = ? WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $First);
+              $stmt->bindParam(2, $Last);
+              $stmt->bindParam(3, $Email);
+              $stmt->bindParam(4, $Telephone);
+              $stmt->bindValue(5, $_SESSION['ID']);
+              if($stmt->execute()) {
+                echo json_encode(array('Result' => 1, 'Message' => 'Your account be been updated.'));
+              } else {
+                echo json_encode(array('Result' => 0, 'Message' => 'Something went wrong, we couldn\'t update your account. #222'));
+              }
+            } else {
+              echo json_encode(array('Result' => 0, 'Message' => 'Your password does not match our records.'));
+            }
+          } else {
+            echo json_encode(array('Result' => 0, 'Message' => 'Something went wrong. we\'re unable to update your record. #228'));
+          }
+        } else {
+          echo json_encode(array('Result' => 0, 'Message' => 'Your password is required to make changes to your account.'));
+        }
+      } else {
+        echo json_encode(array('Result' => 0, 'Message' => 'Please make sure all fields are supplied.'));
+      }
 
       $this->mysql = null;
     }
+    
   }
 
 ?>
