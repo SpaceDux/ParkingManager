@@ -69,6 +69,7 @@ a:hover, a:active {
   width: auto;
   height: 70px;
   font-size: 23px;
+  overflow: hidden;
 }
 .TopBar .MenuOptions .Opt {
   display: inline-block;

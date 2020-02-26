@@ -42,7 +42,7 @@
             <h1 class="display-4">Reserve your Parking</h1>
             <p class="lead">You can now pre-book your parking space with us..</p>
             <hr>
-            <a class="btn btn-primary btn-lg" href="#" role="button">Reserve My Space</a>
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#Booking_BookSiteModal" role="button">Reserve My Space</button>
           </div>
         </div>
         <div class="col-md-12">

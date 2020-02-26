@@ -1,6 +1,7 @@
 <?php
 
 //Required Files
+	date_default_timezone_set('Europe/London');
 
 	//Config
 	require_once(__DIR__.'/core/manage/config.php');
@@ -12,6 +13,7 @@
 	require_once(__DIR__.'/core/class/mailer.class.php');
 	require_once(__DIR__.'/core/class/vehicles.class.php');
 	require_once(__DIR__.'/core/class/booking.class.php');
+	require_once(__DIR__.'/core/class/pm.class.php');
 
 
 	// Composer
@@ -39,5 +41,4 @@
 	//Other Activating
 	session_start();
 
-	date_default_timezone_set('Europe/London');
 ?>

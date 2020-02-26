@@ -91,6 +91,41 @@
 
       $this->mysql = null;
     }
+    // Vehicle dropdown selection
+    function Vehicles_DropdownOpts()
+    {
+      $this->mysql = new MySQL;
+      $html = '';
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM vehicles WHERE Status = 0 AND Owner = ?");
+      $stmt->bindValue(1, $_SESSION['ID']);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        foreach($stmt->fetchAll() as $row) {
+          $html .= '<option value="'.$row['Uniqueref'].'">'.$row['Plate'].' - '.$row['Name'].'</option>';
+        }
+      } else {
+        $html .= '<option value="0">YOU HAVE NO VEHICLES</option>';
+      }
+
+      return $html;
+
+      $this->mysql = null;
+    }
+    // Vehicle Info
+    function Vehicles_Info($Ref, $What)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM vehicles WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $Ref);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $res[$What];
+      }
+
+      $this->mysql = null;
+    }
   }
 
 ?>

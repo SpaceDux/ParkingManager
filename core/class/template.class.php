@@ -33,6 +33,8 @@
 		{
 			global $_CONFIG;
 			$this->user = new User;
+			$this->pm = new PM;
+			$this->vehicles = new Vehicles;
 
 			$this->Assign('url', $_CONFIG['site']['url']); //{URL} Site URL
 			$this->Assign('tpl', $_CONFIG['site']['template']); //{TPL} Skin Name
@@ -44,9 +46,12 @@
 				$this->Assign('email', $this->user->User_Info("EmailAddress"));
 				$this->Assign('rank', $this->user->User_Info("Rank"));
 				$this->Assign('telephone', $this->user->User_Info("Telephone"));
+				$this->Assign('sites', $this->pm->PM_ListSitesAsSelect());
+				$this->Assign('myvehicles', $this->vehicles->Vehicles_DropdownOpts());
 			}
 
 			$this->user = null;
+			$this->pm = null;
 		}
 		//This function takes the set params and turns them into an actual function
 		function Assign($_searchString, $_replaceString)
