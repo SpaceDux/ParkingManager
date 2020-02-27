@@ -49,66 +49,20 @@
           <div class="Box">
             <div class="Title">
               Upcoming Bookings
-              <div class="float-right">
-                <button type="button" class="btn btn-primary"><i class="fa fa-sync-alt"></i></button>
-              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card" style="width: 100%;">
-            <div class="card-body">
-              <h5 class="card-title">CY15GHX</h5>
-              <p class="card-text">Thanks {FIRST_NAME}, your booking has been confirmed.</p>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Roadking: Cannock</li>
-              <li class="list-group-item"><i class="fa fa-clock"></i> ETA: 24/02/20 @ 15:30</li>
-              <li class="list-group-item"><i class="far fa-clock"></i> ETD: 25/02/20 @ 08:30</li>
-              <li class="list-group-item">Not Checked In</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Modify Booking</a>
-              <a href="#" class="card-link">Cancel Booking</a>
+        {MYBOOKINGS}
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="Box">
+            <div class="Title">
+              Previous Bookings
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card" style="width: 100%;">
-            <div class="card-body">
-              <h5 class="card-title">YP11RNO</h5>
-              <p class="card-text">Thanks {FIRST_NAME}, your booking has been confirmed.</p>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Roadking: Cannock</li>
-              <li class="list-group-item"><i class="fa fa-clock"></i> ETA: 24/02/20 @ 15:30</li>
-              <li class="list-group-item"><i class="far fa-clock"></i> ETD: 25/02/20 @ 08:30</li>
-              <li class="list-group-item">Not Checked In</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Modify Booking</a>
-              <a href="#" class="card-link">Cancel Booking</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card" style="width: 100%;">
-            <div class="card-body">
-              <h5 class="card-title">CY15GHX</h5>
-              <p class="card-text">Thanks {FIRST_NAME}, your booking has been confirmed.</p>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Roadking: Cannock</li>
-              <li class="list-group-item"><i class="fa fa-clock"></i> ETA: 24/02/20 @ 15:30</li>
-              <li class="list-group-item"><i class="far fa-clock"></i> ETD: 25/02/20 @ 08:30</li>
-              <li class="list-group-item">Not Checked In</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Modify Booking</a>
-              <a href="#" class="card-link">Cancel Booking</a>
-            </div>
-          </div>
-        </div>
+        {PREVIOUSBOOKINGS}
       </div>
     </div>
     <!-- STYLE BASED SCRIPTS -->

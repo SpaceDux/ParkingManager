@@ -35,6 +35,7 @@
 			$this->user = new User;
 			$this->pm = new PM;
 			$this->vehicles = new Vehicles;
+			$this->booking = new Booking;
 
 			$this->Assign('url', $_CONFIG['site']['url']); //{URL} Site URL
 			$this->Assign('tpl', $_CONFIG['site']['template']); //{TPL} Skin Name
@@ -48,10 +49,14 @@
 				$this->Assign('telephone', $this->user->User_Info("Telephone"));
 				$this->Assign('sites', $this->pm->PM_ListSitesAsSelect());
 				$this->Assign('myvehicles', $this->vehicles->Vehicles_DropdownOpts());
+				$this->Assign('mybookings', $this->booking->Booking_ListAllBookingsAsHtml());
+				$this->Assign('previousbookings', $this->booking->Booking_ListAllPreviousBookingsAsHtml());
 			}
 
 			$this->user = null;
 			$this->pm = null;
+			$this->vehicles = null;
+			$this->booking = null;
 		}
 		//This function takes the set params and turns them into an actual function
 		function Assign($_searchString, $_replaceString)

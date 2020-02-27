@@ -31,6 +31,22 @@
         }
       }
 
+      // If has been cancelled.
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status = 4");
+      $stmt->execute();
+      foreach($stmt->fetchAll() as $bookings) {
+        $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
+        $stmt->bindParam(1, $Date);
+        $stmt->bindValue(2, $bookings['Bay']);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '5', Last_Updated = ? WHERE Uniqueref = ?");
+          $stmt->bindParam(1, $Date);
+          $stmt->bindValue(2, $bookings['Uniqueref']);
+          $stmt->execute();
+        }
+      }
+
       // IF STATUS = 1 AND EXPIRY < CUR TIME
 
       $Date = date("Y-m-d H:i:s");
@@ -95,7 +111,7 @@
             echo json_encode(array('Result' => 0, 'Message' => 'Sorry, there are currently no spaces available, please check back in a few minutes.'));
           }
         } else {
-          echo json_encode(array('Result' => 0, 'Message' => 'Sorry, you\'ve hit your allowed limit of '.$MaxSpace.' spaces.'));
+          echo json_encode(array('Result' => 0, 'Message' => 'Sorry, you\'ve hit your allowed limit of '.$MaxSpace.' spaces per day.'));
         }
       }
 
@@ -194,6 +210,188 @@
       $this->mysql = null;
       $this->user = null;
       $this->vehicles = null;
+    }
+    // View bookings as html
+    function Booking_ListAllBookingsAsHtml()
+    {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->pm = new PM;
+
+      $html = '';
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status < 2 AND Author = ?");
+      $stmt->bindValue(1, $_SESSION['ID']);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        foreach($stmt->fetchAll() as $row) {
+          if($row['Status'] == 0) {
+            $Status = 'Not Checked In';
+          } else if($row['Status'] == 1) {
+            $Status = 'Checked In';
+          } else if($row['Status'] == 2) {
+            $Status = 'Checked Out';
+          } else if($row['Status'] == 3) {
+            $Status = 'Checked Out, Thank\'s for staying with us';
+          }
+          $Ref = '\''.$row['Uniqueref'].'\'';
+          $html .=  '
+                    <div class="col-md-4">
+                      <div class="card" style="width: 100%;">
+                        <div class="card-body">
+                          <h5 class="card-title">'.$row['Plate'].'</h5>
+                          <p class="card-text">Thanks '.$this->user->User_Info("FirstName").', your booking has been confirmed.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item"><i class="fa fa-location-arrow"></i> '.$this->pm->PM_SiteInfo($row['Site'], "SiteName").'</li>
+                          <li class="list-group-item"><i class="fa fa-clock"></i> ETA: '.date("d/m/y @ H:i", strtotime($row['ETA'])).'</li>
+                          <li class="list-group-item"><i class="far fa-clock"></i> ETD: '.date("d/m/y @ H:i", strtotime($row['ETD'])).'</li>
+                          <li class="list-group-item">'.$Status.'</li>
+                        </ul>
+                        <div class="card-body">
+                          <a href="#" class="card-link" onClick="Booking_Modify('.$Ref.')">Modify Booking</a>
+                          <a href="#" style="color:red;" class="card-link" onClick="Booking_Cancel('.$Ref.')">Cancel Booking</a>
+                        </div>
+                      </div>
+                    </div>
+                    ';
+        }
+      } else {
+        $html .= '<div class="col-md-4">You have no active bookings.</div>';
+      }
+
+      return $html;
+
+      $this->mysql = null;
+      $this->user = null;
+      $this->pm = null;
+    }
+    // View bookings as html
+    function Booking_ListAllPreviousBookingsAsHtml()
+    {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->pm = new PM;
+
+      $html = '';
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status >= 2 AND Author = ? ORDER BY ETA DESC LIMIT 6");
+      $stmt->bindValue(1, $_SESSION['ID']);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        foreach($stmt->fetchAll() as $row) {
+          if($row['Status'] == 0) {
+            $Status = 'Not Checked In';
+          } else if($row['Status'] == 1) {
+            $Status = 'Checked In';
+          } else if($row['Status'] == 2) {
+            $Status = 'Checked Out';
+          } else if($row['Status'] == 3) {
+            $Status = 'Checked Out, Thank\'s for staying with us';
+          }
+          
+          $Ref = '\''.$row['Uniqueref'].'\'';
+          $html .=  '
+                    <div class="col-md-4">
+                      <div class="card" style="width: 100%;">
+                        <div class="card-body">
+                          <h5 class="card-title">'.$row['Plate'].'</h5>
+                          <p class="card-text">Thanks '.$this->user->User_Info("FirstName").', your booking has been confirmed.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item"><i class="fa fa-location-arrow"></i> '.$this->pm->PM_SiteInfo($row['Site'], "SiteName").'</li>
+                          <li class="list-group-item"><i class="fa fa-clock"></i> ETA: '.date("d/m/y @ H:i", strtotime($row['ETA'])).'</li>
+                          <li class="list-group-item"><i class="far fa-clock"></i> ETD: '.date("d/m/y @ H:i", strtotime($row['ETD'])).'</li>
+                          <li class="list-group-item">'.$Status.'</li>
+                        </ul>
+                      </div>
+                    </div>
+                    ';
+        }
+      } else {
+        $html .= '<div class="col-md-4">You have no previous bookings.</div>';
+      }
+
+      return $html;
+
+      $this->mysql = null;
+      $this->user = null;
+      $this->pm = null;
+    }
+    // Cancel a booking, set status 4
+    function Booking_CancelBooking($Ref)
+    {
+      $this->mysql = new MySQL;
+
+      $Date = date("Y-m-d H:i:s");
+
+      if(!empty($Ref)) {
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Uniqueref = ? AND Status = 0");
+        $stmt->bindParam(1, $Ref);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+          $ETA = date("Y-m-d H:i:s", strtotime($result['ETA'].' + 30 minutes'));
+          if($ETA > $Date) {
+            // Cancel, but dont strike
+            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = 4, Last_Updated = ? WHERE Uniqueref = ?");
+            $stmt->bindParam(1, $Date);
+            $stmt->bindParam(2, $Ref);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+              echo json_encode(array('Result' => 1, 'Message' => 'Thanks, we\'ve cancelled your booking as requested.<br><br>Sorry you couldn\'t make it, hopefully we\'ll see you soon!'));
+            } else {
+              echo json_encode(array('Result' => 0, 'Message' => 'Something wen\'t wrong. Please try again.'));
+            }
+          } else {
+            // Cancel BUT strike as over eta
+            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = 4, Last_Updated = ? WHERE Uniqueref = ?");
+            $stmt->bindParam(1, $Date);
+            $stmt->bindParam(2, $Ref);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+              $stmt = $this->mysql->dbc->prepare("UPDATE users SET Strikes = Strikes + 1, Last_Updated = ? WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $Date);
+              $stmt->bindValue(2, $_SESSION['ID']);
+              $stmt->execute();
+              if($stmt->rowCount() > 0) {
+                echo json_encode(array('Result' => 1, 'Message' => 'Thanks, we\'ve cancelled your booking as requested.<br><br>Sorry you couldn\'t make it, however as you\'ve cancelled more than 30 minutes after your ETA, your account has been given 1 strike. <br>'));
+              } else {
+                echo json_encode(array('Result' => 0, 'Message' => 'Something wen\'t wrong. Please try again.'));
+              }
+            } else {
+              echo json_encode(array('Result' => 0, 'Message' => 'Something wen\'t wrong. Please try again.'));
+            }
+          }
+        } else {
+          echo json_encode(array('Result' => 0, 'Message' => 'Sorry, we can\'t locate that booking on our system. Please try again.'));
+        }
+      } else {
+        echo json_encode(array('Result' => 0, 'Message' => 'Please ensure all data is present.'));
+      }
+
+      $this->mysql = null;
+    }
+    // Midway cancellation
+    function Booking_MidwayCancel()
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Author = ? AND Status < 2");
+      $stmt->bindValue(1, $_SESSION['ID']);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Author = '', Expiry = '', Status = 0 WHERE Author = ? AND Status < 2");
+        $stmt->bindValue(1, $_SESSION['ID']);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          echo json_encode(array('Result' => 1, 'Message' => 'Successfully cancelled that booking.'));
+        } else {
+          echo json_encode(array('Result' => 0, 'Message' => 'Something has gone wrong with that request.'));
+        }
+      } else {
+        echo json_encode(array('Result' => 0, 'Message' => 'Something wen\'t wrong'));
+      }
+
+      $this->mysql = null;
     }
   }
 ?>

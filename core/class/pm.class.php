@@ -22,6 +22,23 @@
 
       $this->mysql = null;
     }
+
+    function PM_SiteInfo($Site, $What)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM settings WHERE id = ?");
+      $stmt->bindParam(1, $Site);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result[$What];
+      } else {
+        return "Unable to find";
+      }
+
+      $this->mysql = null;
+    }
   }
 
 ?>
