@@ -28,12 +28,12 @@ CREATE TABLE IF NOT EXISTS `bays` (
   `id` int(16) NOT NULL AUTO_INCREMENT,
   `Site` int(16) NOT NULL,
   `Number` varchar(50) NOT NULL,
-  `Expiry` datetime NOT NULL,
-  `Author` varchar(68) NOT NULL,
+  `Expiry` datetime DEFAULT NULL,
+  `Author` varchar(68) DEFAULT NULL,
   `Last_Updated` datetime NOT NULL,
   `Status` int(3) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table pmcp.bookings
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `bookings` (
   `Last_Updated` datetime NOT NULL,
   `Status` int(3) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table pmcp.settings
@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `Information` text,
   `API_User` varchar(112) DEFAULT NULL,
   `API_Password` varchar(112) DEFAULT NULL,
+  `Status` int(3) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
@@ -90,8 +91,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `Last_IP` varchar(58) NOT NULL,
   `Status` int(3) NOT NULL,
   `Activated` int(3) NOT NULL,
+  `Strikes` int(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table pmcp.vehicles
@@ -106,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `vehicles` (
   `Owner` varchar(50) NOT NULL,
   `Status` int(3) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
