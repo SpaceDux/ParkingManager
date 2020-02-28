@@ -4,7 +4,7 @@
 	{
 		public $dbc;
 		//Base Connection with LOCAL database
-		public function __construct()
+		function __construct()
 		{
 			global $_CONFIG;
 			try {

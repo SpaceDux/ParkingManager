@@ -300,6 +300,9 @@ a:hover, a:active {
 }
 /* RESPONSE 700px */
 @media only screen and (max-width: 800px) {
+  .Show {
+    display:block;
+  }
   .TopBar .mobile-opt {
     display: block;
     height: 70px;
@@ -329,6 +332,7 @@ a:hover, a:active {
   }
   .TopBar .MenuOptions {
     display: none;
+    margin-top: 70px;
     margin-left: 0;
     width: 100%;
     min-height: 70px;

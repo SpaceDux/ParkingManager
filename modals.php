@@ -184,12 +184,12 @@
     </div>
   </div>
 </div>
-<!-- T&C's after booking -->
+<!-- Cancel a booking -->
 <div class="modal" id="Booking_CancelModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Booking Cancelled</h5>
+        <h5 class="modal-title">Cancel Booking</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -204,6 +204,29 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-success" id="Booking_CancelModal_YES" data-dismiss="modal">Yes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Cancel a booking confirmed -->
+<div class="modal" id="Booking_CancelConfirmModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Booking Cancelled</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <div id="Booking_CancelledConfirm_Note"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
