@@ -153,7 +153,7 @@
       $this->pm = null;
     }
     //check is SNAP
-    public function Check_SNAP($Plate)
+    public function Check_SNAP2($Plate)
     {
       $this->user = new User;
       $this->pm = new PM;
@@ -170,7 +170,7 @@
           'json' => [
             'locationusername' => 'holyhead',
             'locationpassword' => '2hst36sg',
-            'serviceid' => "4439",
+            'serviceid' => "9745",
             'regno' => $Plate,
             'drivername' => "ISITSNAP",
             'committransaction' => '0'
@@ -183,9 +183,6 @@
           return FALSE;
         }
         $this->pm->LogWriter('SNAP Connection Successful', "3", "");
-
-        $this->user  = null;
-        $this->pm = null;
       } catch(RequestException $e) {
         if($e->getResponse() != null) {
           if($e->getResponse()->getStatusCode() != 200) {
@@ -199,6 +196,11 @@
       }
       $this->user = null;
       $this->pm = null;
+    }
+    //check is SNAP
+    public function Check_SNAP($Plate)
+    {
+      return FALSE;
     }
     //Process SNAP transaction
     public function DeleteTransaction($tid)
