@@ -50,21 +50,25 @@
   function Booking_Cancel(Ref)
   {
     event.preventDefault();
-    $.ajax({
-      url: "{URL}/core/ajax/booking.handler.php?handler=Booking.Booking_CancelBooking",
-      data: {Ref:Ref},
-      method: "POST",
-      dataType: "json",
-      success:function(Response) {
-        if(Response.Result < 1) {
-          $('#Booking_Cancelled_Note').html('<div class="alert alert-danger">'+Response.Message+'</div>');
-          $('#Booking_CancelModal').modal('show');
-        } else {
-          $('#Booking_Cancelled_Note').html('<div class="alert alert-success">'+Response.Message+'</div>');
-          $('#Booking_CancelModal').modal('show');
+    $('#Booking_CancelModal').modal('show');
+    $('#Booking_Cancelled_Note').html('<p>Are you sure you want to cancel this booking?</p>');
+
+    $('#Booking_CancelModal_YES').on('click', function() {
+      $.ajax({
+        url: "{URL}/core/ajax/booking.handler.php?handler=Booking.Booking_CancelBooking",
+        data: {Ref:Ref},
+        method: "POST",
+        dataType: "json",
+        success:function(Response) {
+          if(Response.Result < 1) {
+            $('#Booking_Cancelled_Note').html('<div class="alert alert-danger">'+Response.Message+'</div>');
+          } else {
+            $('#Booking_Cancelled_Note').html('<div class="alert alert-success">'+Response.Message+'</div>');
+            $('#Booking_CancelModal').modal('show');
+          }
         }
-      }
-    });
+      });
+    })
   }
   // Cancel booking midway, reopen bay
   function Booking_MidwayCancel()

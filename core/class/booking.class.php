@@ -286,8 +286,12 @@
             $Status = 'Checked Out';
           } else if($row['Status'] == 3) {
             $Status = 'Checked Out, Thank\'s for staying with us';
+          } else if($row['Status'] == 4) {
+            $Status = 'Cancelled.';
+          } else if($row['Status'] == 5) {
+            $Status = 'Cancelled.';
           }
-          
+
           $Ref = '\''.$row['Uniqueref'].'\'';
           $html .=  '
                     <div class="col-md-4">

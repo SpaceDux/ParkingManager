@@ -202,7 +202,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="Booking_CancelModal_YES" data-dismiss="modal">Yes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
       </div>
     </div>
   </div>
