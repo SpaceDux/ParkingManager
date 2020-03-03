@@ -162,7 +162,7 @@
             'serviceid' => $ID,
             'regno' => $Plate,
             'drivername' => $Name,
-            'committransaction' => '0'
+            // 'committransaction' => '0'
           ]
         ]);
         $return = json_decode($response->getBody(), true);

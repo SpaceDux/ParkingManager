@@ -40,7 +40,7 @@
       $FuelStr = '';
     }
 
-    if(isset($System) AND isset($Ref) AND isset($Method) AND isset($Tariff) AND isset($VehicleType))
+    if(isset($System) AND isset($Ref) AND isset($Method) AND isset($Tariff))
     {
       $transaction->AddTransaction($System, $Ref, $Method, $Tariff, $Trailer, $Name, "1", $FuelStr, $Note);
     }
