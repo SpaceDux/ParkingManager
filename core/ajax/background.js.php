@@ -12,6 +12,7 @@
       }
     })
   }, 10000);
+  // Reinstate PArking
   setInterval(function(){
     $.ajax({
       url: "{URL}/core/ajax/background.handler.php?handler=Background.Parking_Reinstate",

@@ -7,7 +7,7 @@
   class Ticket {
     public $ImgDir;
     function __construct() {
-      $this->ImgDir = $_SERVER['DOCUMENT_ROOT'].'/ParkingManager/printerImg/';
+      $this->ImgDir = $_SERVER['DOCUMENT_ROOT'].'/PM4/printerImg/';
     }
     //Print Columns on ticket.
     function Printer_Columns($leftCol, $rightCol, $leftWidth, $rightWidth, $space = 0)
@@ -783,29 +783,6 @@
           $line = $this->Printer_Columns($row['Name']." - ", $value, 30, 10, 4);
           $printer -> text($line);
         }
-        $printer -> feed(2);
-        // temp
-        $printer -> text("Cash & Card Sales via Kiosks");
-        $printer -> feed();
-        $CashValue = 0;
-        $CardValue = 0;
-        $srv = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Site = ? AND Method < 3 AND Deleted < 1  AND Kiosk = 1 AND Processed_Time BETWEEN ? AND ?");
-        $srv->bindValue(1, $campus);
-        $srv->bindValue(2, $date1);
-        $srv->bindValue(3, $date2);
-        $srv->execute();
-        foreach($srv->fetchAll() as $row) {
-          if($row['Method'] == 1) {
-            $CashValue += $row['Gross'];
-          }
-          if($row['Method'] == 2) {
-            $CardValue += $row['Gross'];
-          }
-        }
-        $line1 = $this->Printer_Columns("Cash Sales ", "£".number_format($CashValue, 2), 30, 10, 4);
-        $line2 = $this->Printer_Columns("Card Sales ", "£".number_format($CardValue, 2), 30, 10, 4);
-        $printer -> text($line1);
-        $printer -> text($line2);
         $printer -> feed(2);
 
         $printer -> cut(Printer::CUT_PARTIAL);
