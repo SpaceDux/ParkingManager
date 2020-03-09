@@ -16,9 +16,12 @@
       $query = $this->mysql->dbc->prepare("SELECT * FROM accounts WHERE Uniqueref = ?");
       $query->bindParam(1, $key);
       $query->execute();
-      $result = $query->fetch(\PDO::FETCH_ASSOC);
-
-      return $result[$what];
+      if($query->rowCount() > 0) {
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        return $result[$what];
+      } else {
+        return '';
+      }
 
       $this->mysql = null;
     }
