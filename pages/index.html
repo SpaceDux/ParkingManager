@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
+    <div class="Loader">
+      <img src="img/loading.gif" alt="Loading...">
+    </div>
     <!-- HEADER BARS -->
     <div class="ControlBar">
       <div class="Settings">
@@ -135,11 +138,6 @@
               <div class="Body">
                 <div id="ANPR_Feed">
                   <img src="img/loading.gif" style="max-width: 80px; max-height: 80px; display: block; margin: 0 auto;" alt="">
-                  <script type="text/javascript">
-                  vehicles_ANPR_Feed(function(callback, err) {
-                    $('#ANPR_Feed').html(callback);
-                  });
-                  </script>
                 </div>
               </div>
             </div>

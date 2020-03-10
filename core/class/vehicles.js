@@ -1,4 +1,10 @@
-function vehicles_ANPR_Feed(callback)
+// Vehicle Feeds on Document.load
+$(document).ready(function() {
+  vehicles_ANPR_Feed(function(callback) {
+    $('#ANPR_Feed').html(callback);
+  });
+});
+function vehicles_ANPR_Feed(callback, error)
 {
   var moment = require('moment');
 
@@ -9,12 +15,14 @@ function vehicles_ANPR_Feed(callback)
    con.connect(function(err) {
      if (err) {
        alert("MSSQL: "+err);
+       callback('');
        return;
      }
 
      req.query("SELECT TOP 200 * FROM ANPR_REX WHERE Lane_ID = 1 AND Status < 10 ORDER BY Capture_Date DESC", function(err, data) {
        if (err) {
          alert("MSSQL: "+err);
+         callback('');
          return;
        }
        if(data.rowsAffected[0] > 0) {

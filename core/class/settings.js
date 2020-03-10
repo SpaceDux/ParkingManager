@@ -1,3 +1,4 @@
+// Get Site information via Uniqueref
 function getSite(id, callback)
 {
   var connection = mysql.createConnection({
@@ -14,3 +15,7 @@ function getSite(id, callback)
   });
   connection.end();
 }
+window.addEventListener("load", function() {
+  document.getElementsByClassName('Loader');
+  $('.Loader').addClass('Hidden');
+});
