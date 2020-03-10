@@ -1,0 +1,7 @@
+TRANSACTIONS
+INSERT INTO transactions_archive (SELECT * FROM transactions WHERE Processed_Time BETWEEN '2019-01-01' AND '2019-12-31 23:59:59')
+DELETE FROM transactions WHERE Processed_Time BETWEEN '2019-01-01' AND '2019-12-31 23:59:59'
+
+PARKING RECORDS
+INSERT INTO parking_records_archive (SELECT * FROM parking_records WHERE Arrival BETWEEN '2019-01-01' AND '2019-12-31 23:59:59')
+DELETE FROM parking_records WHERE Arrival BETWEEN '2019-01-01' AND '2019-12-31 23:59:59'

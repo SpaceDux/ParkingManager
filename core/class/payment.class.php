@@ -8,7 +8,7 @@
 		// Vars
 		protected $mysql;
 
-    function PaymentOptions2($Plate)
+    function PaymentOptions($Plate)
 		{
 			$this->mysql = new MySQL;
 			$this->account = new Account;
@@ -282,7 +282,7 @@
 			$this->account = null;
 			$this->etp = null;
 		}
-    function PaymentOptions($Plate)
+    function PaymentOptions2($Plate)
 		{
 			$this->mysql = new MySQL;
 			$this->account = new Account;
@@ -833,7 +833,7 @@
 								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
-							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
+							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
 						}
 					} else if ($CardChk == '704310' AND $FuelCardRC != "90") {
 						echo json_encode(array('Result' => 2, 'Msg' => '<b>ParkingManager</b> has identified that this card is DKV, however the Restriction Code is not 90 and has therefore been refused.'));
@@ -854,7 +854,7 @@
 								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
-							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
+							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
 						}
 					} else if ($CardChk == '789666') {
 						$CardType = 2; // Key Fuels
@@ -873,7 +873,7 @@
 								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
-							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
+							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
 						}
 					} else if ($CardChk == '706000') {
 						$CardType = 3; // UTA
@@ -892,7 +892,7 @@
 								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
-							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
+							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
 						}
 					} else if ($CardChk == '700048') {
 						$CardType = 4; // MORGAN
@@ -911,7 +911,7 @@
 								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
-							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
+							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
 						}
 					} else if ($CardChk == '708284') {
 						$CardType = 4; // MORGAN
@@ -930,7 +930,7 @@
 								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
 							}
 						} else {
-							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
+							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
 						}
 					} else if ($CardChk == '700676') {
 						$CardType = 5; // BP
@@ -952,7 +952,7 @@
 							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
 						}
 					} else {
-							echo json_encode(array('Result' => 2, 'Msg' => '<b>ParkingManager</b> is unable to identify this card. If this issue persists, please contact Ryan.'));
+						echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
 					}
 				}
 			} else if($Type == 2) {
@@ -1187,7 +1187,7 @@
 			$expiry_yr = substr($expiry, "0", "2");
 			$expiry_m = substr($expiry, "2", "2");
 			$rc = substr($expiry, "6", "2");
-			$expiry = $expiry_m."/20".$expiry_yr;
+			$expiry = $expiry_m."/".$expiry_yr;
 
 			$Card = $this->pm->RemoveSlashes($Card);
 

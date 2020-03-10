@@ -153,13 +153,12 @@
       $this->pm = null;
     }
     //check is SNAP
-    public function Check_SNAP2($Plate)
+    public function Check_SNAP($Plate)
     {
       $this->user = new User;
       $this->pm = new PM;
       global $_CONFIG;
       try {
-
         $campus = $this->user->Info("Site");
 
         $API = $_CONFIG['ETP']['API'];
@@ -182,25 +181,17 @@
         } else {
           return FALSE;
         }
-        $this->pm->LogWriter('SNAP Connection Successful', "3", "");
       } catch(RequestException $e) {
         if($e->getResponse() != null) {
           if($e->getResponse()->getStatusCode() != 200) {
             return "ERROR";
-            $this->pm->LogWriter('SNAP Connection Unsuccessful - Response not 200', "3", "");
           }
         } else {
-          $this->pm->LogWriter('SNAP Connection Unsuccessful - Response returned null', "3", "");
           return "ERROR";
         }
       }
       $this->user = null;
       $this->pm = null;
-    }
-    //check is SNAP
-    public function Check_SNAP($Plate)
-    {
-      return FALSE;
     }
     //Process SNAP transaction
     public function DeleteTransaction($tid)

@@ -114,7 +114,7 @@
   }
   // Close Payment Portal
   function PaymentPaneClose() {
-    $('#PaymentPane_Form')[0].reset();
+    // $('#PaymentPane_Form')[0].reset();
     $('#PaymentPane_Form').load(' #PaymentPane_Form');
 
     ResetModals();

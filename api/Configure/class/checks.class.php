@@ -244,7 +244,7 @@
       $expiry_yr = substr($expiry, "0", "2");
       $expiry_m = substr($expiry, "2", "2");
       $rc = substr($expiry, "6", "2");
-      $expiry = $expiry_m."/20".$expiry_yr;
+      $expiry = $expiry_m."/".$expiry_yr;
 
       $Card = $this->RemoveSlashes($Card);
 

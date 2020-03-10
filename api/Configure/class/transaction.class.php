@@ -15,7 +15,7 @@
 
       $Site = $_CONFIG['api']['site'];
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Status = 0 ORDER BY Gross ASC");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Status = 0 AND Kiosk = 1 ORDER BY Gross ASC");
       $stmt->bindParam(1, $Site);
       $stmt->bindParam(2, $Expiry);
       $stmt->bindParam(3, $Vehicle);
