@@ -22,16 +22,12 @@
       </div>
       <div class="MenuOptions" id="Menu">
         <a href="{URL}/home">
-          <div class="Opt">
-            <span><i class="fa fa-home"></i></span>
-            Home
-          </div>
+          <span><i class="fa fa-home"></i></span>
+          Home
         </a>
         <a href="{URL}/account">
-          <div class="Opt">
-            <span><i class="fa fa-user"></i></span>
-            My Account
-          </div>
+          <span><i class="fa fa-user"></i></span>
+          My Account
         </a>
       </div>
     </div>
@@ -40,9 +36,10 @@
         <div class="col-md-12">
           <div class="jumbotron">
             <h1 class="display-4">Reserve your Parking</h1>
-            <p class="lead">You can now pre-book your parking space with us..</p>
+            <p class="lead">You can now pre-book your parking space with us... To begin, you must add a vehicle to your account.</p>
             <hr>
             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#Booking_BookSiteModal" role="button">Reserve My Space</button>
+            <a class="btn btn-success btn-lg" href="{URL}/account"><i class="fa fa-truck"></i> Manage Account</a>
           </div>
         </div>
         <div class="col-md-12">

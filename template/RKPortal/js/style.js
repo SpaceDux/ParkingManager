@@ -1,8 +1,7 @@
 function Navi_Tog() {
-  var pane = document.getElementById("Menu");
-  if (pane.hasClass("Show")) {
-     pane.style.display = "block";
+  if($('#Menu').css('display') == 'block') {
+    $('#Menu').css('display', 'none');
   } else {
-    pane.style.display = "none";
+    $('#Menu').css('display', 'block');
   }
 }

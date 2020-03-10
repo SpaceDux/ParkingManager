@@ -71,7 +71,7 @@ a:hover, a:active {
   font-size: 23px;
   overflow: hidden;
 }
-.TopBar .MenuOptions .Opt {
+.TopBar .MenuOptions a {
   display: inline-block;
   height: 100%;
   width: auto;
@@ -86,14 +86,14 @@ a:hover, a:active {
   line-height: 50px;
   overflow: hidden;
 }
-.TopBar .MenuOptions .Opt span {
+.TopBar .MenuOptions a span {
   text-align: center;
   height: 25px;
   display: block;
   font-size: 25px;
   line-height: 35px;
 }
-.TopBar .MenuOptions .Opt:hover {
+.TopBar .MenuOptions a:hover {
   background: #e2e2e2;
   border-bottom: 0.5px solid #e0e0e0 !important;
 }
@@ -298,10 +298,20 @@ a:hover, a:active {
 .container {
   padding-top: 10px;
 }
+.TopBar .Show {
+  display: block;
+}
 /* RESPONSE 700px */
 @media only screen and (max-width: 800px) {
-  .Show {
-    display:block;
+  .TopBar .Show {
+    display: block;
+  }
+  .TopBar {
+    position: absolute;
+    z-index: 1000;
+  }
+  .TopBar .Brand {
+    position: absolute;
   }
   .TopBar .mobile-opt {
     display: block;
@@ -332,26 +342,23 @@ a:hover, a:active {
   }
   .TopBar .MenuOptions {
     display: none;
-    margin-top: 70px;
     margin-left: 0;
     width: 100%;
-    min-height: 70px;
+    height: auto;
     font-size: 23px;
+    background: #fff;
   }
-  .TopBar .MenuOptions .Opt {
+  .TopBar .MenuOptions a {
     display: block;
     height: auto;
     width: 100%;
     padding: 0px 22px;
     color: #3e3e3e;
     font-size: 22px;
-    border-right: 0.5px solid #dadada;
     border-bottom: 0.5px solid #e0e0e0 !important;
-    margin-right: -7px;
     text-align: center;
     cursor: pointer;
     line-height: 50px;
-    overflow: hidden;
   }
   .card {
     font-weight: 400;

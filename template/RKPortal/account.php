@@ -16,22 +16,18 @@
           Roadking<b>Portal</b>
         </div>
       </a>
-      <div class="mobile-opt">
+      <div class="mobile-opt" onClick="Navi_Tog()">
         <span><i class="fa fa-align-justify"></i></span>
         Navigate
       </div>
-      <div class="MenuOptions">
+      <div class="MenuOptions" id="Menu">
         <a href="{URL}/home">
-          <div class="Opt">
-            <span><i class="fa fa-home"></i></span>
-            Home
-          </div>
+          <span><i class="fa fa-home"></i></span>
+          Home
         </a>
         <a href="{URL}/account">
-          <div class="Opt">
-            <span><i class="fa fa-user"></i></span>
-            My Account
-          </div>
+          <span><i class="fa fa-user"></i></span>
+          My Account
         </a>
       </div>
     </div>
