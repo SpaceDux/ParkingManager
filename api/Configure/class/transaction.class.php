@@ -8,14 +8,17 @@
     protected $mysql;
 
     // Return tariffs
-    function GetTariffs($Vehicle, $Expiry, $Method)
+    function GetTariffs($Vehicle, $Expiry, $Method, $Type)
     {
       global $_CONFIG;
       $this->mysql = new MySQL;
 
       $Site = $_CONFIG['api']['site'];
-
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Status = 0 AND Kiosk = 1 ORDER BY Gross ASC");
+      if($Meal == 1) {
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers > 0 AND Status = 0 AND Kiosk = 1 ORDER BY Gross ASC");
+      } else {
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers < 1 AND Status = 0 AND Kiosk = 1 ORDER BY Gross ASC");
+      }
       $stmt->bindParam(1, $Site);
       $stmt->bindParam(2, $Expiry);
       $stmt->bindParam(3, $Vehicle);

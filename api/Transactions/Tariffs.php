@@ -11,6 +11,9 @@
   if(!isset($_POST['AccessKey'])) {
     $_POST['AccessKey'] == "";
   }
+  if(!isset($_POST['Meal'])) {
+    $_POST['Meal'] = '1';
+  }
 
   if($accesskey == $_POST['AccessKey']) {
     if(isset($_POST['Expiry']) AND isset($_POST['VehicleType']) AND isset($_POST['Method']))
