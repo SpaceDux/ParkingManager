@@ -152,7 +152,7 @@
       try {
         global $_CONFIG;
         $API = $_CONFIG['ETP']['API'];
-        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '5.0']);
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '10.0']);
         //Begin API client
         $response = $client->post('transaction/add', [
           'auth' => array($API['api_user'], $API['api_pass']),
@@ -162,22 +162,21 @@
             'serviceid' => $ID,
             'regno' => $Plate,
             'drivername' => $Name,
-            // 'committransaction' => '0'
           ]
         ]);
         $return = json_decode($response->getBody(), true);
-        if($return['outputstatus'] > 0) {
-          return $return['outputtransactionid'];
+        if($return['outputstatus'] > "0") {
+          return array("Status" => "1", "ETPID" => $return['outputtransactionid']);
         } else {
-          return FALSE;
+          return array("Status" => "0");
         }
       } catch(RequestException $e) {
         if($e->getResponse() != null) {
           if($e->getResponse()->getStatusCode() != 200) {
-            return FALSE;
+            return array("Status" => "0");
           }
         } else {
-          return FALSE;
+          return array("Status" => "0");
         }
       }
     }
@@ -186,7 +185,7 @@
       try {
         global $_CONFIG;
         $API = $_CONFIG['ETP']['API'];
-        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '5.0']);
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '10.0']);
         //Begin API client
         $response = $client->post('transaction/add', [
           'auth' => array($API['api_user'], $API['api_pass']),
@@ -198,26 +197,24 @@
             'drivername' => $Name,
             'cardno' => $Cardno,
             'cardexpiry' => $Expiry
-            // 'committransaction' => '0'
           ]
         ]);
         $return = json_decode($response->getBody(), true);
-        if($return['outputstatus'] > 0) {
-          return $return['outputtransactionid'];
+        if($return['outputstatus'] > "0") {
+          return array("Status" => "1", "ETPID" => $return['outputtransactionid']);
         } else {
-          return FALSE;
+          return array("Status" => "0");
         }
       } catch(RequestException $e) {
         if($e->getResponse() != null) {
           if($e->getResponse()->getStatusCode() != 200) {
-            return FALSE;
+            return array("Status" => "0");
           }
         } else {
-          return FALSE;
+          return array("Status" => "0");
         }
       }
     }
-
     //Break Up Fuel Card str
     //String Preperation
     public function Fuel_String_Prepare($string, $start, $end)
@@ -255,27 +252,6 @@
       ];
 
       return $result;
-    }
-    function LogWriter($Text, $Type, $Affected = '')
-    {
-      $this->mysql = new MySQL;
-      $this->user = new User;
-
-      $Site = $this->user->Info("Site");
-      $Author = $this->user->Info("Uniqueref");
-      $Date = date("Y-m-d H:i:s");
-
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO logs VALUES ('', ?, ?, ?, ?, ?, ?)");
-      $stmt->bindParam(1, $Text);
-      $stmt->bindParam(2, $Type);
-      $stmt->bindParam(3, $Date);
-      $stmt->bindParam(4, $Site);
-      $stmt->bindParam(5, $Affected);
-      $stmt->bindParam(6, $Author);
-      $stmt->execute();
-
-      $this->mysql = null;
-      $this->user = null;
     }
   }
 

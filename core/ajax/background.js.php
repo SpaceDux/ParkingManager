@@ -11,7 +11,7 @@
         }
       }
     })
-  }, 10000);
+  }, 30000);
   // Reinstate PArking
   setInterval(function(){
     $.ajax({
@@ -24,5 +24,5 @@
         }
       }
     })
-  }, 10000);
+  }, 30000);
 </script>

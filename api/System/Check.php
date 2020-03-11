@@ -16,11 +16,12 @@
 
   if($accesskey == $_POST['AccessKey'])
   {
-    $Check = $checks->Check_On_SNAP("TEST");
+    // $Check = $checks->Check_On_SNAP("TEST");
+    $Check = 1;
     if($Check !== 0) {
       echo json_encode(array("Status" => '101', "Message" => 'System Running Correctly'));
     } else {
-      echo json_encode(array("Status" => '105', "Message" => 'System Error, ETP not available! (SNAP+FUEL CARDS)'));
+      echo json_encode(array("Status" => '105', "Message" => 'System Error'));
     }
   } else {
     echo json_encode(array("Status" => '103', "Message" => 'Access denied, Key does not exist.'));

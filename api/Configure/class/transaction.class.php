@@ -209,16 +209,20 @@
           }
         } else if($Method == 4) {
           $ETPID = $this->checks->Process_SNAP_Transaction($Plate, $ETP, "RK Self Service");
-          if($ETPID != FALSE) {
+          if($ETPID['Status'] > "0") {
             // Add a parking record.
             $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
             if($VehRec != FALSE) {
               // Add transaction
-              $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
+              $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
               }
+            } else {
+              echo json_encode(array("Status" => '103', "Message" => 'ParkingManager could not create the vehicle record.'));
             }
           } else {
             echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -230,16 +234,20 @@
           if($CardChk == '704310' AND $CardDets['rc'] == "90") {
             $CardType = 1; // DKV
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add a parking record.
               $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
+                } else {
+                  echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
                 }
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager could not create the vehicle record.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -249,16 +257,20 @@
           } else if ($CardChk == '707821') {
   					$CardType = 2; // Key Fuels
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add a parking record.
               $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
+                } else {
+                  echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
                 }
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager could not create the vehicle record.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -266,16 +278,20 @@
           } else if ($CardChk == '789666') {
   					$CardType = 2; // Key Fuels
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add a parking record.
               $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
+                } else {
+                  echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
                 }
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager could not create the vehicle record.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -283,16 +299,20 @@
           } else if ($CardChk == '706000') {
   					$CardType = 3; // UTA
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add a parking record.
               $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
+                } else {
+                  echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
                 }
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager could not create the vehicle record.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -300,16 +320,20 @@
           } else if ($CardChk == '700048') {
   					$CardType = 4; // MORGAN
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add a parking record.
               $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
+                } else {
+                  echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
                 }
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager could not create the vehicle record.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -317,16 +341,20 @@
           } else if ($CardChk == '708284') {
             $CardType = 4; // MORGAN
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add a parking record.
               $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
+                } else {
+                  echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
                 }
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager could not create the vehicle record.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -334,16 +362,20 @@
           } else if ($CardChk == '700676') {
   					$CardType = 5; // BP
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add a parking record.
               $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
+                } else {
+                  echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
                 }
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager could not create the vehicle record.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -396,13 +428,15 @@
           }
         } else if($Method == 4) {
           $ETPID = $this->checks->Process_SNAP_Transaction($Plate, $ETP, "RK Self Service");
-          if($ETPID != FALSE) {
+          if($ETPID['Status'] > "0") {
             // Add transaction
-            $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
+            $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
             $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
             $this->vehicles->ExpiryUpdate($Ref, $Expiry);
             if($Payment != FALSE) {
               echo $this->PrintData($Payment, "0");
+            } else {
+              echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
             }
           } else {
             echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -413,12 +447,14 @@
           if($CardChk == '704310' AND $CardDets['rc'] == "90") {
             $CardType = 1; // DKV
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -428,12 +464,14 @@
           } else if ($CardChk == '707821') {
             $CardType = 2; // Key Fuels
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -441,12 +479,14 @@
           } else if ($CardChk == '789666') {
             $CardType = 2; // Key Fuels
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -454,12 +494,14 @@
           } else if ($CardChk == '706000') {
             $CardType = 3; // UTA
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -467,12 +509,14 @@
           } else if ($CardChk == '700048') {
             $CardType = 4; // MORGAN
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -480,12 +524,14 @@
           } else if ($CardChk == '708284') {
             $CardType = 4; // MORGAN
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
@@ -493,12 +539,14 @@
           } else if ($CardChk == '700676') {
             $CardType = 5; // BP
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
-            if($ETPID != FALSE) {
+            if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID, $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
+              } else {
+                echo json_encode(array("Status" => '103', "Message" => 'ParkingManager transaction failed.'));
               }
             } else {
               echo json_encode(array("Status" => '103', "Message" => 'ETP have rejected the transaction, please try again.'));
