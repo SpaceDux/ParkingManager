@@ -387,6 +387,7 @@
             $('#Tariff_SettlementType_Update').val(Data.Settlement_Type);
             $('#Tariff_SettlementGroup_Update').val(Data.Settlement_Group);
             $('#Tariff_SettlementMulti_Update').val(Data.Settlement_Multi);
+            $('#Tariff_AllowKiosk_Update').val(Data.Kiosk);
           }
         });
       }

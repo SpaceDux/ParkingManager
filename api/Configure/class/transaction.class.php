@@ -14,7 +14,7 @@
       $this->mysql = new MySQL;
 
       $Site = $_CONFIG['api']['site'];
-      if($Meal == 1) {
+      if($Type == 1) {
         $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers > 0 AND Status = 0 AND Kiosk = 1 ORDER BY Gross ASC");
       } else {
         $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers < 1 AND Status = 0 AND Kiosk = 1 ORDER BY Gross ASC");
@@ -608,7 +608,7 @@
       } else {
 
         $ExitCode = $this->checks->Vehicle_Info($result['Parkingref'], "ExitKey");
-        $VehType = $this->checks->Vehicle_Info($result['Parkingref'], "Type");
+        // $VehType = $this->checks->Vehicle_Info($result['Parkingref'], "Type");
 
         if($result['Method'] == 1) {
           $Method = 'Cash';
@@ -656,8 +656,7 @@
                           'Meal_Count' => $MealCount,
                           'Method' => $Method,
                           'ExitCode' => '*'.$ExitCode.'#',
-                          'Tariff_ID' => $result['Service'],
-                          'VehicleType' => $VehicleType
+                          'Tariff_ID' => $result['Service']
                           );
 
         echo json_encode($response);

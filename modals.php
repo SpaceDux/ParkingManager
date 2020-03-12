@@ -760,6 +760,17 @@
             </div>
             <br>
           </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <label for="Tariff_AllowKiosk_Update">Allow On Kiosks</label>
+              <select class="form-control" name="Tariff_AllowKiosk_Update" id="Tariff_AllowKiosk_Update">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <br>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -152,7 +152,7 @@
       try {
         global $_CONFIG;
         $API = $_CONFIG['ETP']['API'];
-        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '10.0']);
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '30.0']);
         //Begin API client
         $response = $client->post('transaction/add', [
           'auth' => array($API['api_user'], $API['api_pass']),
@@ -185,7 +185,7 @@
       try {
         global $_CONFIG;
         $API = $_CONFIG['ETP']['API'];
-        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '10.0']);
+        $client = new Client(['base_uri' => $API['api_uri'], 'timeout' => '30.0']);
         //Begin API client
         $response = $client->post('transaction/add', [
           'auth' => array($API['api_user'], $API['api_pass']),

@@ -11,14 +11,11 @@
   if(!isset($_POST['AccessKey'])) {
     $_POST['AccessKey'] == "";
   }
-  if(!isset($_POST['Meal'])) {
-    $_POST['Meal'] = '1';
-  }
 
   if($accesskey == $_POST['AccessKey']) {
-    if(isset($_POST['Expiry']) AND isset($_POST['VehicleType']) AND isset($_POST['Method']))
+    if(isset($_POST['Expiry']) AND isset($_POST['VehicleType']) AND isset($_POST['Method']) AND isset($_POST['Meal']))
     {
-      $transaction->GetTariffs($_POST['VehicleType'], $_POST['Expiry'], $_POST['Method']);
+      $transaction->GetTariffs($_POST['VehicleType'], $_POST['Expiry'], $_POST['Method'], $_POST['Meal']);
     }
     else
     {
