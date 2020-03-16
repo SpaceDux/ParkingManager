@@ -231,3 +231,45 @@
     </div>
   </div>
 </div>
+<!-- Change Password -->
+<div class="modal" id="User_ChangePassword_Modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Change your Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="User_ChangePassword_Form">
+          <div class="row">
+            <div class="col">
+              <div id="User_ChangePassword_Note"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="Current_Password">Enter your current password.</label>
+              <input class="form-control" type="password"  name="Current_Password" placeholder="Enter your current password." autofocus>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <label for="New_Password">Enter your new password.</label>
+              <input class="form-control" type="password" name="New_Password" placeholder="Enter your new password">
+            </div>
+            <div class="col">
+              <label for="Con_New_Password">Confirm your new password.</label>
+              <input class="form-control" type="password"  name="Con_New_Password" placeholder="Confirm your new password">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

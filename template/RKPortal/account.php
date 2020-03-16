@@ -36,6 +36,41 @@
         <div class="col-md-6">
           <div class="Box">
             <div class="Title">
+              Update Your Vehicles
+            </div>
+            <div class="Body">
+              <div class="container">
+                <form id="AddPlates">
+                  <div id="AddPlate_Error"></div>
+                  <div class="row">
+                    <div class="col-md-5">
+                      <label>Enter a Vehicle Registration</label>
+                      <input type="text" class="form-control" name="Plate" placeholder="EX43 PLE" style="text-transform: uppercase;" required>
+                    </div>
+                    <div class="col-md-5">
+                      <label>Choose a name for this plate (E.G; My Scania)</label>
+                      <input type="text" class="form-control" name="Name" placeholder="Assign a name" required>
+                    </div>
+                    <div class="col">
+                      <input type="submit" class="btn btn-primary" style="margin-top: 10px;width: 100%;" value="Save Plate">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <hr>
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <div id="MYPLATES-TABLE"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="Box">
+            <div class="Title">
               Update Your Account
             </div>
             <div class="Body">
@@ -80,45 +115,11 @@
                   <div class="row">
                     <div class="col">
                       <input type="submit" class="btn btn-primary float-right" value="Update Account">
+                      <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#User_ChangePassword_Modal">Change Password</button>
                     </div>
                   </div>
                 </div>
               </form>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="Box">
-            <div class="Title">
-              Update Your Vehicles
-            </div>
-            <div class="Body">
-              <div class="container">
-                <form id="AddPlates">
-                  <div id="AddPlate_Error"></div>
-                  <div class="row">
-                    <div class="col-md-5">
-                      <label>Enter a Vehicle Registration</label>
-                      <input type="text" class="form-control" name="Plate" placeholder="EX43 PLE" style="text-transform: uppercase;" required>
-                    </div>
-                    <div class="col-md-5">
-                      <label>Choose a name for this plate (E.G; My Scania)</label>
-                      <input type="text" class="form-control" name="Name" placeholder="Assign a name" required>
-                    </div>
-                    <div class="col">
-                      <input type="submit" class="btn btn-primary" style="margin-top: 10px;width: 100%;" value="Save Plate">
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <hr>
-              <div class="container">
-                <div class="row">
-                  <div class="col">
-                    <div id="MYPLATES-TABLE"></div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

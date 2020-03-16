@@ -236,7 +236,16 @@
 
       $this->mysql = null;
     }
-    
+    // Update user password
+    function User_ChangePassword($Old, $New, $NewCon)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("");
+
+      $this->mysql = null;
+    }
+
   }
 
 ?>
