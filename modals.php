@@ -241,8 +241,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <form id="User_ChangePassword_Form">
+      <form id="User_ChangePassword_Form">
+        <div class="modal-body">
           <div class="row">
             <div class="col">
               <div id="User_ChangePassword_Note"></div>
@@ -265,11 +265,12 @@
               <input class="form-control" type="password"  name="Con_New_Password" placeholder="Confirm your new password">
             </div>
           </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-primary" value="Save Changes">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

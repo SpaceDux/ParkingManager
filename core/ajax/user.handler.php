@@ -8,5 +8,7 @@
     $user->User_Login(htmlspecialchars($_POST['Email']), htmlspecialchars($_POST['Password']));
   } else if($handler == "User.User_Update") {
     $user->User_Info_Update(htmlspecialchars($_POST['First']), htmlspecialchars($_POST['Last']), htmlspecialchars($_POST['Email']), htmlspecialchars($_POST['Telephone']), htmlspecialchars($_POST['Password']));
+  } else if($handler == "User.User_ChangePassword") {
+    $user->User_ChangePassword(htmlspecialchars($_POST['Current_Password']), htmlspecialchars($_POST['New_Password']), htmlspecialchars($_POST['Con_New_Password']));
   }
 ?>

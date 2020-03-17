@@ -83,8 +83,8 @@
           $('#Booking_Confirmation_Note').html('<div class="alert alert-danger">'+Response.Message+'</div>');
         } else {
           $('#Booking_BookModal').modal('hide');
-          $('#Booking_Cancelled_Note').html('<div class="alert alert-success">'+Response.Message+'</div>');
-          $('#Booking_CancelModal').modal('show');
+          // $('#Booking_Cancelled_Note').html('<div class="alert alert-success">'+Response.Message+'</div>');
+          // $('#Booking_CancelModal').modal('show');
         }
       }
     });
