@@ -241,29 +241,7 @@
     {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT Password FROM users WHERE Uniqueref = ?");
-      $stmt->bindParam(1, $_SESSION['ID']);
-      $stmt->execute();
-      if($stmt->rowCount() > 0) {
-        $OldPW = $stmt->fetch(\PDO::FETCH_ASSOC);
-        if(password_verify($Old, $OldPW['Password'])) {
-          if($New === $NewCon) {
-            $stmt = $this->mysql->dbc->prepare("UPDATE users SET Password = ? WHERE Uniqueref = ?");
-            $stmt->bindValue(1, password_hash($New, PASSWORD_BCRYPT));
-            $stmt->bindValue(2, $_SESSION['ID']);
-            $stmt->execute();
-            if($stmt->rowCount() > 0) {
-              echo json_encode(array('Result' => 1, 'Message' => 'Successfully updated your password.'));
-            }
-          } else {
-            echo json_encode(array('Result' => 0, 'Message' => 'Your new passwords do not match.'));
-          }
-        } else {
-          echo json_encode(array('Result' => 0, 'Message' => 'Your current password doesn\'t match our record.'));
-        }
-      } else {
-        echo json_encode(array('Result' => 0, 'Message' => 'Unable to find your account. Please try again.'));
-      }
+      $stmt = $this->mysql->dbc->prepare("");
 
       $this->mysql = null;
     }

@@ -38,8 +38,8 @@
             <h1 class="display-4">Reserve your Parking</h1>
             <p class="lead">You can now pre-book your parking space with us... To begin, you must add a vehicle to your account.</p>
             <hr>
-            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#Booking_BookSiteModal" role="button">Reserve My Space</button><br><br>
-            <a class="btn btn-success btn-lg" href="{URL}/account"><i class="fa fa-truck"></i> Account & Vehicles</a>
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#Booking_BookSiteModal" role="button">Reserve My Space</button>
+            <a class="btn btn-success btn-lg" href="{URL}/account"><i class="fa fa-truck"></i> Manage Account</a>
           </div>
         </div>
         <div class="col-md-12">
