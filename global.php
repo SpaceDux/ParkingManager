@@ -2,6 +2,7 @@
 
 //Required Files
 	date_default_timezone_set('Europe/London');
+	session_start();
 
 	//Config
 	require_once(__DIR__.'/core/manage/config.php');
@@ -36,9 +37,8 @@
 	$user = new PM\User;
 	$vehicles = new PM\Vehicles;
 	$booking = new PM\Booking;
+	$mailer = new PM\Mailer;
 
-
-	//Other Activating
-	session_start();
-
+	// SETS DOCROUTE AS SESSION
+	$_SESSION['DOCROUTE'] = $_SERVER['DOCUMENT_ROOT'].'/'.$_CONFIG['site']['doc_route'];
 ?>

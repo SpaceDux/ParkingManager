@@ -1,5 +1,4 @@
 <?php
-require 'global.php';
 
 	if (!isset($_GET['page'])) {
 		header("Location: index");
@@ -10,8 +9,7 @@ require 'global.php';
 	} else if ($_GET['page'] == "index" AND isset($_SESSION['ID'])) {
 		header("Location: home");
 	}
-
-	// $user->Logout();
+	require 'global.php';
 
 	$template->Show($template->SetParams());
 ?>
