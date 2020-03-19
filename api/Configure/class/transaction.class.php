@@ -454,6 +454,7 @@
               // Add transaction
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
               } else {
@@ -471,6 +472,7 @@
               // Add transaction
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
               } else {
@@ -486,6 +488,7 @@
               // Add transaction
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
               } else {
@@ -501,6 +504,7 @@
               // Add transaction
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
               } else {
@@ -516,6 +520,7 @@
               // Add transaction
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
               } else {
@@ -531,6 +536,7 @@
               // Add transaction
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
               } else {
@@ -546,6 +552,7 @@
               // Add transaction
               $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+              $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
               } else {
