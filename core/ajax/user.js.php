@@ -83,5 +83,24 @@
       });
       return false;
     });
+    // Change user password
+    $(document).on('submit', '#User_ChangePassword_Form', function() {
+      event.preventDefault();
+      var Data = $(this).serialize();
+      $.ajax({
+        url: "{URL}/core/ajax/user.handler.php?handler=User.User_ChangePassword",
+        data: Data,
+        method: "POST",
+        dataType: "json",
+        success:function(Response)
+        {
+          if(Response.Result < 1) {
+            $('#User_ChangePassword_Note').html('<div class="alert alert-danger">'+Response.Message+'</div>');
+          } else {
+            $('#User_ChangePassword_Note').html('<div class="alert alert-success">'+Response.Message+'</div>');
+          }
+        }
+      });
+    });
   });
 </script>

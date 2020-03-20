@@ -1,5 +1,5 @@
 <?php
-  require($_SERVER['DOCUMENT_ROOT']."/portal/global.php");
+  require($_SERVER['DOCUMENT_ROOT']."/global.php");
   $handler = isset($_GET['handler'])?$_GET['handler']:'';
 
   if($handler == "Vehicles.Vehicles_MyPlatesAsTbl") {

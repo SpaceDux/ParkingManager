@@ -27,7 +27,7 @@
           $stmt->bindParam(4, $Date);
           $stmt->bindParam(5, $Date);
           $stmt->bindValue(6, $_SESSION['ID']);
-          if($stmt->execute()){
+          if($stmt->execute()) {
             echo json_encode(array('Result' => 1, 'Message' => 'Plate added to your account.'));
           }
         } else {

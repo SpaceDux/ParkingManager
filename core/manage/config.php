@@ -11,7 +11,7 @@
 	$_CONFIG['mysql']['db'] = 'pmcp'; //Select the database you want to connect too
 
 	// Site Configuration
-	$_CONFIG['site']['url'] = 'http://192.168.0.5/ParkingManager'; //Server URL example.com (DOES NOT END WITH /)
+	$_CONFIG['site']['url'] = 'http://192.168.0.5'; //Server URL example.com (DOES NOT END WITH /)
 	$_CONFIG['site']['name'] = 'ParkingManager Portal'; //Website name, {SITE_NAME}
 	$_CONFIG['site']['template'] = 'RKPortal'; //Fenrir Template System, Select the Template Directory
 	$_CONFIG['site']['doc_route'] = 'portal'; //Directory after $_SERVER['DOCUMENT_ROOT']
