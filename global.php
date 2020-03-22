@@ -1,7 +1,10 @@
 <?php
 
-//Required Files
+	//Required Files
 	date_default_timezone_set('Europe/London');
+	// Other Activations
+	session_start();
+	error_reporting(E_ALL);
 
 	//Config
 	require_once(__DIR__.'/core/manage/config.php');
@@ -37,7 +40,4 @@
 	$vehicles = new PM\Vehicles;
 	$booking = new PM\Booking;
 	$mailer = new PM\Mailer;
-
-	session_start();
-	error_reporting(E_ALL);
 ?>

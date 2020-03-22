@@ -17,8 +17,8 @@
       $mail->SMTPAuth   = true;
       $mail->Username   = 'rp@roadkingtruckstop.co.uk';              // SMTP username
       $mail->Password   = 'tlyyIiS4';                          // SMTP password
-      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
       $mail->Port       = 25;
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
 
       //Set who the message is to be sent from
       $mail->setFrom('rp@roadkingtruckstop.co.uk', 'Roadking Portal');
@@ -39,6 +39,22 @@
         return "0";
       } else {
         return "1";
+      }
+    }
+    // Send cancellation
+    function SendCancellation($Too, $Type)
+    {
+      global $_CONFIG;
+      $mail = new PHPMailer;
+      // User based cancel
+      if($Type == 1)
+      {
+
+      }
+      // Auto cancel due to late
+      else if($Type == 2)
+      {
+
       }
     }
   }

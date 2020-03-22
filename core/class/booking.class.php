@@ -8,10 +8,11 @@
     {
       $this->Booking_RestoreBookedBays();
     }
-    // TO BE USED VIA CONSTRUCT, restore bookings if time greater than expiry AND status == 2
+    // TO BE USED VIA CONSTRUCT, Restore Bays
     function Booking_RestoreBookedBays()
     {
       $this->mysql = new MySQL;
+      $this->mail = new Mailer;
 
       $Date = date("Y-m-d H:i:s");
 
@@ -48,7 +49,6 @@
       }
 
       // IF STATUS = 1 AND EXPIRY < CUR TIME
-
       $Date = date("Y-m-d H:i:s");
 
       $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Status = 1");
@@ -62,8 +62,30 @@
         }
       }
 
+      // Booking Expiry
+      $Expiry = date($Date, strtotime('- 30 minutes'));
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status < 1");
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        foreach($stmt->fetchAll() as $row) {
+          if($Expiry < $row['ETA']) {
+            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4' WHERE id = ?");
+            $stmt->bindParam(1, $row['id']);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+              // SEND LATE CANCEL EMAIL
+              $stmt = $this->mysql->dbc->prepare("UPDATE users SET Strikes = Strikes + 1, Last_Updated = ? WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $Date);
+              $stmt->bindValue(2, $row['Author']);
+              $stmt->execute();
+            }
+          }
+        }
+      }
+
 
       $this->mysql = null;
+      $this->mail = null;
     }
     // Allocate Bay Temporarily (MAX 5 min)
     function Booking_AllocateBayTemp($Site)
