@@ -54,6 +54,8 @@
     $payment->New_Settlement_Group($_POST['Name'], $_POST['Order'], $_POST['Type'], $_POST['Site']);
   } else if($handler == "Payment.Delete_Settlement_Group") {
     $payment->Delete_Settlement_Group($_POST['Ref']);
+  } else if($handler == "Payment.CheckBlacklisted") {
+    $payment->CheckBlacklisted($_POST['Plate']);
   }
 
 ?>

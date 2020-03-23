@@ -40,6 +40,12 @@
     $vehicles->Search_ANPR_Records($_POST['Key']);
   } else if($handler == "Vehicles.Director") {
     $vehicles->Director($_POST['Plate']);
+  } else if($handler == "Vehicles.AddToBlacklist") {
+    $vehicles->AddToBlacklist($_POST['Plate'], $_POST['Type'], $_POST['Message']);
+  } else if($handler == "Vehicles.RemindMeBlacklist") {
+    $vehicles->RemindMeBlacklist($_POST['Ref']);
+  } else if($handler == "Vehicles.Blacklist_Delete") {
+    $vehicles->Blacklist_Delete($_POST['Ref']);
   }
 
 ?>

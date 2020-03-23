@@ -415,4 +415,20 @@
       }
     });
   });
+  // Add vehicle to blacklist
+  $(document).on('click', '#Blacklist_Add', function() {
+    event.preventDefault();
+    var Plate = $('#Blacklist_AddPlate').val();
+    var Type = $('#Blacklist_AddType').val();
+    var Message = $('#Blacklist_AddMessage').val();
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.AddToBlacklist",
+      data: {Plate:Plate, Type:Type, Message:Message},
+      method: "POST",
+      dataType: "json",
+      success:function(Response) {
+        alert(Response.Message);
+      }
+    });
+  });
 </script>

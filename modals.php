@@ -1373,7 +1373,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Add Settlement Group</h5>
+        <h5 class="modal-title">Add a vehicle to a blacklist</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1410,6 +1410,76 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <input type="button" class="btn btn-primary" id="SettlementGroup_Add" value="Save Changes">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add to blacklist -->
+<div class="modal" id="Blacklist_AddModal" tabindex="-1" role="dialog" aria-labelledby="Blacklist_AddModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Settlement Group</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <label>Plate</label>
+            <input type="text" class="form-control" name="Blacklist_AddPlate" id="Blacklist_AddPlate" autofocus>
+          </div>
+          <div class="col">
+            <label>Type</label>
+            <select class="form-control" name="Blacklist_AddType" id="Blacklist_AddType">
+              <option value="1">Alert</option>
+              <option value="2">Banned</option>
+            </select>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <label>Message</label>
+            <textarea class="form-control" name="Blacklist_AddMessage" id="Blacklist_AddMessage" rows="8" cols="80"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="button" class="btn btn-primary" id="Blacklist_Add" value="Save Changes">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Display Blacklist -->
+<div class="modal" id="Blacklist_Show" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Blacklist_Show" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Blacklisted Vehicle Warning</h5>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <input type="hidden" id="Blacklist_Ref">
+            <h2 id="Blacklist_ShowPlate">
+
+            </h2>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <p id="Blacklist_ShowMessage">
+
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="Blacklist_RemindMeLater">Remind Me Later</button>
       </div>
     </div>
   </div>

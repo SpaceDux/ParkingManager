@@ -3,6 +3,22 @@
   function PaymentPaneToggle(Ref, Plate, Trl, Time, Type) {
     $('#Director_Plate').val('');
     $('#Director_Results').html('');
+    // Firstly;
+    // Check Blacklisted
+    $.ajax({
+      url: "{URL}/core/ajax/payment.handler.php?handler=Payment.CheckBlacklisted",
+      data: {Plate:Plate},
+      type: "POST",
+      dataType: "json",
+      success:function(Data) {
+        if(Data.Status == 1) {
+          $('#Blacklist_Ref').val(Data.Uniqueref);
+          $('#Blacklist_ShowPlate').html(Data.Plate);
+          $('#Blacklist_ShowMessage').html(Data.Message);
+          $('#Blacklist_Show').modal('show');
+        }
+      }
+    });
     // Begin Payment
     var Ref = Ref;
     var Plate = Plate;
@@ -105,12 +121,14 @@
     $('#Modal_BodySNAP').load(' #Modal_BodySNAP');
     $('#Modal_BodyFuel').load(' #Modal_BodyFuel');
     $('#DuplicateVehicleBody').load(' #DuplicateVehicleBody');
+    $('#Blacklist_Show').load(' #Blacklist_Show');
     //hide modals
     $('#Payment_ConfirmationCash_Modal').modal('hide');
     $('#Payment_ConfirmationCard_Modal').modal('hide');
     $('#Payment_ConfirmationAcc_Modal').modal('hide');
     $('#Payment_ConfirmationSNAP_Modal').modal('hide');
     $('#Payment_ConfirmationFuel_Modal').modal('hide');
+    $('#Blacklist_Show').modal('hide');
   }
   // Close Payment Portal
   function PaymentPaneClose() {

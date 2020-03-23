@@ -106,5 +106,33 @@
        $this->mssql = null;
        $this->pm = null;
      }
+     function Blacklist_Check()
+     {
+       $this->mssql = new MSSQL;
+       $this->mysql = new MySQL;
+
+       $Date = date("Y-m-d H:i:s");
+
+       $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+       $stmt->execute();
+       foreach($stmt->fetchAll() as $row) {
+         $stmt = $this->mysql->dbc->prepare("SELECT * FROM blacklists WHERE Plate = ?");
+         $stmt->bindValue(1, $row['Plate']);
+         $stmt->execute();
+         if($stmt->rowCount() > 0) {
+           $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+           if($Date > $result['Reminder']) {
+             if($result['Type'] == "1") {
+               $Type = "Alert";
+             } else if($result['Type'] == "2") {
+               $Type = "Banned";
+             }
+             echo json_encode(array('Uniqueref' => $result['Uniqueref'], 'Plate' => $row['Plate'], 'Type' => $Type, 'Message' => $result['Message']));
+           }
+         }
+       }
+       $this->mssql = null;
+       $this->mysql = null;
+     }
   }
 ?>

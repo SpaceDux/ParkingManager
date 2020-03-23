@@ -895,7 +895,7 @@
 		}
 		//Break Up Fuel Card str
 		//String Preperation
-		public function Fuel_String_Prepare($string, $start, $end)
+		function Fuel_String_Prepare($string, $start, $end)
 		{
 			$string = ' ' . $string;
 			$ini = strpos($string, $start);
@@ -1950,6 +1950,22 @@
 
 			$this->mysql = null;
 			$this->pm = null;
+		}
+		function CheckBlacklisted($Plate)
+		{
+			$this->mysql = new MySQL;
+
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM blacklists WHERE Plate = ?");
+			$stmt->bindParam(1, $Plate);
+			$stmt->execute();
+			if($stmt->rowCount() > 0) {
+				$result = $stmt->fetch(\PDO::FETCH_ASSOC);
+				echo json_encode(array('Status' => 1, 'Uniqueref' => $result['Uniqueref'], 'Plate' => $Plate, 'Message' => $result['Message']));
+			} else {
+				echo json_encode(array('Status' => 0));
+			}
+
+			$this->mysql = null;
 		}
 	}
 ?>

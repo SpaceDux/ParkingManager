@@ -18,6 +18,9 @@ a:hover, a:focus {
   text-decoration: none;
   color: inherit;
 }
+.modal {
+  z-index: 9999;
+}
 /* Scroll Bar */
 ::-webkit-scrollbar {
     width: 10px;
@@ -478,7 +481,7 @@ a:hover, a:focus {
     box-shadow: 0 0 20px 0 rgba(0,0,0,1);
     display: none;
     margin-top: 50px;
-    z-index: 999;
+    z-index: 99;
   }
   .Navigation_Bar > ul {
     margin: 0 auto;

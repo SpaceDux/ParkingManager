@@ -6,6 +6,8 @@
     $background->Automation_Exit();
   } else if($handler == "Background.Parking_Reinstate") {
     $background->Parking_Reinstate();
+  } else if($handler == "Background.Blacklist_Check") {
+    $background->Blacklist_Check();
   }
 
 

@@ -166,6 +166,7 @@
           </a>
           <div class="Dropdown_Menu">
             <a target="_blank" href="{URL}/yardcheck">Yard Check</a>
+            <a href="{URL}/blacklist">Blacklist</a>
           </div>
         </li>
         <li class="Selected">

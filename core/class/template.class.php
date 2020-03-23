@@ -59,6 +59,8 @@
 				$this->Assign('all_count', $this->vehicles->Renewal_Feed_Count() + $this->vehicles->ANPR_Feed_Count() + $this->vehicles->Parked_Feed_Count());
 				$this->Assign('yardcheck', $this->vehicles->YardCheck());
 				$this->Assign('settlement_groups', $this->payment->Settlement_Groups());
+				$this->Assign('blacklist_alert', $this->vehicles->ViewBlacklist(1));
+				$this->Assign('blacklist_banned', $this->vehicles->ViewBlacklist(2));
 			}
 			$this->user = null;
 			$this->pm = null;

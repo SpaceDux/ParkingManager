@@ -11,7 +11,7 @@
 	$_CONFIG['mysql']['db'] = 'parking_manager'; //Select the database you want to connect too
 
 	// Site Configuration
-	$_CONFIG['site']['url'] = 'http://192.168.12.41/ParkingManager'; //Server URL example.com (DOES NOT END WITH /)
+	$_CONFIG['site']['url'] = 'http://192.168.0.5'; //Server URL example.com (DOES NOT END WITH /)
 	$_CONFIG['site']['name'] = 'ParkingManager'; //Website name, {SITE_NAME}
 	$_CONFIG['site']['template'] = 'Vision'; //Fenrir Template System, Select the Template Directory
 

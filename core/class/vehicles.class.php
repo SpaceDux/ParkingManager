@@ -1138,6 +1138,113 @@
       $this->user = null;
       $this->pm = null;
     }
+    // Blacklist
+    function ViewBlacklist($Type)
+    {
+      $this->mysql = new MySQL;
+      $table = '<table class="table table-dark table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Plate</th>
+                      <th scope="col">Reason</th>
+                      <th scope="col">Date</th>
+                      <th scope="col"><i class="fa fa-cog"></i></th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+      $table_end = '</tbody></table>';
+      $table_1 = '';
+      $table_2 = '';
+      if($Type == 1) {
+        // Alert Security
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM blacklists WHERE Type = 1");
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          foreach($stmt->fetchAll() as $row) {
+            $table_1 .= '<tr>
+                          <td>'.$row['Plate'].'</td>
+                          <td>'.$row['Message'].'</td>
+                          <td>'.$row['Added'].'</td>
+                          <td><button class="btn btn-danger" onClick="Blacklist_Delete(\''.$row['Uniqueref'].'\')"><i class="fa fa-trash"></i></button></td>
+                        </tr>';
+          }
+        }
+        return $table.$table_1.$table_end;
+      } else {
+        // Banned from Parking
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM blacklists WHERE Type = 2");
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          foreach($stmt->fetchAll() as $row) {
+            $table_2 .= '<tr>
+                          <td>'.$row['Plate'].'</td>
+                          <td>'.$row['Message'].'</td>
+                          <td>'.$row['Added'].'</td>
+                          <td><button class="btn btn-danger" onClick="Blacklist_Delete(\''.$row['Uniqueref'].'\')"><i class="fa fa-trash"></i></button></td>
+                        </tr>';
+          }
+        }
+        return $table.$table_2.$table_end;
+      }
+
+      $this->mysql = null;
+    }
+    // Add vehicle to blacklist
+    function AddToBlacklist($Plate, $Type, $Message)
+    {
+      $this->mysql = new MySQL;
+
+      $Date = date("Y-m-d H:i:s");
+      $Uniqueref = date("YmdHis").mt_rand(11111, 99999);
+
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO blacklists VALUES('', ?, ?, ?, ? ,? ,?, ?)");
+      $stmt->bindParam(1, $Uniqueref);
+      $stmt->bindValue(2, strtoupper($Plate));
+      $stmt->bindParam(3, $Message);
+      $stmt->bindValue(4, $Date);
+      $stmt->bindValue(5, $_SESSION['id']);
+      $stmt->bindParam(6, $Type);
+      $stmt->bindParam(7, $Date);
+      if($stmt->execute()) {
+        echo json_encode(array('Status' => '1', 'Message' => 'Successfully updated the blacklist.'));
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Can\'t update the blacklist.'));
+      }
+    }
+    // Set Blacklist to remind later
+    function RemindMeBlacklist($Ref)
+    {
+      $this->mysql = new MySQL;
+
+      $Date = date("Y-m-d H:i:s", strtotime('+ 20 minutes'));
+
+      $stmt = $this->mysql->dbc->prepare("UPDATE blacklists SET Reminder = ? WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $Date);
+      $stmt->bindParam(2, $Ref);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        echo json_encode(array('Status' => '1', 'Message' => 'Reminder set.'));
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Reminder cound not be set.'));
+      }
+
+      $this->mysql = null;
+    }
+    function Blacklist_Delete($Ref)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("DELETE FROM blacklists WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $Ref);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        echo json_encode(array('Status' => '1', 'Message' => 'Deleted blacklist entry.'));
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Couldn\'t delete blacklist entry.'));
+      }
+
+      $this->mysql = null;
+    }
   }
 
 ?>

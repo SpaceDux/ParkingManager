@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{SITE_NAME}: YardCheck</title>
+    <title>{SITE_NAME}: Vehicle Blacklists</title>
     {STYLESHEETS}
   </head>
   <body>
@@ -261,10 +261,38 @@
     </div>
     <!-- Stat Bar END -->
     <div class="Wrapper" id="Wrapper">
+      <div class="row" style="padding-top: 10px;">
+        <div class="col">
+          <div class="jumbotron">
+            <h1 class="display-7">Vehicle Blacklists</h1>
+            <p class="lead">View & Add a vehicle to the blacklist.</p>
+            <div class="row">
+              <div class="col-md-2">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Blacklist_AddModal">Add Vehicle</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-12">
           <div class="Box">
-            {YARDCHECK}
+            <ul class="nav nav-tabs" id="Blacklist_Tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="alert-tab" data-toggle="tab" href="#alert" role="tab" aria-controls="alert" aria-selected="true">Alert</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="banned-tab" data-toggle="tab" href="#banned" role="tab" aria-controls="banned" aria-selected="false">Banned</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="Blacklist_TabContent">
+              <div class="tab-pane fade show active" id="alert" role="tabpanel" aria-labelledby="alert-tab">
+                {BLACKLIST_ALERT}
+              </div>
+              <div class="tab-pane fade" id="banned" role="tabpanel" aria-labelledby="banned-tab">
+                {BLACKLIST_BANNED}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -276,28 +304,14 @@
         $('#AddPlate_Plate').focus();
         ANPR_AddPlate();
       });
-      // Handle Modal autofocus
-      $('.modal').on('shown.bs.modal', function() {
-        $(this).find('[autofocus]').focus();
-      });
       $( function() {
         $( "#TL_DateStart" ).datepicker({dateFormat: "dd-mm-yy"});
         $( "#TL_DateEnd" ).datepicker({dateFormat: "dd-mm-yy"});
       });
-      function Checked(str) {
-        event.preventDefault();
-
-        var Class = $('#YC'+str);
-        if(Class.hasClass('table-success')) {
-          Class.removeClass('table-success');
-        } else {
-          Class.addClass('table-success');
-        }
-      }
-
-      window.onbeforeunload = function() {
-          return "Are you sure you want to leave?";
-        }
+      // Handle Modal autofocus
+      $('.modal').on('shown.bs.modal', function() {
+        $(this).find('[autofocus]').focus();
+      });
     </script>
     <?php require("core/ajax/controller.php"); ?>
     <?php require("modals.php"); ?>
