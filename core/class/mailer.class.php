@@ -12,13 +12,14 @@
       global $_CONFIG;
       $mail = new PHPMailer();
       $mail->IsSMTP();
-      $mail->Timeout    =   20; // set the timeout (seconds)
+      $mail->SMTPDebug = 3; //Alternative to above constant
+      $mail->Timeout       =   20; // set the timeout (seconds)
       $mail->Host       = "us2.smtp.mailhostbox.com";
       $mail->SMTPAuth   = true;
       $mail->Username   = 'rp@roadkingtruckstop.co.uk';              // SMTP username
       $mail->Password   = 'tlyyIiS4';                          // SMTP password
-      $mail->Port       = 25;
       $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+      $mail->Port       = 25;
 
       //Set who the message is to be sent from
       $mail->setFrom('rp@roadkingtruckstop.co.uk', 'Roadking Portal');
@@ -39,22 +40,6 @@
         return "0";
       } else {
         return "1";
-      }
-    }
-    // Send cancellation
-    function SendCancellation($Too, $Type)
-    {
-      global $_CONFIG;
-      $mail = new PHPMailer;
-      // User based cancel
-      if($Type == 1)
-      {
-
-      }
-      // Auto cancel due to late
-      else if($Type == 2)
-      {
-
       }
     }
   }
