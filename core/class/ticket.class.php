@@ -7,7 +7,7 @@
   class Ticket {
     public $ImgDir;
     function __construct() {
-      $this->ImgDir = $_SERVER['DOCUMENT_ROOT'].'/PM4/printerImg/';
+      $this->ImgDir = $_SERVER['DOCUMENT_ROOT'].'/printerImg/';
     }
     //Print Columns on ticket.
     function Printer_Columns($leftCol, $rightCol, $leftWidth, $rightWidth, $space = 0)
