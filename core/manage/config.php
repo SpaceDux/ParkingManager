@@ -16,6 +16,9 @@
 	$_CONFIG['site']['template'] = 'RKPortal'; //Fenrir Template System, Select the Template Directory
 	$_CONFIG['site']['doc_route'] = 'portal'; //Directory after $_SERVER['DOCUMENT_ROOT']
 
+	// API Configuration
+	$_CONFIG['API']['AccessKey'] = 'dk&!ssf^1'; //AccessKey required for api auth.
+
 	// Misc
 	$_CONFIG['misc']['copy'] = 'ParkingManager 4 | Copyright &copy; 2019 Roadking Truckstops'; //Fenrir Template System, Select the Template Directory
 	$_CONFIG['misc']['version'] = '1.0.0';

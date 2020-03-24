@@ -39,6 +39,28 @@
 
       $this->mysql = null;
     }
+
+    // Authenticate user via api
+    function PM_SiteAuthenticate_API($User, $Pass)
+    {
+      $this->mysql = new MySQL;
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM settings WHERE API_User = ? AND Status = 0 LIMIT 1");
+      $stmt->bindParam(1, $User);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if($result['API_Password'] === $Pass) {
+          return array("Status" => 1, "Message" => 'Successfully authenticated.', 'Site_ID' => $result['id']);
+        } else {
+          return array("Status" => 0, "Message" => 'That password does not match our record.');
+        }
+      } else {
+        return array("Status" => 0, "Message" => 'Cant find that user?');
+      }
+
+      $this->mysql = null;
+    }
   }
 
 ?>

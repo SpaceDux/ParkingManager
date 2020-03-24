@@ -63,12 +63,12 @@
       }
 
       // Booking Expiry
-      $Expiry = date($Date, strtotime('- 30 minutes'));
+      $Expiry = date("Y-m-d H:i:s", strtotime($Date.' -30 minutes'));
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status < 1");
       $stmt->execute();
       if($stmt->rowCount() > 0) {
         foreach($stmt->fetchAll() as $row) {
-          if($Expiry < $row['ETA']) {
+          if($Expiry > $row['ETA']) {
             $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4' WHERE id = ?");
             $stmt->bindParam(1, $row['id']);
             $stmt->execute();
@@ -418,6 +418,82 @@
       }
 
       $this->mysql = null;
+    }
+    // API FUNCTIONS
+    // Get All active bookings via API
+    function Booking_GetAllActiveBookings_API($User, $Pass)
+    {
+      $this->mysql = new MySQL;
+      $this->pm = new PM;
+
+      if(isset($User) AND isset($Pass)) {
+        $Auth = $this->pm->PM_SiteAuthenticate_API($User, $Pass);
+        if($Auth['Status'] == "1") {
+          $Site = $Auth['Site_ID'];
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status < 2 AND Site = ?");
+          $stmt->bindParam(1, $Site);
+          $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            $data = [];
+            foreach($stmt->fetchAll() as $row) {
+              $dataEach = [];
+              $dataEach['Uniqueref'] = $row['Uniqueref'];
+              $dataEach['Plate'] = $row['Plate'];
+              $dataEach['ETA'] = $row['ETA'];
+              $dataEach['VehicleType'] = $row['VehicleType'];
+              $dataEach['Date'] = $row['Date'];
+              array_push($data, $dataEach);
+            }
+            echo json_encode(array("Status" => "1", "Message" => "Successfully found bookings.", "Data" => $data));
+          } else {
+            echo json_encode(array("Status" => "0", "Message" => "No active bookings found."));
+          }
+        } else {
+          echo json_encode(array("Status" => "0", "Message" => $Auth['Message']));
+        }
+      } else {
+        echo json_encode(array("Status" => "0", "Message" => "Please ensure all data is present."));
+      }
+
+      $this->mysql = null;
+    }
+    // Update a booking remotely
+    function Booking_UpdateBooking_API($User, $Pass, $Ref, $ETA, $Status, $VehicleType)
+    {
+      $this->mysql = new MySQL;
+      $this->pm = new PM;
+
+      if(isset($User) AND isset($Pass)) {
+        $Auth = $this->pm->PM_SiteAuthenticate_API($User, $Pass);
+          if($Auth['Status'] == "1") {
+            if($ETA != null OR $ETA != '') {
+              $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET ETA = ? WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $ETA);
+              $stmt->bindParam(2, $Ref);
+              $stmt->execute();
+            }
+            if($Status != null OR $Status != '') {
+              $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = ? WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $Status);
+              $stmt->bindParam(2, $Ref);
+              $stmt->execute();
+            }
+            if($VehicleType != null OR $VehicleType != '') {
+              $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET VehicleType = ? WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $VehicleType);
+              $stmt->bindParam(2, $Ref);
+              $stmt->execute();
+            }
+            echo json_encode(array("Status" => "1", "Message" => "Successfully found & updated booking."));
+          } else {
+            echo json_encode(array("Status" => "0", "Message" => "Could not authenticate."));
+          }
+        } else {
+          echo json_encode(array("Status" => "0", "Message" => "Missing data. Please ensure all data is present."));
+        }
+
+      $this->mysql = null;
+      $this->pm = null;
     }
   }
 ?>
