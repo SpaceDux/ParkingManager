@@ -33,6 +33,25 @@ a:hover, a:active {
   animation: fadeOut 1s;
   animation-fill-mode: forwards;
 }
+.Loader-page {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 999;
+  align-items: center;
+}
+.Loader-page > img {
+  width: 100px;
+}
+.Loader-page.Hidden {
+  animation: fadeOut 1s;
+  animation-fill-mode: forwards;
+}
+
 
 @keyframes fadeOut {
   100% {

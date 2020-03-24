@@ -15,7 +15,26 @@ function getSite(id, callback)
   });
   connection.end();
 }
+// Full window loading
 window.addEventListener("load", function() {
   document.getElementsByClassName('Loader');
   $('.Loader').addClass('Hidden');
 });
+// Change page
+function settings_pageContent(page)
+{
+  $('.Loader-page').removeClass('Hidden');
+  // Selected page
+  if(page == "home") {
+    // run required, begin preload.
+    $('#PageDisplay').load("../pages/content/home-page.html");
+    // Run functions
+    // Get ANPR
+    vehicles_ANPR_Feed(function(callback) {
+      $('#ANPR_Feed').html(callback);
+      // Get all vehicles
+      
+      $('.Loader-page').addClass('Hidden');
+    });
+  }
+}

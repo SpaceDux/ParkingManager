@@ -1,10 +1,4 @@
-// Vehicle Feeds on Document.load
-$(document).ready(function() {
-  vehicles_ANPR_Feed(function(callback) {
-    $('#ANPR_Feed').html(callback);
-  });
-});
-function vehicles_ANPR_Feed(callback, error)
+function vehicles_ANPR_Feed(callback, counts, error)
 {
   var moment = require('moment');
 
@@ -86,4 +80,8 @@ function vehicles_ANPR_Feed(callback, error)
    });
 
  });
+}
+function vehicles_ALL_Feed(callback, counts)
+{
+  
 }
