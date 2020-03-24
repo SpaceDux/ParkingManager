@@ -136,13 +136,18 @@
           <div class="row">
             <div class="col">
               <label>What is your Estimated Time of Arrival?</label>
-              <input type="time" class="form-control form-control-lg" name="ETA" value="14:00" min="14:00" required>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3"><?php echo date("d/m/y")?> @ </span>
+                </div>
+                <input type="time" class="form-control form-control-lg" name="ETA" value="14:00" min="14:00" required>
+              </div>
             </div>
           </div>
           <hr>
           <div class="row">
             <div class="col">
-              <label>How long with you be parking with us?</label>
+              <label>How long will you be parking with us?</label>
               <select class="form-control form-control-lg" name="Break" required>
                 <option value="1">Between 6 & 12 Hours</option>
                 <option value="2">Between 12 & 24 Hours</option>

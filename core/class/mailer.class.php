@@ -12,7 +12,7 @@
       global $_CONFIG;
       $mail = new PHPMailer();
       $mail->IsSMTP();
-      $mail->SMTPDebug = 3; //Alternative to above constant
+      // $mail->SMTPDebug = 3; //Alternative to above constant
       $mail->Timeout       =   20; // set the timeout (seconds)
       $mail->Host       = "us2.smtp.mailhostbox.com";
       $mail->SMTPAuth   = true;
@@ -37,9 +37,9 @@
       $mail->AltBody .= $_CONFIG['site']['url'].'/activate.php?email='.$Too;
       //send the message, check for errors
       if (!$mail->send()) {
-        return "0";
+        return 0;
       } else {
-        return "1";
+        return 1;
       }
     }
   }
