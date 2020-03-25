@@ -1484,3 +1484,23 @@
     </div>
   </div>
 </div>
+<!-- Display Blacklist -->
+<div class="modal" id="Portal_ViewBookings" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Portal_ViewBookings" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Portal Bookings</h5>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            {PORTAL-GETBOOKINGS}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

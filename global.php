@@ -1,7 +1,11 @@
 <?php
 
-//Required Files
+	//Other Activating
+	session_start();
 
+	date_default_timezone_set('Europe/London');
+
+	//Required Files
 	//Config
 	require_once(__DIR__.'/core/manage/config.php');
 
@@ -17,6 +21,7 @@
 	require_once(__DIR__.'/core/class/account.class.php');
 	require_once(__DIR__.'/core/class/ticket.class.php');
 	require_once(__DIR__.'/core/class/background.class.php');
+	require_once(__DIR__.'/core/class/external.class.php');
 
 	require_once(__DIR__.'/vendor/autoload.php');
 
@@ -43,12 +48,7 @@
 	$account = new PM\Account();
 	$background = new PM\Background();
 	$ticket = new PM\Ticket();
+	$external = new PM\External();
 
-
-
-	//Other Activating
-	session_start();
-
-	date_default_timezone_set('Europe/London');
 
 ?>

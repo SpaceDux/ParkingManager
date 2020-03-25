@@ -37,6 +37,7 @@
 			$this->vehicles = new Vehicles;
 			$this->account = new Account;
 			$this->payment = new Payment;
+			$this->external = new External;
 
 			$this->Assign('url', $_CONFIG['site']['url']); //{URL} Site URL
 			$this->Assign('tpl', $_CONFIG['site']['template']); //{TPL} Skin Name
@@ -61,12 +62,14 @@
 				$this->Assign('settlement_groups', $this->payment->Settlement_Groups());
 				$this->Assign('blacklist_alert', $this->vehicles->ViewBlacklist(1));
 				$this->Assign('blacklist_banned', $this->vehicles->ViewBlacklist(2));
+				$this->Assign('portal-getbookings', $this->external->GetBookings_Portal());
 			}
 			$this->user = null;
 			$this->pm = null;
 			$this->vehicles = null;
 			$this->account = null;
 			$this->payment = null;
+			$this->external = null;
 		}
 		//This function takes the set params and turns them into an actual function
 		function Assign($_searchString, $_replaceString)

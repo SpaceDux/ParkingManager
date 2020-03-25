@@ -19,6 +19,10 @@
 	$_CONFIG['ETP']['API'] = array('api_uri' => 'https://api.etpcp.com/trx/',
 											 'api_user' => 'sm394_34lll2345Ae',
 											 'api_pass' => 'P2002laeif[3234JklmNo1A@344_12Qq');
+
+	// Portal
+	$_CONFIG['Portal']['URL'] = 'http://portal.7tpixels.uk/api/';
+
 	// Misc
 	$_CONFIG['misc']['copy'] = 'ParkingManager 4 | Copyright &copy; 2019 Roadking Truckstops'; //Fenrir Template System, Select the Template Directory
 	$_CONFIG['misc']['version'] = '4.2.0';
