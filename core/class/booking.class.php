@@ -467,8 +467,15 @@
         $Auth = $this->pm->PM_SiteAuthenticate_API($User, $Pass);
           if($Auth['Status'] == "1") {
             if($ETA != null OR $ETA != '') {
+              $stmt = $this->mysql->dbc->prepare("SELECT ETA FROM bookings WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $Ref);
+              $stmt->execute();
+              $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+              $NewETA = date("Y-m-d H:i:s", strtotime($ETA));
+
               $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET ETA = ? WHERE Uniqueref = ?");
-              $stmt->bindParam(1, $ETA);
+              $stmt->bindParam(1, $NewETA);
               $stmt->bindParam(2, $Ref);
               $stmt->execute();
             }
