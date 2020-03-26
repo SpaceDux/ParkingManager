@@ -459,4 +459,22 @@
       return false;
     });
   }
+  function Cancel_PortalBooking(Ref, Status)
+  {
+    event.preventDefault();
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.Cancel_PortalBooking",
+      data: {Ref:Ref, Status:Status},
+      method: "POST",
+      dataType: "json",
+      success:function(Response) {
+        if(Response.Status == "1") {
+          $.notify(Response.Message, {className:'success',globalPosition: 'top left',});
+        } else {
+          $.notify(Response.Message, {className:'danger',globalPosition: 'top left',});
+        }
+      }
+    })
+    return false;
+  }
 </script>

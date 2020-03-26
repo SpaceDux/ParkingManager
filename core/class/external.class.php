@@ -49,7 +49,12 @@
             $html .= '<td>'.date("d/H:i", strtotime($row['ETA'])).'</td>';
             $html .= '<td>'.date("d/H:i:s", strtotime($row['Date'])).'</td>';
             $html .= '<td>'.$this->pm->GET_VehicleType($row['VehicleType']).'</td>';
-            $html .= '<td><button class="btn btn-danger" onClick="Update_PortalBooking('.$ref.', '.$eta.', '.$row['VehicleType'].')"><i class="fa fa-cog"></i></button></td>';
+            $html .= '<td>
+                        <div class="btn-group" role="group">
+                          <button class="btn btn-danger" onClick="Update_PortalBooking('.$ref.', '.$eta.', '.$row['VehicleType'].')"><i class="fa fa-cog"></i></button>
+                          <button class="btn btn-danger" onClick="Cancel_PortalBooking('.$ref.', 3)"><i class="fa fa-trash"></i></button>
+                        </div>
+                      </td>';
             $html .= '</tr>';
           }
           $html .= '</tbody></table>';
@@ -67,7 +72,7 @@
       $this->pm = null;
       $this->user = null;
     }
-    // Modify a booking. First GET
+    // Modify a booking.
     function ModifyBooking_Portal($Ref, $ETA, $Type)
     {
       global $_CONFIG;
@@ -86,6 +91,36 @@
           'Ref' => $Ref,
           'ETA' => $ETA,
           'VehicleType' => $Type
+        ]
+      ]);
+      $return = json_decode($response->getBody(), true);
+      if($return['Status'] > "0") {
+        echo json_encode(array("Status" => "1", "Message" => "Successfully updated the portal booking."));
+      } else {
+        echo json_encode(array("Status" => "0", "Message" => "Unable to update booking."));
+      }
+
+      $this->user = null;
+      $this->pm = null;
+    }
+    // Modify booking status ie- arrived etc
+    function ModifyStatus_Portal($Ref, $Status)
+    {
+      global $_CONFIG;
+      $this->user = new User;
+      $this->pm = new PM;
+
+      $Site = $this->user->Info("Site");
+
+      $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0', 'future' => true]);
+
+      $response = $client->post('Bookings/Update', [
+        'form_params' => [
+          'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
+          'Username' => $this->pm->Site_Info($Site, "Portal_User"),
+          'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
+          'Ref' => $Ref,
+          'Status' => $Status
         ]
       ]);
       $return = json_decode($response->getBody(), true);
