@@ -431,4 +431,32 @@
       }
     });
   });
+
+  function Update_PortalBooking(Ref, Eta, vehtype)
+  {
+    event.preventDefault();
+    $('#ModifyBooking_Ref').val(Ref);
+    $('#ModifyBooking_ETA').val(Eta);
+    $('#ModifyBooking_VehicleType').val(vehtype);
+    $('#Portal_ModifyBooking').modal('toggle');
+    // Edit
+    $('#ModifyBooking_FORM').on('submit', function() {
+      event.preventDefault();
+      var Data = $(this).serialize();
+      $.ajax({
+        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ModifyPortalBooking",
+        data: Data,
+        method: "POST",
+        dataType: "json",
+        success:function(Response) {
+          if(Response.Status == "1") {
+            $.notify(Response.Message, {className:'success',globalPosition: 'top left',});
+          } else {
+            $.notify(Response.Message, {className:'danger',globalPosition: 'top left',});
+          }
+        }
+      })
+      return false;
+    });
+  }
 </script>

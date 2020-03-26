@@ -46,6 +46,8 @@
     $vehicles->RemindMeBlacklist($_POST['Ref']);
   } else if($handler == "Vehicles.Blacklist_Delete") {
     $vehicles->Blacklist_Delete($_POST['Ref']);
+  } else if($handler == "Vehicles.ModifyPortalBooking") {
+    $external->ModifyBooking_Portal($_POST['Ref'], $_POST['ETA'], $_POST['VehicleType']);
   }
 
 ?>
