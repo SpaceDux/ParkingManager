@@ -17,7 +17,7 @@
       $Date = date("Y-m-d H:i:s");
 
       // From booking records that have checked out
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status = 2");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status = 3");
       $stmt->execute();
       foreach($stmt->fetchAll() as $bookings) {
         $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
@@ -25,7 +25,7 @@
         $stmt->bindValue(2, $bookings['Bay']);
         $stmt->execute();
         if($stmt->rowCount() > 0) {
-          $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '3', Last_Updated = ? WHERE Uniqueref = ?");
+          $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4', Last_Updated = ? WHERE Uniqueref = ?");
           $stmt->bindParam(1, $Date);
           $stmt->bindValue(2, $bookings['Uniqueref']);
           $stmt->execute();
@@ -33,7 +33,7 @@
       }
 
       // If has been cancelled.
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status = 4");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status = 5");
       $stmt->execute();
       foreach($stmt->fetchAll() as $bookings) {
         $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
@@ -41,7 +41,7 @@
         $stmt->bindValue(2, $bookings['Bay']);
         $stmt->execute();
         if($stmt->rowCount() > 0) {
-          $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '5', Last_Updated = ? WHERE Uniqueref = ?");
+          $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '6', Last_Updated = ? WHERE Uniqueref = ?");
           $stmt->bindParam(1, $Date);
           $stmt->bindValue(2, $bookings['Uniqueref']);
           $stmt->execute();
@@ -69,7 +69,7 @@
       if($stmt->rowCount() > 0) {
         foreach($stmt->fetchAll() as $row) {
           if($Expiry > $row['ETA']) {
-            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4' WHERE id = ?");
+            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '5' WHERE id = ?");
             $stmt->bindParam(1, $row['id']);
             $stmt->execute();
             if($stmt->rowCount() > 0) {
@@ -105,7 +105,7 @@
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         echo json_encode(array('Result' => 1, 'Message' => 'Success, we have allocated you a space. <br><br>You must complete your booking before <b>'.date("H:i:s", strtotime($result['Expiry'])).'</b> to guarantee your space.'));
       } else {
-        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status < 2 AND Author = ?");
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status < 3 AND Author = ?");
         $stmt->bindValue(1, $_SESSION['ID']);
         $stmt->execute();
         if($stmt->rowCount() < $MaxSpace) {
@@ -249,11 +249,17 @@
           if($row['Status'] == 0) {
             $Status = 'Not Checked In';
           } else if($row['Status'] == 1) {
-            $Status = 'Checked In';
+            $Status = 'Arrived';
           } else if($row['Status'] == 2) {
-            $Status = 'Checked Out';
+            $Status = 'Checked In.';
           } else if($row['Status'] == 3) {
-            $Status = 'Checked Out, Thank\'s for staying with us';
+            $Status = 'Checked Out';
+          } else if($row['Status'] == 4) {
+            $Status = 'Checked out, Thank\'s for staying with us.';
+          } else if($row['Status'] == 5) {
+            $Status = 'Cancelled.';
+          } else if($row['Status'] == 6) {
+            $Status = 'Cancelled.';
           }
           $Ref = '\''.$row['Uniqueref'].'\'';
           $html .=  '
@@ -295,7 +301,7 @@
       $this->pm = new PM;
 
       $html = '';
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status >= 2 AND Author = ? ORDER BY ETA DESC LIMIT 6");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status >= 3 AND Author = ? ORDER BY ETA DESC LIMIT 6");
       $stmt->bindValue(1, $_SESSION['ID']);
       $stmt->execute();
       if($stmt->rowCount() > 0) {
@@ -303,14 +309,16 @@
           if($row['Status'] == 0) {
             $Status = 'Not Checked In';
           } else if($row['Status'] == 1) {
-            $Status = 'Checked In';
+            $Status = 'Arrived';
           } else if($row['Status'] == 2) {
-            $Status = 'Checked Out';
+            $Status = 'Checked In.';
           } else if($row['Status'] == 3) {
-            $Status = 'Checked Out, Thank\'s for staying with us';
+            $Status = 'Checked Out';
           } else if($row['Status'] == 4) {
-            $Status = 'Cancelled.';
+            $Status = 'Checked out, Thank\'s for staying with us.';
           } else if($row['Status'] == 5) {
+            $Status = 'Cancelled.';
+          } else if($row['Status'] == 6) {
             $Status = 'Cancelled.';
           }
 
@@ -358,7 +366,7 @@
           $ETA = date("Y-m-d H:i:s", strtotime($result['ETA'].' + 30 minutes'));
           if($ETA > $Date) {
             // Cancel, but dont strike
-            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = 4, Last_Updated = ? WHERE Uniqueref = ?");
+            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = 5, Last_Updated = ? WHERE Uniqueref = ?");
             $stmt->bindParam(1, $Date);
             $stmt->bindParam(2, $Ref);
             $stmt->execute();
@@ -369,7 +377,7 @@
             }
           } else {
             // Cancel BUT strike as over eta
-            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = 4, Last_Updated = ? WHERE Uniqueref = ?");
+            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = 5, Last_Updated = ? WHERE Uniqueref = ?");
             $stmt->bindParam(1, $Date);
             $stmt->bindParam(2, $Ref);
             $stmt->execute();
