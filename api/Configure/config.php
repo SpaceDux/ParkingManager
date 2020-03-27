@@ -8,7 +8,7 @@
 	$_CONFIG['mysql']['port'] = '3306'; //The username for the database server
 	$_CONFIG['mysql']['user'] = 'root'; //The username for the database server
 	$_CONFIG['mysql']['pass'] = ''; //The password for the datebase server
-	$_CONFIG['mysql']['db'] = 'parking_manager4'; //Select the database you want to connect too
+	$_CONFIG['mysql']['db'] = 'parking_manager'; //Select the database you want to connect too
 	// Server configuration (MSSQL Connection)
 	$_CONFIG['mssql']['host'] = '192.168.3.201'; //The IP for the datebase server
 	$_CONFIG['mssql']['user'] = 'pm'; //The username for the database server
@@ -20,6 +20,9 @@
 											 'api_pass' => 'P2002laeif[3234JklmNo1A@344_12Qq',
 									 		 'site_user' => 'holyhead',
 									 		 'site_pass' => '2hst36sg');
+
+	// Portal API
+	$_CONFIG['Portal']['URL'] = 'http://portal.7tpixels.uk/api/';
 	// PM API Settings
 	$_CONFIG['api']['accesskey'] = 'el8565!kt'; //Site ID Number
 	$_CONFIG['api']['ver'] = '1.0.6'; // API Version

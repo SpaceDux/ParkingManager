@@ -11,7 +11,7 @@
 	require_once(__DIR__.'/Configure/class/checks.class.php');
 	require_once(__DIR__.'/Configure/class/vehicles.class.php');
 	require_once(__DIR__.'/Configure/class/transaction.class.php');
-	require_once('../../vendor/autoload.php');
+	require_once($_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php');
 
 
 	use ParkingManager_API as PM;
@@ -25,6 +25,6 @@
 
 	date_default_timezone_set('Europe/London');
 
-	error_reporting(1);
+	// error_reporting(1);
 
 ?>

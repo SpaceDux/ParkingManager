@@ -8,16 +8,26 @@
     protected $mysql;
 
     // Return tariffs
-    function GetTariffs($Vehicle, $Expiry, $Method, $Type)
+    function GetTariffs($Vehicle, $Expiry, $Method, $Type, $Prebooked)
     {
       global $_CONFIG;
       $this->mysql = new MySQL;
 
       $Site = $_CONFIG['api']['site'];
-      if($Type == 1) {
-        $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers > 0 AND Status = 0 AND Kiosk = 1 ORDER BY Gross ASC");
+      if($Prebooked == 1) {
+        // Prebooked
+        if($Type == 1) {
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers > 0 AND Status = 0 AND Kiosk = 1 AND Portal = 1 ORDER BY Gross ASC");
+        } else {
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers < 1 AND Status = 0 AND Kiosk = 1 AND Portal = 1 ORDER BY Gross ASC");
+        }
       } else {
-        $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers < 1 AND Status = 0 AND Kiosk = 1 ORDER BY Gross ASC");
+        // Not prebooked
+        if($Type == 1) {
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers > 0 AND Status = 0 AND Kiosk = 1 AND Portal = 0 ORDER BY Gross ASC");
+        } else {
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers < 1 AND Status = 0 AND Kiosk = 1 AND Portal = 0 ORDER BY Gross ASC");
+        }
       }
       $stmt->bindParam(1, $Site);
       $stmt->bindParam(2, $Expiry);
@@ -104,7 +114,7 @@
       $this->mysql = null;
     }
     // Add payment into db
-    function New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Capture_Time, $Expiry, $CardType = '', $CardNo = '', $CardEx = '', $Site, $Note)
+    function New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Capture_Time, $Expiry, $CardType = '', $CardNo = '', $CardEx = '', $Site, $Note, $Booking)
     {
       $this->mysql = new MySQL;
 
@@ -119,8 +129,7 @@
       $Uniqueref = "01".date("YmdHis").mt_rand(1111, 9999);
       $Processed = date("Y-m-d H:i:s");
 
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO transactions (id, Uniqueref, Parkingref, Site, Method, Plate, Name, Service, Service_Name, Service_Ticket_Name, Service_Group, Gross, Nett, Processed_Time, Vehicle_Capture_Time, Vehicle_Expiry_Time, Ticket_Printed, AccountID, ETPID, Deleted, Deleted_Comment, Settlement_Group, Settlement_Multi, Author, FuelCard_Type, FuelCard_No, FuelCard_Ex, Last_Updated, Note, Kiosk)
-      VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, '0', '', ?, ?, ?, ?, ?, ?, ?, ?, '1')");
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO transactions VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, '0', '', ?, ?, ?, ?, ?, ?, ?, ?, '1', ?)");
       $stmt->bindParam(1, $Uniqueref);
       $stmt->bindParam(2, $Ref);
       $stmt->bindParam(3, $Site);
@@ -146,6 +155,7 @@
       $stmt->bindParam(23, $CardEx);
       $stmt->bindParam(24, $Processed);
       $stmt->bindParam(25, $Note);
+      $stmt->bindParam(26, $Booking);
       if($stmt->execute()) {
         return $Uniqueref;
       } else {
@@ -153,6 +163,7 @@
       }
 
       $this->mysql = null;
+      $this->checks = null;
     }
     // Add Transactions
     function AddTransaction($System, $Ref, $Method, $Tariff, $Trl = '', $Name, $VehicleType, $FuelStr = '', $Note)
@@ -172,12 +183,22 @@
         $Service_Expiry = $this->Payment_TariffInfo($Tariff, "Expiry");
         $ETP = $this->Payment_TariffInfo($Tariff, "ETPID");
         $Expiry = date("Y-m-d H:i:s", strtotime($TimeIN.' +'.$Service_Expiry.' hours'));
+        // Run & check if booked on portal
+        $Probooked = $this->checks->Check_On_Portal($Plate);
+        if($Probooked['Status'] == 1) {
+          $Booking = $Probooked['Bookingref'];
+          // Update booking & confirm checkin.
+          $this->checks->ModifyStatus_Portal($Booking, "2");
+        } else {
+          $Booking = '';
+        }
+
         if($Method == 1) {
           // Add a parking record.
-          $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
+          $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry, $Booking);
           if($VehRec != FALSE) {
             // Add transaction
-            $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
+            $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note, $Booking);
             $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
             if($Payment != FALSE) {
               echo $this->PrintData($Payment, "0");
@@ -185,10 +206,10 @@
           }
         } else if($Method == 2) {
           // Add a parking record.
-          $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
+          $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry, $Booking);
           if($VehRec != FALSE) {
             // Add transaction
-            $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
+            $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note, $Booking);
             $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
             if($Payment != FALSE) {
               echo $this->PrintData($Payment, "0");
@@ -198,10 +219,10 @@
           $Account = $this->checks->Get_Account($Plate);
           if($Account != FALSE) {
             // Add a parking record.
-            $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account, $TimeIN, $Expiry);
+            $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account, $TimeIN, $Expiry, $Booking);
             if($VehRec != FALSE) {
               // Add transaction
-              $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
+              $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note, $Booking);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
@@ -214,10 +235,10 @@
           $ETPID = $this->checks->Process_SNAP_Transaction($Plate, $ETP, "RK Self Service");
           if($ETPID['Status'] > "0") {
             // Add a parking record.
-            $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
+            $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry, $Booking);
             if($VehRec != FALSE) {
               // Add transaction
-              $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
+              $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note, $Booking);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
                 echo $this->PrintData($Payment, "0");
@@ -239,10 +260,10 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry, $Booking);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
@@ -262,10 +283,10 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry, $Booking);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
@@ -283,10 +304,10 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry, $Booking);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
@@ -304,10 +325,10 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry, $Booking);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
@@ -325,10 +346,10 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry, $Booking);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
@@ -346,10 +367,10 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry, $Booking);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
@@ -367,10 +388,10 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add a parking record.
-              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry);
+              $VehRec = $this->vehicles->Create_Parking_Rec($Ref, $Site, $Plate, $Trl, $Name, $VehicleType, $Account_ID = null, $TimeIN, $Expiry, $Booking);
               if($VehRec != FALSE) {
                 // Add transaction
-                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+                $Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
                 $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
                 if($Payment != FALSE) {
                   echo $this->PrintData($Payment, "0");
@@ -397,9 +418,19 @@
         $ETP = $this->Payment_TariffInfo($Tariff, "ETPID");
         $Expiry = date("Y-m-d H:i:s", strtotime($TimeExpiry.' +'.$Service_Expiry.' hours'));
         $ANPRRef = $this->vehicles->VehicleInfo($Ref, "ANPRRef");
+        // Check is portal booking
+        $Probooked = $this->checks->Check_On_Portal($Plate);
+        if($Probooked['Status'] == "1") {
+          $Booking = $Probooked['Bookingref'];
+          // Update booking & confirm checkin.
+          $this->checks->ModifyStatus_Portal($Booking, "2");
+        } else {
+          $Booking = '';
+        }
+
         if($Method == 1) {
           // Add transaction
-          $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
+          $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note, $Booking);
           $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
           $this->vehicles->ExpiryUpdate($Ref, $Expiry);
           if($Payment != FALSE) {
@@ -407,7 +438,7 @@
           }
         } else if($Method == 2) {
           // Add transaction
-          $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
+          $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note, $Booking);
           $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
           $this->vehicles->ExpiryUpdate($Ref, $Expiry);
           if($Payment != FALSE) {
@@ -420,7 +451,7 @@
           if($Account != FALSE)
           {
             // Add transaction
-            $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
+            $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account, $ETP = null, $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note, $Booking);
             $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
             $this->vehicles->ExpiryUpdate($Ref, $Expiry);
             if($Payment != FALSE) {
@@ -433,7 +464,7 @@
           $ETPID = $this->checks->Process_SNAP_Transaction($Plate, $ETP, "RK Self Service");
           if($ETPID['Status'] > "0") {
             // Add transaction
-            $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note);
+            $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType = null, $CardNo = null, $CardEx = null, $Site, $Note, $Booking);
             $this->vehicles->ANPR_PaymentUpdate($ANPRRef, $Expiry);
             $this->vehicles->ExpiryUpdate($Ref, $Expiry);
             if($Payment != FALSE) {
@@ -452,7 +483,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
@@ -470,7 +501,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
@@ -486,7 +517,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
@@ -502,7 +533,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
@@ -518,7 +549,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
@@ -534,7 +565,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {
@@ -550,7 +581,7 @@
             $ETPID = $this->checks->Process_Fuel_Transaction($Plate, $ETP, "RK Self Service", $CardDets['cardno'], $CardDets['expiry']);
             if($ETPID['Status'] > "0") {
               // Add transaction
-              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note);
+              $Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Tariff, $Account_ID = null, $ETPID['ETPID'], $TimeIN, $Expiry, $CardType, $CardDets['cardno'], $CardDets['expiry'], $Site, $Note, $Booking);
               $this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
               $this->vehicles->ExpiryUpdate($Ref, $Expiry);
               if($Payment != FALSE) {

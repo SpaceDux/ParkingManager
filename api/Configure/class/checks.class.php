@@ -253,6 +253,62 @@
 
       return $result;
     }
+    // Get Portal
+    function Check_On_Portal($Plate)
+    {
+      global $_CONFIG;
+
+      $Site = $_CONFIG['api']['site'];
+      if($this->Site_Info($Site, "Portal_Active") == "1") {
+        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0', 'future' => true]);
+
+        $response = $client->post('Bookings/List', [
+          'form_params' => [
+            'AccessKey' => $this->Site_Info($Site, "Portal_AccessKey"),
+            'Username' => $this->Site_Info($Site, "Portal_User"),
+            'Password' => $this->Site_Info($Site, "Portal_Pass")
+          ]
+        ]);
+
+        $return = json_decode($response->getBody(), true);
+
+        if($return['Status'] == '1') {
+          foreach($return['Data'] as $row) {
+            if($row['Plate'] == $Plate) {
+              return array("Status" => "1", "Bookingref" => $row['Uniqueref'], "VehicleType" => $row['VehicleType']);
+            }
+          }
+        } else {
+          return array("Status" => "0");
+        }
+      } else {
+        return array("Status" => "0");
+      }
+    }
+    // Update on Portal
+    function ModifyStatus_Portal($Ref, $Status) {
+      global $_CONFIG;
+
+      $Site = $_CONFIG['api']['site'];
+
+      $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0', 'future' => true]);
+
+      $response = $client->post('Bookings/Update', [
+        'form_params' => [
+          'AccessKey' => $this->Site_Info($Site, "Portal_AccessKey"),
+          'Username' => $this->Site_Info($Site, "Portal_User"),
+          'Password' => $this->Site_Info($Site, "Portal_Pass"),
+          'Ref' => $Ref,
+          'Status' => $Status,
+        ]
+      ]);
+      $return = json_decode($response->getBody(), true);
+      if($return['Status'] > "0") {
+        return array("Status" => "1", "Message" => "Successfully changed status of the portal booking.");
+      } else {
+        return array("Status" => "0", "Message" => "Unable to update booking.");
+      }
+    }
   }
 
 ?>

@@ -31,6 +31,8 @@
           $ETPCk = FALSE;
         }
 
+        $Prebooked = $this->checks->Check_On_Portal($Plate);
+
         $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate = ? AND Parked_Column = 1 AND Site = ? AND Deleted < 1");
         $stmt->bindValue(1, $Plate);
         $stmt->bindValue(2, $Site);
@@ -48,14 +50,29 @@
 
           $trans = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-          $response = array('ParkingID' => $ref,
-          'PaymentID' => $trans['Uniqueref'],
-          'Arrival_Time' => $result['Arrival'],
-          'Img_Patch' => $result['Img_Patch'],
-          'Img_Overview' => $result['Img_Overview'],
-          'Accept_Account' => $accCk,
-          'Accept_SNAP' => $ETPCk
-          );
+          if($Prebooked['Status'] == 1) {
+            $response = array('ParkingID' => $ref,
+              'PaymentID' => $trans['Uniqueref'],
+              'Arrival_Time' => $result['Arrival'],
+              'Img_Patch' => $result['Img_Patch'],
+              'Img_Overview' => $result['Img_Overview'],
+              'Accept_Account' => $accCk,
+              'Accept_SNAP' => $ETPCk,
+              'Prebooked' => TRUE,
+              'Vehicle_Type' => $Prebooked['VehicleType'],
+            );
+          } else {
+            $response = array('ParkingID' => $ref,
+              'PaymentID' => $trans['Uniqueref'],
+              'Arrival_Time' => $result['Arrival'],
+              'Img_Patch' => $result['Img_Patch'],
+              'Img_Overview' => $result['Img_Overview'],
+              'Accept_Account' => $accCk,
+              'Accept_SNAP' => $ETPCk,
+              'Prebooked' => FALSE,
+            );
+          }
+
           if($trans['Vehicle_Expiry_Time'] >= date("Y-m-d H:i:s"))
           {
             if($stmt->rowCount() > 0)
@@ -75,27 +92,27 @@
             {
               // Has no valid tickets (All redeemed)
               echo json_encode(array(
-                                "Status" => '101',
-                                "Message" => 'Vehicle Record has been found for this registration plate, also indicates vehicle has already redeemed transaction.',
-                                "SystemCode" => "1",
-                                "SystemInfo" => "ParkingManager Record.",
-                                "ResponseCode" => "2",
-                                "ResponseInfo" => "Needs to pay, has no valid tickets.",
-                                "ResponseData" => $response
-                              ));
+                "Status" => '101',
+                "Message" => 'Vehicle Record has been found for this registration plate, also indicates vehicle has already redeemed transaction.',
+                "SystemCode" => "1",
+                "SystemInfo" => "ParkingManager Record.",
+                "ResponseCode" => "2",
+                "ResponseInfo" => "Needs to pay, has no valid tickets.",
+                "ResponseData" => $response
+              ));
             }
           } else
           {
             // Expired Parking Record
             echo json_encode(array(
-                              "Status" => '101',
-                              "Message" => 'A Record has been found, however this vehicle has expired and requires a new payment.',
-                              "SystemCode" => "1",
-                              "SystemInfo" => "ParkingManager Record.",
-                              "ResponseCode" => "2",
-                              "ResponseInfo" => "Needs to pay, has no valid tickets.",
-                              "ResponseData" => $response
-                            ));
+              "Status" => '101',
+              "Message" => 'A Record has been found, however this vehicle has expired and requires a new payment.',
+              "SystemCode" => "1",
+              "SystemInfo" => "ParkingManager Record.",
+              "ResponseCode" => "2",
+              "ResponseInfo" => "Needs to pay, has no valid tickets.",
+              "ResponseData" => $response
+            ));
           }
         }
         else
@@ -110,33 +127,47 @@
 
             $patch = str_replace($this->checks->Site_Info($Site, 'ANPR_Imgstr'), $this->checks->Site_Info($Site, 'ANPR_Img'), $result['Patch']);
             $overview = str_replace($this->checks->Site_Info($Site, 'ANPR_Imgstr'), $this->checks->Site_Info($Site, 'ANPR_Img'), $result['Overview']);
-            $response = array('ParkingID' => $result['Uniqueref'],
-            'Arrival_Time' => $result['Capture_Date'],
-            'Img_Patch' => $patch,
-            'Img_Overview' => $overview,
-            'Accept_Account' => $accCk,
-            'Accept_SNAP' => $ETPCk
-            );
+
+            if($Prebooked['Status'] == 1) {
+              $response = array('ParkingID' => $result['Uniqueref'],
+              'Arrival_Time' => $result['Capture_Date'],
+              'Img_Patch' => $patch,
+              'Img_Overview' => $overview,
+              'Accept_Account' => $accCk,
+              'Accept_SNAP' => $ETPCk,
+              'Prebooked' => TRUE,
+              'Vehicle_Type' => $Prebooked['VehicleType'],
+              );
+            } else {
+              $response = array('ParkingID' => $result['Uniqueref'],
+              'Arrival_Time' => $result['Capture_Date'],
+              'Img_Patch' => $patch,
+              'Img_Overview' => $overview,
+              'Accept_Account' => $accCk,
+              'Accept_SNAP' => $ETPCk,
+              'Prebooked' => FALSE,
+              );
+            }
 
             echo json_encode(array(
-                              "Status" => '101',
-                              "Message" => 'ANPR record has been found for this registration plate.',
-                              "SystemCode" => "0",
-                              "SystemInfo" => "ANPR Record.",
-                              "ResponseCode" => "2",
-                              "ResponseInfo" => "Needs to pay, has no valid tickets.",
-                              "ResponseData" => $response
-                            ));
+                "Status" => '101',
+                "Message" => 'ANPR record has been found for this registration plate.',
+                "SystemCode" => "0",
+                "SystemInfo" => "ANPR Record.",
+                "ResponseCode" => "2",
+                "ResponseInfo" => "Needs to pay, has no valid tickets.",
+                "ResponseData" => $response
+              ));
           }
           else
           {
             // RETURN NO RESULTS
             echo json_encode(array(
-                              "Status" => '101',
-                              "Message" => 'No record exists for that registration.',
-                              "ResponseCode" => "0",
-                              "ResponseInfo" => "No record found."
-                            ));
+              "Status" => '101',
+              "Message" => 'No record exists for that registration.',
+              "ResponseCode" => "0",
+              "ResponseInfo" => "No record found."
+            ));
           }
         }
       }
@@ -219,7 +250,7 @@
       $this->mssql = null;
     }
     // Add Parking Record
-    function Create_Parking_Rec($Ref, $Site, $Plate, $Trl = '', $Name, $VehicleType, $Account_ID = '', $TimeIN, $Expiry)
+    function Create_Parking_Rec($Ref, $Site, $Plate, $Trl = '', $Name, $VehicleType, $Account_ID = '', $TimeIN, $Expiry, $Booking)
     {
       $this->checks = new Checks;
       $this->mysql = new MySQL;
@@ -237,7 +268,7 @@
       $time = date("Y-m-d H:i:s");
 
 
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, AccountID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Last_Updated) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '2', '0', '', ?, ?, ?, ?)");
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, AccountID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Last_Updated, Bookingref) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '2', '0', '', ?, ?, ?, ?, ?)");
       $stmt->bindParam(1, $Uniqueref);
       $stmt->bindParam(2, $Ref);
       $stmt->bindParam(3, $Site);
@@ -253,6 +284,7 @@
       $stmt->bindParam(13, $Patch);
       $stmt->bindParam(14, $Overview);
       $stmt->bindParam(15, $time);
+      $stmt->bindParam(16, $Booking);
       if($stmt->execute()) {
         return $Uniqueref;
       } else {
