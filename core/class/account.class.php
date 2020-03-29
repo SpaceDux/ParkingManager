@@ -426,6 +426,45 @@
       $this->mysql = null;
       $this->user = null;
     }
+    function Account_Reconcile($Account, $Date1, $Date2)
+    {
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->payment = new Payment;
+
+      $Site = $this->user->Info("Site");
+
+      $Start = date("Y-m-d 00:00:00", strtotime($Date1));
+      $End = date("Y-m-d 23:59:59", strtotime($Date2));
+
+      $stmt = $this->mysql->dbc->prepare("SELECT Parkingref FROM transactions WHERE Method = 3 AND Status < 1 AND Site = ? AND Account_ID = ? AND Processed_Time BETWEEN ? AND ? GROUP BY Parkingref");
+      $stmt->bindParam(1, $Account);
+      $stmt->bindParam(2, $Site);
+      $stmt->bindParam(3, $Date1);
+      $stmt->bindParam(4, $Date2);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        foreach($stmt->fetchAll() as $row) {
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Uniqueref = ?");
+          $stmt->bindValue(1, $row['Parkingref']);
+          $stmt->execute();
+          foreach($stmt->fetchAll() as $row) {
+            $Record = ['Plate' => $row['Plate'], 'Arrival' => $row['Arrival'], 'Departure' => $row['Departure'], 'Expiry' => $row['Expiry'], 'VehicleType' => $row['Type']];
+            $Data = array();
+            $stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Method = 3 AND Status < 1 AND Site = ? AND Account_ID = ? AND Parkingref = ? AND Processed_Time BETWEEN ? AND ? ORDER BY Processed_Time ASC");
+            $stmt->bindParam(1, $Account);
+            $stmt->bindParam(2, $Site);
+            $stmt->bindValue(3, $row['Parkingref']);
+            $stmt->bindParam(4, $Date1);
+            $stmt->bindParam(5, $Date2);
+            $stmt->execute();
+          }
+        }
+      }
+
+      $this->mysql = null;
+      $this->user = null;
+    }
     // Count the amount of transactions assigned to the account via services
     function Payment_Count_Account($account, $campus, $service, $dateStart, $dateEnd) {
       $this->mysql = new MySQL;

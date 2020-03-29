@@ -134,5 +134,10 @@
        $this->mssql = null;
        $this->mysql = null;
      }
+     // Update Portal > Status = Arrived.
+     function ANPR_PortalCheck()
+     {
+
+     }
   }
 ?>

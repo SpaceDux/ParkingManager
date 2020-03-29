@@ -133,5 +133,66 @@
       $this->user = null;
       $this->pm = null;
     }
+    // Check if booking associated with account
+    function Check_On_Portal($Plate)
+    {
+      global $_CONFIG;
+      $this->pm = new PM;
+      $this->user = new User;
+
+      $Site = $this->user->Info("Site");
+      if($this->pm->Site_Info($Site, "Portal_Active") == "1") {
+        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0', 'future' => true]);
+
+        $response = $client->post('Bookings/List', [
+          'form_params' => [
+            'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
+            'Username' => $this->pm->Site_Info($Site, "Portal_User"),
+            'Password' => $this->pm->Site_Info($Site, "Portal_Pass")
+          ]
+        ]);
+
+        $return = json_decode($response->getBody(), true);
+
+        if($return['Status'] == '1') {
+          foreach($return['Data'] as $row) {
+            if($Plate == $row['Plate']) {
+              return array("Status" => "1", "Bookingref" => $row['Uniqueref']);
+            } else {
+              return array("Status" => "0");
+            }
+          }
+        }
+      }
+
+      $this->pm = null;
+      $this->user = null;
+    }
+    // Get Bookings as Array
+    function ReturnBookingsAsArray()
+    {
+      global $_CONFIG;
+      $this->pm = new PM;
+      $this->user = new User;
+
+      $Site = $this->user->Info("Site");
+      if($this->pm->Site_Info($Site, "Portal_Active") == "1") {
+        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0', 'future' => true]);
+
+        $response = $client->post('Bookings/List', [
+          'form_params' => [
+            'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
+            'Username' => $this->pm->Site_Info($Site, "Portal_User"),
+            'Password' => $this->pm->Site_Info($Site, "Portal_Pass")
+          ]
+        ]);
+
+        $return = json_decode($response->getBody(), true);
+        return $return;
+      }
+
+      $this->pm = null;
+      $this->user = null;
+    }
   }
 ?>
