@@ -125,9 +125,9 @@
       ]);
       $return = json_decode($response->getBody(), true);
       if($return['Status'] > "0") {
-        echo json_encode(array("Status" => "1", "Message" => "Successfully updated the portal booking."));
+        return json_encode(array("Status" => "1", "Message" => "Successfully updated the portal booking."));
       } else {
-        echo json_encode(array("Status" => "0", "Message" => "Unable to update booking."));
+        return json_encode(array("Status" => "0", "Message" => "Unable to update booking."));
       }
 
       $this->user = null;

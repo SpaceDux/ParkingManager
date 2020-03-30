@@ -733,7 +733,7 @@
       }
     }
     // Create Parking Record
-    function Parking_Record_Create($ANPRRef, $Plate, $Trl, $Name, $TimeIN, $Expiry, $VehType, $Account_ID)
+    function Parking_Record_Create($ANPRRef, $Plate, $Trl, $Name, $TimeIN, $Expiry, $VehType, $Account_ID, $Booking)
     {
       $this->mysql = new MySQL;
       $this->user = new User;
@@ -753,7 +753,7 @@
       $time = date("Y-m-d H:i:s");
 
 
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, AccountID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Last_Updated) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '0', '0', '', ?, ?, ?, ?)");
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, AccountID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Bookingref, Last_Updated) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '0', '0', '', ?, ?, ?, ?, ?)");
       $stmt->bindParam(1, $Uniqueref);
       $stmt->bindParam(2, $ANPRRef);
       $stmt->bindParam(3, $site);
@@ -768,12 +768,12 @@
       $stmt->bindParam(12, $ExitKey);
       $stmt->bindParam(13, $Patch);
       $stmt->bindParam(14, $Overview);
-      $stmt->bindParam(15, $time);
+      $stmt->bindParam(15, $Booking);
+      $stmt->bindParam(16, $time);
       if($stmt->execute()) {
-        $this->pm->LogWriter('Vehicle record has been added: '.$Plate, "1", $Uniqueref);
-        return $Uniqueref;
+        return array('Status' => '1', 'VID' => $Uniqueref);
       } else {
-        echo "UNSUCCESSFUL Parking";
+        return array('Status' => '0');
       }
 
       $this->mysql = null;

@@ -419,7 +419,7 @@
 			$this->pm = null;
 		}
 		// Add payment into db
-		function New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Capture_Time, $Expiry, $CardType = '', $CardNo = '', $CardEx = '')
+		function New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Capture_Time, $Expiry, $CardType = '', $CardNo = '', $CardEx = '', $Booking)
 		{
 			$this->mysql = new MySQL;
 			$this->user = new User;
@@ -437,8 +437,9 @@
 			$Uniqueref = date("YmdHis").mt_rand(1111, 9999);
 			$Processed = date("Y-m-d H:i:s");
 
-			$stmt = $this->mysql->dbc->prepare("INSERT INTO transactions (id, Uniqueref, Parkingref, Site, Method, Plate, Name, Service, Service_Name, Service_Ticket_Name, Service_Group, Gross, Nett, Processed_Time, Vehicle_Capture_Time, Vehicle_Expiry_Time, Ticket_Printed, AccountID, ETPID, Deleted, Deleted_Comment, Settlement_Group, Settlement_Multi, Author, FuelCard_Type, FuelCard_No, FuelCard_Ex, Last_Updated)
-																					VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, '0', '', ?, ?, ?, ?, ?, ?, ?)");
+			$stmt = $this->mysql->dbc->prepare("INSERT INTO transactions
+			(id, Uniqueref, Parkingref, Site, Method, Plate, Name, Service, Service_Name, Service_Ticket_Name, Service_Group, Gross, Nett, Processed_Time, Vehicle_Capture_Time, Vehicle_Expiry_Time, Ticket_Printed, AccountID, ETPID, Deleted, Deleted_Comment, Settlement_Group, Settlement_Multi, Author, FuelCard_Type, FuelCard_No, FuelCard_Ex, Note, Kiosk, Bookingref, Last_Updated)
+			VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, '0', '', ?, ?, ?, ?, ?, ?, ' ', '0', ?, ?)");
 			$stmt->bindParam(1, $Uniqueref);
 			$stmt->bindParam(2, $Ref);
 			$stmt->bindParam(3, $Site);
@@ -462,12 +463,13 @@
 			$stmt->bindParam(21, $CardType);
 			$stmt->bindParam(22, $CardNo);
 			$stmt->bindParam(23, $CardEx);
-			$stmt->bindParam(24, $Processed);
-			if($stmt->execute()) {
-				$this->pm->LogWriter('Transaction has been added via PM: '.$Plate, "2", $Uniqueref);
-				return $Uniqueref;
+			$stmt->bindParam(24, $Booking);
+			$stmt->bindParam(25, $Processed);
+			$stmt->execute();
+			if($stmt->rowCount() > 0) {
+				return array('Status' => '1', 'TID' => $Uniqueref);
 			} else {
-				echo "UNSUCCESSFUL";
+				return array('Status' => '0');
 			}
 
 			$this->mysql = null;
@@ -481,6 +483,8 @@
 			$this->etp = new ETP;
 			$this->pm = new PM;
 			$this->user = new User;
+			$this->external = new External;
+
 			$name = $this->user->Info("FirstName");
 			$Service_Expiry = $this->Payment_TariffInfo($Service, "Expiry");
 			if($Type != 1) {
@@ -489,53 +493,71 @@
 			} else {
 				$Expiry = date("Y-m-d H:i:s", strtotime($Time.' +'.$Service_Expiry.' hours'));
 			}
+			$Portal = $this->external->Check_On_Portal($Plate);
+			if($Portal['Status'] == 1) {
+				$Booking = $Portal['Bookingref'];
+				// Update Record on Portal
+				$this->external->ModifyStatus_Portal($Booking, '2');
+			} else {
+				$Booking = '';
+			}
 
 			if($Type == 1) {
 				// If $TYPE is 1 (First time record)
 				if($Method == 1) {
 					// Create Parking Record
-					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
-					// Create Payment Record
-					$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null);
-					$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
-					if($Payment != "UNSUCCESSFUL") {
-						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-						$this->pm->POST_Notifications("A Cash Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
+					if($VehRec['Status'] == '1') {
+						// Create Payment Record
+						$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+						if($Payment['Status'] == '1') {
+							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+							echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+						} else {
+							echo json_encode(array('Result' => '0'));
+						}
 					}
 				} else if($Method == 2) {
 					// Create Parking Record
-					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
-					// Create Payment Record
-					$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null);
-					$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
-					if($Payment != "UNSUCCESSFUL") {
-						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-						$this->pm->POST_Notifications("A Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
+					if($VehRec['Status'] == '1') {
+						// Create Payment Record
+						$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+						if($Payment['Status'] == '1') {
+							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+							echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+						} else {
+							echo json_encode(array('Result' => '0'));
+						}
 					}
 				} else if($Method == 3) {
 					// Create Parking Record
-					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
-					// Create Payment Record
-					$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null);
-					$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
-					if($Payment != "UNSUCCESSFUL") {
-						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-						$this->pm->POST_Notifications("A KingPay Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID, $Booking);
+					if($VehRec['Status'] == '1') {
+						// Create Payment Record
+						$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+						if($Payment['Status'] == '1') {
+							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+							echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+						} else {
+							echo json_encode(array('Result' => '0'));
+						}
 					}
 				} else if($Method == 4) {
 					$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 					$ETP = $this->etp->Proccess_Transaction_SNAP($ETPID, $Plate, $Name);
 					if($ETP['Status'] > "0") {
 						// Create Parking Record
-						$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
-						// Create Payment Record
-						$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry);
-						$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
-						if($Payment != "UNSUCCESSFUL") {
-							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-							$this->pm->POST_Notifications("A SNAP Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-						} else {
-							echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+						$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
+						if($VehRec['Status'] == '1') {
+							// Create Payment Record
+							$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+							if($Payment['Status'] == '1') {
+								$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+								echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+							} else {
+								echo json_encode(array('Result' => '0'));
+							}
 						}
 					} else {
 						echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -548,15 +570,16 @@
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP['Status'] > "0") {
 							// Create Parking Record
-							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
-							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A DKV Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
+							if($VehRec['Status'] == '1') {
+								// Create Payment Record
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								if($Payment['Status'] == '1') {
+									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+								} else {
+									echo json_encode(array('Result' => '0'));
+								}
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -569,15 +592,16 @@
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP['Status'] > "0") {
 							// Create Parking Record
-							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
-							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
+							if($VehRec['Status'] == '1') {
+								// Create Payment Record
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								if($Payment['Status'] == '1') {
+									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+								} else {
+									echo json_encode(array('Result' => '0'));
+								}
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -588,15 +612,16 @@
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP['Status'] > "0") {
 							// Create Parking Record
-							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
-							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
+							if($VehRec['Status'] == '1') {
+								// Create Payment Record
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								if($Payment['Status'] == '1') {
+									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+								} else {
+									echo json_encode(array('Result' => '0'));
+								}
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -607,15 +632,16 @@
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP['Status'] > "0") {
 							// Create Parking Record
-							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
-							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A UTA Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
+							if($VehRec['Status'] == '1') {
+								// Create Payment Record
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								if($Payment['Status'] == '1') {
+									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+								} else {
+									echo json_encode(array('Result' => '0'));
+								}
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -626,15 +652,16 @@
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP['Status'] > "0") {
 							// Create Parking Record
-							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
-							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
+							if($VehRec['Status'] == '1') {
+								// Create Payment Record
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								if($Payment['Status'] == '1') {
+									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+								} else {
+									echo json_encode(array('Result' => '0'));
+								}
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -645,15 +672,16 @@
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP['Status'] > "0") {
 							// Create Parking Record
-							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
-							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
+							if($VehRec['Status'] == '1') {
+								// Create Payment Record
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								if($Payment['Status'] == '1') {
+									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+								} else {
+									echo json_encode(array('Result' => '0'));
+								}
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -664,69 +692,66 @@
 						$ETP = $this->etp->Proccess_Transaction_Fuel($ETPID, $Plate, $Name, $FuelCardNo, $FuelCardExpiry);
 						if($ETP['Status'] > "0") {
 							// Create Parking Record
-							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID);
-							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A BP Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
+							if($VehRec['Status'] == '1') {
+								// Create Payment Record
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								if($Payment['Status'] == '1') {
+									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
+									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+								} else {
+									echo json_encode(array('Result' => '0'));
+								}
 							}
 						} else {
-							echo json_encode(array('Result' => 2, 'Msg' => 'ETP have refused the fuel card transaction, please try again or seek alternative payment method.'));
+							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
 						}
-					} else {
-						echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
 					}
 				}
 			} else if($Type == 2) {
 				// If $TYPE is 2 (Renewal)
 				if($Method == 1) {
 					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
-					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null);
-					$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
-					$this->vehicles->ExpiryUpdate($Ref, $Expiry);
-					if($Payment != "UNSUCCESSFUL") {
-						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-						$this->pm->POST_Notifications("A Cash Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-
+					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+					if($Payment['Status'] == '1') {
+						$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+						echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+					} else {
+						echo json_encode(array('Result' => '0'));
 					}
 				} else if($Method == 2) {
 					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
-					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null);
-					$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
-					$this->vehicles->ExpiryUpdate($Ref, $Expiry);
-					if($Payment != "UNSUCCESSFUL") {
-						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-						$this->pm->POST_Notifications("A Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-
+					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+					if($Payment['Status'] == '1') {
+						$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+						echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+					} else {
+						echo json_encode(array('Result' => '0'));
 					}
 				} else if($Method == 3) {
 					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
-					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null);
-					$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
-					$this->vehicles->ExpiryUpdate($Ref, $Expiry);
-					if($Payment != "UNSUCCESSFUL") {
-						echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-						$this->pm->POST_Notifications("A KingPay Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
-
+					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+					if($Payment['Status'] == '1') {
+						$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+						echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
+					} else {
+						echo json_encode(array('Result' => '0'));
 					}
 				} else if($Method == 4) {
 					$ETPID = $this->Payment_TariffInfo($Service, "ETPID");
 					$ETP = $this->etp->Proccess_Transaction_SNAP($ETPID, $Plate, $Name);
 					if($ETP['Status'] > "0") {
 						$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
-						// Create Payment Record
-						$Payment = $this->New_Transaction($Ref, $Method, $Plate,  $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null);
-						$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
-						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
-						if($Payment != "UNSUCCESSFUL") {
-							echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-							$this->pm->POST_Notifications("A SNAP Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+						$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+						if($Payment['Status'] == '1') {
+							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+							echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
 						} else {
-							echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+							echo json_encode(array('Result' => '0'));
 						}
 					} else {
 						echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -740,14 +765,13 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
-							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A DKV Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							if($Payment['Status'] == '1') {
+								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+								echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
 							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+								echo json_encode(array('Result' => '0'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -761,14 +785,13 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
-							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							if($Payment['Status'] == '1') {
+								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+								echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
 							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+								echo json_encode(array('Result' => '0'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -780,14 +803,13 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
-							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A KeyFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							if($Payment['Status'] == '1') {
+								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+								echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
 							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+								echo json_encode(array('Result' => '0'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -799,14 +821,13 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
-							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A UTA Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							if($Payment['Status'] == '1') {
+								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+								echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
 							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+								echo json_encode(array('Result' => '0'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -818,14 +839,13 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
-							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							if($Payment['Status'] == '1') {
+								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+								echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
 							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+								echo json_encode(array('Result' => '0'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -837,14 +857,13 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
-							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A MorganFuels Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							if($Payment['Status'] == '1') {
+								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+								echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
 							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+								echo json_encode(array('Result' => '0'));
 							}
 						} else {
 							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
@@ -856,24 +875,20 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry);
-							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
-							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
-							if($Payment != "UNSUCCESSFUL") {
-								echo json_encode(array('Result' => 1, 'Ref' => $Payment));
-								$this->pm->POST_Notifications("A BP Card Payment has successfully been processed by ".$name.", Ref: ".$Payment, '0');
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							if($Payment['Status'] == '1') {
+								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
+								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
+								echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
 							} else {
-								echo json_encode(array('Result' => 2, 'Msg' => 'Transaction could not be posted by ParkingManager, please try again.'));
+								echo json_encode(array('Result' => '0'));
 							}
 						} else {
-							echo json_encode(array('Result' => 2, 'Msg' => $ETP['Message']));
-						}
-					} else {
 							echo json_encode(array('Result' => 2, 'Msg' => '<b>ParkingManager</b> is unable to identify this card. If this issue persists, please contact Ryan.'));
+						}
 					}
 				}
 			}
-
 
 			$this->vehicles = null;
 			$this->etp = null;
@@ -1440,7 +1455,7 @@
 			$this->user = null;
 		}
 		// add a new tariff to pm
-		function New_Tariff($Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti)
+		function New_Tariff($Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti, $Kiosk, $Portal)
 		{
 			$this->mysql = new MySQL;
 			$this->pm = new PM;

@@ -176,6 +176,20 @@
       }
     })
   });
+  $(document).on('click', '#Account_Reconcile', function() {
+    var Account = $('#Report_Account').val();
+    var DateStart = $('#Report_DateFrom').val();
+    var DateEnd = $('#Report_DateToo').val();
+    $.ajax({
+      url: "{URL}/core/ajax/account.handler.php?handler=Account.Account_Reconcile",
+      method: "POST",
+      data: {Account:Account, DateStart:DateStart, DateEnd:DateEnd},
+      dataType: "json",
+      success:function(Res) {
+        $('#Account_ReconcileData').html(Res);
+      }
+    })
+  });
   function Download_AccountReport() {
     var Account = $('#Report_Account').val();
     var DateStart = $('#Report_DateFrom').val();
@@ -185,5 +199,11 @@
       method: "POST",
       data: {Account:Account, DateStart:DateStart, DateEnd:DateEnd}
     })
+  }
+
+
+  function Reconciled(Ref)
+  {
+    $("."+Ref).addClass('Hide');
   }
 </script>

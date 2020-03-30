@@ -20,6 +20,8 @@
     $account->DownloadReport($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
   } else if($handler == "Account.Totals") {
     $account->Totals($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
+  } else if($handler == "Account.Account_Reconcile") {
+    $account->Account_Reconcile($_POST['Account'], $_POST['DateStart'], $_POST['DateEnd']);
   }
 
 

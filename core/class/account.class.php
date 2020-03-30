@@ -430,38 +430,68 @@
     {
       $this->mysql = new MySQL;
       $this->user = new User;
-      $this->payment = new Payment;
+      $this->pm = new PM;
 
       $Site = $this->user->Info("Site");
 
       $Start = date("Y-m-d 00:00:00", strtotime($Date1));
       $End = date("Y-m-d 23:59:59", strtotime($Date2));
 
-      $stmt = $this->mysql->dbc->prepare("SELECT Parkingref FROM transactions WHERE Method = 3 AND Status < 1 AND Site = ? AND Account_ID = ? AND Processed_Time BETWEEN ? AND ? GROUP BY Parkingref");
-      $stmt->bindParam(1, $Account);
-      $stmt->bindParam(2, $Site);
-      $stmt->bindParam(3, $Date1);
-      $stmt->bindParam(4, $Date2);
+      $html = '<table class="table table-hover table-bordered">
+                <thead>
+                  <th>Plate</th>
+                  <th>Arrival</th>
+                  <th>Departure</th>
+                  <th>Vehicle Type</th>
+                  <th>Tools</th>
+                </thead>
+                <tbody>
+              ';
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Method = 3 AND Deleted = 0 AND Site = ? AND AccountID = ? AND Processed_Time BETWEEN ? AND ? GROUP BY Parkingref ORDER BY Processed_Time ASC");
+      $stmt->bindParam(1, $Site);
+      $stmt->bindParam(2, $Account);
+      $stmt->bindParam(3, $Start);
+      $stmt->bindParam(4, $End);
       $stmt->execute();
-      if($stmt->rowCount() > 0) {
-        foreach($stmt->fetchAll() as $row) {
-          $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Uniqueref = ?");
-          $stmt->bindValue(1, $row['Parkingref']);
+      foreach($stmt->fetchAll() as $initial) {
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Uniqueref = ? ORDER BY Arrival ASC");
+        $stmt->bindValue(1, $initial['Parkingref']);
+        $stmt->execute();
+        foreach($stmt->fetchAll() as $parking) {
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Parkingref = ? AND Deleted = 0 AND Method = 3");
+          $stmt->bindValue(1, $parking['Uniqueref']);
           $stmt->execute();
-          foreach($stmt->fetchAll() as $row) {
-            $Record = ['Plate' => $row['Plate'], 'Arrival' => $row['Arrival'], 'Departure' => $row['Departure'], 'Expiry' => $row['Expiry'], 'VehicleType' => $row['Type']];
-            $Data = array();
-            $stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Method = 3 AND Status < 1 AND Site = ? AND Account_ID = ? AND Parkingref = ? AND Processed_Time BETWEEN ? AND ? ORDER BY Processed_Time ASC");
-            $stmt->bindParam(1, $Account);
-            $stmt->bindParam(2, $Site);
-            $stmt->bindValue(3, $row['Parkingref']);
-            $stmt->bindParam(4, $Date1);
-            $stmt->bindParam(5, $Date2);
-            $stmt->execute();
+
+          $Ref = '\''.$parking['Uniqueref'].'\'';
+          $TimeIn = '\''.$parking['Arrival'].'\'';
+
+          $html .= '<tr class="'.$parking['Uniqueref'].' table-primary">';
+          $html .= '<td>'.$parking['Plate'].'</td>';
+          $html .= '<td>'.date("d/m/y H:i", strtotime($parking['Arrival'])).'</td>';
+          $html .= '<td>'.date("d/m/y H:i", strtotime($parking['Departure'])).'</td>';
+          $html .= '<td>'.$this->pm->GET_VehicleType($parking['Type']).'</td>';
+          $html .= '<td><div class="btn-group">
+                      <button class="btn btn-danger" onClick="Reconciled('.$Ref.')"><i class="fas fa-clipboard-check"></i></button>
+                      <button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$Ref.', '.$TimeIn.')"><i class="fa fa-cog"></i></button>
+                    </div></td>';
+          $html .= '</tr>';
+          foreach($stmt->fetchAll() as $payment) {
+            $html .= '<tr class="'.$parking['Uniqueref'].' table-success">';
+            if($payment['Kiosk'] == 1) {
+              $html .= '<td colspan="2"><i class="fas fa-user-edit" style="color: red; font-size: 25px;"></i> '.$payment['Service_Name'].'</td>';
+            } else {
+              $html .= '<td colspan="2">'.$payment['Service_Name'].'</td>';
+            }
+            $html .= '<td>£'.$payment['Gross'].'</td>';
+            $html .= '<td>£'.$payment['Nett'].'</td>';
+            $html .= '<td>'.$payment['Author'].'</td>';
+            $html .= '</tr>';
           }
         }
       }
-
+      $html .= '</tbody></table>';
+      echo json_encode($html);
       $this->mysql = null;
       $this->user = null;
     }
