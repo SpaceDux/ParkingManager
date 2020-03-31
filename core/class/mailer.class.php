@@ -42,5 +42,41 @@
         return 1;
       }
     }
+    // SEND ACTIVATION EMAIL
+    function SendConfirmation($Too, $Plate, $Arrival)
+    {
+      global $_CONFIG;
+      $mail = new PHPMailer();
+      $mail->IsSMTP();
+      // $mail->SMTPDebug = 3; //Alternative to above constant
+      $mail->Timeout       =   20; // set the timeout (seconds)
+      $mail->Host       = "us2.smtp.mailhostbox.com";
+      $mail->SMTPAuth   = true;
+      $mail->Username   = 'rp@roadkingtruckstop.co.uk';              // SMTP username
+      $mail->Password   = 'tlyyIiS4';                          // SMTP password
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+      $mail->Port       = 25;
+
+      //Set who the message is to be sent from
+      $mail->setFrom('rp@roadkingtruckstop.co.uk', 'Roadking Portal');
+      //Set who the message is to be sent to
+      $mail->addAddress($Too);
+      //Set the subject line
+      $mail->Subject = 'Booking Confirmation for '.$Plate;
+      //Read an HTML message body from an external file, convert referenced images to embedded,
+      $mail->Body = file_get_contents($_SERVER['DOCUMENT_ROOT'].'/email_templates/booking_confirm.html');
+      $mail->Body .= '<b>Vehicle: '.$Plate.'</b><hr>';
+      $mail->Body .= '<b>ETA: '.date("l jS F @ H:i", strtotime($Arrival)).'</b><hr>';
+      $mail->Body .= file_get_contents($_SERVER['DOCUMENT_ROOT'].'/email_templates/booking_rules.html');
+      $mail->Body .= '<br><hr><br><p style="font-size: 10px;color: #0f0f0f;text-align:center;">THIS MAILBOX IS NOT MONITORED, DO NOT REPLY.<br><br></p></div></div></body>';
+      //Replace the plain text body with one created manually
+      $mail->AltBody = 'Thanks for booking with us, we have confirmed your space. If you\'re running later than you thought, you must amend your booking through the portal before your ETA, otherwise your booking may be voided.';
+      //send the message, check for errors
+      if (!$mail->send()) {
+        return 0;
+      } else {
+        return 1;
+      }
+    }
   }
 ?>

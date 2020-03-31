@@ -138,9 +138,9 @@
               <label>What is your Estimated Time of Arrival?</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon3"><?php echo date("d/m/y")?> @ </span>
+                  <span class="input-group-text"><?php echo date("d/m/y")?> @ </span>
                 </div>
-                <input type="time" class="form-control form-control-lg" name="ETA" value="14:00" min="14:00" required>
+                <input type="time" class="form-control form-control-lg" name="ETA" value="<?php echo date("H:00", strtotime('+ 1 hour'))?>" min="14:00" required>
               </div>
             </div>
           </div>

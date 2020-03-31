@@ -13,6 +13,8 @@
       $Date = date("Y-m-d H:i:s");
       $Ref = mt_rand(1111, 9999).date("YmdHis").mt_rand(1111, 9999);
       $Plate = strtoupper($Plate);
+      $Plate = str_replace(" ", "", $Plate);
+      $Plate = str_replace("-", "", $Plate);
 
       if(!empty($Plate) AND !empty($Name)) {
         $stmt = $this->mysql->dbc->prepare("SELECT Uniqueref FROM vehicles WHERE Plate = ? AND Owner = ? AND Status < 1");

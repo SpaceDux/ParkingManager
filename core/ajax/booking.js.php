@@ -61,7 +61,9 @@
         dataType: "json",
         success:function(Response) {
           if(Response.Result < 1) {
-            $('#Booking_Cancelled_Note').html('<div class="alert alert-danger">'+Response.Message+'</div>');
+            $('#Booking_CancelModal').modal('hide');
+            $('#Booking_CancelledConfirm_Note').html('<div class="alert alert-danger">'+Response.Message+'</div>');
+            $('#Booking_CancelConfirmModal').modal('show');
           } else {
             $('#Booking_CancelModal').modal('hide');
             $('#Booking_CancelledConfirm_Note').html('<div class="alert alert-success">'+Response.Message+'</div>');

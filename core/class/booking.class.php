@@ -148,6 +148,7 @@
       $this->mysql = new MySQL;
       $this->user = new User;
       $this->vehicles = new Vehicles;
+      $this->mailer = new Mailer;
 
       $MaxSpace = $this->user->User_Info("MaxSpaces");
 
@@ -170,12 +171,12 @@
         $stmt->execute();
         if($stmt->rowCount() > 0) {
           $bay = $stmt->fetch(\PDO::FETCH_ASSOC);
-          $stmt  = $this->mysql->dbc->prepare("SELECT id FROM bookings WHERE Author = ? AND Status < 2");
+          $stmt  = $this->mysql->dbc->prepare("SELECT id FROM bookings WHERE Author = ? AND Status < 3");
           $stmt->bindValue(1, $_SESSION['ID']);
           $stmt->execute();
           if($stmt->rowCount() < $MaxSpace) {
             $bay = $stmt->fetch(\PDO::FETCH_ASSOC);
-            $stmt  = $this->mysql->dbc->prepare("SELECT id FROM bookings WHERE Plate = ? AND Status < 2");
+            $stmt  = $this->mysql->dbc->prepare("SELECT id FROM bookings WHERE Plate = ? AND Status < 3");
             $stmt->bindValue(1, $Plate);
             $stmt->execute();
             if($stmt->rowCount() < 1) {
@@ -206,7 +207,9 @@
                   $stmt->bindParam(2, $Date);
                   $stmt->bindParam(3, $Bay);
                   if($stmt->execute()) {
-                    echo json_encode(array('Result' => 1, 'Message' => 'That\'s been confirmed for you '.$this->user->User_Info("FirstName").'. <br><br>An email confirmation has been sent to<b> '.$this->user->User_Info("EmailAddress").'</b>. Thank you for booking through the Roadking Portal.'));
+                    $Email = $this->user->User_Info("EmailAddress");
+                    echo json_encode(array('Result' => 1, 'Message' => 'That\'s been confirmed for you '.$this->user->User_Info("FirstName").'. <br><br>An email confirmation has been sent to<b> '.$Email.'</b>. Thank you for booking through the Roadking Portal.'));
+                    $this->mailer->SendConfirmation($Email, $Plate, $ETA);
                   } else {
                     echo json_encode(array('Result' => 0, 'Message' => 'Sorry, we couldn\'t finalise that booking. Please try again'));
                   }
@@ -232,6 +235,7 @@
       $this->mysql = null;
       $this->user = null;
       $this->vehicles = null;
+      $this->mailer = null;
     }
     // View bookings as html
     function Booking_ListAllBookingsAsHtml()
@@ -241,7 +245,7 @@
       $this->pm = new PM;
 
       $html = '';
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status < 2 AND Author = ?");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status < 3 AND Author = ?");
       $stmt->bindValue(1, $_SESSION['ID']);
       $stmt->execute();
       if($stmt->rowCount() > 0) {
@@ -396,7 +400,7 @@
             }
           }
         } else {
-          echo json_encode(array('Result' => 0, 'Message' => 'Sorry, we can\'t locate that booking on our system. Please try again.'));
+          echo json_encode(array('Result' => 0, 'Message' => 'Sorry, that can\'t be done. <br><br>If you\'ve already checked in, please exit the park, or seek help off staff to amend.'));
         }
       } else {
         echo json_encode(array('Result' => 0, 'Message' => 'Please ensure all data is present.'));
