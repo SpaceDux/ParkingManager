@@ -31,6 +31,15 @@
     $('#Payment_CaptureDate_Bg').html(Time);
     $('#Payment_Name').focus();
     // If vehicle isnt a duplicate
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.CheckPortal",
+      data: {Plate:Plate},
+      method: "POST",
+      dataType: "text",
+      success:function(Response) {
+        $('#PortalCheck').html(Response);
+      }
+    });
     if(Type == 1) {
       // Is Duplicate (Already has mysql rec)
       $.ajax({
@@ -58,7 +67,6 @@
           $('#Payment_TimeCalculation').html(Response);
         }
       });
-      PaymentPane();
       $('#PaymentOptions').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
       $('#ANPR_Images').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
       $.ajax({
@@ -79,6 +87,7 @@
           $('#ANPR_Images').html(Response);
         }
       });
+      PaymentPane();
     } else {
       // Time Prep
       $.ajax({
@@ -90,7 +99,6 @@
           $('#Payment_TimeCalculation').html(Response);
         }
       });
-      PaymentPane();
       $('#PaymentOptions').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
       $('#ANPR_Images').html('<img style="width: 70px;display: block;margin: 20px auto;" src="{URL}/template/{TPL}/img/loading.gif"></img>');
       $.ajax({
@@ -111,6 +119,7 @@
           $('#ANPR_Images').html(Response);
         }
       });
+      PaymentPane();
     }
   }
   // Reset confirmation modals

@@ -9,7 +9,7 @@
   require '../global.php';
   $accesskey = $_CONFIG['api']['accesskey'];
   if(!isset($_POST['AccessKey'])) {
-    $_POST['AccessKey'] == "";
+    $_POST['AccessKey'] = "";
   }
   if(!isset($_POST['Prebooked'])) {
     $_POST['Prebooked'] = 0;

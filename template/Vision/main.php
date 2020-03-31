@@ -92,6 +92,7 @@
         <form id="PaymentPane_Form">
           <div class="row">
             <div class="col">
+              <div id="PortalCheck"></div>
               <input type="hidden" name="Payment_Type" id="Payment_Type" class="form-control">
               <input type="hidden" name="Payment_Ref" id="Payment_Ref" class="form-control">
               <input type="hidden" name="Payment_CaptureDate" id="Payment_CaptureDate" class="form-control">

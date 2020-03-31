@@ -10,7 +10,7 @@
 
   $accesskey = $_CONFIG['api']['accesskey'];
   if(!isset($_POST['AccessKey'])) {
-    $_POST['AccessKey'] == "";
+    $_POST['AccessKey'] = "";
   }
 
 

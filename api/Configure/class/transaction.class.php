@@ -129,7 +129,7 @@
       $Uniqueref = "01".date("YmdHis").mt_rand(1111, 9999);
       $Processed = date("Y-m-d H:i:s");
 
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO transactions VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, '0', '', ?, ?, ?, ?, ?, ?, ?, ?, '1', ?)");
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO transactions VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, '0', '', ?, ?, ?, ?, ?, ?, ?, '1', ?, ?)");
       $stmt->bindParam(1, $Uniqueref);
       $stmt->bindParam(2, $Ref);
       $stmt->bindParam(3, $Site);
@@ -153,9 +153,9 @@
       $stmt->bindParam(21, $CardType);
       $stmt->bindParam(22, $CardNo);
       $stmt->bindParam(23, $CardEx);
-      $stmt->bindParam(24, $Processed);
-      $stmt->bindParam(25, $Note);
-      $stmt->bindParam(26, $Booking);
+      $stmt->bindParam(24, $Note);
+      $stmt->bindParam(25, $Booking);
+      $stmt->bindParam(26, $Processed);
       if($stmt->execute()) {
         return $Uniqueref;
       } else {
@@ -742,7 +742,7 @@
         $Code = $this->Create_Wifi_Voucher();
         if($Code != null)
         {
-          $this->New_Transaction("", $Method, "WiFi", "WiFi", $Service, '', '', '', '', $CardType = '', $CardNo = '', $CardEx = '', $site, $Note);
+          $this->New_Transaction("", $Method, "WiFi", "WiFi", $Service, '', '', '', '', $CardType = '', $CardNo = '', $CardEx = '', $site, $Note, "");
           echo json_encode(array("Status" => '101', "Message" => 'WiFi transaction has been accepted.', "Code" => $Code));
         } else {
           echo json_encode(array("Status" => '105', "Message" => 'WiFi Transaction has not been added, please try again or seek assistance. Wifi System Offline'));

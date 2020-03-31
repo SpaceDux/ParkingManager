@@ -44,8 +44,6 @@
           $stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Parkingref = ? AND Site = ? AND Service_Group IN (2,3,5,6) AND Ticket_Printed < 1 AND Deleted < 1 ORDER BY Processed_Time DESC LIMIT 1");
           $stmt->bindParam(1, $ref);
           $stmt->bindParam(2, $Site);
-          // $stmt->bindParam(3, $ref);
-          // $stmt->bindParam(4, $Site);
           $stmt->execute();
 
           $trans = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -58,7 +56,7 @@
               'Img_Overview' => $result['Img_Overview'],
               'Accept_Account' => $accCk,
               'Accept_SNAP' => $ETPCk,
-              'Prebooked' => TRUE,
+              'Prebooked' => 1,
               'Vehicle_Type' => $Prebooked['VehicleType'],
             );
           } else {
@@ -69,7 +67,7 @@
               'Img_Overview' => $result['Img_Overview'],
               'Accept_Account' => $accCk,
               'Accept_SNAP' => $ETPCk,
-              'Prebooked' => FALSE,
+              'Prebooked' => 0,
             );
           }
 
@@ -135,7 +133,7 @@
               'Img_Overview' => $overview,
               'Accept_Account' => $accCk,
               'Accept_SNAP' => $ETPCk,
-              'Prebooked' => TRUE,
+              'Prebooked' => 1,
               'Vehicle_Type' => $Prebooked['VehicleType'],
               );
             } else {
@@ -145,7 +143,7 @@
               'Img_Overview' => $overview,
               'Accept_Account' => $accCk,
               'Accept_SNAP' => $ETPCk,
-              'Prebooked' => FALSE,
+              'Prebooked' => 0,
               );
             }
 
@@ -268,7 +266,7 @@
       $time = date("Y-m-d H:i:s");
 
 
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, AccountID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Last_Updated, Bookingref) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '2', '0', '', ?, ?, ?, ?, ?)");
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, AccountID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Bookingref, Last_Updated) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '2', '0', '', ?, ?, ?, ?, ?)");
       $stmt->bindParam(1, $Uniqueref);
       $stmt->bindParam(2, $Ref);
       $stmt->bindParam(3, $Site);
@@ -283,8 +281,8 @@
       $stmt->bindParam(12, $ExitKey);
       $stmt->bindParam(13, $Patch);
       $stmt->bindParam(14, $Overview);
-      $stmt->bindParam(15, $time);
-      $stmt->bindParam(16, $Booking);
+      $stmt->bindParam(15, $Booking);
+      $stmt->bindParam(16, $time);
       if($stmt->execute()) {
         return $Uniqueref;
       } else {

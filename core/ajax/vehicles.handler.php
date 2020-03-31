@@ -50,6 +50,8 @@
     $external->ModifyBooking_Portal($_POST['Ref'], $_POST['ETA'], $_POST['VehicleType']);
   } else if($handler == "Vehicles.Cancel_PortalBooking") {
     $external->ModifyStatus_Portal($_POST['Ref'], $_POST['Status']);
+  } else if($handler == "Vehicles.CheckPortal") {
+    $vehicles->CheckPortal($_POST['Plate']);
   }
 
 ?>

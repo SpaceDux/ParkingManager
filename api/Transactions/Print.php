@@ -9,10 +9,10 @@
   require '../global.php';
   $accesskey = $_CONFIG['api']['accesskey'];
   if(!isset($_POST['AccessKey'])) {
-    $_POST['AccessKey'] == "";
+    $_POST['AccessKey'] = "";
   }
   if(!isset($_POST['Printed'])) {
-    $_POST['Printed'] == "0";
+    $_POST['Printed'] = "0";
   }
 
   if($accesskey == $_POST['AccessKey']) {

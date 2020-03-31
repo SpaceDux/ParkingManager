@@ -1245,6 +1245,23 @@
 
       $this->mysql = null;
     }
+
+    // Is a portal booking
+    function CheckPortal($Plate)
+    {
+      $this->external = new External;
+
+      $Result = $this->external->Check_On_Portal($Plate);
+
+      if($Result['Status'] > 0) {
+        echo '<div class="alert alert-danger">This vehicle has prebooked using the Roadking Portal. Please ensure it is charged the correct <b>premium</b> fee.</div>';
+      } else {
+        // nothing
+      }
+
+      $this->external = null;
+    }
+
   }
 
 ?>
