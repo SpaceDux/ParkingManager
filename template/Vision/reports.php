@@ -92,6 +92,7 @@
         <form id="PaymentPane_Form">
           <div class="row">
             <div class="col">
+              <div id="PortalCheck"></div>
               <input type="hidden" name="Payment_Type" id="Payment_Type" class="form-control">
               <input type="hidden" name="Payment_Ref" id="Payment_Ref" class="form-control">
               <input type="hidden" name="Payment_CaptureDate" id="Payment_CaptureDate" class="form-control">
@@ -264,6 +265,7 @@
       </div>
     </div>
     <!-- Transaction List Pane END -->
+
     <!-- Top Navigation Bar START -->
     <div class="TopBar">
       <div class="Logo">
@@ -333,6 +335,7 @@
           <div class="Dropdown_Menu">
             <a href="{URL}/accounts">Account Management</a>
             <a href="{URL}/reports">Reports</a>
+            <a href="{URL}/reconcile_account">Reconcile</a>
           </div>
         </li>
         <li>

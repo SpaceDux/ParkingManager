@@ -92,6 +92,7 @@
         <form id="PaymentPane_Form">
           <div class="row">
             <div class="col">
+              <div id="PortalCheck"></div>
               <input type="hidden" name="Payment_Type" id="Payment_Type" class="form-control">
               <input type="hidden" name="Payment_Ref" id="Payment_Ref" class="form-control">
               <input type="hidden" name="Payment_CaptureDate" id="Payment_CaptureDate" class="form-control">
@@ -333,6 +334,7 @@
           <div class="Dropdown_Menu">
             <a href="{URL}/accounts">Account Management</a>
             <a href="{URL}/reports">Reports</a>
+            <a href="{URL}/reconcile_account">Reconcile</a>
           </div>
         </li>
         <li>
@@ -409,8 +411,8 @@
       <div class="row" style="padding-top: 10px;">
         <div class="col">
           <div class="jumbotron">
-            <h1 class="display-7">Account Reports</h1>
-            <p class="lead">To view account transactions, please choose an account and a date range.
+            <h1 class="display-7">Account Reconcile</h1>
+            <p class="lead">To view account transactions & ensure all are billed accordingly.
             <form action="{URL}/download_report.php" method="post">
               <div class="row">
                 <div class="col-md-2">

@@ -334,6 +334,7 @@
           <div class="Dropdown_Menu">
             <a href="{URL}/accounts">Account Management</a>
             <a href="{URL}/reports">Reports</a>
+            <a href="{URL}/reconcile_account">Reconcile</a>
           </div>
         </li>
         <li>
