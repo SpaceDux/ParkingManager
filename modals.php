@@ -1484,7 +1484,7 @@
     </div>
   </div>
 </div>
-<!-- Display Blacklist -->
+<!-- Display Bookings -->
 <div class="modal" id="Portal_ViewBookings" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Portal_ViewBookings" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -1494,7 +1494,15 @@
       <div class="modal-body">
         <div class="row">
           <div class="col">
-            {PORTAL-GETBOOKINGS}
+            <button type="button" id="Portal_DownloadBookings" class="btn btn-primary">Download Active Bookings</button>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <div id="Portal_BookingData">
+              
+            </div>
           </div>
         </div>
       </div>

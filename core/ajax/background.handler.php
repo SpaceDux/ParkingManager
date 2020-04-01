@@ -8,6 +8,8 @@
     $background->Parking_Reinstate();
   } else if($handler == "Background.Blacklist_Check") {
     $background->Blacklist_Check();
+  } else if($handler == "Background.ANPR_PortalCheck") {
+    $background->ANPR_PortalCheck();
   }
 
 

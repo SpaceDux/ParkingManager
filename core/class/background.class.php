@@ -137,7 +137,30 @@
      // Update Portal > Status = Arrived.
      function ANPR_PortalCheck()
      {
+      $this->mssql = new MSSQL;
+      $this->external = new External;
 
+      $Bookings = $this->external->ReturnBookingsAsArray();
+      print_r($Bookings);
+
+      $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 Plate FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
+      $stmt->execute();
+      foreach($stmt->fetchAll() as $row) {
+        foreach($Bookings['Data'] as $Portal) {
+          if($Portal['Plate'] == $row['Plate']) {
+            if($Portal['Status'] < 1) {
+              // Modify Status
+              $return = $this->external->ModifyStatus_Portal($Portal['Ref'], "1");
+              if($return['Status'] == 1) {
+                echo json_encode(array('Result' => '1', 'Message' => 'Prebooked: '.$row['Plate'].', has arrived on site. The portal has been notified.'));
+              }
+            }
+          }
+        }
+      }
+
+       $this->mssql = null;
+       $this->external = null;
      }
   }
 ?>

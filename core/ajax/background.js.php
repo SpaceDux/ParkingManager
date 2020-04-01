@@ -25,6 +25,19 @@
       }
     })
   }, 30000);
+  // Reinstate PArking
+  setInterval(function(){
+    $.ajax({
+      url: "{URL}/core/ajax/background.handler.php?handler=Background.ANPR_PortalCheck",
+      type: "POST",
+      dataType: 'json',
+      success:function(Data) {
+        if(Data.Result == 1) {
+          $.notify(Data.Message, {className:'warning',globalPosition: 'top left',});
+        }
+      }
+    })
+  }, 10000);
 
   $(document).ready(function() {
     $.ajax({

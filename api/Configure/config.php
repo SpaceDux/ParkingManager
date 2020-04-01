@@ -22,7 +22,7 @@
 									 		 'site_pass' => '2hst36sg');
 
 	// Portal API
-	$_CONFIG['Portal']['URL'] = 'http://portal.7tpixels.uk/api/';
+	$_CONFIG['Portal']['URL'] = 'https://portal.roadkingtruckstop.co.uk/api/';
 	// PM API Settings
 	$_CONFIG['api']['accesskey'] = 'el8565!kt'; //Site ID Number
 	$_CONFIG['api']['ver'] = '1.0.6'; // API Version

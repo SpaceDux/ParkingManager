@@ -477,4 +477,8 @@
     })
     return false;
   }
+
+  $(document).on('click', '#Portal_DownloadBookingsfunction', function() {
+    
+  })
 </script>
