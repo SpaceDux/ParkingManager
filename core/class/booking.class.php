@@ -453,6 +453,7 @@
               $dataEach['Plate'] = $row['Plate'];
               $dataEach['ETA'] = $row['ETA'];
               $dataEach['VehicleType'] = $row['VehicleType'];
+              $dataEach['Status'] = $row['Status'];
               $dataEach['Date'] = $row['Date'];
               array_push($data, $dataEach);
             }
