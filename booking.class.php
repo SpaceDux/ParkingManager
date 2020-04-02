@@ -529,31 +529,5 @@
       $this->mysql = null;
       $this->pm = null;
     }
-
-    // Search Bookings by Plate
-    function Booking_SearchBookingsByPlate_API($User, $Pass, $Plate)
-    {
-      $this->mysql = new MySQL;
-      $this->pm = new PM;
-
-      $Auth = $this->pm->PM_SiteAuthenticate_API($User, $Pass);
-      if($Auth['Status'] == "1") {
-        $Site = $Auth['Site_ID'];
-        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Plate = ? AND Status < 3 AND Site = ?");
-        $stmt->bindParam(1, $Plate);
-        $stmt->bindParam(2, $Site);
-        $stmt->execute();
-        if($stmt->rowCount() > 0) {
-          $result = $stmt->Fetch(\PDO::FETCH_ASSOC);
-          echo json_encode(array('Status' => '1', 'Message' => 'This vehicle has prebooked.', 'Bookingref' => $result['Uniqueref'], 'Vehicle_Type' => $result['VehicleType'], 'Booking_Status' => $result['Status']));
-        } else {
-          echo json_encode(array('Status' => '0', 'Message' => 'No bookings found.'));
-        }
-        echo json_encode(array('Status' => '0', 'Message' => 'Could not authenticate.'));
-      }
-
-      $this->pm = null;
-      $this->mysql = null;
-    }
   }
 ?>
