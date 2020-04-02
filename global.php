@@ -40,4 +40,5 @@
 	$vehicles = new PM\Vehicles;
 	$booking = new PM\Booking;
 	$mailer = new PM\Mailer;
+	$pm = new PM\PM;
 ?>

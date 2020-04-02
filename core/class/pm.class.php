@@ -61,6 +61,74 @@
 
       $this->mysql = null;
     }
+
+    // API
+    // List all bays to that site. (API)
+    function PM_GetAllBaysBySite_API($User, $Pass)
+    {
+      $this->mysql = new MySQL;
+
+      $Auth = $this->PM_SiteAuthenticate_API($User, $Pass);
+      if($Auth['Status'] == 1) {
+        $Site = $Auth['Site_ID'];
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Site = ? ORDER BY id ASC");
+        $stmt->bindParam(1, $Site);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $ReturnData = [];
+          foreach($stmt->fetchAll() as $row) {
+            $data = [];
+            $data['BayID'] = $row['id'];
+            $data['Last_Updated'] = $row['Last_Updated'];
+            $data['Status'] = $row['Status'];
+            $data['Temp'] = $row['Temp'];
+            array_push($ReturnData, $data);
+          }
+          echo json_encode(array('Status' => '1', 'Message' => 'Successfully found bays for your site.', 'Data' => $ReturnData));
+        } else {
+          echo json_encode(array('Status' => '0', 'Message' => 'No bays available.'));
+        }
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Unable to authenticate API access.'));
+      }
+      $stmt = $this->mysql->dbc->prepare("");
+
+      $this->mysql = null;
+    }
+
+    // Add a new bay to the portal.
+    function PM_AddNewBayToSite_API($User, $Pass, $BayNameOrNumber, $Temp, $Status)
+    {
+      $this->mysql = new MySQL;
+
+      // Ensure they don't auto set it to allocated/temp allocated.
+      if($Status == 1 OR $Status == 2) {
+        $Status = 0;
+      }
+
+      $Auth = $this->PM_SiteAuthenticate_API($User, $Pass);
+      if($Auth['Status'] == 1) {
+        $Site = $Auth['Site_ID'];
+        $Time = date("Y-m-d H:i:s");
+        $stmt = $this->mysql->dbc->prepare("INSERT INTO bays VALUES ('', ?, ?, ?, '', ?, ?, ?)");
+        $stmt->bindParam(1, $Site);
+        $stmt->bindParam(2, $BayNameOrNumber);
+        $stmt->bindParam(3, $Time);
+        $stmt->bindParam(4, $Temp);
+        $stmt->bindParam(5, $Time);
+        $stmt->bindParam(6, $Status);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          echo json_encode(array('Status' => '1', 'Message' => 'Successfully added bay to the portal.'));
+        } else {
+          echo json_encode(array('Status' => '1', 'Message' => 'Could not add bay to the portal.'));
+        }
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Unable to authenticate API access.'));
+      }
+
+      $this->mysql = null;
+    }
   }
 
 ?>
