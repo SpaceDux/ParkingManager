@@ -905,14 +905,38 @@
     function QuickExit($ref)
     {
       $this->mysql = new MySQL;
+      $this->external = new External;
       $cur = date("Y-m-d H:i:s");
 
-      $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Departure = ?, Parked_Column = 2 WHERE Uniqueref = ?");
-      $stmt->bindParam(1, $cur);
-      $stmt->bindParam(2, $ref);
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Uniqueref = ?");
+      $stmt->bindParam(1, $ref);
       $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if($result['Bookingref'] != '' OR $result['Bookingref'] != null) {
+          $return = $this->external->ModifyStatus_Portal($result['Bookingref'], "3");
+          $result = json_decode($return, true);
+          if($result['Status'] == 1) {
+            $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Departure = ?, Parked_Column = 2 WHERE Uniqueref = ?");
+            $stmt->bindParam(1, $cur);
+            $stmt->bindParam(2, $ref);
+            $stmt->execute();
+            echo json_encode(array('Status' => '1', 'Message' => 'Vehicle has exit and Portal has been notified.'));
+          } else {
+            echo json_encode(array('Status' => '0', 'Message' => 'Unable to exit vehicle due to Portal.'));
+          }
+        } else {
+          $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Departure = ?, Parked_Column = 2 WHERE Uniqueref = ?");
+          $stmt->bindParam(1, $cur);
+          $stmt->bindParam(2, $ref);
+          $stmt->execute();
+          echo json_encode(array('Status' => '1', 'Message' => 'Vehicle has exit.'));
+        }
+      }
+
 
       $this->mysql = null;
+      $this->external = null;
     }
     // Quick Flag
     function QuickFlag($ref, $flag)

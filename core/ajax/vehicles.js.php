@@ -478,7 +478,15 @@
     return false;
   }
 
-  $(document).on('click', '#Portal_DownloadBookingsfunction', function() {
-    
+  $(document).on('click', '#Portal_DownloadBookings', function() {
+    event.preventDefault();
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.List_PortalBookings",
+      method: "POST",
+      dataType: "text",
+      success:function(Response) {
+        $('#Portal_BookingData').html(Response);
+      }
+    })
   })
 </script>

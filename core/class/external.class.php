@@ -38,10 +38,18 @@
                       <th>ETA</th>
                       <th>Booked</th>
                       <th>Vehicle Type</th>
+                      <th>Status</th>
                       <th><i class="fa fa-cog"></i></th>
                     </thead>
                     <tbody>';
           foreach($return['Data'] as $row) {
+            if($row['Status'] == 1) {
+              $Status = 'Not Checked In.';
+            } else if($row['Status'] == 2) {
+              $Status = 'Arrived on-site';
+            } else if($row['Status'] == 3) {
+              $Status = 'Checked In';
+            }
             $ref = '\''.$row['Uniqueref'].'\'';
             $eta = '\''.date("H:i", strtotime($row['ETA'])).'\'';
             $html .= '<tr>';
@@ -49,21 +57,22 @@
             $html .= '<td>'.date("d/H:i", strtotime($row['ETA'])).'</td>';
             $html .= '<td>'.date("d/H:i:s", strtotime($row['Date'])).'</td>';
             $html .= '<td>'.$this->pm->GET_VehicleType($row['VehicleType']).'</td>';
+            $html .= '<td>'.$Status.'</td>';
             $html .= '<td>
                         <div class="btn-group" role="group">
                           <button class="btn btn-danger" onClick="Update_PortalBooking('.$ref.', '.$eta.', '.$row['VehicleType'].')"><i class="fa fa-cog"></i></button>
-                          <button class="btn btn-danger" onClick="Cancel_PortalBooking('.$ref.', 3)"><i class="fa fa-trash"></i></button>
+                          <button class="btn btn-danger" onClick="Cancel_PortalBooking('.$ref.', 4)"><i class="fa fa-trash"></i></button>
                         </div>
                       </td>';
             $html .= '</tr>';
           }
           $html .= '</tbody></table>';
-          return $html;
+          echo $html;
         } else {
-          return 'No active bookings found.';
+          echo 'No active bookings found.';
         }
       } else {
-        return "Your portal is not active.";
+        echo "Your portal is not active.";
       }
 
 

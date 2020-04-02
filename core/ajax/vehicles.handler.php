@@ -52,6 +52,8 @@
     $external->ModifyStatus_Portal($_POST['Ref'], $_POST['Status']);
   } else if($handler == "Vehicles.CheckPortal") {
     $vehicles->CheckPortal($_POST['Plate']);
+  } else if($handler == "Vehicles.List_PortalBookings") {
+    $external->GetBookings_Portal();
   }
 
 ?>

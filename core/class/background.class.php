@@ -8,6 +8,8 @@
        $this->mysql = new MySQL;
        $this->user = new User;
        $this->pm = new PM;
+       $this->external = new External;
+
        $campus = $this->user->Info("Site");
        // $this->user = null;
        $expiry = date("Y-m-d H:i:s");
@@ -28,6 +30,7 @@
          if($date > $timein) {
            $time = $result['Expiry'];
            $id = $result['Uniqueref'];
+           $Booking = $result['Bookingref'];
            $parked_expiry = date("Y-m-d H:i:s", strtotime($time.' +135 minutes'));
            if($parked_expiry >= $expiry) {
              $query = $this->mysql->dbc->prepare("SELECT * FROM automated_exit WHERE ANPRRef = ? AND Site = ?");
@@ -36,19 +39,40 @@
              $query->execute();
              $count = $query->rowCount();
              if($count < 1) {
-               $query = $this->mysql->dbc->prepare("UPDATE parking_records SET Departure = ?, Parked_Column = '2' WHERE Uniqueref = ?");
-               $query->bindParam(1, $date);
-               $query->bindParam(2, $id);
-               $query->execute();
-               $query2 = $this->mysql->dbc->prepare("INSERT INTO automated_exit VALUES ('', ?, ?, ?, ?)");
-               $query2->bindParam(1, $id);
-               $query2->bindParam(2, $anpr_key);
-               $query2->bindParam(3, $expiry);
-               $query2->bindParam(4, $campus);
-               $query2->execute();
-               if($query2->execute()) {
-                 $this->pm->LogWriter('ParkingManager has automatically exit vehicle: '.$plate, "1", "");
-                 echo json_encode(array("Result" => "1", "Message" => 'ParkingManager has automatically exit: '.$plate));
+               if($Booking != '' OR $Booking != null) {
+                 $return = $this->external->ModifyStatus_Portal($Booking, '3');
+                 $result = json_decode($return, true);
+                 if($result['Status'] > 0) {
+                   $query = $this->mysql->dbc->prepare("UPDATE parking_records SET Departure = ?, Parked_Column = '2' WHERE Uniqueref = ?");
+                   $query->bindParam(1, $date);
+                   $query->bindParam(2, $id);
+                   $query->execute();
+                   $query2 = $this->mysql->dbc->prepare("INSERT INTO automated_exit VALUES ('', ?, ?, ?, ?)");
+                   $query2->bindParam(1, $id);
+                   $query2->bindParam(2, $anpr_key);
+                   $query2->bindParam(3, $expiry);
+                   $query2->bindParam(4, $campus);
+                   $query2->execute();
+                   if($query2->execute()) {
+                     echo json_encode(array("Result" => "1", "Message" => 'ParkingManager has automatically exit and notified Portal for vehicle: '.$plate));
+                   }
+                 } else {
+                   echo json_encode(array("Result" => "0", "Message" => 'ParkingManager could not communicate with the Portal, vehicle has not been exit.'.$plate));
+                 }
+               } else {
+                 $query = $this->mysql->dbc->prepare("UPDATE parking_records SET Departure = ?, Parked_Column = '2' WHERE Uniqueref = ?");
+                 $query->bindParam(1, $date);
+                 $query->bindParam(2, $id);
+                 $query->execute();
+                 $query2 = $this->mysql->dbc->prepare("INSERT INTO automated_exit VALUES ('', ?, ?, ?, ?)");
+                 $query2->bindParam(1, $id);
+                 $query2->bindParam(2, $anpr_key);
+                 $query2->bindParam(3, $expiry);
+                 $query2->bindParam(4, $campus);
+                 $query2->execute();
+                 if($query2->execute()) {
+                   echo json_encode(array("Result" => "1", "Message" => 'ParkingManager has automatically exit vehicle: '.$plate));
+                 }
                }
              }
            } else {
@@ -62,6 +86,7 @@
        $this->mysql = null;
        $this->user = null;
        $this->pm = null;
+       $this->external = null;
      }
      function Parking_Reinstate()
      {
@@ -141,7 +166,6 @@
       $this->external = new External;
 
       $Bookings = $this->external->ReturnBookingsAsArray();
-      print_r($Bookings);
 
       $stmt = $this->mssql->dbc->prepare("SELECT TOP 200 Plate FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC");
       $stmt->execute();
@@ -150,8 +174,9 @@
           if($Portal['Plate'] == $row['Plate']) {
             if($Portal['Status'] < 1) {
               // Modify Status
-              $return = $this->external->ModifyStatus_Portal($Portal['Ref'], "1");
-              if($return['Status'] == 1) {
+              $return = $this->external->ModifyStatus_Portal($Portal['Uniqueref'], "1");
+              $result = json_decode($return);
+              if($result['Status'] == 1) {
                 echo json_encode(array('Result' => '1', 'Message' => 'Prebooked: '.$row['Plate'].', has arrived on site. The portal has been notified.'));
               }
             }
