@@ -549,6 +549,7 @@
         } else {
           echo json_encode(array('Status' => '0', 'Message' => 'No bookings found.'));
         }
+      } else {
         echo json_encode(array('Status' => '0', 'Message' => 'Could not authenticate.'));
       }
 

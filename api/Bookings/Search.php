@@ -17,7 +17,7 @@ if(!isset($_POST['AccessKey'])) {
 if($accesskey == $_POST['AccessKey'])
 {
   if(isset($_POST['Username'], $_POST['Password'], $_POST['Plate'])) {
-    $booking->Booking_SearchBookingsByPlate_API($_POST['Username'], $_POST['Password']);
+    $booking->Booking_SearchBookingsByPlate_API($_POST['Username'], $_POST['Password'], $_POST['Plate']);
   } else {
     echo json_encode(array("Status" => '0', "Message" => 'Missing data, please ensure all data is supplied.'));
   }
