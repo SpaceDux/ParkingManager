@@ -31,7 +31,6 @@
           $ETPCk = FALSE;
         }
 
-        $Prebooked = $this->checks->Check_On_Portal($Plate);
 
         $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate = ? AND Parked_Column = 1 AND Site = ? AND Deleted < 1");
         $stmt->bindValue(1, $Plate);
@@ -39,6 +38,8 @@
         $stmt->execute();
         if($stmt->rowCount() > 0)
         {
+          $Prebooked = $this->checks->Check_On_Portal($Plate);
+
           $result = $stmt->fetch(\PDO::FETCH_ASSOC);
           $ref = $result['Uniqueref'];
           $stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Parkingref = ? AND Site = ? AND Service_Group IN (2,3,5,6) AND Ticket_Printed < 1 AND Deleted < 1 ORDER BY Processed_Time DESC LIMIT 1");
@@ -56,7 +57,7 @@
               'Img_Overview' => $result['Img_Overview'],
               'Accept_Account' => $accCk,
               'Accept_SNAP' => $ETPCk,
-              'Prebooked' => 1,
+              'Prebooked' => "1",
               'Vehicle_Type' => $Prebooked['VehicleType'],
             );
           } else {
@@ -67,7 +68,7 @@
               'Img_Overview' => $result['Img_Overview'],
               'Accept_Account' => $accCk,
               'Accept_SNAP' => $ETPCk,
-              'Prebooked' => 0,
+              'Prebooked' => "0",
             );
           }
 
@@ -115,6 +116,7 @@
         }
         else
         {
+          $Prebooked = $this->checks->Check_On_Portal($Plate);
           // VIA ANPR
           $stmt = $this->mssql->dbc->prepare("SELECT TOP 1 * FROM ANPR_REX WHERE Plate = ? AND Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Capture_Date DESC", array(\PDO::ATTR_CURSOR => \PDO::CURSOR_SCROLL));
           $stmt->bindParam(1, $Plate);
@@ -133,7 +135,7 @@
               'Img_Overview' => $overview,
               'Accept_Account' => $accCk,
               'Accept_SNAP' => $ETPCk,
-              'Prebooked' => 1,
+              'Prebooked' => "1",
               'Vehicle_Type' => $Prebooked['VehicleType'],
               );
             } else {
@@ -143,7 +145,7 @@
               'Img_Overview' => $overview,
               'Accept_Account' => $accCk,
               'Accept_SNAP' => $ETPCk,
-              'Prebooked' => 0,
+              'Prebooked' => "0",
               );
             }
 

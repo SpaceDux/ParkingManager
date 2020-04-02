@@ -579,6 +579,24 @@
             </div>
             <br>
           </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <label for="Tariff_SettlementType ">Allow on Kiosk</label>
+              <select class="form-control" name="Tariff_Kiosk" id="Tariff_Kiosk">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="Tariff_SettlementMulti">Portal Only Tariff</label>
+              <select class="form-control" name="Tariff_Portal" id="Tariff_Portal">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <br>
+          </div>
           </div>
           <div class="modal-footer">
             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -1501,7 +1519,7 @@
         <div class="row">
           <div class="col">
             <div id="Portal_BookingData">
-              
+
             </div>
           </div>
         </div>

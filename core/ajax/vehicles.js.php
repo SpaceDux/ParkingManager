@@ -453,6 +453,7 @@
           if(Response.Status == "1") {
             $.notify(Response.Message, {className:'success',globalPosition: 'top left',});
             $('#Portal_ModifyBooking').modal('toggle');
+            DownloadActivePortalBookings();
           } else {
             $.notify(Response.Message, {className:'danger',globalPosition: 'top left',});
           }
@@ -472,6 +473,7 @@
       success:function(Response) {
         if(Response.Status == "1") {
           $.notify(Response.Message, {className:'success',globalPosition: 'top left',});
+          DownloadActivePortalBookings()
         } else {
           $.notify(Response.Message, {className:'danger',globalPosition: 'top left',});
         }

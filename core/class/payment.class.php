@@ -1464,7 +1464,7 @@
 			$Time = date("Y-m-d H:i:s");
 
 
-			$stmt = $this->mysql->dbc->prepare("INSERT INTO tariffs VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '1', '0')");
+			$stmt = $this->mysql->dbc->prepare("INSERT INTO tariffs VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			$stmt->bindParam(1, $Uniqueref);
 			$stmt->bindParam(2, $Site);
 			$stmt->bindParam(3, $Name);
@@ -1487,7 +1487,9 @@
 			$stmt->bindParam(20, $SettlementGroup);
 			$stmt->bindParam(21, $SettlementMulti);
 			$stmt->bindParam(22, $Status);
-			$stmt->bindParam(23, $Time);
+			$stmt->bindParam(23, $Kiosk);
+			$stmt->bindParam(24, $Portal);
+			$stmt->bindParam(25, $Time);
 			$stmt->execute();
 			if($stmt->rowCount() > 0) {
 				$result = array('Result' => '1', 'Message' => 'New Tariff has successfully been added into ParkingManager.');

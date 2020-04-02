@@ -260,7 +260,7 @@
 
       $Site = $_CONFIG['api']['site'];
       if($this->Site_Info($Site, "Portal_Active") == "1") {
-        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0', 'future' => true]);
+        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0']);
 
         $response = $client->post('Bookings/List', [
           'form_params' => [

@@ -418,9 +418,9 @@
         $ETP = $this->Payment_TariffInfo($Tariff, "ETPID");
         $Expiry = date("Y-m-d H:i:s", strtotime($TimeExpiry.' +'.$Service_Expiry.' hours'));
         $ANPRRef = $this->vehicles->VehicleInfo($Ref, "ANPRRef");
-        // Check is portal booking
+        // Run & check if booked on portal
         $Probooked = $this->checks->Check_On_Portal($Plate);
-        if($Probooked['Status'] == "1") {
+        if($Probooked['Status'] == 1) {
           $Booking = $Probooked['Bookingref'];
           // Update booking & confirm checkin.
           $this->checks->ModifyStatus_Portal($Booking, "2");
