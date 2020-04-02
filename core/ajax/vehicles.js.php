@@ -432,12 +432,13 @@
     });
   });
 
-  function Update_PortalBooking(Ref, Eta, vehtype)
+  function Update_PortalBooking(Ref, Eta_Date, Eta_Time, vehtype)
   {
     event.preventDefault();
     $('#ModifyBooking_Ref').val(Ref);
-    $('#ModifyBooking_ETA').val(Eta);
+    $('#ModifyBooking_ETA').val(Eta_Time);
     $('#ModifyBooking_VehicleType').val(vehtype);
+    $('#ModifyBooking_ETA_Prepend').html(Eta_Date);
     $('#Portal_ModifyBooking').modal('toggle');
     // Edit
     $('#ModifyBooking_FORM').on('submit', function() {
@@ -451,6 +452,7 @@
         success:function(Response) {
           if(Response.Status == "1") {
             $.notify(Response.Message, {className:'success',globalPosition: 'top left',});
+            $('#Portal_ModifyBooking').modal('toggle');
           } else {
             $.notify(Response.Message, {className:'danger',globalPosition: 'top left',});
           }
@@ -477,8 +479,7 @@
     })
     return false;
   }
-
-  $(document).on('click', '#Portal_DownloadBookings', function() {
+  function DownloadActivePortalBookings() {
     event.preventDefault();
     $.ajax({
       url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.List_PortalBookings",
@@ -488,5 +489,5 @@
         $('#Portal_BookingData').html(Response);
       }
     })
-  })
+  }
 </script>

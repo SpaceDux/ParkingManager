@@ -43,15 +43,16 @@
                     </thead>
                     <tbody>';
           foreach($return['Data'] as $row) {
-            if($row['Status'] == 1) {
+            if($row['Status'] == 0) {
               $Status = 'Not Checked In.';
-            } else if($row['Status'] == 2) {
+            } else if($row['Status'] == 1) {
               $Status = 'Arrived on-site';
-            } else if($row['Status'] == 3) {
+            } else if($row['Status'] == 2) {
               $Status = 'Checked In';
             }
             $ref = '\''.$row['Uniqueref'].'\'';
-            $eta = '\''.date("H:i", strtotime($row['ETA'])).'\'';
+            $eta_time = '\''.date("H:i", strtotime($row['ETA'])).'\'';
+            $eta_date = '\''.date("d/m/y", strtotime($row['ETA'])).'\'';
             $html .= '<tr>';
             $html .= '<td>'.$row['Plate'].'</td>';
             $html .= '<td>'.date("d/H:i", strtotime($row['ETA'])).'</td>';
@@ -60,7 +61,7 @@
             $html .= '<td>'.$Status.'</td>';
             $html .= '<td>
                         <div class="btn-group" role="group">
-                          <button class="btn btn-danger" onClick="Update_PortalBooking('.$ref.', '.$eta.', '.$row['VehicleType'].')"><i class="fa fa-cog"></i></button>
+                          <button class="btn btn-danger" onClick="Update_PortalBooking('.$ref.', '.$eta_date.', '.$eta_time.', '.$row['VehicleType'].')"><i class="fa fa-cog"></i></button>
                           <button class="btn btn-danger" onClick="Cancel_PortalBooking('.$ref.', 4)"><i class="fa fa-trash"></i></button>
                         </div>
                       </td>';

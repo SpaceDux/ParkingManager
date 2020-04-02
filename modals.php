@@ -1494,7 +1494,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col">
-            <button type="button" id="Portal_DownloadBookings" class="btn btn-primary">Download Active Bookings</button>
+            <button type="button" onClick="DownloadActivePortalBookings()" class="btn btn-primary">Download Bookings</button>
           </div>
         </div>
         <hr>
@@ -1527,7 +1527,7 @@
               <label>ETA</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text"><?php echo date("d/m/y").' @' ?></span>
+                  <span class="input-group-text" id="ModifyBooking_ETA_Prepend"></span>
                 </div>
                 <input type="time" class="form-control form-control-lg" name="ETA" id="ModifyBooking_ETA" min="14:00" required="">
               </div>
