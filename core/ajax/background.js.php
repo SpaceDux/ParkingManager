@@ -25,7 +25,7 @@
       }
     })
   }, 30000);
-  // Reinstate PArking
+  // Update the portal
   setInterval(function(){
     $.ajax({
       url: "{URL}/core/ajax/background.handler.php?handler=Background.ANPR_PortalCheck",
@@ -37,7 +37,7 @@
         }
       }
     })
-  }, 10000);
+  }, 40000);
 
   $(document).ready(function() {
     $.ajax({

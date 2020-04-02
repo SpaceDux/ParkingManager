@@ -262,22 +262,19 @@
       if($this->Site_Info($Site, "Portal_Active") == "1") {
         $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0']);
 
-        $response = $client->post('Bookings/List', [
+        $response = $client->post('Bookings/Search', [
           'form_params' => [
             'AccessKey' => $this->Site_Info($Site, "Portal_AccessKey"),
             'Username' => $this->Site_Info($Site, "Portal_User"),
-            'Password' => $this->Site_Info($Site, "Portal_Pass")
+            'Password' => $this->Site_Info($Site, "Portal_Pass"),
+            'Plate' => $Plate
           ]
         ]);
 
         $return = json_decode($response->getBody(), true);
 
         if($return['Status'] == '1') {
-          foreach($return['Data'] as $row) {
-            if($row['Plate'] == $Plate) {
-              return array("Status" => "1", "Bookingref" => $row['Uniqueref'], "VehicleType" => $row['VehicleType']);
-            }
-          }
+          return array("Status" => "1", "Bookingref" => $return['Bookingref'], "Vehicle_Type" => $return['Vehicle_Type']);
         } else {
           return array("Status" => "0");
         }

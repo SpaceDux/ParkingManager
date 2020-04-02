@@ -166,7 +166,7 @@
         $return = json_decode($response->getBody(), true);
 
         if($return['Status'] == '1') {
-          return array("Status" => "1", "Bookingref" => $row['Bookingref']);
+          return array("Status" => "1", "Bookingref" => $return['Bookingref']);
         } else {
           return array("Status" => "0");
         }

@@ -58,7 +58,7 @@
               'Accept_Account' => $accCk,
               'Accept_SNAP' => $ETPCk,
               'Prebooked' => "1",
-              'Vehicle_Type' => $Prebooked['VehicleType'],
+              'Vehicle_Type' => $Prebooked['Vehicle_Type'],
             );
           } else {
             $response = array('ParkingID' => $ref,
@@ -136,7 +136,7 @@
               'Accept_Account' => $accCk,
               'Accept_SNAP' => $ETPCk,
               'Prebooked' => "1",
-              'Vehicle_Type' => $Prebooked['VehicleType'],
+              'Vehicle_Type' => $Prebooked['Vehicle_Type'],
               );
             } else {
               $response = array('ParkingID' => $result['Uniqueref'],
@@ -268,7 +268,8 @@
       $time = date("Y-m-d H:i:s");
 
 
-      $stmt = $this->mysql->dbc->prepare("INSERT INTO parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, AccountID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Bookingref, Last_Updated) VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', 1, ?, ?, ?, '2', '0', '', ?, ?, ?, ?, ?)");
+      $stmt = $this->mysql->dbc->prepare("INSERT INTO parking_records (id, Uniqueref, ANPRRef, Site, Plate, Name, Type, Arrival, Expiry, Departure, Parked_Column, AccountID, Trailer_No, Author, Flagged, Deleted, Notes, ExitKey, Img_Patch, Img_Overview, Bookingref, Last_Updated)
+      VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?, '', '1', ?, ?, ?, '2', '0', '', ?, ?, ?, ?, ?)");
       $stmt->bindParam(1, $Uniqueref);
       $stmt->bindParam(2, $Ref);
       $stmt->bindParam(3, $Site);
