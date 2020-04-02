@@ -20,15 +20,29 @@
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status = 3");
       $stmt->execute();
       foreach($stmt->fetchAll() as $bookings) {
-        $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
-        $stmt->bindParam(1, $Date);
-        $stmt->bindValue(2, $bookings['Bay']);
-        $stmt->execute();
-        if($stmt->rowCount() > 0) {
-          $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4', Last_Updated = ? WHERE Uniqueref = ?");
+        if($bookings['Temp'] != 1) {
+          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
           $stmt->bindParam(1, $Date);
-          $stmt->bindValue(2, $bookings['Uniqueref']);
+          $stmt->bindValue(2, $bookings['Bay']);
           $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4', Last_Updated = ? WHERE Uniqueref = ?");
+            $stmt->bindParam(1, $Date);
+            $stmt->bindValue(2, $bookings['Uniqueref']);
+            $stmt->execute();
+          }
+        } else if($bookings['Temp'] == 1) {
+          // SpecialBay is where you can open temporary bays
+          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '3', Last_Updated = ?, Author = '' WHERE id = ?");
+          $stmt->bindParam(1, $Date);
+          $stmt->bindValue(2, $bookings['Bay']);
+          $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4', Last_Updated = ? WHERE Uniqueref = ?");
+            $stmt->bindParam(1, $Date);
+            $stmt->bindValue(2, $bookings['Uniqueref']);
+            $stmt->execute();
+          }
         }
       }
 
@@ -442,7 +456,7 @@
         $Auth = $this->pm->PM_SiteAuthenticate_API($User, $Pass);
         if($Auth['Status'] == "1") {
           $Site = $Auth['Site_ID'];
-          $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status < 2 AND Site = ?");
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status < 3 AND Site = ?");
           $stmt->bindParam(1, $Site);
           $stmt->execute();
           if($stmt->rowCount() > 0) {
