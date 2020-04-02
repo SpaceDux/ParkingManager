@@ -152,27 +152,26 @@
 
       $Site = $this->user->Info("Site");
       if($this->pm->Site_Info($Site, "Portal_Active") == "1") {
-        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0', 'future' => true]);
+        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0']);
 
-        $response = $client->post('Bookings/List', [
+        $response = $client->post('Bookings/Search', [
           'form_params' => [
             'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
             'Username' => $this->pm->Site_Info($Site, "Portal_User"),
-            'Password' => $this->pm->Site_Info($Site, "Portal_Pass")
+            'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
+            'Plate' => $Plate
           ]
         ]);
 
         $return = json_decode($response->getBody(), true);
 
         if($return['Status'] == '1') {
-          foreach($return['Data'] as $row) {
-            if($Plate == $row['Plate']) {
-              return array("Status" => "1", "Bookingref" => $row['Uniqueref']);
-            } else {
-              return array("Status" => "0");
-            }
-          }
+          return array("Status" => "1", "Bookingref" => $row['Bookingref']);
+        } else {
+          return array("Status" => "0");
         }
+      } else {
+        return array("Status" => "0");
       }
 
       $this->pm = null;
