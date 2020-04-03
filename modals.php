@@ -231,7 +231,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a href="{URL}/home" class="btn btn-secondary" data-dismiss="modal">Close</a>
       </div>
     </div>
   </div>
@@ -276,6 +276,58 @@
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+<!-- Cookie Policy -->
+<div class="modal" id="CookiePolicy_Modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Our Cookie Policy</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <h4>1. Why and how we use cookies</h4>
+          By using the Roadking Portal website you’re confirming that you’re happy to accept our use of cookies. Here you can find out more about how we use them. If you are concerned about cookies, it is important that you read about and understand their usage. They are very important to the working of this website as they are involved in the user functionality.
+          <br>
+          <h4>What are cookies?</h4>
+          Cookies are small, harmless files placed on your computer’s hard drive or in your browser memory when you visit a website.
+          <br>
+          <h4>What do cookies do?</h4>
+          Cookies help to make the interaction between users and websites faster and easier. For example, they can remember your login details or information you supply as you set up your user account. What cookies don't do is store any personal or confidential information about you.
+          <br>
+          <h4>Are cookies safe?</h4>
+          Yes, cookies are harmless text files. They can’t look into your computer or read any personal information or other material on your hard drive. Cookies can’t carry viruses or install anything harmful on your computer.
+          <br>
+          <h4>Why should I keep cookies switched on?</h4>
+          We advise you to keep cookies active during your visits to our website because parts of the site rely on them to work properly. For example, you won’t be able to sign in to your account if cookies are disabled.
+          <hr>
+          <h4>2. Types of cookie we use</h4>
+          Like most large websites, Roadking Portal uses session cookies and persistent cookies. Neither session cookies nor persistent cookies collect any personally identifiable information.
+          <br>
+          <h4>Session cookies</h4>
+          We use session cookies, which last only for the duration of your visit (your 'session') and are deleted when you close your browser. These simply enable us to identify that the same person is moving from page to page.
+          <br>
+          <h4>Persistent cookies</h4>
+          We use certain cookies that are persistent, meaning that they last beyond your session. Persistent cookies help our website remember you as a user each time you use the same computer to revisit us.
+          <br>
+          <h4>Third party cookies</h4>
+          As well as using cookies from our advertising partners, from time to time we may also embed external content from other third party websites within our website. These include sites such as Facebook and Twitter, whose cookie usage policy you can view on their own websites.
+          <hr>
+          <h4>3. Turning cookies on or off</h4>
+          You have a number of options when it comes to receiving cookies. You can set your browser either to reject all cookies, to allow only ‘trusted’ sites to send them, or to accept only those cookies from websites you are currently using.
+          <br>
+          We recommend that you don’t block all cookies because parts of our website rely on them to work properly.
+          If you prefer not to receive cookies then you won't be able to set up a user account or use some of the services we offer because both rely on cookies to function effectively.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>

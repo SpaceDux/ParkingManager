@@ -29,19 +29,21 @@
           <span><i class="fa fa-user"></i></span>
           My Account
         </a>
+        <a href="{URL}/logout.php">
+          <span><i class="fas fa-sign-out-alt"></i></span>
+          Logout
+        </a>
       </div>
     </div>
     <div class="Wrapper">
       <div class="row">
         <div class="col-md-12">
           <div class="alert alert-danger">
-            We currently don't allow running refrigerators to park in our pre-booked spaces. If you have a running fridge, do not use this service.
-            <br>
-            <br>
-            Failing to comply will result in a permanent ban from using any of Roadking's services and you will be asked to leave immediately.
+            <h3>Please DO NOT use this service for refrigerated vehicles.</h3>
+            We have a refrigerated parking zone on-site but reserved parking is allocated elsewhere and cannot mix due to noise restrictions. Making a reservation
+            for refrigerated vehicles will not secure a space.
             <br><br>
-            Thank you,<br>
-            Roadking.
+            Thank you for taking note of this restriction.<br>
           </div>
           <div class="jumbotron">
             <h1 class="display-4">Reserve your Parking</h1>

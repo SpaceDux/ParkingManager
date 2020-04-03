@@ -50,6 +50,7 @@
   function Booking_Cancel(Ref)
   {
     event.preventDefault();
+    event.stopPropagation();
     $('#Booking_CancelModal').modal('show');
     $('#Booking_Cancelled_Note').html('<p>Are you sure you want to cancel this booking?</p>');
 
@@ -72,11 +73,13 @@
         }
       });
     })
+    return false;
   }
   // Cancel a booking
   function Booking_MidwayCancel()
   {
     event.preventDefault();
+    event.stopPropagation();
     $('#Booking_CancelModal').modal('show');
     $('#Booking_Cancelled_Note').html('<p>Are you sure you want to cancel this booking?</p>');
 
@@ -99,5 +102,6 @@
         }
       });
     })
+    return false;
   }
 </script>

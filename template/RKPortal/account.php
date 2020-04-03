@@ -29,6 +29,10 @@
           <span><i class="fa fa-user"></i></span>
           My Account
         </a>
+        <a href="{URL}/logout.php">
+          <span><i class="fas fa-sign-out-alt"></i></span>
+          Logout
+        </a>
       </div>
     </div>
     <div class="Wrapper">
