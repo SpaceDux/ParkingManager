@@ -54,6 +54,10 @@
     $vehicles->CheckPortal($_POST['Plate']);
   } else if($handler == "Vehicles.List_PortalBookings") {
     $external->GetBookings_Portal();
+  } else if($handler == "Vehicles.List_PortalBays") {
+    $external->GetBaysFromPortal();
+  } else if($handler == "Vehicles.AddBayToPortal") {
+    $external->AddBayToPortal($_POST['Name'], $_POST['Temp'], $_POST['Status']);
   }
 
 ?>

@@ -203,5 +203,111 @@
       $this->pm = null;
       $this->user = null;
     }
+    // Get all bays
+    function GetBaysFromPortal()
+    {
+      global $_CONFIG;
+      $this->pm = new PM;
+      $this->user = new User;
+
+      $Site = $this->user->Info("Site");
+      if($this->pm->Site_Info($Site, "Portal_Active") == "1") {
+        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0']);
+
+        $response = $client->post('Bays/List', [
+          'form_params' => [
+            'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
+            'Username' => $this->pm->Site_Info($Site, "Portal_User"),
+            'Password' => $this->pm->Site_Info($Site, "Portal_Pass")
+          ]
+        ]);
+
+        $return = json_decode($response->getBody(), true);
+        if($return['Status'] == "1") {
+          $html = '<table class="table table-hover table-bordered">
+                    <thead>
+                      <th>Name/Number</th>
+                      <th>Type of Bay</th>
+                      <th>Status</th>
+                      <th>Last Update</th>
+                      <th><i class="fa fa-cog"></i></th>
+                    </thead>
+                    <tbody>';
+          foreach($return['Data'] as $row) {
+            if($row['Status'] == '0') {
+              $Status = 'Unallocated';
+            } else if($row['Status'] == '1') {
+              $Status = 'Preparing Booking';
+            } else if($row['Status'] == '2') {
+              $Status = 'Booking Allocated';
+            } else if($row['Status'] == '3') {
+              $Status = 'Out of Service';
+            }
+            if($row['Temp'] == "1") {
+              $Type = 'Temporary Bay';
+            } else {
+              $Type = 'Permenant Bay';
+            }
+
+            $html .= '<tr>
+                        <td>'.$row['BayName'].'</td>
+                        <td>'.$Type.'</td>
+                        <td>'.$Status.'</td>
+                        <td>'.date("d/m/y H:i:s", strtotime($row['Last_Updated'])).'</td>
+                        <td>
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-primary"><i class="fa fa-cog"></i></button>
+                          </div>
+                        </td>
+                      </tr>';
+          }
+          $html .= '<tbody></table>';
+
+          echo $html;
+        } else {
+          echo 'No bays found.';
+        }
+      } else {
+        echo 'Your portal is not active.';
+      }
+
+      $this->pm = null;
+      $this->user = null;
+    }
+    // Add a bay to the Portal
+    function AddBayToPortal($Name, $Temp, $Status)
+    {
+      global $_CONFIG;
+      $this->pm = new PM;
+      $this->user = new User;
+
+      $Site = $this->user->Info("Site");
+      if($this->pm->Site_Info($Site, "Portal_Active") == "1") {
+        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0']);
+
+        $response = $client->post('Bays/Add', [
+          'form_params' => [
+            'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
+            'Username' => $this->pm->Site_Info($Site, "Portal_User"),
+            'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
+            'Name' => $Name,
+            'Temp' => $Temp,
+            'Status' => $Status,
+          ]
+        ]);
+
+        $return = json_decode($response->getBody(), true);
+        if($return['Status'] == "1") {
+          echo json_encode(array('Status' => '1', 'Message' => 'Successfully added bay to the portal.'));
+        } else {
+          echo json_encode(array('Status' => '0', 'Message' => 'Couldn\'t add bay to the portal.'));
+        }
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Your portal is not active.'));
+      }
+
+      $this->pm = null;
+      $this->user = null;
+    }
   }
 ?>
