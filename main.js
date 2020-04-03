@@ -23,7 +23,7 @@ function createWindow () {
   win.setIcon('pages/img/PMIcon.png');
 
   // and load the index.html of the app.
-  win.loadFile('pages/login.html')
+  win.loadFile('pages/index.html')
 
   // Open the DevTools.
   win.webContents.openDevTools({detach: true})

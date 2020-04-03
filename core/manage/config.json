@@ -3,12 +3,12 @@
   {
     "Host": "localhost",
     "User": "root",
-    "Pass": "",
-    "Database": "parking_manager"
+    "Pass": "lol123abc",
+    "Database": "rev_anpr"
   },
   "App":
   {
-    "Name": "ParkingManager",
+    "Name": "Rev ANPR",
     "Version": "1.0.0"
   }
 }
