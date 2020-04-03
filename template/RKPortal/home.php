@@ -34,6 +34,15 @@
     <div class="Wrapper">
       <div class="row">
         <div class="col-md-12">
+          <div class="alert alert-danger">
+            We currently don't allow running refrigerators to park in our pre-booked spaces. If you have a running fridge, do not use this service.
+            <br>
+            <br>
+            Failing to comply will result in a permanent ban from using any of Roadking's services and you will be asked to leave immediately.
+            <br><br>
+            Thank you,<br>
+            Roadking.
+          </div>
           <div class="jumbotron">
             <h1 class="display-4">Reserve your Parking</h1>
             <p class="lead">You can now pre-book your parking space with us... To begin, you must add a vehicle to your account.</p>

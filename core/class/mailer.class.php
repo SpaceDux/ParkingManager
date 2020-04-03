@@ -25,6 +25,9 @@
       $mail->setFrom('rp@roadkingtruckstop.co.uk', 'Roadking Portal');
       //Set who the message is to be sent to
       $mail->addAddress($Too);
+
+      // Set html to true
+      $mail->isHTML(true);
       //Set the subject line
       $mail->Subject = 'Activate Your Roadking Portal Account';
       //Read an HTML message body from an external file, convert referenced images to embedded,
@@ -61,6 +64,9 @@
       $mail->setFrom('rp@roadkingtruckstop.co.uk', 'Roadking Portal');
       //Set who the message is to be sent to
       $mail->addAddress($Too);
+
+      // set html true
+      $mail->isHTML(true);
       //Set the subject line
       $mail->Subject = 'Booking Confirmation for '.$Plate;
       //Read an HTML message body from an external file, convert referenced images to embedded,

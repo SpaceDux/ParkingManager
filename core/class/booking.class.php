@@ -20,28 +20,33 @@
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status = 3");
       $stmt->execute();
       foreach($stmt->fetchAll() as $bookings) {
-        if($bookings['Temp'] != 1) {
-          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
-          $stmt->bindParam(1, $Date);
-          $stmt->bindValue(2, $bookings['Bay']);
-          $stmt->execute();
-          if($stmt->rowCount() > 0) {
-            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4', Last_Updated = ? WHERE Uniqueref = ?");
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE id = ?");
+        $stmt->bindValue(1, $bookings['Bay']);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $bay = $stmt->fetch(\PDO::FETCH_ASSOC);
+          if($bay['Temp'] == "1") {
+            $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '3', Last_Updated = ?, Author = '' WHERE id = ?");
             $stmt->bindParam(1, $Date);
-            $stmt->bindValue(2, $bookings['Uniqueref']);
+            $stmt->bindValue(1, $bay['id']);
             $stmt->execute();
-          }
-        } else if($bookings['Temp'] == 1) {
-          // SpecialBay is where you can open temporary bays
-          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '3', Last_Updated = ?, Author = '' WHERE id = ?");
-          $stmt->bindParam(1, $Date);
-          $stmt->bindValue(2, $bookings['Bay']);
-          $stmt->execute();
-          if($stmt->rowCount() > 0) {
-            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4', Last_Updated = ? WHERE Uniqueref = ?");
+            if($stmt->rowCount() > 0) {
+              $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4', Last_Updated = ? WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $Date);
+              $stmt->bindValue(2, $bookings['Uniqueref']);
+              $stmt->execute();
+            }
+          } else {
+            $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
             $stmt->bindParam(1, $Date);
-            $stmt->bindValue(2, $bookings['Uniqueref']);
+            $stmt->bindValue(1, $bay['id']);
             $stmt->execute();
+            if($stmt->rowCount() > 0) {
+              $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4', Last_Updated = ? WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $Date);
+              $stmt->bindValue(2, $bookings['Uniqueref']);
+              $stmt->execute();
+            }
           }
         }
       }
@@ -112,8 +117,9 @@
 
       $MaxSpace = $this->user->User_Info("MaxSpaces");
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Author = ? AND Status < 2");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Author = ? AND Site = ? AND Status < 2");
       $stmt->bindValue(1, $_SESSION['ID']);
+      $stmt->bindValue(2, $Site);
       $stmt->execute();
       if($stmt->rowCount() > 0) {
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);

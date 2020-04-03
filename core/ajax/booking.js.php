@@ -73,22 +73,31 @@
       });
     })
   }
-  // Cancel booking midway, reopen bay
+  // Cancel a booking
   function Booking_MidwayCancel()
   {
-    $.ajax({
-      url: "{URL}/core/ajax/booking.handler.php?handler=Booking.Booking_MidwayCancel",
-      method: "POST",
-      dataType: "json",
-      success:function(Response) {
-        if(Response.Result < 1) {
-          $('#Booking_Confirmation_Note').html('<div class="alert alert-danger">'+Response.Message+'</div>');
-        } else {
-          $('#Booking_BookModal').modal('hide');
-          $('#Booking_Cancelled_Note').html('<div class="alert alert-success">'+Response.Message+'</div>');
-          $('#Booking_CancelModal').modal('show');
+    event.preventDefault();
+    $('#Booking_CancelModal').modal('show');
+    $('#Booking_Cancelled_Note').html('<p>Are you sure you want to cancel this booking?</p>');
+
+    $('#Booking_CancelModal_YES').on('click', function() {
+      $.ajax({
+        url: "{URL}/core/ajax/booking.handler.php?handler=Booking.Booking_MidwayCancel",
+        method: "POST",
+        dataType: "json",
+        success:function(Response) {
+          if(Response.Result < 1) {
+            $('#Booking_CancelModal').modal('hide');
+            $('#Booking_CancelledConfirm_Note').html('<div class="alert alert-danger">'+Response.Message+'</div>');
+            $('#Booking_CancelConfirmModal').modal('show');
+          } else {
+            $('#Booking_BookModal').modal('hide');
+            $('#Booking_CancelModal').modal('hide');
+            $('#Booking_CancelledConfirm_Note').html('<div class="alert alert-success">'+Response.Message+'</div>');
+            $('#Booking_CancelConfirmModal').modal('show');
+          }
         }
-      }
-    });
+      });
+    })
   }
 </script>
