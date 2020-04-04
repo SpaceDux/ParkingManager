@@ -1622,3 +1622,43 @@
     </div>
   </div>
 </div>
+<!-- Add new Portal Bay modal -->
+<div class="modal" id="ModifyPortalBay_Modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="ModifyPortalBay_Modal" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modify Bay</h5>
+      </div>
+      <form id="ModifyPortalBay_Form">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <label>Name OR Number Your Bay</label>
+            <input type="hidden" class="form-control" id="ModifyPortalBay_Bay" name="Bay" required>
+            <input type="text" class="form-control" id="ModifyPortalBay_Name" name="Name" required>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <p>
+              <b>Temporary Bay</b>: You can control whether this is allowed to be booked temporarily, once booked & the vehicle has then checked out, this bay will deactivate itself. You can re-activate it when you require.
+            <br>
+               <b>Permanent Bay</b>: When a vehicle books this space and then checks out, it will automatically reinstate the bay and allow other users to book.
+             </p>
+            <label>What type of bay is this?</label>
+            <select class="form-control" name="Temp" id="ModifyPortalBay_Temp" required>
+              <option value="0">Permanent</option>
+              <option value="1">Temporary</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

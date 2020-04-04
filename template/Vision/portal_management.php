@@ -471,7 +471,7 @@
           method: "POST",
           dataType: "text",
           success:function(Response) {
-            $('#Portal_BookingData').html(Response);
+            $('#Portal_BookingData_Manage').html(Response);
           }
         })
       }
@@ -504,6 +504,30 @@
           }
         })
       })
+      function ModifyBay_Portal(Ref, Temp, Name) {
+        event.preventDefault();
+        $('#ModifyPortalBay_Bay').val(Ref);
+        $('#ModifyPortalBay_Temp').val(Temp);
+        $('#ModifyPortalBay_Name').val(Name);
+        $('#ModifyPortalBay_Modal').modal('toggle');
+        $('#ModifyPortalBay_Form').on('submit', function() {
+          $.ajax({
+            url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.UpdateBayPortal",
+            data: Data,
+            method: "POST",
+            dataType: "json",
+            success:function(Response) {
+              if(Result.Status < 1) {
+                $.notify(Result.Message, {className:'danger',globalPosition: 'top left',});
+              } else {
+                $.notify(Result.Message, {className:'success',globalPosition: 'top left',});
+                $('#AddNewPortalBay_Modal').modal('toggle');
+                DownloadBays_Manage();
+              }
+            }
+          })
+        });
+      }
       Mousetrap.bind('esc', function() {
         $('#ANPR_AddPlate_Form')[0].reset();
         $('#AddPlate_Plate').focus();

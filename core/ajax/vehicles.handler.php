@@ -58,6 +58,8 @@
     $external->GetBaysFromPortal();
   } else if($handler == "Vehicles.AddBayToPortal") {
     $external->AddBayToPortal($_POST['Name'], $_POST['Temp'], $_POST['Status']);
+  } else if($handler == "Vehicles.UpdateBayPortal") {
+    $external->UpdateBayPortal($_POST['Bay'], $_POST['Name'], $_POST['Temp']);
   }
 
 ?>

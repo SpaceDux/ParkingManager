@@ -62,7 +62,7 @@
             $html .= '<td>
                         <div class="btn-group" role="group">
                           <button class="btn btn-danger" onClick="Update_PortalBooking('.$ref.', '.$eta_date.', '.$eta_time.', '.$row['VehicleType'].')"><i class="fa fa-cog"></i></button>
-                          <button class="btn btn-danger" onClick="Cancel_PortalBooking('.$ref.', 4)"><i class="fa fa-trash"></i></button>
+                          <button class="btn btn-danger" onClick="Cancel_PortalBooking('.$ref.', 5)"><i class="fa fa-trash"></i></button>
                         </div>
                       </td>';
             $html .= '</tr>';
@@ -256,7 +256,7 @@
                         <td>'.date("d/m/y H:i:s", strtotime($row['Last_Updated'])).'</td>
                         <td>
                           <div class="btn-group">
-                            <button type="button" class="btn btn-primary"><i class="fa fa-cog"></i></button>
+                            <button type="button" class="btn btn-primary" onClick="ModifyBay_Portal('.$row['BayID'].', '.$row['Temp'].', '.$row['BayName'].')"><i class="fa fa-cog"></i></button>
                           </div>
                         </td>
                       </tr>';
@@ -301,6 +301,41 @@
           echo json_encode(array('Status' => '1', 'Message' => 'Successfully added bay to the portal.'));
         } else {
           echo json_encode(array('Status' => '0', 'Message' => 'Couldn\'t add bay to the portal.'));
+        }
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Your portal is not active.'));
+      }
+
+      $this->pm = null;
+      $this->user = null;
+    }
+    // Update Bay
+    function UpdateBayPortal($Bay, $Name, $Temp)
+    {
+      global $_CONFIG;
+      $this->pm = new PM;
+      $this->user = new User;
+
+      $Site = $this->user->Info("Site");
+      if($this->pm->Site_Info($Site, "Portal_Active") == "1") {
+        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0']);
+
+        $response = $client->post('Bays/Update', [
+          'form_params' => [
+            'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
+            'Username' => $this->pm->Site_Info($Site, "Portal_User"),
+            'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
+            'Bay' => $Bay,
+            'Name' => $Name,
+            'Temp' => $Temp,
+          ]
+        ]);
+
+        $return = json_decode($response->getBody(), true);
+        if($return['Status'] == "1") {
+          echo json_encode(array('Status' => '1', 'Message' => 'Successfully updated bay.'));
+        } else {
+          echo json_encode(array('Status' => '0', 'Message' => 'Couldn\'t update bay on the portal.'));
         }
       } else {
         echo json_encode(array('Status' => '0', 'Message' => 'Your portal is not active.'));
