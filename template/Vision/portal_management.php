@@ -346,7 +346,7 @@
             <a href="#notices">Notices</a>
             <a href="{URL}/users">User Management</a>
             <a href="{URL}/sites">Site Management</a>
-            <a href="{URL}/sites">Portal Management</a>
+            <a href="{URL}/portal_management">Portal Management</a>
           </div>
         </li>
       </ul>
@@ -531,6 +531,23 @@
         })
         return false;
       });
+      function ModifyBayStatus_Portal(Ref, Status) {
+        event.preventDefault();
+        $.ajax({
+          url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.UpdateBayStatusPortal",
+          data: {Bay:Ref, Status:Status},
+          method: "POST",
+          dataType: "json",
+          success:function(Result) {
+            if(Result.Status < 1) {
+              $.notify(Result.Message, {className:'danger',globalPosition: 'top left',});
+            } else {
+              $.notify(Result.Message, {className:'success',globalPosition: 'top left',});
+              DownloadBays_Manage();
+            }
+          }
+        })
+      }
       Mousetrap.bind('esc', function() {
         $('#ANPR_AddPlate_Form')[0].reset();
         $('#AddPlate_Plate').focus();

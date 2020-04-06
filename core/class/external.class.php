@@ -236,12 +236,16 @@
           foreach($return['Data'] as $row) {
             if($row['Status'] == '0') {
               $Status = 'Unallocated';
+              $ServiceBtn = '<button type="button" class="btn btn-primary" onClick="ModifyBayStatus_Portal('.$row['BayID'].', 3)"><i class="fa fa-times"></i></button>';
             } else if($row['Status'] == '1') {
               $Status = 'Preparing Booking';
+              $ServiceBtn = '';
             } else if($row['Status'] == '2') {
               $Status = 'Booking Allocated';
+              $ServiceBtn = '';
             } else if($row['Status'] == '3') {
               $Status = 'Out of Service';
+              $ServiceBtn = '<button type="button" class="btn btn-primary" onClick="ModifyBayStatus_Portal('.$row['BayID'].', 0)"><i class="fa fa-tick"></i></button>';
             }
             if($row['Temp'] == "1") {
               $Type = 'Temporary Bay';
@@ -257,6 +261,7 @@
                         <td>'.date("d/m/y H:i:s", strtotime($row['Last_Updated'])).'</td>
                         <td>
                           <div class="btn-group">
+                            '.$ServiceBtn.'
                             <button type="button" class="btn btn-primary" onClick="ModifyBay_Portal('.$row['BayID'].', '.$row['Temp'].', '.$Name.')"><i class="fa fa-cog"></i></button>
                           </div>
                         </td>
@@ -329,6 +334,40 @@
             'Bay' => $Bay,
             'Name' => $Name,
             'Temp' => $Temp,
+          ]
+        ]);
+
+        $return = json_decode($response->getBody(), true);
+        if($return['Status'] == "1") {
+          echo json_encode(array('Status' => '1', 'Message' => 'Successfully updated bay.'));
+        } else {
+          echo json_encode(array('Status' => '0', 'Message' => 'Couldn\'t update bay on the portal.'));
+        }
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Your portal is not active.'));
+      }
+      exit;
+      $this->pm = null;
+      $this->user = null;
+    }
+    // Update Bay
+    function UpdateBayStatusPortal($Bay, $Status)
+    {
+      global $_CONFIG;
+      $this->pm = new PM;
+      $this->user = new User;
+
+      $Site = $this->user->Info("Site");
+      if($this->pm->Site_Info($Site, "Portal_Active") == "1") {
+        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0']);
+
+        $response = $client->post('Bays/Update', [
+          'form_params' => [
+            'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
+            'Username' => $this->pm->Site_Info($Site, "Portal_User"),
+            'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
+            'Bay' => $Bay,
+            'Status' => $Status,
           ]
         ]);
 

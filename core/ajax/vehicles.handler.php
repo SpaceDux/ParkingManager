@@ -60,6 +60,8 @@
     $external->AddBayToPortal($_POST['Name'], $_POST['Temp'], $_POST['Status']);
   } else if($handler == "Vehicles.UpdateBayPortal") {
     $external->UpdateBayPortal($_POST['Bay'], $_POST['Name'], $_POST['Temp']);
+  } else if($handler == "Vehicles.UpdateBayStatusPortal") {
+    $external->UpdateBayStatusPortal($_POST['Bay'], $_POST['Status']);
   }
 
 ?>

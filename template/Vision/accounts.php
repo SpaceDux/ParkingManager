@@ -346,6 +346,7 @@
             <a href="#notices">Notices</a>
             <a href="{URL}/users">User Management</a>
             <a href="{URL}/sites">Site Management</a>
+            <a href="{URL}/portal_management">Portal Management</a>
           </div>
         </li>
       </ul>
