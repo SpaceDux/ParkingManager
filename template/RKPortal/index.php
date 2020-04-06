@@ -16,6 +16,12 @@
           <img src="{URL}/template/{TPL}/img/Roadking.png" alt="Pre-Book your HGV Parking with Roadking"></img>
         </div>
         <div class="LoginForm">
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            By using our website, you agree to our <a data-target="#CookiePolicy_Modal" data-toggle="modal"><b style="text-decoration: underline;cursor:pointer;">Cookie Policy</b></a>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <div id="User_LoginForm_Error"></div>
           <form id="LoginForm">
             <label for="Email">Email Address</label>
@@ -29,9 +35,6 @@
           </form>
           <label>Not a member?</label>
           <button class="btn btn-success" data-toggle="modal" data-target="#User_JoinModal" style="width: 100%;">Join Today</button>
-          <br>
-          <hr>
-          <small style="color:#f6f6f6">By using our website, you agree to our <a data-target="#CookiePolicy_Modal" data-toggle="modal"><b style="text-decoration: underline;cursor:pointer;">Cookie Policy</b></a> & <a data-target="#PrivacyPolicy_Modal" data-toggle="modal"><b style="text-decoration: underline;cursor:pointer;">Privacy Policy</b></a></small>
         </div>
       </div>
     </div>

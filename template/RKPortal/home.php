@@ -73,12 +73,6 @@
         {PREVIOUSBOOKINGS}
       </div>
     </div>
-    <footer>
-      <br>
-      <br>
-      <center>&copy; Roadking Truckstops 2020 | By using our website, you agree to our <a data-target="#CookiePolicy_Modal" data-toggle="modal"><b style="text-decoration: underline;cursor:pointer;">Cookie Policy</b></a> & <a data-target="#PrivacyPolicy_Modal" data-toggle="modal"><b style="text-decoration: underline;cursor:pointer;">Privacy Policy</b></a></center>
-      <br>
-    </footer>
     <!-- STYLE BASED SCRIPTS -->
     <?php require_once('./modals.php'); ?>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
