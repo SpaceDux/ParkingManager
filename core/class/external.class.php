@@ -248,6 +248,7 @@
             } else {
               $Type = 'Permenant Bay';
             }
+            $Name = '\''.$row['BayName'].'\'';
 
             $html .= '<tr>
                         <td>'.$row['BayName'].'</td>
@@ -256,7 +257,7 @@
                         <td>'.date("d/m/y H:i:s", strtotime($row['Last_Updated'])).'</td>
                         <td>
                           <div class="btn-group">
-                            <button type="button" class="btn btn-primary" onClick="ModifyBay_Portal('.$row['BayID'].', '.$row['Temp'].', '.$row['BayName'].')"><i class="fa fa-cog"></i></button>
+                            <button type="button" class="btn btn-primary" onClick="ModifyBay_Portal('.$row['BayID'].', '.$row['Temp'].', '.$Name.')"><i class="fa fa-cog"></i></button>
                           </div>
                         </td>
                       </tr>';
@@ -270,7 +271,7 @@
       } else {
         echo 'Your portal is not active.';
       }
-
+      exit;
       $this->pm = null;
       $this->user = null;
     }
@@ -305,7 +306,7 @@
       } else {
         echo json_encode(array('Status' => '0', 'Message' => 'Your portal is not active.'));
       }
-
+      exit;
       $this->pm = null;
       $this->user = null;
     }
@@ -340,7 +341,7 @@
       } else {
         echo json_encode(array('Status' => '0', 'Message' => 'Your portal is not active.'));
       }
-
+      exit;
       $this->pm = null;
       $this->user = null;
     }

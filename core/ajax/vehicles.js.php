@@ -440,28 +440,27 @@
     $('#ModifyBooking_VehicleType').val(vehtype);
     $('#ModifyBooking_ETA_Prepend').html(Eta_Date);
     $('#Portal_ModifyBooking').modal('toggle');
-    // Edit
-    $('#ModifyBooking_FORM').on('submit', function() {
-      event.preventDefault();
-      var Data = $(this).serialize();
-      $.ajax({
-        url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ModifyPortalBooking",
-        data: Data,
-        method: "POST",
-        dataType: "json",
-        success:function(Response) {
-          if(Response.Status == "1") {
-            $.notify(Response.Message, {className:'success',globalPosition: 'top left',});
-            $('#Portal_ModifyBooking').modal('toggle');
-            DownloadActivePortalBookings();
-          } else {
-            $.notify(Response.Message, {className:'danger',globalPosition: 'top left',});
-          }
-        }
-      })
-      return false;
-    });
   }
+  $('#ModifyBooking_FORM').on('submit', function() {
+    event.preventDefault();
+    var Data = $(this).serialize();
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ModifyPortalBooking",
+      data: Data,
+      method: "POST",
+      dataType: "json",
+      success:function(Response) {
+        if(Response.Status == "1") {
+          $.notify(Response.Message, {className:'success',globalPosition: 'top left',});
+          $('#Portal_ModifyBooking').modal('toggle');
+          DownloadActivePortalBookings();
+        } else {
+          $.notify(Response.Message, {className:'danger',globalPosition: 'top left',});
+        }
+      }
+    })
+    return false;
+  });
   function Cancel_PortalBooking(Ref, Status)
   {
     event.preventDefault();

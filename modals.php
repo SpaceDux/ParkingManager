@@ -1629,7 +1629,7 @@
       <div class="modal-header">
         <h5 class="modal-title">Modify Bay</h5>
       </div>
-      <form id="ModifyPortalBay_Form">
+      <form id="ModifyPortalBay_Form" onsubmit="event.preventDefault();">
       <div class="modal-body">
         <div class="row">
           <div class="col">
@@ -1655,7 +1655,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="button" id="ModifyPortalBay_Submit" class="btn btn-primary">Save Changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
       </form>
