@@ -245,7 +245,7 @@
               $ServiceBtn = '';
             } else if($row['Status'] == '3') {
               $Status = 'Out of Service';
-              $ServiceBtn = '<button type="button" class="btn btn-primary" onClick="ModifyBayStatus_Portal('.$row['BayID'].', 0)"><i class="fa fa-tick"></i></button>';
+              $ServiceBtn = '<button type="button" class="btn btn-primary" onClick="ModifyBayStatus_Portal('.$row['BayID'].', 0)"><i class="fas fa-check"></i></button>';
             }
             if($row['Temp'] == "1") {
               $Type = 'Temporary Bay';
