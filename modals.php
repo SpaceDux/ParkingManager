@@ -51,6 +51,12 @@
               <input type="phone" class="form-control" name="Join_Telephone" id="Join_Telephone" placeholder="Example: 0333 023 5360" required>
             </div>
           </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              By signing up to our website, you agree to our <a data-target="#CookiePolicy_Modal" data-toggle="modal"><b style="text-decoration: underline;cursor:pointer;">Cookie Policy</b></a> & <a data-target="#PrivacyPolicy_Modal" data-toggle="modal"><b style="text-decoration: underline;cursor:pointer;">Privacy Policy</b></a>
+            </div>
+          </div>
         </div>
       </form>
         <div class="modal-footer">
@@ -323,6 +329,102 @@
           <br>
           We recommend that you don’t block all cookies because parts of our website rely on them to work properly.
           If you prefer not to receive cookies then you won't be able to set up a user account or use some of the services we offer because both rely on cookies to function effectively.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Privacy Policy -->
+<div class="modal" id="PrivacyPolicy_Modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Our Privacy Policy</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          The New Hollies Limited, <b>Trading as Roadking</b>.
+          <br>
+          Company Number: 07477525
+          <br>
+          Address;
+          The New Hollies,
+          Watling St,
+          Four Crosses,
+          Cannock,
+          WS11 1SB
+          <br>
+          This privacy policy will explain how our company uses the personal data we collect from you when you use our websites.
+          <br>
+          Personal identification information (Name, email address, phone number, etc).
+          <br>
+          Vehicle identification information (registration number)
+          <hr>
+          How do we collect your data?
+          You directly provide Roadking with most of the data we collect. We collect data and process data when you register your account & when you make a booking.
+          <hr>
+          <h4>How do we store your data?</h4>
+          Roadking securely stores your data in our secure databases.
+          <br>
+          Roadking will keep your Names, Email Address, Telephone Number, Vehicle Information until you request otherwise. We will permenantly delete your data from all of our databases for all Roadking services upon request.
+          <hr>
+          <h4>Marketing</h4>
+          Roadking would like to send you information about products and services of ours that we think you might like.
+          <br>
+          If you have agreed to receive marketing, you may always opt out at a later date.
+          <br>
+          You have the right at any time to stop Roadking from contacting you for marketing purposes.
+          <br>
+          <hr>
+          <h4>What are your data protection rights?</h4>
+          Roadking would like to make sure you are fully aware of all of your data protection rights. Every user is entitled to the following:
+          <br>
+          The right to access – You have the right to request Roadking for copies of your personal data. We may charge you a small fee for this service.
+          <br>
+          The right to rectification – You have the right to request that Roadking correct any information you believe is inaccurate. You also have the right to request Roadking to complete the information you believe is incomplete.
+          <br>
+          The right to erasure – You have the right to request that Roadking erase your personal data, under certain conditions.
+          <br>
+          The right to restrict processing – You have the right to request that Roadking restrict the processing of your personal data, under certain conditions.
+          <br>
+          The right to object to processing – You have the right to object to Roadking’s processing of your personal data, under certain conditions.
+          <br>
+          The right to data portability – You have the right to request that Roadking transfer the data that we have collected to another organization, or directly to you, under certain conditions.
+          <br>
+          If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us at our email:
+          <br>
+          Call us at: 0333 023 5360
+          <br>
+          Or write to us: admin@roadkingcafe.co.uk
+          <hr>
+          <h4>Privacy policies of other websites</h4>
+          The Roadking websites may contain links to other websites. Our privacy policy applies only to our websites, so if you click on a link to another website, you should read their privacy policy.
+          <hr>
+          <h4>Changes to our privacy policy</h4>
+          Roadking keeps its privacy policy under regular review and places any updates on this web page. This privacy policy was last updated on 06 April 2020.
+          <hr>
+          <h4>How to contact us</h4>
+          If you have any questions about Roadking’s privacy policy, the data we hold on you, or you would like to exercise one of your data protection rights, please do not hesitate to contact us.
+          <br>
+          <b>Email us at</b>: admin@roadkingcafe.co.uk
+          <br>
+          <b>Call us</b>: 0333 023 5360
+          <br>
+          <b>Or write to us at:</b>
+          The New Hollies,
+          Watling St,
+          Four Crosses,
+          Cannock,
+          WS11 1SB
+          <hr>
+          <h4>How to contact the appropriate authority</h4>
+          Should you wish to report a complaint or if you feel that Roadking has not addressed your concern in a satisfactory manner, you may contact the Information Commissioner’s Office.
         </p>
       </div>
       <div class="modal-footer">

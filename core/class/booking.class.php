@@ -562,5 +562,63 @@
       $this->pm = null;
       $this->mysql = null;
     }
+
+    // Search Bookings by Plate
+    function Booking_AddNewBookingViaBay_API($User, $Pass, $Plate, $Type, $ETA, $Stay)
+    {
+      $this->mysql = new MySQL;
+      $this->pm = new PM;
+
+      $Date = date("Y-m-d H:i:s");
+      $Expiry = date("Y-m-d H:i:s", strtotime($ETA.' + '.$Stay.' hours'));
+      $ETA = date("Y-m-d H:i:s", strtotime($ETA));
+
+      $Auth = $this->pm->PM_SiteAuthenticate_API($User, $Pass);
+      if($Auth['Status'] == "1") {
+        $Site = $Auth['Site_ID'];
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Site = ? AND Status = 0 LIMIT 1");
+        $stmt->bindParam(1, $Site);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $Bay = $stmt->fetch(\PDO::FETCH_ASSOC);
+          $BayID = $Bay['id'];
+          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = 2, Last_Updated = ?, Expiry = ? WHERE id = ? LIMIT 1");
+          $stmt->bindParam(1, $Date);
+          $stmt->bindParam(2, $Expiry);
+          $stmt->bindParam(3, $BayID);
+          $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            $Ref = mt_rand(1111, 9999).date("YmdHis").mt_rand(1111, 9999);
+            // Create booking
+            $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
+            $stmt->bindParam(1, $Ref);
+            $stmt->bindParam(2, $Site);
+            $stmt->bindParam(3, $Plate);
+            $stmt->bindParam(4, $Type);
+            $stmt->bindParam(5, $Date);
+            $stmt->bindParam(6, $ETA);
+            $stmt->bindParam(7, $Expiry);
+            $stmt->bindParam(8, $BayID);
+            $stmt->bindValue(9, 'PM');
+            $stmt->bindParam(10, $Date);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+              echo json_encode(array('Status' => '1', 'Message' => 'Booking has been confirmed.'));
+            } else {
+              echo json_encode(array('Status' => '0', 'Message' => 'Unable to add booking. Please try again.'));
+            }
+          } else {
+            echo json_encode(array('Status' => '0', 'Message' => 'Unable to allocate bay.'));
+          }
+        } else {
+          echo json_encode(array('Status' => '0', 'Message' => 'There\'s currently no available bays.'));
+        }
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Could not authenticate.'));
+      }
+
+      $this->pm = null;
+      $this->mysql = null;
+    }
   }
 ?>
