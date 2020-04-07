@@ -79,7 +79,6 @@
           foreach($stmt->fetchAll() as $row) {
             $data = [];
             $data['BayID'] = $row['id'];
-            $data['BayName'] = $row['Number'];
             $data['Last_Updated'] = $row['Last_Updated'];
             $data['Status'] = $row['Status'];
             $data['Temp'] = $row['Temp'];
@@ -92,6 +91,7 @@
       } else {
         echo json_encode(array('Status' => '0', 'Message' => 'Unable to authenticate API access.'));
       }
+      $stmt = $this->mysql->dbc->prepare("");
 
       $this->mysql = null;
     }
@@ -123,42 +123,6 @@
         } else {
           echo json_encode(array('Status' => '1', 'Message' => 'Could not add bay to the portal.'));
         }
-      } else {
-        echo json_encode(array('Status' => '0', 'Message' => 'Unable to authenticate API access.'));
-      }
-
-      $this->mysql = null;
-    }
-    // Update bay via API
-    function PM_UpdateBay_API($User, $Pass, $Bay, $Name = '', $Temp = '', $Status = '')
-    {
-      $this->mysql = new MySQL;
-
-      $Auth = $this->PM_SiteAuthenticate_API($User, $Pass);
-      if($Auth['Status'] == 1) {
-        $Time = date("Y-m-d H:i:s");
-        if($Name != '' OR $Name != null) {
-          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Number = ?, Last_Updated = ? WHERE id = ?");
-          $stmt->bindParam(1, $Name);
-          $stmt->bindParam(2, $Time);
-          $stmt->bindParam(3, $Bay);
-          $stmt->execute();
-        }
-        if($Temp != '' OR $Temp != null) {
-          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Temp = ?, Last_Updated = ? WHERE id = ?");
-          $stmt->bindParam(1, $Temp);
-          $stmt->bindParam(2, $Time);
-          $stmt->bindParam(3, $Bay);
-          $stmt->execute();
-        }
-        if($Status != '' OR $Status != null) {
-          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = ?, Last_Updated = ? WHERE id = ?");
-          $stmt->bindParam(1, $Status);
-          $stmt->bindParam(2, $Time);
-          $stmt->bindParam(3, $Bay);
-          $stmt->execute();
-        }
-        echo json_encode(array('Status' => '1', 'Message' => 'Successfully updated bay on the portal.'));
       } else {
         echo json_encode(array('Status' => '0', 'Message' => 'Unable to authenticate API access.'));
       }
