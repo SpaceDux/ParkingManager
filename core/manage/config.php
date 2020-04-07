@@ -14,8 +14,7 @@
 	$_CONFIG['site']['url'] = 'http://192.168.0.5'; //Server URL example.com (DOES NOT END WITH /)
 	$_CONFIG['site']['name'] = 'ParkingManager Portal'; //Website name, {SITE_NAME}
 	$_CONFIG['site']['template'] = 'RKPortal'; //Fenrir Template System, Select the Template Directory
-	$_CONFIG['site']['doc_route'] = 'portal'; //Directory after $_SERVER['DOCUMENT_ROOT']
-
+	$_CONFIG['site']['maintenance'] = true; //Enable website maintenance - either true/false. (Does not effect API)
 	// API Configuration
 	$_CONFIG['API']['AccessKey'] = 'dk&!ssf^1'; //AccessKey required for api auth.
 
