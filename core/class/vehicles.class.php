@@ -22,7 +22,7 @@
         $stmt->bindValue(2, $_SESSION['ID']);
         $stmt->execute();
         if($stmt->rowCount() < 1) {
-          $stmt = $this->mysql->dbc->prepare("INSERT INTO vehicles VALUES('', ?, ?, ?, '', ?, ?, ?, '0')");
+          $stmt = $this->mysql->dbc->prepare("INSERT INTO vehicles (Uniqueref, Plate, Name, Assigned_Account, Date, Last_Updated, Owner, Status) VALUES (?, ?, ?, '', ?, ?, ?, '0')");
           $stmt->bindParam(1, $Ref);
           $stmt->bindParam(2, $Plate);
           $stmt->bindParam(3, $Name);

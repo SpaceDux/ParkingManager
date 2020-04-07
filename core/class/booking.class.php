@@ -28,7 +28,7 @@
           if($bay['Temp'] == "1") {
             $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '3', Last_Updated = ?, Author = '' WHERE id = ?");
             $stmt->bindParam(1, $Date);
-            $stmt->bindValue(1, $bay['id']);
+            $stmt->bindValue(2, $bay['id']);
             $stmt->execute();
             if($stmt->rowCount() > 0) {
               $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4', Last_Updated = ? WHERE Uniqueref = ?");
@@ -39,7 +39,7 @@
           } else {
             $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
             $stmt->bindParam(1, $Date);
-            $stmt->bindValue(1, $bay['id']);
+            $stmt->bindValue(2, $bay['id']);
             $stmt->execute();
             if($stmt->rowCount() > 0) {
               $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4', Last_Updated = ? WHERE Uniqueref = ?");
@@ -68,13 +68,11 @@
       }
 
       // IF STATUS = 1 AND EXPIRY < CUR TIME
-      $Date = date("Y-m-d H:i:s");
-
       $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Status = 1");
       $stmt2->execute();
       foreach($stmt2->fetchAll() as $row) {
         if($Date > $row['Expiry']) {
-          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Author = '', Expiry = '', Status = 0, Last_Updated = ? WHERE id = ?");
+          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Author = '', Expiry = null, Status = 0, Last_Updated = ? WHERE id = ?");
           $stmt->bindParam(1, $Date);
           $stmt->bindValue(2, $row['id']);
           $stmt->execute();
@@ -210,7 +208,7 @@
                 $Site = $result['Site'];
                 $Bay = $result['id'];
                 // Insert Booking
-                $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
+                $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings (Uniqueref, Site, Plate, VehicleType, Date, ETA, ETD, Bay, Author, Last_Updated, Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
                 $stmt->bindParam(1, $Ref);
                 $stmt->bindParam(2, $Site);
                 $stmt->bindParam(3, $Plate);
@@ -590,7 +588,7 @@
           if($stmt->rowCount() > 0) {
             $Ref = mt_rand(1111, 9999).date("YmdHis").mt_rand(1111, 9999);
             // Create booking
-            $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
+            $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings (Uniqueref, Site, Plate, VehicleType, Date, ETA, ETD, Bay, Author, Last_Updated, Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
             $stmt->bindParam(1, $Ref);
             $stmt->bindParam(2, $Site);
             $stmt->bindParam(3, $Plate);

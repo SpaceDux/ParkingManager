@@ -32,7 +32,7 @@
                 $Uniqueref = mt_rand(111, 999).date("YmdHis").mt_rand(1111,9999);
                 $Date = date("Y-m-d H:i:s");
                 // NOW REG ACCOUNT
-                $stmt = $this->mysql->dbc->prepare("INSERT INTO users VALUES ('', ?, ?, ?, ?, ?, ?, '', '', '1', '3', '0', ?, ?, ?, ?, '0', '0', '0')");
+                $stmt = $this->mysql->dbc->prepare("INSERT INTO users (Uniqueref, FirstName, LastName, EmailAddress, Telephone, Password, Company, Associated_Account, User_Rank, MaxSpaces, LoggedIn, Last_Updated, Date_Ragistered, Registered_IP, Last_IP, Status, Activated, Strikes) VALUES (?, ?, ?, ?, ?, ?, '', '', '1', '3', '0', ?, ?, ?, ?, '0', '0', '0')");
                 $stmt->bindParam(1, $Uniqueref);
                 $stmt->bindParam(2, $First);
                 $stmt->bindParam(3, $Last);
