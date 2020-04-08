@@ -17,7 +17,7 @@ if(!isset($_POST['AccessKey'])) {
 if($accesskey == $_POST['AccessKey'])
 {
   if(isset($_POST['Username'], $_POST['Password'], $_POST['Plate'], $_POST['Type'], $_POST['ETA'], $_POST['Stay'])) {
-    $booking->Booking_AddNewBookingViaBay_API($_POST['Username'], $_POST['Password'], $_POST['Plate'], $_POST['Type'], $_POST['ETA'], $_POST['Stay']);
+    $booking->Booking_AddNewBooking_API($_POST['Username'], $_POST['Password'], $_POST['Plate'], $_POST['Type'], $_POST['ETA'], $_POST['Stay']);
   } else {
     echo json_encode(array("Status" => '0', "Message" => 'Missing data, please ensure all data is supplied.'));
   }

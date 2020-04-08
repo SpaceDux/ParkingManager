@@ -435,7 +435,7 @@
       $stmt->bindValue(1, $_SESSION['ID']);
       $stmt->execute();
       if($stmt->rowCount() > 0) {
-        $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Author = '', Expiry = '', Status = 0 WHERE Author = ? AND Status < 2");
+        $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Author = '', Expiry = null, Status = 0 WHERE Author = ? AND Status < 2");
         $stmt->bindValue(1, $_SESSION['ID']);
         $stmt->execute();
         if($stmt->rowCount() > 0) {
@@ -562,7 +562,7 @@
     }
 
     // Search Bookings by Plate
-    function Booking_AddNewBookingViaBay_API($User, $Pass, $Plate, $Type, $ETA, $Stay)
+    function Booking_AddNewBooking_API($User, $Pass, $Plate, $Type, $ETA, $Stay)
     {
       $this->mysql = new MySQL;
       $this->pm = new PM;

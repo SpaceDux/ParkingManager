@@ -27,12 +27,12 @@
             $stmt->bindParam(1, $IPAddress);
             $stmt->bindParam(2, $IPAddress);
             $stmt->execute();
-            if($stmt->rowCount() < 2) {
+            if($stmt->rowCount() >= 0) {
               if($Password == $ConPassword) {
                 $Uniqueref = mt_rand(111, 999).date("YmdHis").mt_rand(1111,9999);
                 $Date = date("Y-m-d H:i:s");
                 // NOW REG ACCOUNT
-                $stmt = $this->mysql->dbc->prepare("INSERT INTO users (Uniqueref, FirstName, LastName, EmailAddress, Telephone, Password, Company, Associated_Account, User_Rank, MaxSpaces, LoggedIn, Last_Updated, Date_Ragistered, Registered_IP, Last_IP, Status, Activated, Strikes) VALUES (?, ?, ?, ?, ?, ?, '', '', '1', '3', '0', ?, ?, ?, ?, '0', '0', '0')");
+                $stmt = $this->mysql->dbc->prepare("INSERT INTO users (Uniqueref, FirstName, LastName, EmailAddress, Telephone, Password, Company, Associated_Account, User_Rank, MaxSpaces, LoggedIn, Last_Updated, Date_Registered, Registered_IP, Last_IP, Status, Activated, Strikes) VALUES (?, ?, ?, ?, ?, ?, '', '', '1', '3', '0', ?, ?, ?, ?, '0', '0', '0')");
                 $stmt->bindParam(1, $Uniqueref);
                 $stmt->bindParam(2, $First);
                 $stmt->bindParam(3, $Last);
@@ -267,7 +267,150 @@
 
       $this->mysql = null;
     }
+    // Forgotten Password - Initial Email
+    function User_ForgottenPassword_Start($Email)
+    {
+      $this->mysql = new MySQL;
+      $this->mailer = new Mailer;
 
+      $Date = date("Y-m-d H:i:s");
+      $Expiry = date("Y-m-d H:i:s", strtotime(' + 15 minutes'));
+
+      // IF ALREADY HAS RECOVERY IN PROGRESS
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM users_recovery WHERE EmailAddress = ? ORDER BY id DESC LIMIT 1");
+      $stmt->bindParam(1, $Email);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $Data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        // IF RECOVERY NOT EXPIRED
+        if($Data['Expiry'] >= $Date) {
+          echo json_encode(array('Status' => '1', 'Message' => 'Successfully found your account & we have sent your recovery code.'));
+        } else {
+          // IF EXPIRED START AGAIN
+          $stmt = $this->mysql->dbc->prepare("SELECT Uniqueref FROM users WHERE EmailAddress = ?");
+          $stmt->bindParam(1, $Email);
+          $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            $User = $stmt->fetch(\PDO::FETCH_ASSOC);
+            $Code = mt_rand(111111, 999999);
+            $stmt = $this->mysql->dbc->prepare("INSERT INTO users_recovery (Code, User_Ref, EmailAddress, Expiry, Status) VALUES (?, ?, ?, ?, '0')");
+            $stmt->bindParam(1, $Code);
+            $stmt->bindValue(2, $User['Uniqueref']);
+            $stmt->bindValue(3, $Email);
+            $stmt->bindParam(4, $Expiry);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+              $Mail = $this->mailer->SendUserRecoveryCode($Email, $Code);
+              if($Mail == 1) {
+                echo json_encode(array('Status' => '1', 'Message' => 'Successfully found your account & we have sent your recovery code.'));
+              } else {
+                echo json_encode(array('Status' => '0', 'Message' => 'Sorry, we couldn\'t send your recovery code. Please try again.'));
+              }
+            } else {
+              echo json_encode(array('Status' => '0', 'Message' => 'Sorry, we couldn\'t generate your recovery code.'));
+            }
+          } else {
+            echo json_encode(array('Status' => '0', 'Message' => 'Sorry, we can\'t find an account corresponding to that email address?'));
+          }
+        }
+      } else {
+        // IF DOESNT HAVE A RECOVERY IN PROCESS START FRESH
+        $stmt = $this->mysql->dbc->prepare("SELECT Uniqueref FROM users WHERE EmailAddress = ?");
+        $stmt->bindParam(1, $Email);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $User = $stmt->fetch(\PDO::FETCH_ASSOC);
+          $Code = mt_rand(111111, 999999);
+          $stmt = $this->mysql->dbc->prepare("INSERT INTO users_recovery (Code, User_Ref, EmailAddress, Expiry, Status) VALUES (?, ?, ?, ?, '0')");
+          $stmt->bindParam(1, $Code);
+          $stmt->bindValue(2, $User['Uniqueref']);
+          $stmt->bindValue(3, $Email);
+          $stmt->bindParam(4, $Expiry);
+          $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            $Mail = $this->mailer->SendUserRecoveryCode($Email, $Code);
+            if($Mail == 1) {
+              echo json_encode(array('Status' => '1', 'Message' => 'Successfully found your account & we have sent your recovery code.'));
+            } else {
+              echo json_encode(array('Status' => '0', 'Message' => 'Sorry, we couldn\'t send your recovery code. Please try again.'));
+            }
+          } else {
+            echo json_encode(array('Status' => '0', 'Message' => 'Sorry, we couldn\'t generate your recovery code.'));
+          }
+        } else {
+          echo json_encode(array('Status' => '0', 'Message' => 'Sorry, we can\'t find an account corresponding to that email address?'));
+        }
+      }
+
+      $this->mysql = null;
+      $this->mailer = null;
+    }
+    // Forgotten Password - Code
+    function User_ForgottenPassword_Code($Code)
+    {
+      $this->mysql = new MySQL;
+
+      $Date = date("Y-m-d H:i:s");
+
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM users_recovery WHERE Code = ? ORDER BY id DESC LIMIT 1");
+      $stmt->bindParam(1, $Code);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $Data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if($Data['Expiry'] >= $Date) {
+          echo json_encode(array('Status' => '1', 'Message' => 'Confirmed Recovery key, please enter a new password.'));
+        } else {
+          $stmt = $this->mysql->dbc->prepare("DELETE FROM users_recovery WHERE Code = ?");
+          $stmt->bindParam(1, $Code);
+          $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            echo json_encode(array('Status' => '0', 'Message' => 'Your code has expired. Please start again.'));
+          } else {
+            echo json_encode(array('Status' => '0', 'Message' => 'Your code has expired. Unable to delete.'));
+          }
+        }
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Can\'t find that code. Please try again.'));
+      }
+
+      $this->mysql = null;
+    }
+    // Forgotten Password - Change Password
+    function User_ForgottenPassword_Change($Code, $Pass1, $Pass2)
+    {
+      $this->mysql = new MySQL;
+
+      $Date = date("Y-m-d H:i:s");
+
+      if($Pass1 === $Pass2) {
+        $stmt = $this->mysql->dbc->prepare("SELECT User_Ref FROM users_recovery WHERE Code = ? ORDER BY id DESC LIMIT 1");
+        $stmt->bindParam(1, $Code);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $Data = $stmt->fetch(\PDO::FETCH_ASSOC);
+          $stmt = $this->mysql->dbc->prepare("UPDATE users SET Password = ? WHERE Uniqueref = ?");
+          $stmt->bindValue(1, password_hash($Pass1, PASSWORD_BCRYPT));
+          $stmt->bindValue(2, $Data['User_Ref']);
+          $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            $stmt = $this->mysql->dbc->prepare("DELETE FROM users_recovery WHERE Code = ?");
+            $stmt->bindParam(1, $Code);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+              echo json_encode(array('Status' => '1', 'Message' => 'Successfully changed your password. You can now login with your new credentials.'));
+            }
+          } else {
+            echo json_encode(array('Status' => '0', 'Message' => 'Sorry, we couldn\'t change that password, please try again.'));
+          }
+        } else {
+          echo json_encode(array('Status' => '0', 'Message' => 'Sorry, we cant find that code, please try again.'));
+        }
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Sorry, those passwords do not match, please try again.'));
+      }
+
+      $this->mysql = null;
+    }
   }
 
 ?>

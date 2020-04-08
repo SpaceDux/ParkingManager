@@ -433,3 +433,36 @@
     </div>
   </div>
 </div>
+<!-- Forgotten Password -->
+<div class="modal" id="ForgottenPassword_Modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Forgot your Password?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Have you forgotten your password? Not to worry, we will send you an email with a code, just supply us with the email address you registered with.</p>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <div id="ForgottenPassword_Error">
+
+            </div>
+            <input type="hidden" id="ConfirmedCode">
+            <div id="ForgottenPassword_Data">
+              <label>Email Address</label>
+              <input type="email" class="form-control" id="ForgottenPassword_Email" name="EmailAddress" value="" placeholder="example@example.com">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="SendPasswordRecovery">Recover Account</button>
+        <button type="button" class="btn btn-secondary" id="RecoveryCloseModal" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

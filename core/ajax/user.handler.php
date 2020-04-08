@@ -10,5 +10,11 @@
     $user->User_Info_Update(htmlspecialchars($_POST['First']), htmlspecialchars($_POST['Last']), htmlspecialchars($_POST['Email']), htmlspecialchars($_POST['Telephone']), htmlspecialchars($_POST['Password']));
   } else if($handler == "User.User_ChangePassword") {
     $user->User_ChangePassword(htmlspecialchars($_POST['Current_Password']), htmlspecialchars($_POST['New_Password']), htmlspecialchars($_POST['Con_New_Password']));
+  } else if($handler == "User.User_ForgottenPassword_Start") {
+    $user->User_ForgottenPassword_Start(htmlspecialchars($_POST['Email']));
+  } else if($handler == "User.User_ForgottenPassword_Code") {
+    $user->User_ForgottenPassword_Code(htmlspecialchars($_POST['Code']));
+  } else if($handler == "User.User_ForgottenPassword_Change") {
+    $user->User_ForgottenPassword_Change(htmlspecialchars($_POST['Code']), htmlspecialchars($_POST['Pass1']), htmlspecialchars($_POST['Pass2']));
   }
 ?>
