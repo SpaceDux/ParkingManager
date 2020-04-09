@@ -8,6 +8,7 @@
     {
       $this->Booking_RestoreBookedBays();
     }
+
     // TO BE USED VIA CONSTRUCT, Restore Bays
     function Booking_RestoreBookedBays()
     {
@@ -104,6 +105,7 @@
       $this->mysql = null;
       $this->mail = null;
     }
+
     // Allocate Bay Temporarily (MAX 5 min)
     function Booking_AllocateBayTemp($Site)
     {
@@ -160,6 +162,7 @@
       $this->mysql = null;
       $this->user = null;
     }
+
     // Create a booking
     function Booking_Create_Booking($Vehicle, $Type, $ETA, $Break)
     {
@@ -255,6 +258,7 @@
       $this->vehicles = null;
       $this->mailer = null;
     }
+
     // View bookings as html
     function Booking_ListAllBookingsAsHtml()
     {
@@ -284,6 +288,11 @@
             $Status = 'Cancelled.';
           }
           $Ref = '\''.$row['Uniqueref'].'\'';
+          $ETA = $row['ETA'];
+
+          $eta_date = '\''.date("d/m/y", strtotime($ETA)).'\'';
+          $eta_time = '\''.date("H:i", strtotime($ETA)).'\'';
+
           $html .=  '
                     <div class="col-md-4">
                       <div class="card" style="width: 100%;">
@@ -296,12 +305,16 @@
                           <li class="list-group-item"><i class="fa fa-clock"></i> ETA: '.date("d/m/y @ H:i", strtotime($row['ETA'])).'</li>
                           <li class="list-group-item"><i class="far fa-clock"></i> ETD: '.date("d/m/y @ H:i", strtotime($row['ETD'])).'</li>
                           <li class="list-group-item">'.$Status.'</li>
-                        </ul>
-                        <div class="card-body">
-                          <a href="#" class="card-link" onClick="Booking_Modify('.$Ref.')">Modify Booking</a>
-                          <a href="#" style="color:red;" class="card-link" onClick="Booking_Cancel('.$Ref.')">Cancel Booking</a>
-                        </div>
-                      </div>
+                        </ul>';
+                        if($row['Status'] < 1) {
+                          $html .= '<div class="card-body">
+                            <a href="#" class="card-link" onClick="Booking_Modify('.$Ref.', '.$eta_time.', '.$eta_date.', '.$row['VehicleType'].')">Modify Booking</a>
+                            <a href="#" style="color:red;" class="card-link" onClick="Booking_Cancel('.$Ref.')">Cancel Booking</a>
+                          </div>';
+                        } else {
+                          // Nothing
+                        }
+              $html .='</div>
                     </div>
                     ';
         }
@@ -315,6 +328,7 @@
       $this->user = null;
       $this->pm = null;
     }
+
     // View bookings as html
     function Booking_ListAllPreviousBookingsAsHtml()
     {
@@ -372,6 +386,7 @@
       $this->user = null;
       $this->pm = null;
     }
+
     // Cancel a booking, set status 4
     function Booking_CancelBooking($Ref)
     {
@@ -426,6 +441,7 @@
 
       $this->mysql = null;
     }
+
     // Midway cancellation
     function Booking_MidwayCancel()
     {
@@ -449,6 +465,41 @@
 
       $this->mysql = null;
     }
+
+    // Modify booking
+    function Booking_Modify($Ref, $ETA, $Type)
+    {
+      $this->mysql = new MySQL;
+
+      if(isset($ETA, $Type)) {
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status < 1 AND Uniqueref = ?");
+        $stmt->bindParam(1, $Ref);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $Result = $stmt->fetch(\PDO::FETCH_ASSOC);
+          $Date = date("Y-m-d H:i:s");
+          $NEWETA = date("Y-m-d H:i:s", strtotime($ETA));
+          $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET ETA = ?, VehicleType = ?, Last_Updated = ? WHERE Uniqueref = ?");
+          $stmt->bindParam(1, $NEWETA);
+          $stmt->bindParam(2, $Type);
+          $stmt->bindParam(3, $Date);
+          $stmt->bindParam(4, $Ref);
+          $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            echo json_encode(array('Status' => '1', 'Message' => 'Successfully modified your booking. Your page will reload in 2 seconds.'));
+          } else {
+            echo json_encode(array('Status' => '0', 'Message' => 'Could not modify your booking, please try again.'));
+          }
+        } else {
+          echo json_encode(array('Status' => '0', 'Message' => 'Sorry, we can\'t find your booking.'));
+        }
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Sorry, something went wrong.'));
+      }
+
+      $this->mysql = null;
+    }
+
     // API FUNCTIONS
     // Get All active bookings via API
     function Booking_GetAllActiveBookings_API($User, $Pass)
@@ -488,6 +539,7 @@
 
       $this->mysql = null;
     }
+
     // Update a booking remotely
     function Booking_UpdateBooking_API($User, $Pass, $Ref, $ETA, $Status, $VehicleType)
     {

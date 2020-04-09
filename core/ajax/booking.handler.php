@@ -10,5 +10,7 @@
     $booking->Booking_CancelBooking($_POST['Ref']);
   } else if($handler == "Booking.Booking_MidwayCancel") {
     $booking->Booking_MidwayCancel();
+  } else if($handler == "Booking.ModifyBooking") {
+    $booking->Booking_Modify($_POST['Ref'], $_POST['ETA'], $_POST['VehicleType']);
   }
 ?>

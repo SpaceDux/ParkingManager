@@ -132,7 +132,6 @@
               <select class="form-control form-control-lg" name="Type" required>
                 <option value="1">Cab & Trailer</option>
                 <option value="8">Car Transporter</option>
-                <option value="2">Cab Only</option>
                 <option value="4">Rigid</option>
                 <option value="5">Coach</option>
               </select>
@@ -463,6 +462,49 @@
         <button type="button" class="btn btn-primary" id="SendPasswordRecovery">Recover Account</button>
         <button type="button" class="btn btn-secondary" id="RecoveryCloseModal" data-dismiss="modal">Close</button>
       </div>
+    </div>
+  </div>
+</div>
+<!-- Modify Bookin -->
+<div class="modal" id="ModifyBooking_Modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modify your Booking.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="ModifyBooking_Form">
+        <div class="modal-body">
+          <p>Modify your estimated time of arrival or vehicle type below.</p>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <div id="ModifyBooking_Error"></div>
+              <input type="hidden" name="Ref" id="ModifyBooking_Ref">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="ModifyBooking_ETA_Prepend"></span>
+                </div>
+                <input type="time" class="form-control form-control-lg" name="ETA" id="ModifyBooking_ETA" min="14:00" required>
+              </div>
+              <hr>
+              <label>Vehicle Type</label>
+              <select class="form-control" name="VehicleType" id="ModifyBooking_VehicleType">
+                <option value="1">Cab & Trailer</option>
+                <option value="8">Car Transporter</option>
+                <option value="4">Rigid</option>
+                <option value="5">Coach</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" id="ModifyBooking_Save">Save Changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

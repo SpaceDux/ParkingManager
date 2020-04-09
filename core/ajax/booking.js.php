@@ -104,4 +104,36 @@
     })
     return false;
   }
+  // Modify Booking Toggle
+  function Booking_Modify(Ref, eta_time, eta_date, type)
+  {
+    event.preventDefault();
+    $('#ModifyBooking_Ref').val(Ref);
+    $('#ModifyBooking_VehicleType').val(type);
+    $('#ModifyBooking_ETA').val(eta_time);
+    $('#ModifyBooking_ETA_Prepend').html(eta_date+' @');
+    $('#ModifyBooking_Modal').modal('show');
+    return false;
+  }
+  $(document).on('submit', '#ModifyBooking_Form', function() {
+    event.preventDefault();
+    var Data = $(this).serialize();
+    $.ajax({
+      url: "{URL}/core/ajax/booking.handler.php?handler=Booking.ModifyBooking",
+      data: Data,
+      method: "POST",
+      dataType: 'json',
+      success:function(Response) {
+        if(Response.Status < 1) {
+          $('#ModifyBooking_Error').html('<div class="alert alert-danger">'+Response.Message+'</div>');
+        } else {
+          $('#ModifyBooking_Error').html('<div class="alert alert-success">'+Response.Message+'</div>');
+          setTimeout(function() {
+            location.reload();
+          }, 2000);
+        }
+      }
+    })
+    return false;
+  });
 </script>
