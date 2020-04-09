@@ -1526,13 +1526,13 @@
 			$this->mysql = null;
 		}
 		//
-		function Update_Tariff($Ref, $Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti, $Kiosk)
+		function Update_Tariff($Ref, $Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti, $Kiosk, $Portal)
 		{
 			$this->mysql = new MySQL;
 			$this->pm = new PM;
 
 			$Time = date("Y-m-d H:i:s");
-			$stmt = $this->mysql->dbc->prepare("UPDATE tariffs SET Name = ?, TicketName = ?, Gross = ?, Nett = ?, Expiry = ?, Tariff_Group = ?, Cash = ?, Card = ?, Account = ?, Snap = ?, Fuel = ?, ETPID = ?, Meal_Vouchers = ?, Shower_Vouchers = ?, Discount_Vouchers = ?, Wifi_Vouchers = ?, VehicleType = ?, Site = ?, Status = ?, Settlement_Group = ?, Settlement_Multi = ?, Last_Updated = ?, Kiosk = ? WHERE Uniqueref = ?");
+			$stmt = $this->mysql->dbc->prepare("UPDATE tariffs SET Name = ?, TicketName = ?, Gross = ?, Nett = ?, Expiry = ?, Tariff_Group = ?, Cash = ?, Card = ?, Account = ?, Snap = ?, Fuel = ?, ETPID = ?, Meal_Vouchers = ?, Shower_Vouchers = ?, Discount_Vouchers = ?, Wifi_Vouchers = ?, VehicleType = ?, Site = ?, Status = ?, Settlement_Group = ?, Settlement_Multi = ?, Last_Updated = ?, Kiosk = ?, Portal = ? WHERE Uniqueref = ?");
 			$stmt->bindParam(1, $Name);
 			$stmt->bindParam(2, $TicketName);
 			$stmt->bindParam(3, $Gross);
@@ -1556,7 +1556,8 @@
 			$stmt->bindParam(21, $SettlementMulti);
 			$stmt->bindParam(22, $Time);
 			$stmt->bindParam(23, $Kiosk);
-			$stmt->bindParam(24, $Ref);
+			$stmt->bindParam(24, $Portal);
+			$stmt->bindParam(25, $Ref);
 			$stmt->execute();
 			if($stmt->rowCount() > 0) {
 				$result = array('Result' => '1', 'Message' => 'Tariff has successfully been updated in ParkingManager.');

@@ -787,6 +787,13 @@
                 <option value="0">No</option>
               </select>
             </div>
+            <div class="col">
+              <label for="Tariff_Portal_Update">Portal Only Tariff</label>
+              <select class="form-control" name="Tariff_Portal_Update" id="Tariff_Portal_Update">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
             <br>
           </div>
         </div>
