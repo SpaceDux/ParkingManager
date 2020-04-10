@@ -90,7 +90,7 @@
         if($stmt->rowCount() > 0) {
           header("Location: index");
         } else {
-          echo "That did not work";
+          header("Location: index");
         }
       } else {
         echo "No user was supplied";

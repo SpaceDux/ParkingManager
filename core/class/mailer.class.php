@@ -32,7 +32,7 @@
       $mail->Subject = 'Activate Your Roadking Portal Account';
       //Read an HTML message body from an external file, convert referenced images to embedded,
       $mail->Body = file_get_contents($_SERVER['DOCUMENT_ROOT'].'/email_templates/activation.html');
-      $mail->Body .= '<a style="display: block;width: 300px;height: 40px;background: #114408;text-align: center;text-decoration: none;line-style: none;color: #fff;line-height: 40px;font-size: 30px;margin: 0 auto;border-radius: 10px 10px 10px 10px;" href="'.$_CONFIG['site']['url'].'/activate.php?email='.$Too.'">ACTIVATE NOW</a>';
+      $mail->Body .= '<a style="display: block;width: 300px;height: 40px;background: #114408;text-align: center;font-weight: bold;text-decoration: none;list-style: none;color: #fff;line-height: 40px;font-size: 30px;margin: 0 auto;border-radius: 5px 5px; padding: 10px;border:3px solid #1a6b06;" href="'.$_CONFIG['site']['url'].'/activate.php?email='.$Too.'">ACTIVATE NOW</a>';
       $mail->Body .= '<br><hr><br><p style="font-size: 14px;color: #0f0f0f;text-align:center;">or follow this link; '.$_CONFIG['site']['url'].'/activate.php?email='.$Too.'</p>';
       $mail->Body .= '<br><hr><br><p style="font-size: 10px;color: #0f0f0f;text-align:center;">THIS MAILBOX IS NOT MONITORED, DO NOT REPLY.<br><br></p>';
       //Replace the plain text body with one created manually
