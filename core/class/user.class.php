@@ -178,18 +178,30 @@
       $this->mysql = null;
     }
     // User information (For tpl etc)
-    function User_Info($What)
+    function User_Info($What, $Author = '')
     {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM users WHERE Uniqueref = ?");
-      $stmt->bindParam(1, $_SESSION['ID']);
-      $stmt->execute();
-      if($stmt->rowCount() > 0) {
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        return $result[$What];
+      if($Author != '' OR $Author != null) {
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM users WHERE Uniqueref = ?");
+        $stmt->bindParam(1, $Author);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+          return $result[$What];
+        } else {
+          return "No Result";
+        }
       } else {
-        return "No Result";
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM users WHERE Uniqueref = ?");
+        $stmt->bindParam(1, $_SESSION['ID']);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+          return $result[$What];
+        } else {
+          return "No Result";
+        }
       }
 
 

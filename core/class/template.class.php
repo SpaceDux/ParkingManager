@@ -42,11 +42,11 @@
 			$this->Assign('site_name', $_CONFIG['site']['name']); //{SITE_NAME} Site Name
 			$this->Assign('copy', $_CONFIG['misc']['copy']); //{SITE_NAME} Site Name
 			if(isset($_SESSION['ID'])) {
-				$this->Assign('first_name', $this->user->User_Info("FirstName"));
-				$this->Assign('last_name', $this->user->User_Info("LastName"));
-				$this->Assign('email', $this->user->User_Info("EmailAddress"));
-				$this->Assign('rank', $this->user->User_Info("User_Rank"));
-				$this->Assign('telephone', $this->user->User_Info("Telephone"));
+				$this->Assign('first_name', $this->user->User_Info("FirstName", ''));
+				$this->Assign('last_name', $this->user->User_Info("LastName", ''));
+				$this->Assign('email', $this->user->User_Info("EmailAddress", ''));
+				$this->Assign('rank', $this->user->User_Info("User_Rank", ''));
+				$this->Assign('telephone', $this->user->User_Info("Telephone", ''));
 				$this->Assign('sites', $this->pm->PM_ListSitesAsSelect());
 				$this->Assign('myvehicles', $this->vehicles->Vehicles_DropdownOpts());
 				$this->Assign('mybookings', $this->booking->Booking_ListAllBookingsAsHtml());

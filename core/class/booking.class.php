@@ -115,7 +115,7 @@
       $Expiry = date("Y-m-d H:i:s", strtotime('+ 5 minutes'));
       $Date = date("Y-m-d H:i:s");
 
-      $MaxSpace = $this->user->User_Info("MaxSpaces");
+      $MaxSpace = $this->user->User_Info("MaxSpaces", '');
 
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Author = ? AND Site = ? AND Status < 2");
       $stmt->bindValue(1, $_SESSION['ID']);
@@ -171,7 +171,7 @@
       $this->vehicles = new Vehicles;
       $this->mailer = new Mailer;
 
-      $MaxSpace = $this->user->User_Info("MaxSpaces");
+      $MaxSpace = $this->user->User_Info("MaxSpaces", '');
 
       $Ref = mt_rand(1111, 9999).date("YmdHis").mt_rand(1111, 9999);
       $Date = date("Y-m-d H:i:s");
@@ -228,8 +228,8 @@
                   $stmt->bindParam(2, $Date);
                   $stmt->bindParam(3, $Bay);
                   if($stmt->execute()) {
-                    $Email = $this->user->User_Info("EmailAddress");
-                    echo json_encode(array('Result' => 1, 'Message' => 'That\'s been confirmed for you '.$this->user->User_Info("FirstName").'. <br><br>An email confirmation has been sent to<b> '.$Email.'</b>. Thank you for booking through the Roadking Portal.'));
+                    $Email = $this->user->User_Info("EmailAddress", '');
+                    echo json_encode(array('Result' => 1, 'Message' => 'That\'s been confirmed for you '.$this->user->User_Info("FirstName", '').'. <br><br>An email confirmation has been sent to<b> '.$Email.'</b>. Thank you for booking through the Roadking Portal.'));
                     $this->mailer->SendConfirmation($Email, $Plate, $ETA);
                   } else {
                     echo json_encode(array('Result' => 0, 'Message' => 'Sorry, we couldn\'t finalise that booking. Please try again'));
@@ -298,7 +298,7 @@
                       <div class="card" style="width: 100%;">
                         <div class="card-body">
                           <h5 class="card-title">'.$row['Plate'].'</h5>
-                          <p class="card-text">Thanks '.$this->user->User_Info("FirstName").', your booking has been confirmed.</p>
+                          <p class="card-text">Thanks '.$this->user->User_Info("FirstName", '').', your booking has been confirmed.</p>
                         </div>
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item"><i class="fa fa-location-arrow"></i> '.$this->pm->PM_SiteInfo($row['Site'], "SiteName").'</li>
@@ -364,7 +364,7 @@
                       <div class="card" style="width: 100%;">
                         <div class="card-body">
                           <h5 class="card-title">'.$row['Plate'].'</h5>
-                          <p class="card-text">Thanks '.$this->user->User_Info("FirstName").', your booking has been confirmed.</p>
+                          <p class="card-text">Thanks '.$this->user->User_Info("FirstName", '').', your booking has been confirmed.</p>
                         </div>
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item"><i class="fa fa-location-arrow"></i> '.$this->pm->PM_SiteInfo($row['Site'], "SiteName").'</li>
@@ -506,6 +506,7 @@
     {
       $this->mysql = new MySQL;
       $this->pm = new PM;
+      $this->user = new User;
 
       if(isset($User) AND isset($Pass)) {
         $Auth = $this->pm->PM_SiteAuthenticate_API($User, $Pass);
@@ -524,6 +525,7 @@
               $dataEach['VehicleType'] = $row['VehicleType'];
               $dataEach['Status'] = $row['Status'];
               $dataEach['Date'] = $row['Date'];
+              $dataEach['Telephone'] = $this->user->User_Info("Telephone", $row['Author']);
               array_push($data, $dataEach);
             }
             echo json_encode(array("Status" => "1", "Message" => "Successfully found bookings.", "Data" => $data));
@@ -538,6 +540,8 @@
       }
 
       $this->mysql = null;
+      $this->pm = null;
+      $this->user = null;
     }
 
     // Update a booking remotely
