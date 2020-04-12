@@ -53,6 +53,7 @@
             $ref = '\''.$row['Uniqueref'].'\'';
             $eta_time = '\''.date("H:i", strtotime($row['ETA'])).'\'';
             $eta_date = '\''.date("d/m/y", strtotime($row['ETA'])).'\'';
+            $Tel = '\''.$row['Telephone'].'\'';
             $html .= '<tr>';
             $html .= '<td>'.$row['Plate'].'</td>';
             $html .= '<td>'.date("d/H:i", strtotime($row['ETA'])).'</td>';
@@ -61,7 +62,7 @@
             $html .= '<td>'.$Status.'</td>';
             $html .= '<td>
                         <div class="btn-group" role="group">
-                          <button class="btn btn-danger" onClick="Update_PortalBooking('.$ref.', '.$eta_date.', '.$eta_time.', '.$row['VehicleType'].')"><i class="fa fa-cog"></i></button>
+                          <button class="btn btn-danger" onClick="Update_PortalBooking('.$ref.', '.$eta_date.', '.$eta_time.', '.$row['VehicleType'].', '.$Tel.')"><i class="fa fa-cog"></i></button>
                           <button class="btn btn-danger" onClick="Cancel_PortalBooking('.$ref.', 5)"><i class="fa fa-trash"></i></button>
                         </div>
                       </td>';

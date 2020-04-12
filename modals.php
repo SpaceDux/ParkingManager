@@ -1571,6 +1571,13 @@
               </select>
             </div>
           </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <label>Booking Telephone</label>
+              <input type="text" class="form-control" id="ModifyBooking_Telephone" value="" readonly>
+            </div>
+          </div>
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -1629,7 +1636,7 @@
     </div>
   </div>
 </div>
-<!-- Add new Portal Bay modal -->
+<!-- Modify Portal Bay modal -->
 <div class="modal" id="ModifyPortalBay_Modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="ModifyPortalBay_Modal" aria-hidden="true">
   <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">

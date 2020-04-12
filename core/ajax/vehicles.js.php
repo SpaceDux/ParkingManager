@@ -432,13 +432,14 @@
     });
   });
 
-  function Update_PortalBooking(Ref, Eta_Date, Eta_Time, vehtype)
+  function Update_PortalBooking(Ref, Eta_Date, Eta_Time, vehtype, telephone)
   {
     event.preventDefault();
     $('#ModifyBooking_Ref').val(Ref);
     $('#ModifyBooking_ETA').val(Eta_Time);
     $('#ModifyBooking_VehicleType').val(vehtype);
     $('#ModifyBooking_ETA_Prepend').html(Eta_Date);
+    $('#ModifyBooking_Telephone').val(telephone);
     $('#Portal_ModifyBooking').modal('toggle');
   }
   $('#ModifyBooking_FORM').on('submit', function() {
