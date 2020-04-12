@@ -526,6 +526,7 @@
               $dataEach['Status'] = $row['Status'];
               $dataEach['Date'] = $row['Date'];
               $dataEach['Telephone'] = $this->user->User_Info("Telephone", $row['Author']);
+              $dataEach['Name'] = $this->user->User_Info("FirstName", $row['Author']).' '.$this->user->User_Info("LastName", $row['Author']);
               array_push($data, $dataEach);
             }
             echo json_encode(array("Status" => "1", "Message" => "Successfully found bookings.", "Data" => $data));
