@@ -85,6 +85,41 @@
       }
     }
     // SEND ACTIVATION EMAIL
+    function SendCancellation($Too, $Plate)
+    {
+      global $_CONFIG;
+      $mail = new PHPMailer();
+      $mail->IsSMTP();
+      // $mail->SMTPDebug = 3; //Alternative to above constant
+      $mail->Timeout       =   20; // set the timeout (seconds)
+      $mail->Host       = "us2.smtp.mailhostbox.com";
+      $mail->SMTPAuth   = true;
+      $mail->Username   = 'rp@roadkingtruckstop.co.uk';              // SMTP username
+      $mail->Password   = 'tlyyIiS4';                          // SMTP password
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+      $mail->Port       = 25;
+
+      //Set who the message is to be sent from
+      $mail->setFrom('rp@roadkingtruckstop.co.uk', 'Roadking Portal');
+      //Set who the message is to be sent to
+      $mail->addAddress($Too);
+      // set html true
+      $mail->isHTML(true);
+      //Set the subject line
+      $mail->Subject = 'Booking Cancellation Notification - '.$Plate;
+      //Read an HTML message body from an external file, convert referenced images to embedded,
+      $mail->Body = file_get_contents($_SERVER['DOCUMENT_ROOT'].'/email_templates/booking_cancel.html');
+      $mail->Body .= '<br><hr><br><p style="font-size: 10px;color: #0f0f0f;text-align:center;">THIS MAILBOX IS NOT MONITORED, DO NOT REPLY.<br><br></p></div></div></body>';
+      //Replace the plain text body with one created manually
+      $mail->AltBody = 'We have cancelled your booking for the vehicle '.$Plate.', we\'re sorry you couldn\'t make it & hope to see you again soon.';
+      //send the message, check for errors
+      if (!$mail->send()) {
+        return 0;
+      } else {
+        return 1;
+      }
+    }
+    // SEND ACTIVATION EMAIL
     function SendUserRecoveryCode($Too, $Code)
     {
       global $_CONFIG;
