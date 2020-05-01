@@ -1697,3 +1697,61 @@
     </div>
   </div>
 </div>
+<!-- Update Booking -->
+<div class="modal" id="Portal_AddBooking" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Portal_AddBooking" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modify Booking</h5>
+      </div>
+      <form id="ModifyBooking_FORM">
+      <div class="modal-body">
+          <div class="row">
+            <div class="col">
+                <label>Registration Number</label>
+                <input type="text" name="Plate" id="AddBooking_Plate">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="hidden" name="Ref" id="ModifyBooking_Ref">
+              <label>ETA</label>
+              <input type="time" class="form-control form-control-lg" name="ETA" id="AddBooking_ETA" min="14:00" required="">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <label>Vehicle Type</label>
+              <select class="form-control" name="VehicleType" id="AddBooking_VehicleType" required>
+                <option value="1">Cab & Trailer</option>
+                <option value="8">Car Transporter</option>
+                <!-- <option value="2">Cab Only</option> -->
+                <option value="4">Rigid</option>
+                <option value="5">Coach</option>
+              </select>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <label>Company Name</label>
+              <input type="text" class="form-control" name="Company" id="AddBooking_Company" value="">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <label>Booking Note</label>
+              <textarea id="ModifyBooking_Note" name="Note" class="form-control" cols="30" rows="5"></textarea>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="ModifyBooking_Save" class="btn btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

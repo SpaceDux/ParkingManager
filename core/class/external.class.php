@@ -140,9 +140,9 @@
       ]);
       $return = json_decode($response->getBody(), true);
       if($return['Status'] > "0") {
-        return json_encode(array("Status" => "1", "Message" => "Successfully updated the portal booking."));
+        echo json_encode(array("Status" => "1", "Message" => "Successfully updated the portal booking."));
       } else {
-        return json_encode(array("Status" => "0", "Message" => "Unable to update booking."));
+        echo json_encode(array("Status" => "0", "Message" => "Unable to update booking."));
       }
 
       $this->user = null;
@@ -383,6 +383,59 @@
           echo json_encode(array('Status' => '1', 'Message' => 'Successfully updated bay.'));
         } else {
           echo json_encode(array('Status' => '0', 'Message' => 'Couldn\'t update bay on the portal.'));
+        }
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Your portal is not active.'));
+      }
+      exit;
+      $this->pm = null;
+      $this->user = null;
+    }
+    // Create Booking
+    function CreateBookingPortal($Plate, $Type, $ETA, $Stay, $Company, $Note, $Bay)
+    {
+      global $_CONFIG;
+      $this->pm = new PM;
+      $this->user = new User;
+
+      $Site = $this->user->Info("Site");
+      if($this->pm->Site_Info($Site, "Portal_Active") == "1") {
+        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0']);
+
+        if($Bay == "0") {
+          $response = $client->post('Bookings/Create', [
+            'form_params' => [
+              'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
+              'Username' => $this->pm->Site_Info($Site, "Portal_User"),
+              'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
+              'Plate' => $Plate,
+              'Type' => $Stay,
+              'ETA' => $ETA,
+              'Company' => $Company,
+              'Note' => $Note,
+            ]
+          ]);
+        } else {
+          $response = $client->post('Bookings/Create', [
+            'form_params' => [
+              'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
+              'Username' => $this->pm->Site_Info($Site, "Portal_User"),
+              'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
+              'Plate' => $Plate,
+              'Type' => $Stay,
+              'ETA' => $ETA,
+              'Company' => $Company,
+              'Note' => $Note,
+              'BayID' => $Bay
+            ]
+          ]);
+        }
+
+        $return = json_decode($response->getBody(), true);
+        if($return['Status'] == "1") {
+          echo json_encode(array('Status' => '1', 'Message' => 'Successfully added booking to Portal.'));
+        } else {
+          echo json_encode(array('Status' => '0', 'Message' => 'Couldn\'t add booking to Portal.'));
         }
       } else {
         echo json_encode(array('Status' => '0', 'Message' => 'Your portal is not active.'));
