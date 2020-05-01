@@ -68,7 +68,7 @@
       $stmt->execute();
       foreach($stmt->fetchAll() as $bookings) {
         // Select all bay info
-        $stmt = $this->mysql->dbc->prepare("SELECT * FROM Bays WHERE id = ?");
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE id = ?");
         $stmt->bindParam(1, $bookings['Bay']);
         $stmt->execute();
         if($stmt->rowCount() > 0) {
