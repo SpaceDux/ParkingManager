@@ -96,7 +96,7 @@
             $stmt->execute();
           }
          } else {
-          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '3', Last_Updated = ?, Author = '' WHERE id = ?");
+          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
           $stmt->bindParam(1, $Date);
           $stmt->bindValue(2, $Bay['id']);
           $stmt->execute();
