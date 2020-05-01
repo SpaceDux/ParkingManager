@@ -37,6 +37,17 @@
               $stmt->bindValue(2, $bookings['Uniqueref']);
               $stmt->execute();
             }
+          } else if($bay["Temp"] == "2") {
+            $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '3', Last_Updated = ?, Author = '' WHERE id = ?");
+            $stmt->bindParam(1, $Date);
+            $stmt->bindValue(2, $bay['id']);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+              $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '4', Last_Updated = ? WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $Date);
+              $stmt->bindValue(2, $bookings['Uniqueref']);
+              $stmt->execute();
+            }
           } else {
             $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
             $stmt->bindParam(1, $Date);
@@ -52,19 +63,50 @@
         }
       }
 
-      // If has been cancelled.
+      // If has been cancelled. BY USER
       $stmt = $this->mysql->dbc->prepare("SELECT * FROM bookings WHERE Status = 5");
       $stmt->execute();
       foreach($stmt->fetchAll() as $bookings) {
-        $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
-        $stmt->bindParam(1, $Date);
-        $stmt->bindValue(2, $bookings['Bay']);
+        // Select all bay info
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM Bays WHERE id = ?");
+        $stmt->bindParam(1, $bookings['Bay']);
         $stmt->execute();
         if($stmt->rowCount() > 0) {
-          $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '6', Last_Updated = ? WHERE Uniqueref = ?");
+         $Bay = $stmt->fetch(\PDO::FETCH_ASSOC);
+         if($Bay['Temp'] == "1") {
+          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '0', Last_Updated = ?, Author = '' WHERE id = ?");
           $stmt->bindParam(1, $Date);
-          $stmt->bindValue(2, $bookings['Uniqueref']);
+          $stmt->bindValue(2, $Bay['id']);
           $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '6', Last_Updated = ? WHERE Uniqueref = ?");
+            $stmt->bindParam(1, $Date);
+            $stmt->bindValue(2, $bookings['Uniqueref']);
+            $stmt->execute();
+          }
+         } else if($Bay['Temp'] == "2") {
+          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '3', Last_Updated = ?, Author = '' WHERE id = ?");
+          $stmt->bindParam(1, $Date);
+          $stmt->bindValue(2, $Bay['id']);
+          $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '6', Last_Updated = ? WHERE Uniqueref = ?");
+            $stmt->bindParam(1, $Date);
+            $stmt->bindValue(2, $bookings['Uniqueref']);
+            $stmt->execute();
+          }
+         } else {
+          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = '3', Last_Updated = ?, Author = '' WHERE id = ?");
+          $stmt->bindParam(1, $Date);
+          $stmt->bindValue(2, $Bay['id']);
+          $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = '6', Last_Updated = ? WHERE Uniqueref = ?");
+            $stmt->bindParam(1, $Date);
+            $stmt->bindValue(2, $bookings['Uniqueref']);
+            $stmt->execute();
+          }
+         }
         }
       }
 
@@ -91,11 +133,15 @@
             $stmt->bindParam(1, $row['id']);
             $stmt->execute();
             if($stmt->rowCount() > 0) {
-              // SEND LATE CANCEL EMAIL
-              $stmt = $this->mysql->dbc->prepare("UPDATE users SET Strikes = Strikes + 1, Last_Updated = ? WHERE Uniqueref = ?");
-              $stmt->bindParam(1, $Date);
-              $stmt->bindValue(2, $row['Author']);
-              $stmt->execute();
+              if($row['Author'] != 'PM') {
+                // SEND LATE CANCEL EMAIL
+                $stmt = $this->mysql->dbc->prepare("UPDATE users SET Strikes = Strikes + 1, Last_Updated = ? WHERE Uniqueref = ?");
+                $stmt->bindParam(1, $Date);
+                $stmt->bindValue(2, $row['Author']);
+                $stmt->execute();
+              } else {
+                // Do nothing.
+              }
             }
           }
         }
@@ -164,7 +210,7 @@
     }
 
     // Create a booking
-    function Booking_Create_Booking($Vehicle, $Type, $ETA, $Break)
+    function Booking_Create_Booking($Vehicle, $Type, $ETA, $Break, $Company)
     {
       $this->mysql = new MySQL;
       $this->user = new User;
@@ -211,7 +257,7 @@
                 $Site = $result['Site'];
                 $Bay = $result['id'];
                 // Insert Booking
-                $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings (Uniqueref, Site, Plate, VehicleType, Date, ETA, ETD, Bay, Author, Last_Updated, Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
+                $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings (Uniqueref, Site, Plate, VehicleType, Date, ETA, ETD, Bay, Author, Company, Note, Last_Updated, Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', ?, '0')");
                 $stmt->bindParam(1, $Ref);
                 $stmt->bindParam(2, $Site);
                 $stmt->bindParam(3, $Plate);
@@ -221,7 +267,8 @@
                 $stmt->bindParam(7, $ETD);
                 $stmt->bindParam(8, $Bay);
                 $stmt->bindValue(9, $_SESSION['ID']);
-                $stmt->bindParam(10, $Date);
+                $stmt->bindParam(10, $Company);
+                $stmt->bindParam(11, $Date);
                 if($stmt->execute()) {
                   $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = 2, Expiry = ?, Last_Updated = ? WHERE id = ?");
                   $stmt->bindParam(1, $ETD);
@@ -526,6 +573,8 @@
               $dataEach['Status'] = $row['Status'];
               $dataEach['Date'] = $row['Date'];
               $dataEach['Telephone'] = $this->user->User_Info("Telephone", $row['Author']);
+              $dataEach['Company'] = $row['Company'];
+              $dataEach['Note'] = $row['Note'];
               $dataEach['Name'] = $this->user->User_Info("FirstName", $row['Author']).' '.$this->user->User_Info("LastName", $row['Author']);
               array_push($data, $dataEach);
             }
@@ -546,7 +595,7 @@
     }
 
     // Update a booking remotely
-    function Booking_UpdateBooking_API($User, $Pass, $Ref, $ETA, $Status, $VehicleType)
+    function Booking_UpdateBooking_API($User, $Pass, $Ref, $ETA, $Status, $VehicleType, $Company, $Note)
     {
       $this->mysql = new MySQL;
       $this->pm = new PM;
@@ -579,6 +628,18 @@
               $stmt->bindParam(2, $Ref);
               $stmt->execute();
             }
+            if($Company != null OR $Company != '') {
+              $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Company = ? WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $Company);
+              $stmt->bindParam(2, $Ref);
+              $stmt->execute();
+            }
+            if($Note != null OR $Note != '') {
+              $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Note = ? WHERE Uniqueref = ?");
+              $stmt->bindParam(1, $Note);
+              $stmt->bindParam(2, $Ref);
+              $stmt->execute();
+            }
             echo json_encode(array("Status" => "1", "Message" => "Successfully found & updated booking."));
           } else {
             echo json_encode(array("Status" => "0", "Message" => "Could not authenticate."));
@@ -606,7 +667,7 @@
         $stmt->execute();
         if($stmt->rowCount() > 0) {
           $result = $stmt->Fetch(\PDO::FETCH_ASSOC);
-          echo json_encode(array('Status' => '1', 'Message' => 'This vehicle has prebooked.', 'Bookingref' => $result['Uniqueref'], 'Vehicle_Type' => $result['VehicleType'], 'Booking_Status' => $result['Status']));
+          echo json_encode(array('Status' => '1', 'Message' => 'This vehicle has prebooked.', 'Bookingref' => $result['Uniqueref'], 'Vehicle_Type' => $result['VehicleType'], 'Booking_Status' => $result['Status'], 'Company' => $result['Company']));
         } else {
           echo json_encode(array('Status' => '0', 'Message' => 'No bookings found.'));
         }
@@ -619,14 +680,14 @@
     }
 
     // Search Bookings by Plate
-    function Booking_AddNewBooking_API($User, $Pass, $Plate, $Type, $ETA, $Stay)
+    function Booking_AddNewBooking_API($User, $Pass, $Plate, $Type, $ETA, $Stay, $Company, $Note)
     {
       $this->mysql = new MySQL;
       $this->pm = new PM;
 
       $Date = date("Y-m-d H:i:s");
-      $Expiry = date("Y-m-d H:i:s", strtotime($ETA.' + '.$Stay.' hours'));
       $ETA = date("Y-m-d H:i:s", strtotime($ETA));
+      $Expiry = date("Y-m-d H:i:s", strtotime($ETA.' + '.$Stay.' hours'));
 
       $Auth = $this->pm->PM_SiteAuthenticate_API($User, $Pass);
       if($Auth['Status'] == "1") {
@@ -645,7 +706,7 @@
           if($stmt->rowCount() > 0) {
             $Ref = mt_rand(1111, 9999).date("YmdHis").mt_rand(1111, 9999);
             // Create booking
-            $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings (Uniqueref, Site, Plate, VehicleType, Date, ETA, ETD, Bay, Author, Last_Updated, Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
+            $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings (Uniqueref, Site, Plate, VehicleType, Date, ETA, ETD, Bay, Author, Company, Note, Last_Updated, Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
             $stmt->bindParam(1, $Ref);
             $stmt->bindParam(2, $Site);
             $stmt->bindParam(3, $Plate);
@@ -655,7 +716,9 @@
             $stmt->bindParam(7, $Expiry);
             $stmt->bindParam(8, $BayID);
             $stmt->bindValue(9, 'PM');
-            $stmt->bindParam(10, $Date);
+            $stmt->bindValue(10, $Company);
+            $stmt->bindValue(11, $Note);
+            $stmt->bindParam(12, $Date);
             $stmt->execute();
             if($stmt->rowCount() > 0) {
               echo json_encode(array('Status' => '1', 'Message' => 'Booking has been confirmed.'));
@@ -667,6 +730,65 @@
           }
         } else {
           echo json_encode(array('Status' => '0', 'Message' => 'There\'s currently no available bays.'));
+        }
+      } else {
+        echo json_encode(array('Status' => '0', 'Message' => 'Could not authenticate.'));
+      }
+
+      $this->pm = null;
+      $this->mysql = null;
+    }
+    // Search Bookings by Plate
+    function Booking_AddNewBookingToBay_API($User, $Pass, $Plate, $Type, $ETA, $Stay, $Bay, $Company, $Note)
+    {
+      $this->mysql = new MySQL;
+      $this->pm = new PM;
+
+      $Date = date("Y-m-d H:i:s");
+      $ETA = date("Y-m-d H:i:s", strtotime($ETA));
+      $Expiry = date("Y-m-d H:i:s", strtotime($ETA.' + '.$Stay.' hours'));
+
+      $Auth = $this->pm->PM_SiteAuthenticate_API($User, $Pass);
+      if($Auth['Status'] == "1") {
+        $Site = $Auth['Site_ID'];
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE id = ? AND Status IN(0,3)");
+        $stmt->bindParam(1, $Bay);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $Bay = $stmt->fetch(\PDO::FETCH_ASSOC);
+          $BayID = $Bay['id'];
+          $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Status = 2, Last_Updated = ?, Expiry = ? WHERE id = ? LIMIT 1");
+          $stmt->bindParam(1, $Date);
+          $stmt->bindParam(2, $Expiry);
+          $stmt->bindParam(3, $BayID);
+          $stmt->execute();
+          if($stmt->rowCount() > 0) {
+            $Ref = mt_rand(1111, 9999).date("YmdHis").mt_rand(1111, 9999);
+            // Create booking
+            $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings (Uniqueref, Site, Plate, VehicleType, Date, ETA, ETD, Bay, Author, Company, Note, Last_Updated, Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
+            $stmt->bindParam(1, $Ref);
+            $stmt->bindParam(2, $Site);
+            $stmt->bindParam(3, $Plate);
+            $stmt->bindParam(4, $Type);
+            $stmt->bindParam(5, $Date);
+            $stmt->bindParam(6, $ETA);
+            $stmt->bindParam(7, $Expiry);
+            $stmt->bindParam(8, $BayID);
+            $stmt->bindValue(9, 'PM');
+            $stmt->bindValue(10, $Company);
+            $stmt->bindValue(11, $Note);
+            $stmt->bindParam(12, $Date);
+            $stmt->execute();
+            if($stmt->rowCount() > 0) {
+              echo json_encode(array('Status' => '1', 'Message' => 'Booking has been confirmed.'));
+            } else {
+              echo json_encode(array('Status' => '0', 'Message' => 'Unable to add booking. Please try again.'));
+            }
+          } else {
+            echo json_encode(array('Status' => '0', 'Message' => 'Unable to allocate bay.'));
+          }
+        } else {
+          echo json_encode(array('Status' => '0', 'Message' => 'Sorry, that bay is no longer available.'));
         }
       } else {
         echo json_encode(array('Status' => '0', 'Message' => 'Could not authenticate.'));

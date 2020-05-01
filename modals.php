@@ -124,6 +124,10 @@
                 {MYVEHICLES}
               </select>
             </div>
+            <div class="col">
+              <label>What company do you drive for? (OPTIONAL)</label>
+              <input type="text" class="form-control form-control-lg" name="Company" placeholder="My Company Ltd">
+            </div>
           </div>
           <hr>
           <div class="row">

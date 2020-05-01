@@ -12,14 +12,28 @@ $accesskey = $_CONFIG['API']['AccessKey'];
 if(!isset($_POST['AccessKey'])) {
   $_POST['AccessKey'] = "";
 }
+if(!isset($_POST['Company'])) {
+  $_POST['Company'] = '';
+}
+if(!isset($_POST['Note'])) {
+  $_POST['Note'] = '';
+}
 
 
 if($accesskey == $_POST['AccessKey'])
 {
-  if(isset($_POST['Username'], $_POST['Password'], $_POST['Plate'], $_POST['Type'], $_POST['ETA'], $_POST['Stay'])) {
-    $booking->Booking_AddNewBooking_API($_POST['Username'], $_POST['Password'], $_POST['Plate'], $_POST['Type'], $_POST['ETA'], $_POST['Stay']);
+  if(isset($_POST['BayID'])) {
+    if(isset($_POST['Username'], $_POST['Password'], $_POST['Plate'], $_POST['Type'], $_POST['ETA'], $_POST['Stay'])) {
+      $booking->Booking_AddNewBookingToBay_API($_POST['Username'], $_POST['Password'], $_POST['Plate'], $_POST['Type'], $_POST['ETA'], $_POST['Stay'], $_POST['BayID'], $_POST['Company'], $_POST['Note']);
+    } else {
+      echo json_encode(array("Status" => '0', "Message" => 'Missing data, please ensure all data is supplied.'));
+    }
   } else {
-    echo json_encode(array("Status" => '0', "Message" => 'Missing data, please ensure all data is supplied.'));
+    if(isset($_POST['Username'], $_POST['Password'], $_POST['Plate'], $_POST['Type'], $_POST['ETA'], $_POST['Stay'])) {
+      $booking->Booking_AddNewBooking_API($_POST['Username'], $_POST['Password'], $_POST['Plate'], $_POST['Type'], $_POST['ETA'], $_POST['Stay'], $_POST['Company'], $_POST['Note']);
+    } else {
+      echo json_encode(array("Status" => '0', "Message" => 'Missing data, please ensure all data is supplied.'));
+    }
   }
 } else {
   echo json_encode(array("Status" => '0', "Message" => 'Access denied, Key does not exist.'));
