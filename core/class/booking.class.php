@@ -603,6 +603,7 @@
       if(isset($User) AND isset($Pass)) {
         $Auth = $this->pm->PM_SiteAuthenticate_API($User, $Pass);
           if($Auth['Status'] == "1") {
+            $success = 0;
             if($ETA != null OR $ETA != '') {
               $stmt = $this->mysql->dbc->prepare("SELECT ETA FROM bookings WHERE Uniqueref = ?");
               $stmt->bindParam(1, $Ref);
@@ -615,32 +616,51 @@
               $stmt->bindParam(1, $NewETA);
               $stmt->bindParam(2, $Ref);
               $stmt->execute();
+              if($stmt->rowCount() > 0) {
+                $success+1;
+              }
             }
             if($Status != null OR $Status != '') {
               $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Status = ? WHERE Uniqueref = ?");
               $stmt->bindParam(1, $Status);
               $stmt->bindParam(2, $Ref);
               $stmt->execute();
+              if($stmt->rowCount() > 0) {
+                $success++;
+              }
             }
             if($VehicleType != null OR $VehicleType != '') {
               $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET VehicleType = ? WHERE Uniqueref = ?");
               $stmt->bindParam(1, $VehicleType);
               $stmt->bindParam(2, $Ref);
               $stmt->execute();
+              if($stmt->rowCount() > 0) {
+                $success++;
+              }
             }
             if($Company != null OR $Company != '') {
               $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Company = ? WHERE Uniqueref = ?");
               $stmt->bindParam(1, $Company);
               $stmt->bindParam(2, $Ref);
               $stmt->execute();
+              if($stmt->rowCount() > 0) {
+                $success++;
+              }
             }
             if($Note != null OR $Note != '') {
               $stmt = $this->mysql->dbc->prepare("UPDATE bookings SET Note = ? WHERE Uniqueref = ?");
               $stmt->bindParam(1, $Note);
               $stmt->bindParam(2, $Ref);
               $stmt->execute();
+              if($stmt->rowCount() > 0) {
+                $success++;
+              }
             }
-            echo json_encode(array("Status" => "1", "Message" => "Successfully found & updated booking."));
+            if($success > 0) {
+              echo json_encode(array("Status" => "1", "Message" => "Successfully found & updated booking."));
+            } else {
+              echo json_encode(array("Status" => "0", "Message" => "Could not find booking."));
+            }
           } else {
             echo json_encode(array("Status" => "0", "Message" => "Could not authenticate."));
           }

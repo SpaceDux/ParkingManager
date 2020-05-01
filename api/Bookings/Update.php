@@ -21,12 +21,18 @@ if(!isset($_POST['Status'])) {
 if(!isset($_POST['VehicleType'])) {
   $_POST['VehicleType'] = null;
 }
+if(!isset($_POST['Company'])) {
+  $_POST['Company'] = '';
+}
+if(!isset($_POST['Note'])) {
+  $_POST['Note'] = '';
+}
 
 
 if($accesskey == $_POST['AccessKey'])
 {
   if(isset($_POST['Username']) AND isset($_POST['Password']) AND isset($_POST['Ref'])) {
-    $booking->Booking_UpdateBooking_API($_POST['Username'], $_POST['Password'], $_POST['Ref'], $_POST['ETA'], $_POST['Status'], $_POST['VehicleType']);
+    $booking->Booking_UpdateBooking_API($_POST['Username'], $_POST['Password'], $_POST['Ref'], $_POST['ETA'], $_POST['Status'], $_POST['VehicleType'], $_POST['Company'], $_POST['Note']);
   } else {
     echo json_encode(array("Status" => '0', "Message" => 'Missing data, please ensure all data is supplied.'));
   }
