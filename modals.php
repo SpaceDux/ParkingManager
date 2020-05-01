@@ -1565,10 +1565,17 @@
               <select class="form-control" name="VehicleType" id="ModifyBooking_VehicleType" required>
                 <option value="1">Cab & Trailer</option>
                 <option value="8">Car Transporter</option>
-                <option value="2">Cab Only</option>
+                <!-- <option value="2">Cab Only</option> -->
                 <option value="4">Rigid</option>
                 <option value="5">Coach</option>
               </select>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <label>Company Name</label>
+              <input type="text" class="form-control" name="Company" id="ModifyBooking_Company" value="">
             </div>
           </div>
           <hr>
@@ -1578,9 +1585,16 @@
               <input type="text" class="form-control" id="ModifyBooking_Telephone" value="" readonly>
             </div>
           </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <label>Booking Note</label>
+              <textarea id="ModifyBooking_Note" name="Note" class="form-control" cols="30" rows="5"></textarea>
+            </div>
+          </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="button" id="ModifyBooking_Save" class="btn btn-primary">Save Changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
       </form>
@@ -1605,15 +1619,18 @@
         <hr>
         <div class="row">
           <div class="col">
-            <p>
-              <b>Temporary Bay</b>: You can control whether this is allowed to be booked temporarily, once booked & the vehicle has then checked out, this bay will deactivate itself. You can re-activate it when you require.
-            <br>
-               <b>Permanent Bay</b>: When a vehicle books this space and then checks out, it will automatically reinstate the bay and allow other users to book.
-             </p>
+           <p>
+              <b>Permanent Bay</b>: When a vehicle books this space and then checks out, it will automatically reinstate the bay and allow other users to book.
+              <br>
+              <b>Temporary Bay</b>: You can control whether this is allowed to be booked temporarily, once booked & the vehicle has then checked out, this bay will deactivate itself. If a booking gets cancelled, this bay will remain open for another booking. You can re-activate it when you require.
+              <br>
+              <b>One Time Bay</b>: When a vehicle books this space and then checks out or the booking gets cancelled, this bay will automatically close itself out and prevent further bookings. You can re-enable this bay if you require.
+            </p>
             <label>What type of bay is this?</label>
             <select class="form-control" name="Temp" required>
-              <option value="0">Permanent</option>
-              <option value="1">Temporary</option>
+              <option value="0">Permanent Bay</option>
+              <option value="1">Temporary Bay</option>
+              <option value="2">One Time Bay</option>
             </select>
           </div>
         </div>
@@ -1656,19 +1673,23 @@
         <div class="row">
           <div class="col">
             <p>
-              <b>Temporary Bay</b>: You can control whether this is allowed to be booked temporarily, once booked & the vehicle has then checked out, this bay will deactivate itself. You can re-activate it when you require.
-            <br>
-               <b>Permanent Bay</b>: When a vehicle books this space and then checks out, it will automatically reinstate the bay and allow other users to book.
-             </p>
+              <b>Permanent Bay</b>: When a vehicle books this space and then checks out, it will automatically reinstate the bay and allow other users to book.
+              <br>
+              <b>Temporary Bay</b>: You can control whether this is allowed to be booked temporarily, once booked & the vehicle has then checked out, this bay will deactivate itself. If a booking gets cancelled, this bay will remain open for another booking. You can re-activate it when you require.
+              <br>
+              <b>One Time Bay</b>: When a vehicle books this space and then checks out or the booking gets cancelled, this bay will automatically close itself out and prevent further bookings. You can re-enable this bay if you require.
+            </p>
             <label>What type of bay is this?</label>
             <select class="form-control" name="Temp" id="ModifyPortalBay_Temp" required>
-              <option value="0">Permanent</option>
-              <option value="1">Temporary</option>
+              <option value="0">Permanent Bay</option>
+              <option value="1">Temporary Bay</option>
+              <option value="2">One Time Bay</option>
             </select>
           </div>
         </div>
       </div>
       <div class="modal-footer">
+        <button type="button" id="ModifyPortalBay_Submit" class="btn btn-primary">Save Changes</button>
         <button type="button" id="ModifyPortalBay_Submit" class="btn btn-primary">Save Changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>

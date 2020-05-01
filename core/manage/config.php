@@ -7,11 +7,11 @@
 	$_CONFIG['mysql']['host'] = '127.0.0.1'; //The IP for the datebase server
 	$_CONFIG['mysql']['port'] = '3306'; //The username for the database server
 	$_CONFIG['mysql']['user'] = 'root'; //The username for the database server
-	$_CONFIG['mysql']['pass'] = 'lol123abc'; //The password for the datebase server
+	$_CONFIG['mysql']['pass'] = ''; //The password for the datebase server
 	$_CONFIG['mysql']['db'] = 'pm4'; //Select the database you want to connect too
 
 	// Site Configuration
-	$_CONFIG['site']['url'] = 'http://192.168.0.5'; //Server URL example.com (DOES NOT END WITH /)
+	$_CONFIG['site']['url'] = 'http://192.168.0.24'; //Server URL example.com (DOES NOT END WITH /)
 	$_CONFIG['site']['name'] = 'ParkingManager'; //Website name, {SITE_NAME}
 	$_CONFIG['site']['template'] = 'Vision'; //Fenrir Template System, Select the Template Directory
 

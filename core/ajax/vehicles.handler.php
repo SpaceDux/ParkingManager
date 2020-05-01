@@ -47,7 +47,7 @@
   } else if($handler == "Vehicles.Blacklist_Delete") {
     $vehicles->Blacklist_Delete($_POST['Ref']);
   } else if($handler == "Vehicles.ModifyPortalBooking") {
-    $external->ModifyBooking_Portal($_POST['Ref'], $_POST['ETA'], $_POST['VehicleType']);
+    $external->ModifyBooking_Portal($_POST['Ref'], $_POST['ETA'], $_POST['VehicleType'], $_POST['Company'], $_POST['Note']);
   } else if($handler == "Vehicles.Cancel_PortalBooking") {
     $external->ModifyStatus_Portal($_POST['Ref'], $_POST['Status']);
   } else if($handler == "Vehicles.CheckPortal") {

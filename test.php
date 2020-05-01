@@ -10,7 +10,7 @@
       <input type="text" id="Date2" name="Date2" value="<?php echo date("Y-m-02 21:30:00")?>">
       <button id="Submit"> Submit</button>
     </form>
-
+    <?php phpinfo();?>
 
     <div id="Response">
 

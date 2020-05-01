@@ -432,7 +432,7 @@
     });
   });
 
-  function Update_PortalBooking(Ref, Eta_Date, Eta_Time, vehtype, telephone)
+  function Update_PortalBooking(Ref, Eta_Date, Eta_Time, vehtype, telephone, company, note)
   {
     event.preventDefault();
     $('#ModifyBooking_Ref').val(Ref);
@@ -440,11 +440,14 @@
     $('#ModifyBooking_VehicleType').val(vehtype);
     $('#ModifyBooking_ETA_Prepend').html(Eta_Date);
     $('#ModifyBooking_Telephone').val(telephone);
+    $('#ModifyBooking_Company').val(company);
+    $('#ModifyBooking_Note').val(note);
     $('#Portal_ModifyBooking').modal('toggle');
   }
-  $('#ModifyBooking_FORM').on('submit', function() {
+  // Save booking update
+  $(document).on('click', '#ModifyBooking_Save', function() {
     event.preventDefault();
-    var Data = $(this).serialize();
+    var Data = $('#ModifyBooking_FORM').serialize();
     $.ajax({
       url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.ModifyPortalBooking",
       data: Data,

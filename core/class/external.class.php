@@ -54,6 +54,8 @@
             $eta_time = '\''.date("H:i", strtotime($row['ETA'])).'\'';
             $eta_date = '\''.date("d/m/y", strtotime($row['ETA'])).'\'';
             $Tel = '\''.$row['Telephone'].'\'';
+            $Company = '\''.$row['Company'].'\'';
+            $Note = '\''.$row['Note'].'\'';
             $html .= '<tr>';
             $html .= '<td>'.$row['Plate'].'</td>';
             $html .= '<td>'.date("d/H:i", strtotime($row['ETA'])).'</td>';
@@ -62,7 +64,7 @@
             $html .= '<td>'.$Status.'</td>';
             $html .= '<td>
                         <div class="btn-group" role="group">
-                          <button class="btn btn-danger" onClick="Update_PortalBooking('.$ref.', '.$eta_date.', '.$eta_time.', '.$row['VehicleType'].', '.$Tel.')"><i class="fa fa-cog"></i></button>
+                          <button class="btn btn-danger" onClick="Update_PortalBooking('.$ref.', '.$eta_date.', '.$eta_time.', '.$row['VehicleType'].', '.$Tel.', '.$Company.', '.$Note.')"><i class="fa fa-cog"></i></button>
                           <button class="btn btn-danger" onClick="Cancel_PortalBooking('.$ref.', 5)"><i class="fa fa-trash"></i></button>
                         </div>
                       </td>';
@@ -84,7 +86,7 @@
       $this->user = null;
     }
     // Modify a booking.
-    function ModifyBooking_Portal($Ref, $ETA, $Type)
+    function ModifyBooking_Portal($Ref, $ETA, $Type, $Company, $Note)
     {
       global $_CONFIG;
       $this->user = new User;
@@ -101,7 +103,9 @@
           'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
           'Ref' => $Ref,
           'ETA' => $ETA,
-          'VehicleType' => $Type
+          'VehicleType' => $Type,
+          'Company' => $Company,
+          'Note' => $Note,
         ]
       ]);
       $return = json_decode($response->getBody(), true);
@@ -250,6 +254,8 @@
             }
             if($row['Temp'] == "1") {
               $Type = 'Temporary Bay';
+            } else if($row['Temp'] == "2") {
+              $Type = 'One Time Bay';
             } else {
               $Type = 'Permenant Bay';
             }
