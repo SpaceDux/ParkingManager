@@ -62,6 +62,10 @@
     $external->UpdateBayPortal($_POST['Bay'], $_POST['Name'], $_POST['Temp']);
   } else if($handler == "Vehicles.UpdateBayStatusPortal") {
     $external->UpdateBayStatusPortal($_POST['Bay'], $_POST['Status']);
+  } else if($handler == "Vehicles.GetAllBaysAsList") {
+    $external->GetBaysFromPortalAsList();
+  } else if($handler == "Vehicles.Create_PortalBookings") {
+    $external->CreateBookingPortal($_POST['Plate'], $_POST['VehicleType'], $_POST['ETA'], $_POST['ETD'], $_POST['Company'], $_POST['Note'], $_POST['Bay']);
   }
 
 ?>

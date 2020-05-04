@@ -1697,33 +1697,49 @@
     </div>
   </div>
 </div>
-<!-- Update Booking -->
+<!-- Create Booking -->
 <div class="modal" id="Portal_AddBooking" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Portal_AddBooking" aria-hidden="true">
   <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modify Booking</h5>
+        <h5 class="modal-title">Create Booking</h5>
       </div>
-      <form id="ModifyBooking_FORM">
+      <form id="AddBooking_FORM">
       <div class="modal-body">
           <div class="row">
             <div class="col">
                 <label>Registration Number</label>
-                <input type="text" name="Plate" id="AddBooking_Plate">
+                <input type="text" class="form-control" name="Plate" style="text-transform:uppercase;">
             </div>
           </div>
+          <hr>
           <div class="row">
             <div class="col">
-              <input type="hidden" name="Ref" id="ModifyBooking_Ref">
-              <label>ETA</label>
-              <input type="time" class="form-control form-control-lg" name="ETA" id="AddBooking_ETA" min="14:00" required="">
+             <label>ETA</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                 <span class="input-group-text"><?php echo date("d/m/y");?></span>
+                </div>
+                <input type="time" class="form-control" name="ETA" min="14:00" value="<?php echo date("H:00");?>" required>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+             <label>ETD</label>
+             <select class="form-control" name="ETD" required="">
+                <option value="12">Between 6 &amp; 12 Hours</option>
+                <option value="24">Between 12 &amp; 24 Hours</option>
+                <option value="24">Between 24+ Hours</option>
+              </select>
             </div>
           </div>
           <hr>
           <div class="row">
             <div class="col">
               <label>Vehicle Type</label>
-              <select class="form-control" name="VehicleType" id="AddBooking_VehicleType" required>
+              <select class="form-control" name="VehicleType" required>
                 <option value="1">Cab & Trailer</option>
                 <option value="8">Car Transporter</option>
                 <!-- <option value="2">Cab Only</option> -->
@@ -1735,20 +1751,29 @@
           <hr>
           <div class="row">
             <div class="col">
+              <label>Vehicle Type</label>
+              <select class="form-control" name="Bay" id="ListBays" required>
+
+              </select>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
               <label>Company Name</label>
-              <input type="text" class="form-control" name="Company" id="AddBooking_Company" value="">
+              <input type="text" class="form-control" name="Company" value="">
             </div>
           </div>
           <hr>
           <div class="row">
             <div class="col">
               <label>Booking Note</label>
-              <textarea id="ModifyBooking_Note" name="Note" class="form-control" cols="30" rows="5"></textarea>
+              <textarea name="Note" class="form-control" cols="30" rows="5"></textarea>
             </div>
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" id="ModifyBooking_Save" class="btn btn-primary">Save Changes</button>
+        <button type="button" id="AddBooking_Save" class="btn btn-primary">Save Changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
       </form>

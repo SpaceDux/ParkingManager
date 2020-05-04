@@ -415,7 +415,10 @@
             <div class="Title">
               Active Bookings
               <div class="float-right">
-                <button type="button" class="btn btn-primary" onClick="DownloadActivePortalBookings_Manage()"><i class="fa fa-sync-alt"></i></button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-primary" onClick="DownloadActivePortalBookings_Manage()"><i class="fa fa-sync-alt"></i></button>
+                  <button type="button" class="btn btn-primary" onClick="Add_PortalBooking()"><i class="fa fa-plus"></i> Create Booking</button>
+                </div>
               </div>
             </div>
             <div id="Portal_BookingData_Manage">

@@ -107,13 +107,13 @@
           'Company' => $Company,
           'Note' => $Note,
         ]
-      ]);
-      $return = json_decode($response->getBody(), true);
-      if($return['Status'] > "0") {
-        echo json_encode(array("Status" => "1", "Message" => "Successfully updated the portal booking."));
-      } else {
-        echo json_encode(array("Status" => "0", "Message" => "Unable to update booking."));
-      }
+        ]);
+        $return = json_decode($response->getBody(), true);
+        if($return['Status'] > "0") {
+          echo json_encode(array("Status" => "1", "Message" => "Successfully updated the portal booking."));
+        } else {
+          echo json_encode(array("Status" => "0", "Message" => "Unable to update booking."));
+        }
 
       $this->user = null;
       $this->pm = null;
@@ -287,6 +287,48 @@
       $this->pm = null;
       $this->user = null;
     }
+    // Get all bays
+    function GetBaysFromPortalAsList()
+    {
+      global $_CONFIG;
+      $this->pm = new PM;
+      $this->user = new User;
+
+      $Site = $this->user->Info("Site");
+      if($this->pm->Site_Info($Site, "Portal_Active") == "1") {
+        $client = new Client(['base_uri' => $_CONFIG['Portal']['URL'], 'timeout' => '10.0']);
+
+        $response = $client->post('Bays/List', [
+          'form_params' => [
+            'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
+            'Username' => $this->pm->Site_Info($Site, "Portal_User"),
+            'Password' => $this->pm->Site_Info($Site, "Portal_Pass")
+          ]
+        ]);
+
+        $return = json_decode($response->getBody(), true);
+        if($return['Status'] == "1") {
+          $html = '<option value="0">ANY BAY</option>';
+          foreach($return['Data'] as $row) {
+            if($row['Status'] == '0') {
+              // Unallocated
+              $html .= '<option value="'.$row['BayID'].'">'.$row['BayName'].'</option>';
+            } else if($row['Status'] == "3") {
+              // Out of service
+              $html .= '<option value="'.$row['BayID'].'">'.$row['BayName'].' - Out of Service</option>';
+            }
+          }
+          echo $html;
+        } else {
+          echo 'Your portal is not active.';
+        }
+      } else {
+        echo "Your portal is not active";
+      }
+      exit;
+      $this->pm = null;
+      $this->user = null;
+    }
     // Add a bay to the Portal
     function AddBayToPortal($Name, $Temp, $Status)
     {
@@ -408,9 +450,10 @@
               'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
               'Username' => $this->pm->Site_Info($Site, "Portal_User"),
               'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
-              'Plate' => $Plate,
-              'Type' => $Stay,
+              'Plate' => strtoupper($Plate),
+              'Type' => $Type,
               'ETA' => $ETA,
+              'Stay' => $Stay,
               'Company' => $Company,
               'Note' => $Note,
             ]
@@ -421,9 +464,10 @@
               'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
               'Username' => $this->pm->Site_Info($Site, "Portal_User"),
               'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
-              'Plate' => $Plate,
-              'Type' => $Stay,
+              'Plate' => strtoupper($Plate),
+              'Type' => $Type,
               'ETA' => $ETA,
+              'Stay' => $Stay,
               'Company' => $Company,
               'Note' => $Note,
               'BayID' => $Bay

@@ -495,4 +495,35 @@
       }
     })
   }
+  function Add_PortalBooking()
+  {
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.GetAllBaysAsList",
+      method: "POST",
+      dataType: "text",
+      success:function(Response) {
+        $('#ListBays').html(Response);
+        $('#Portal_AddBooking').modal('show');
+      }
+    })
+  }
+  $(document).on('click', '#AddBooking_Save', function() {
+    event.preventDefault;
+    var Data = $('#AddBooking_FORM').serialize();
+    $.ajax({
+      url: "{URL}/core/ajax/vehicles.handler.php?handler=Vehicles.Create_PortalBookings",
+      method: "POST",
+      data: Data,
+      dataType: 'json',
+      success:function(Response) {
+        if(Response.Status == 1) {
+          $.notify(Response.Message, {className:'success',globalPosition: 'top left',});
+          $('#Portal_AddBooking').modal('hide');
+          $('#AddBooking_FORM')[0].reset();
+        } else {
+          $.notify(Response.Message, {className:'danger',globalPosition: 'top left',});
+        }
+      }
+    })
+  })
 </script>
