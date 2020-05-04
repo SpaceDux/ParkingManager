@@ -38,6 +38,7 @@
                       <th>ETA</th>
                       <th>Booked</th>
                       <th>Vehicle Type</th>
+                      <th>Bay</th>
                       <th>Status</th>
                       <th><i class="fa fa-cog"></i></th>
                     </thead>
@@ -61,6 +62,7 @@
             $html .= '<td>'.date("d/H:i", strtotime($row['ETA'])).'</td>';
             $html .= '<td>'.date("d/H:i:s", strtotime($row['Date'])).'</td>';
             $html .= '<td>'.$this->pm->GET_VehicleType($row['VehicleType']).'</td>';
+            $html .= '<td>'.$row['BayName'].'</td>';
             $html .= '<td>'.$Status.'</td>';
             $html .= '<td>
                         <div class="btn-group" role="group">
@@ -450,7 +452,7 @@
               'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
               'Username' => $this->pm->Site_Info($Site, "Portal_User"),
               'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
-              'Plate' => strtoupper($Plate),
+              'Plate' => str_replace(" ", "", strtoupper($Plate)),
               'Type' => $Type,
               'ETA' => $ETA,
               'Stay' => $Stay,
@@ -464,7 +466,7 @@
               'AccessKey' => $this->pm->Site_Info($Site, "Portal_AccessKey"),
               'Username' => $this->pm->Site_Info($Site, "Portal_User"),
               'Password' => $this->pm->Site_Info($Site, "Portal_Pass"),
-              'Plate' => strtoupper($Plate),
+              'Plate' => str_replace(" ", "", strtoupper($Plate)),
               'Type' => $Type,
               'ETA' => $ETA,
               'Stay' => $Stay,

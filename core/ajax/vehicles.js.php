@@ -520,6 +520,8 @@
           $.notify(Response.Message, {className:'success',globalPosition: 'top left',});
           $('#Portal_AddBooking').modal('hide');
           $('#AddBooking_FORM')[0].reset();
+          DownloadActivePortalBookings_Manage();
+          DownloadBays_Manage();
         } else {
           $.notify(Response.Message, {className:'danger',globalPosition: 'top left',});
         }
