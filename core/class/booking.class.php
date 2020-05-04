@@ -547,6 +547,20 @@
       $this->mysql = null;
     }
 
+    // Bay Infomation
+    function Bay_Info($What, $Bay)
+    {
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE id = ?");
+      $stmt->bindParam(1, $Bay);
+      $stmt->execute();
+      if($stmt->rowCount() > 0) {
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result[$What];
+      } else {
+        return "No Result";
+      }
+    }
+
     // API FUNCTIONS
     // Get All active bookings via API
     function Booking_GetAllActiveBookings_API($User, $Pass)
@@ -576,6 +590,7 @@
               $dataEach['Company'] = $row['Company'];
               $dataEach['Note'] = $row['Note'];
               $dataEach['Name'] = $this->user->User_Info("FirstName", $row['Author']).' '.$this->user->User_Info("LastName", $row['Author']);
+              $dataEach['BayName'] = $this->Bay_Info("Number", $row['Bay']);
               array_push($data, $dataEach);
             }
             echo json_encode(array("Status" => "1", "Message" => "Successfully found bookings.", "Data" => $data));
@@ -759,7 +774,7 @@
       $this->mysql = null;
     }
     // Search Bookings by Plate
-    function Booking_AddNewBookingToBay_API($User, $Pass, $Plate, $Type, $ETA, $Stay, $Bay, $Company, $Note)
+    function Booking_AddNewBookingToBay_API($User, $Pass, $Plate, $Type, $ETA, $Stay, $Company, $Note, $Bay)
     {
       $this->mysql = new MySQL;
       $this->pm = new PM;
