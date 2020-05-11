@@ -923,7 +923,11 @@
             $stmt->execute();
             echo json_encode(array('Status' => '1', 'Message' => 'Vehicle has exit and Portal has been notified.'));
           } else {
-            echo json_encode(array('Status' => '0', 'Message' => 'Unable to exit vehicle due to Portal.'));
+            $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Departure = ?, Parked_Column = 2 WHERE Uniqueref = ?");
+            $stmt->bindParam(1, $cur);
+            $stmt->bindParam(2, $ref);
+            $stmt->execute();
+            echo json_encode(array('Status' => '0', 'Message' => 'Unable to exit vehicle on Portal. Please check the booking via Portal Management. '.$row['Plate']));
           }
         } else {
           $stmt = $this->mysql->dbc->prepare("UPDATE parking_records SET Departure = ?, Parked_Column = 2 WHERE Uniqueref = ?");
