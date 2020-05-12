@@ -22,6 +22,7 @@
 	require_once(__DIR__.'/core/class/ticket.class.php');
 	require_once(__DIR__.'/core/class/background.class.php');
 	require_once(__DIR__.'/core/class/external.class.php');
+	require_once(__DIR__.'/core/class/rev.class.php');
 
 	require_once(__DIR__.'/vendor/autoload.php');
 

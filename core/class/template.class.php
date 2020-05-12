@@ -55,10 +55,10 @@
 				$this->Assign('printers', $this->pm->Printers_DropdownOpt());
 				$this->Assign('list_sites', $this->pm->List_Sites());
 				$this->Assign('list_users', $this->user->List_Users());
-				$this->Assign('anpr_count', $this->vehicles->ANPR_Feed_Count());
+				// $this->Assign('anpr_count', $this->vehicles->ANPR_Feed_Count());
 				$this->Assign('renewal_count', $this->vehicles->Renewal_Feed_Count());
-				$this->Assign('all_count', $this->vehicles->Renewal_Feed_Count() + $this->vehicles->ANPR_Feed_Count() + $this->vehicles->Parked_Feed_Count());
-				$this->Assign('yardcheck', $this->vehicles->YardCheck());
+				// $this->Assign('all_count', $this->vehicles->Renewal_Feed_Count() + $this->vehicles->ANPR_Feed_Count() + $this->vehicles->Parked_Feed_Count());
+				// $this->Assign('yardcheck', $this->vehicles->YardCheck());
 				$this->Assign('settlement_groups', $this->payment->Settlement_Groups());
 				$this->Assign('blacklist_alert', $this->vehicles->ViewBlacklist(1));
 				$this->Assign('blacklist_banned', $this->vehicles->ViewBlacklist(2));

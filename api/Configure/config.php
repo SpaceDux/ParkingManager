@@ -8,12 +8,19 @@
 	$_CONFIG['mysql']['port'] = '3306'; //The username for the database server
 	$_CONFIG['mysql']['user'] = 'root'; //The username for the database server
 	$_CONFIG['mysql']['pass'] = ''; //The password for the datebase server
-	$_CONFIG['mysql']['db'] = 'parking_manager'; //Select the database you want to connect too
+	$_CONFIG['mysql']['db'] = 'pm4'; //Select the database you want to connect too
 	// Server configuration (MSSQL Connection)
 	$_CONFIG['mssql']['host'] = '192.168.3.201'; //The IP for the datebase server
 	$_CONFIG['mssql']['user'] = 'pm'; //The username for the database server
 	$_CONFIG['mssql']['pass'] = '1212'; //The password for the datebase server
 	$_CONFIG['mssql']['db'] = 'ANPR'; //Select the database you want to connect too
+	// ANPR Settings
+	$_CONFIG['ANPR']['Type'] = "Rev";
+	$_CONFIG['ANPR']['Host'] = '127.0.0.1'; //The IP for the datebase server
+	$_CONFIG['ANPR']['Port'] = '3306'; //The username for the database server
+	$_CONFIG['ANPR']['User'] = 'root'; //The username for the database server
+	$_CONFIG['ANPR']['Pass'] = ''; //The password for the datebase server
+	$_CONFIG['ANPR']['DB'] = 'rev_anpr'; //Select the database you want to connect too
 	//ETP API Settings
 	$_CONFIG['ETP']['API'] = array('api_uri' => 'https://api.etpcp.com/trx/',
 											 'api_user' => 'sm394_34lll2345Ae',
