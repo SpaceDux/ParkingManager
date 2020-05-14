@@ -498,12 +498,12 @@
       $ExitKey = str_replace("0", "9", $ExitKey);
       $Uniqueref = "0".date("YmdHis").$ExitKey;
       if($_CONFIG['ANPR']['Type'] == "ETP") {
-        $Patch = $this->ANPR_Info($ANPRRef, "Patch");
-        $Overview = $this->ANPR_Info($ANPRRef, "Overview");
+        $Patch = $this->ANPR_Info($Ref, "Patch");
+        $Overview = $this->ANPR_Info($Ref, "Overview");
         $Patch = str_replace($this->pm->Site_Info($site, 'ANPR_Imgstr'), $this->pm->Site_Info($site, 'ANPR_Img'), $Patch);
         $Overview = str_replace($this->pm->Site_Info($site, 'ANPR_Imgstr'), $this->pm->Site_Info($site, 'ANPR_Img'), $Overview);
       } else if($_CONFIG['ANPR']['Type'] == "Rev") {
-        $Images = $this->ANPR_Info($ANPRRef, "Images");
+        $Images = $this->ANPR_Info($Ref, "Images");
         $result = json_decode($Images, true);
         $Patch = $result['Plate'];
         $Overview = $result['Front'];

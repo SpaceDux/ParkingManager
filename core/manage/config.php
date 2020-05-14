@@ -17,6 +17,8 @@
 	$_CONFIG['ANPR']['User'] = 'root'; //The username for the database server
 	$_CONFIG['ANPR']['Pass'] = ''; //The password for the datebase server
 	$_CONFIG['ANPR']['DB'] = 'rev_anpr'; //Select the database you want to connect too
+	$_CONFIG['ANPR']['HTTP_HOST'] = 'http://192.168.1.7'; //Select the database you want to connect too
+	$_CONFIG['ANPR']['HTTP_PORT'] = '6868'; //Select the database you want to connect too
 
 	// Site Configuration
 	$_CONFIG['site']['url'] = 'http://192.168.0.24'; //Server URL example.com (DOES NOT END WITH /)

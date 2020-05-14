@@ -316,6 +316,7 @@
     // REV
     function ANPR_Feed()
     {
+      global $_CONFIG;
       $this->rev = new Rev;
       $this->pm = new PM;
       $html = '';
@@ -324,10 +325,11 @@
       $stmt->execute();
       if($stmt->rowCount() > 0)
       {
-        $html .= '<table class="table table-dark table-hover">
+        $html .= '<table class="table table-dark table-hover table-bordered">
                     <thead>
                       <th>Plate</th>
                       <th>Arrival</th>
+                      <th>Image</th>
                       <th><i class="fa fa-cogs"></i></th>
                     </thead>';
         foreach($stmt->fetchAll() as $row)
@@ -339,6 +341,12 @@
           } else if ($number >= 4) {
             $style = "table-danger";
           }
+          if($row['Images'] != null OR $row['Images'] != '') {
+            $images = json_decode($row['Images'], true);
+            $img = $_CONFIG['ANPR']['HTTP_HOST'].':'.$_CONFIG['ANPR']['HTTP_PORT']."/".$images['Plate'];
+          } else {
+            $img = "";
+          }
           $plate = '\''.$row['Plate'].'\'';
           $date = '\''.$row['CaptureTime'].'\'';
           $ref = '\''.$row['Uniqueref'].'\'';
@@ -346,6 +354,7 @@
           $html .= '<tr class="'.$style.'" id="ANPR_Feed_'.$row['Uniqueref'].'">
                       <td>'.$row['Plate'].'</td>
                       <td>'.date("d/H:i:s", strtotime($row['CaptureTime'])).'</td>
+                      <td><img style="max-width: 300px;" src="'.$img.'"></img></td>
                       <td>
                         <div class="btn-group">
                           <button type="button" onClick="ANPR_Update('.$ref.', '.$plate.', '.$date.', '.$trl.')" class="btn btn-danger" data-id="'.$ref.'"><i class="fa fa-cog"></i></button>
@@ -606,7 +615,29 @@
         $this->user = null;
         $this->pm = null;
       } else if($_CONFIG['ANPR']['Type'] == "Rev") {
+        $this->rev = new Rev;
+        $html = '';
 
+        $stmt = $this->rev->dbc->prepare("SELECT Images FROM rev_plates WHERE Uniqueref = ?");
+        $stmt->bindValue(1, $ref);
+        $stmt->execute();
+        if($stmt->rowCount() > 0) {
+          $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+          if($row['Images'] != null OR $row['Images'] != '') {
+            $images = json_decode($row['Images'], true);
+            $plate = $_CONFIG['ANPR']['HTTP_HOST'].':'.$_CONFIG['ANPR']['HTTP_PORT']."/".$images['Plate'];
+            $front = $_CONFIG['ANPR']['HTTP_HOST'].':'.$_CONFIG['ANPR']['HTTP_PORT']."/".$images['Front'];
+            $html .= '<hr>';
+            $html .= '<img src="'.$plate.'" alt="" class="img-thumbnail">';
+            $html .= '<img src="'.$front.'" alt="" class="img-thumbnail">';
+          } else {
+            $html .= 'Can\'t find any images.';
+          }
+        } else {
+          $html .= 'Can\'t find any images.';
+        }
+        echo json_encode($html);
+        $this->rev = null;
       }
     }
     // get images secondary
@@ -1184,70 +1215,140 @@
     // Yard Check
     function YardCheck()
     {
-      $this->mysql = new MySQL;
-      $this->mssql = new MSSQL;
-      $this->user = new User;
+      global $_CONFIG;
 
-      $Site = $this->user->Info("Site");
+      if($_CONFIG['ANPR']['Type'] == "ETP") {
+        $this->mysql = new MySQL;
+        $this->mssql = new MSSQL;
+        $this->user = new User;
 
-      $stmt1 = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Site = ? AND Parked_Column < 2 ORDER BY Plate ASC");
-      $stmt1->bindParam(1, $Site);
-      $stmt1->execute();
+        $Site = $this->user->Info("Site");
 
-      $stmt2 = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Plate DESC");
-      $stmt2->execute();
+        $stmt1 = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Site = ? AND Parked_Column < 2 ORDER BY Plate ASC");
+        $stmt1->bindParam(1, $Site);
+        $stmt1->execute();
 
-      $html = '<table class="table table-dark">
-                <thead>
-                  <tr>
-                    <th scope="col">Plate</th>
-                    <th scope="col" style="width: 20%;">Trailer</th>
-                    <th scope="col">Arrival</th>
-                    <th scope="col" style="text-align: right"><i class="fa fa-cogs"></i></th>
-                  </tr>
-                </thead>
-                <tbody>';
+        $stmt2 = $this->mssql->dbc->prepare("SELECT TOP 200 * FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11 ORDER BY Plate DESC");
+        $stmt2->execute();
 
-      foreach($stmt1->fetchAll() as $row) {
-        $ref = '\''.$row['Uniqueref'].'\'';
-        $ref2 = $row['Uniqueref'];
-        $id = "YC".$ref2;
-        $html .= '<tr id="YC'.$ref2.'">';
-        $html .= '<td>'.$row['Plate'].'</td>';
-        $html .= '<td style="max-width: 0px;">'.$row['Trailer_No'].'</td>';
-        $html .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
-        $html .= '<td>
-                      <div class="btn-group-toggle btn-lg float-right" data-toggle="buttons">
-                        <button type="button" class="btn btn-danger" onClick="Checked('.$ref.')"><i class="fa fa-tick"></i> CONFIRMED </button>
-                        <button type="button" class="btn btn-danger" onClick="QuickExit('.$ref.')"><i class="fa fa-times"></i></button>
-                      </div>
-                  </td>';
-        $html .= '</tr>';
+        $html = '<table class="table table-dark">
+                  <thead>
+                    <tr>
+                      <th scope="col">Plate</th>
+                      <th scope="col" style="width: 20%;">Trailer</th>
+                      <th scope="col">Arrival</th>
+                      <th scope="col" style="text-align: right"><i class="fa fa-cogs"></i></th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+
+        foreach($stmt1->fetchAll() as $row) {
+          $ref = '\''.$row['Uniqueref'].'\'';
+          $ref2 = $row['Uniqueref'];
+          $id = "YC".$ref2;
+          $html .= '<tr id="YC'.$ref2.'">';
+          $html .= '<td>'.$row['Plate'].'</td>';
+          $html .= '<td style="max-width: 0px;">'.$row['Trailer_No'].'</td>';
+          $html .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
+          $html .= '<td>
+                        <div class="btn-group-toggle btn-lg float-right" data-toggle="buttons">
+                          <button type="button" class="btn btn-danger" onClick="Checked('.$ref.')"><i class="fa fa-tick"></i> CONFIRMED </button>
+                          <button type="button" class="btn btn-danger" onClick="QuickExit('.$ref.')"><i class="fa fa-times"></i></button>
+                        </div>
+                    </td>';
+          $html .= '</tr>';
+        }
+        foreach($stmt2->fetchAll() as $row2) {
+          $ref = $row2['Uniqueref'];
+          $id = "YC".$ref;
+          $html .= '<tr id="YC'.$ref.'">';
+          $html .= '<td>'.$row2['Plate'].'</td>';
+          $html .= '<td>'.$row2['Notes'].'</td>';
+          $html .= '<td>'.date("d/H:i", strtotime($row2['Capture_Date'])).'</td>';
+          $html .= '<td>
+                        <div class="btn-group-toggle btn-lg float-right" data-toggle="buttons">
+                          <button type="button" class="btn btn-danger" onClick="Checked('.$ref.')"><i class="fa fa-tick"></i> CONFIRMED </button>
+                          <button type="button" onClick="ANPR_Duplicate('.$ref.')" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                        </div>
+                    </td>';
+          $html .= '</tr>';
+        }
+
+        $html .= '</tbody>
+        </table>';
+
+        return $html;
+
+        $this->mysql = null;
+        $this->mssql = null;
+        $this->user = null;
+      } else if($_CONFIG['ANPR']['Type'] == "Rev") {
+        $this->mysql = new MySQL;
+        $this->rev = new Rev;
+        $this->user = new User;
+
+        $Site = $this->user->Info("Site");
+
+        $stmt1 = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Site = ? AND Parked_Column < 2 ORDER BY Plate ASC");
+        $stmt1->bindParam(1, $Site);
+        $stmt1->execute();
+
+        $stmt2 = $this->rev->dbc->prepare("SELECT * FROM rev_plates WHERE LaneID = 1 AND Status < 1 ORDER BY Plate DESC");
+        $stmt2->execute();
+
+        $html = '<table class="table table-dark">
+                  <thead>
+                    <tr>
+                      <th scope="col">Plate</th>
+                      <th scope="col" style="width: 20%;">Trailer</th>
+                      <th scope="col">Arrival</th>
+                      <th scope="col" style="text-align: right"><i class="fa fa-cogs"></i></th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+
+        foreach($stmt1->fetchAll() as $row) {
+          $ref = '\''.$row['Uniqueref'].'\'';
+          $ref2 = $row['Uniqueref'];
+          $id = "YC".$ref2;
+          $html .= '<tr id="YC'.$ref2.'">';
+          $html .= '<td>'.$row['Plate'].'</td>';
+          $html .= '<td style="max-width: 0px;">'.$row['Trailer_No'].'</td>';
+          $html .= '<td>'.date("d/H:i", strtotime($row['Arrival'])).'</td>';
+          $html .= '<td>
+                        <div class="btn-group-toggle btn-lg float-right" data-toggle="buttons">
+                          <button type="button" class="btn btn-danger" onClick="Checked('.$ref.')"><i class="fa fa-tick"></i> CONFIRMED </button>
+                          <button type="button" class="btn btn-danger" onClick="QuickExit('.$ref.')"><i class="fa fa-times"></i></button>
+                        </div>
+                    </td>';
+          $html .= '</tr>';
+        }
+        foreach($stmt2->fetchAll() as $row2) {
+          $ref = '\''.$row2['Uniqueref'].'\'';
+          $ref2 = $row2['Uniqueref'];
+          $id = "YC".$ref2;
+          $html .= '<tr id="YC'.$ref2.'">';
+          $html .= '<td>'.$row2['Plate'].'</td>';
+          $html .= '<td>N/A</td>';
+          $html .= '<td>'.date("d/H:i", strtotime($row2['CaptureTime'])).'</td>';
+          $html .= '<td>
+                        <div class="btn-group-toggle btn-lg float-right" data-toggle="buttons">
+                          <button type="button" class="btn btn-danger" onClick="Checked('.$ref.')"><i class="fa fa-tick"></i> CONFIRMED </button>
+                          <button type="button" onClick="ANPR_Duplicate('.$ref.')" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                        </div>
+                    </td>';
+          $html .= '</tr>';
+        }
+
+        $html .= '</tbody>
+        </table>';
+
+        return $html;
+
+        $this->mysql = null;
+        $this->rev = null;
+        $this->user = null;
       }
-      foreach($stmt2->fetchAll() as $row2) {
-        $ref = $row2['Uniqueref'];
-        $id = "YC".$ref;
-        $html .= '<tr id="YC'.$ref.'">';
-        $html .= '<td>'.$row2['Plate'].'</td>';
-        $html .= '<td>'.$row2['Notes'].'</td>';
-        $html .= '<td>'.date("d/H:i", strtotime($row2['Capture_Date'])).'</td>';
-        $html .= '<td>
-                      <div class="btn-group-toggle btn-lg float-right" data-toggle="buttons">
-                        <button type="button" class="btn btn-danger" onClick="Checked('.$ref.')"><i class="fa fa-tick"></i> CONFIRMED </button>
-                        <button type="button" onClick="ANPR_Duplicate('.$ref.')" class="btn btn-danger"><i class="fa fa-times"></i></button>
-                      </div>
-                  </td>';
-        $html .= '</tr>';
-      }
-
-      $html .= '</tbody>
-      </table>';
-
-      return $html;
-
-      $this->mysql = null;
-      $this->mssql = null;
-      $this->user = null;
     }
     // Search Vehicle Records VIA Modal
     function Search_Parking_Records($key)
