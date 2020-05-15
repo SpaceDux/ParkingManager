@@ -378,22 +378,35 @@
     // // Count all vehicles in ANPR
     function ANPR_Feed_Count()
     {
-      $this->user = new User;
+      global $_CONFIG;
+      if($_CONFIG['ANPR']['Type'] == "ETP") {
+        $this->user = new User;
 
-      if($this->user->Info("ANPR") == 1) {
-        $this->mssql = new MSSQL;
-        $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
-        $this->anprCount->execute();
-        return count($this->anprCount->fetchAll());
+        if($this->user->Info("ANPR") == 1) {
+          $this->mssql = new MSSQL;
+          $this->anprCount = $this->mssql->dbc->prepare("SELECT TOP 200 Uniqueref FROM ANPR_REX WHERE Direction_Travel = 0 AND Lane_ID = 1 AND Status = 0 ORDER BY Capture_Date DESC");
+          $this->anprCount->execute();
+          return count($this->anprCount->fetchAll());
 
+          $this->mssql = null;
+          $this->anprCount = null;
+        } else {
+          return $this->anprCount = 0;
+        }
+
+        $this->user = null;
         $this->mssql = null;
-        $this->anprCount = null;
-      } else {
-        return $this->anprCount = 0;
+      } else if($_CONFIG['ANPR']['Type'] == "Rev") {
+        $this->user = new User;
+        $this->rev = new Rev;
+        if($this->user->Info("ANPR") == 1) {
+          $stmt = $this->rev->dbc->prepare("SELECT id FROM rev_plates WHERE LaneID = 1 AND Status < 1");
+          $stmt->execute();
+          return $stmt->rowCount();
+        }
+        $this->user = null;
+        $this->rev = null;
       }
-
-      $this->user = null;
-      $this->mssql = null;
     }
     // ANPR Duplicate vehicle, remove from feed.
     function ANPR_Duplicate($ref)
@@ -1006,6 +1019,7 @@
     // get images
     function GetImages($ref)
     {
+      global $_CONFIG;
       $this->mysql = new MySQL;
       $this->user = new User;
 
@@ -1017,11 +1031,12 @@
       $stmt->bindParam(1, $ref);
       $stmt->execute();
       $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+      $url = $_CONFIG['ANPR']['HTTP_HOST'].':'.$_CONFIG['ANPR']['HTTP_PORT']."/";
       if($result['Img_Patch'] != "") {
         $patch = $result['Img_Patch'];
         $overview = $result['Img_Overview'];
-        $html .= '<img src="'.$patch.'" alt="" class="img-thumbnail">';
-        $html .= '<img src="'.$overview.'" alt="" class="img-thumbnail">';
+        $html .= '<img src="'.$url.$patch.'" alt="" class="img-thumbnail">';
+        $html .= '<img src="'.$url.$overview.'" alt="" class="img-thumbnail">';
       } else {
         $html .= "";
       }

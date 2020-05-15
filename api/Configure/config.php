@@ -14,6 +14,8 @@
 	$_CONFIG['mssql']['user'] = 'pm'; //The username for the database server
 	$_CONFIG['mssql']['pass'] = '1212'; //The password for the datebase server
 	$_CONFIG['mssql']['db'] = 'ANPR'; //Select the database you want to connect too
+	$_CONFIG['ANPR']['HTTP_HOST'] = 'http://192.168.0.24'; //Select the database you want to connect too
+	$_CONFIG['ANPR']['HTTP_PORT'] = '6868'; //Select the database you want to connect too
 	// ANPR Settings
 	$_CONFIG['ANPR']['Type'] = "Rev";
 	$_CONFIG['ANPR']['Host'] = '127.0.0.1'; //The IP for the datebase server
@@ -34,7 +36,7 @@
 	$_CONFIG['api']['accesskey'] = 'el8565!kt'; //Site ID Number
 	$_CONFIG['api']['ver'] = '1.0.6'; // API Version
 	// Settings
-	$_CONFIG['api']['site'] = '201908151155252628'; //Site Identity Number
+	$_CONFIG['api']['site'] = '201908291533552768'; //Site Identity Number
 	$_CONFIG['api']['wifi_tariff'] = '201909012036451675'; //Site ID Number
 	$_CONFIG['api']['changeover_tariff'] = '201909012036457723'; //Site ID Number
 ?>

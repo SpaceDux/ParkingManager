@@ -188,6 +188,7 @@
         $Site = $_CONFIG['api']['site'];
 
         $Plate = str_replace(" ", "", $Plate);
+        $Imgurl = $_CONFIG['ANPR']['HTTP_HOST'].':'.$_CONFIG['ANPR']['HTTP_PORT']."/";
 
         if($this->checks->Check_Site_Exists($Site) == TRUE)
         {
@@ -220,12 +221,17 @@
 
             $trans = $stmt->fetch(\PDO::FETCH_ASSOC);
 
+            if($result['Img_Patch'] != '' || $result['Img_Patch'] != null) {
+              $patch = $Imgurl.$result['Img_Patch'];
+              $overview = $Imgurl.$result['Img_Overview'];
+            }
+
             if($Prebooked['Status'] == 1) {
               $response = array('ParkingID' => $ref,
                 'PaymentID' => $trans['Uniqueref'],
                 'Arrival_Time' => $result['Arrival'],
-                'Img_Patch' => $result['Img_Patch'],
-                'Img_Overview' => $result['Img_Overview'],
+                'Img_Patch' => $patch,
+                'Img_Overview' => $overview,
                 'Accept_Account' => $accCk,
                 'Accept_SNAP' => $ETPCk,
                 'Prebooked' => "1",
@@ -235,8 +241,8 @@
               $response = array('ParkingID' => $ref,
                 'PaymentID' => $trans['Uniqueref'],
                 'Arrival_Time' => $result['Arrival'],
-                'Img_Patch' => $result['Img_Patch'],
-                'Img_Overview' => $result['Img_Overview'],
+                'Img_Patch' => $patch,
+                'Img_Overview' => $overview,
                 'Accept_Account' => $accCk,
                 'Accept_SNAP' => $ETPCk,
                 'Prebooked' => "0",
@@ -296,11 +302,11 @@
             {
               $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-              // $patch = str_replace($this->checks->Site_Info($Site, 'ANPR_Imgstr'), $this->checks->Site_Info($Site, 'ANPR_Img'), $result['Patch']);
-              // $overview = str_replace($this->checks->Site_Info($Site, 'ANPR_Imgstr'), $this->checks->Site_Info($Site, 'ANPR_Img'), $result['Overview']);
-              $patch = '';
-              $overview = '';
-
+              if($result['Images'] != '' || $result['Images'] != null) {
+                $images = json_decode($result['Images'], true);
+                $patch = $Imgurl.$images['Plate'];
+                $overview = $Imgurl.$images['Front'];
+              }
               if($Prebooked['Status'] == 1) {
                 $response = array('ParkingID' => $result['Uniqueref'],
                 'Arrival_Time' => $result['CaptureTime'],
