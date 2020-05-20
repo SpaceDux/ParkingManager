@@ -426,6 +426,22 @@
       $this->mysql = null;
       $this->user = null;
     }
+    //Time Calculation, displays in a msg
+    function timeCalc($time1, $time2)
+    {
+      try {
+        if(isset($time1)) {
+          $d1 = new \DateTime($time1);
+          $d2 = new \DateTime($time2);
+          $int = $d2->diff($d1);
+          $h = $int->h;
+          $h = $h + ($int->days*24);
+          return "<b>".$h."</b> hours and <b>".$int->format('%i')."</b> minutes";
+        }
+      } catch (\Exception $e) {
+        return "<red>Time Construction error, please check & correct</red>";
+      }
+    }
     function Account_Reconcile($Account, $Date1, $Date2)
     {
       $this->mysql = new MySQL;
@@ -442,6 +458,7 @@
                   <th>Plate</th>
                   <th>Arrival</th>
                   <th>Departure</th>
+                  <th>Stay Length</th>
                   <th>Vehicle Type</th>
                   <th>Tools</th>
                 </thead>
@@ -470,6 +487,7 @@
           $html .= '<td>'.$parking['Plate'].'</td>';
           $html .= '<td>'.date("d/m/y H:i", strtotime($parking['Arrival'])).'</td>';
           $html .= '<td>'.date("d/m/y H:i", strtotime($parking['Departure'])).'</td>';
+          $html .= '<td>'.$this->timeCalc($parking['Arrival'], $parking['Departure']).'</td>';
           $html .= '<td>'.$this->pm->GET_VehicleType($parking['Type']).'</td>';
           $html .= '<td><div class="btn-group">
                       <button class="btn btn-danger" onClick="Reconciled('.$Ref.')"><i class="fas fa-clipboard-check"></i></button>

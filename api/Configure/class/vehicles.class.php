@@ -72,6 +72,7 @@
                 'Prebooked' => "0",
               );
             }
+            $Expiry = date("Y-m-d H:i:s", strtotime($result['Expiry'] . "- 4 hours"));
 
             if($trans['Vehicle_Expiry_Time'] >= date("Y-m-d H:i:s"))
             {
@@ -90,6 +91,53 @@
               }
               else
               {
+                // Cool down, dont allow another parking payment
+                if($Expiry >= date("Y-m-d H:i:s"))
+                {
+                  // Has no valid tickets (All redeemed)
+                  echo json_encode(array(
+                    "Status" => '101',
+                    "Message" => 'Sorry, we can\'t process another transaction for your vehicle until after '.date("d/m/y H:i:s", strtotime($Expiry)).', please seek assistance from a member of staff.',
+                    "SystemCode" => "1",
+                    "SystemInfo" => "ParkingManager Record.",
+                    "ResponseCode" => "3",
+                    "ResponseInfo" => "Needs to pay, has no valid tickets.",
+                    "ResponseData" => $response
+                  ));
+                }
+                else
+                {
+                  // Has no valid tickets (All redeemed)
+                  echo json_encode(array(
+                    "Status" => '101',
+                    "Message" => 'Vehicle Record has been found for this registration plate, also indicates vehicle has already redeemed transaction.',
+                    "SystemCode" => "1",
+                    "SystemInfo" => "ParkingManager Record.",
+                    "ResponseCode" => "2",
+                    "ResponseInfo" => "Needs to pay, has no valid tickets.",
+                    "ResponseData" => $response
+                  ));
+                }
+              }
+            }
+            else
+            {
+              // Cool down, dont allow another parking payment
+              if($Expiry >= date("Y-m-d H:i:s"))
+              {
+                // Has no valid tickets (All redeemed)
+                echo json_encode(array(
+                  "Status" => '101',
+                  "Message" => 'Sorry, we can\'t process another transaction for your vehicle until after '.date("d/m/y H:i:s", strtotime($Expiry)).', please seek assistance from a member of staff.',
+                  "SystemCode" => "1",
+                  "SystemInfo" => "ParkingManager Record.",
+                  "ResponseCode" => "3",
+                  "ResponseInfo" => "Needs to pay, has no valid tickets.",
+                  "ResponseData" => $response
+                ));
+              }
+              else
+              {
                 // Has no valid tickets (All redeemed)
                 echo json_encode(array(
                   "Status" => '101',
@@ -101,18 +149,6 @@
                   "ResponseData" => $response
                 ));
               }
-            } else
-            {
-              // Expired Parking Record
-              echo json_encode(array(
-                "Status" => '101',
-                "Message" => 'A Record has been found, however this vehicle has expired and requires a new payment.',
-                "SystemCode" => "1",
-                "SystemInfo" => "ParkingManager Record.",
-                "ResponseCode" => "2",
-                "ResponseInfo" => "Needs to pay, has no valid tickets.",
-                "ResponseData" => $response
-              ));
             }
           }
           else
@@ -224,6 +260,9 @@
             if($result['Img_Patch'] != '' || $result['Img_Patch'] != null) {
               $patch = $Imgurl.$result['Img_Patch'];
               $overview = $Imgurl.$result['Img_Overview'];
+            } else {
+              $patch = '';
+              $overview = '';
             }
 
             if($Prebooked['Status'] == 1) {
@@ -249,6 +288,8 @@
               );
             }
 
+            $Expiry = date("Y-m-d H:i:s", strtotime($result['Expiry'] . "- 4 hours"));
+
             if($trans['Vehicle_Expiry_Time'] >= date("Y-m-d H:i:s"))
             {
               if($stmt->rowCount() > 0)
@@ -266,6 +307,52 @@
               }
               else
               {
+                // Cool down, dont allow another parking payment
+                if($Expiry >= date("Y-m-d H:i:s"))
+                {
+                  // Has no valid tickets (All redeemed)
+                  echo json_encode(array(
+                    "Status" => '101',
+                    "Message" => 'Sorry, we can\'t process another transaction for your vehicle until after '.date("d/m/y H:i:s", strtotime($Expiry)).', please seek assistance from a member of staff.',
+                    "SystemCode" => "1",
+                    "SystemInfo" => "ParkingManager Record.",
+                    "ResponseCode" => "3",
+                    "ResponseInfo" => "Needs to pay, has no valid tickets.",
+                    "ResponseData" => $response
+                  ));
+                }
+                else
+                {
+                  // Has no valid tickets (All redeemed)
+                  echo json_encode(array(
+                    "Status" => '101',
+                    "Message" => 'Vehicle Record has been found for this registration plate, also indicates vehicle has already redeemed transaction.',
+                    "SystemCode" => "1",
+                    "SystemInfo" => "ParkingManager Record.",
+                    "ResponseCode" => "2",
+                    "ResponseInfo" => "Needs to pay, has no valid tickets.",
+                    "ResponseData" => $response
+                  ));
+                }
+              }
+            } else
+            {
+              // Cool down, dont allow another parking payment
+              if($Expiry >= date("Y-m-d H:i:s"))
+              {
+                // Has no valid tickets (All redeemed)
+                echo json_encode(array(
+                  "Status" => '101',
+                  "Message" => 'Sorry, we can\'t process another transaction for your vehicle until after '.date("d/m/y H:i:s", strtotime($Expiry)).', please seek assistance from a member of staff.',
+                  "SystemCode" => "1",
+                  "SystemInfo" => "ParkingManager Record.",
+                  "ResponseCode" => "3",
+                  "ResponseInfo" => "Needs to pay, has no valid tickets.",
+                  "ResponseData" => $response
+                ));
+              }
+              else
+              {
                 // Has no valid tickets (All redeemed)
                 echo json_encode(array(
                   "Status" => '101',
@@ -277,18 +364,6 @@
                   "ResponseData" => $response
                 ));
               }
-            } else
-            {
-              // Expired Parking Record
-              echo json_encode(array(
-                "Status" => '101',
-                "Message" => 'A Record has been found, however this vehicle has expired and requires a new payment.',
-                "SystemCode" => "1",
-                "SystemInfo" => "ParkingManager Record.",
-                "ResponseCode" => "2",
-                "ResponseInfo" => "Needs to pay, has no valid tickets.",
-                "ResponseData" => $response
-              ));
             }
           }
           else
@@ -306,6 +381,9 @@
                 $images = json_decode($result['Images'], true);
                 $patch = $Imgurl.$images['Plate'];
                 $overview = $Imgurl.$images['Front'];
+              } else {
+                $patch = '';
+                $overview = '';
               }
               if($Prebooked['Status'] == 1) {
                 $response = array('ParkingID' => $result['Uniqueref'],
@@ -506,8 +584,8 @@
       if($_CONFIG['ANPR']['Type'] == "ETP") {
         $Patch = $this->ANPR_Info($Ref, "Patch");
         $Overview = $this->ANPR_Info($Ref, "Overview");
-        $Patch = str_replace($this->pm->Site_Info($site, 'ANPR_Imgstr'), $this->pm->Site_Info($site, 'ANPR_Img'), $Patch);
-        $Overview = str_replace($this->pm->Site_Info($site, 'ANPR_Imgstr'), $this->pm->Site_Info($site, 'ANPR_Img'), $Overview);
+        $Patch = str_replace($this->checks->Site_Info($Site, 'ANPR_Imgstr'), $this->checks->Site_Info($Site, 'ANPR_Img'), $Patch);
+        $Overview = str_replace($this->checks->Site_Info($Site, 'ANPR_Imgstr'), $this->checks->Site_Info($Site, 'ANPR_Img'), $Overview);
       } else if($_CONFIG['ANPR']['Type'] == "Rev") {
         $Images = $this->ANPR_Info($Ref, "Images");
         $result = json_decode($Images, true);
@@ -544,6 +622,7 @@
       }
       $this->checks = null;
       $this->mysql = null;
+      $this->pm = null;
     }
     // Update a vehicles expiry time. And Flag status
     function ExpiryUpdate($ref, $time)
