@@ -562,9 +562,9 @@
       } else if ($_CONFIG['ANPR']['Type'] == "Rev") {
         $this->rev = new Rev;
 
-        $stmt = $this->rev->dbc->prepare("UPDATE rev_plates SET Status = 1, Expiry = ? WHERE Uniqueref = ?");
+        $stmt = $this->rev->dbc->prepare("UPDATE rev_plates SET Status = 1, ExpiryTime = ? WHERE Uniqueref = ?");
         $stmt->bindParam(1, $expiry);
-        $stmt->bindParam(2, $ref);
+        $stmt->bindValue(2, $ref);
         $stmt->execute();
 
         $this->rev = null;

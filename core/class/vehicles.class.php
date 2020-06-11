@@ -1411,68 +1411,141 @@
     // Director
     function Director($Plate)
     {
-      $this->mssql = new MSSQL;
-      $this->mysql = new MySQL;
-      $this->user = new User;
-      $this->pm = new PM;
-      // Params
-      $Site = $this->user->Info("Site");
+      global $_CONFIG;
+      if($_CONFIG['ANPR']['Type'] == "ETP") {
+        $this->mssql = new MSSQL;
+        $this->mysql = new MySQL;
+        $this->user = new User;
+        $this->pm = new PM;
+        // Params
+        $Site = $this->user->Info("Site");
 
-      $Plate = '%'.$Plate.'%';
+        $Plate = '%'.$Plate.'%';
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate LIKE ? AND Site = ? AND Parked_Column = 1");
-      $stmt->bindParam(1, $Plate);
-      $stmt->bindParam(2, $Site);
-      $stmt->execute();
-      $stmt2 = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Plate LIKE ? AND Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11", array(\PDO::ATTR_CURSOR => \PDO::CURSOR_SCROLL));
-      $stmt2->bindParam(1, $Plate);
-      $stmt2->execute();
-      $data = '';
-      foreach($stmt->fetchAll() as $row) {
-        $ref = '\''.$row['Uniqueref'].'\'';
-        $timein = '\''.$row['Arrival'].'\'';
-        $data .= '<tr>';
-        $data .= '<td>'.$row['Plate'].' <span class="badge badge-primary">PM</span></td>';
-        $data .= '<td>'.date("d/m/y H:i:s", strtotime($row['Arrival'])).'</td>';
-        $data .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$row['Img_Patch'].'"></img></td>';
-        $data .= '<td><button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')" data-toggle="modal" data-target="#PM_Director_Modal"><i class="fa fa-cog"></i></button></td>';
-        $data .= '</tr>';
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate LIKE ? AND Site = ? AND Parked_Column = 1");
+        $stmt->bindParam(1, $Plate);
+        $stmt->bindParam(2, $Site);
+        $stmt->execute();
+        $stmt2 = $this->mssql->dbc->prepare("SELECT * FROM ANPR_REX WHERE Plate LIKE ? AND Direction_Travel = 0 AND Lane_ID = 1 AND Status < 11", array(\PDO::ATTR_CURSOR => \PDO::CURSOR_SCROLL));
+        $stmt2->bindParam(1, $Plate);
+        $stmt2->execute();
+        $data = '';
+        foreach($stmt->fetchAll() as $row) {
+          $ref = '\''.$row['Uniqueref'].'\'';
+          $timein = '\''.$row['Arrival'].'\'';
+          $data .= '<tr>';
+          $data .= '<td>'.$row['Plate'].' <span class="badge badge-primary">PM</span></td>';
+          $data .= '<td>'.date("d/m/y H:i:s", strtotime($row['Arrival'])).'</td>';
+          $data .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$row['Img_Patch'].'"></img></td>';
+          $data .= '<td><button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')" data-toggle="modal" data-target="#PM_Director_Modal"><i class="fa fa-cog"></i></button></td>';
+          $data .= '</tr>';
+        }
+        $html = '<table class="table table-dark table-hover table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Plate</th>
+                      <th scope="col">Arrival</th>
+                      <th scope="col">Patch</th>
+                      <th scope="col"><i class="fa fa-cogs"></i></th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+
+        foreach($stmt2->fetchAll() as $row) {
+          $patch = str_replace($this->pm->Site_Info($Site, 'ANPR_Imgstr'), $this->pm->Site_Info($Site, 'ANPR_Img'), $row['Patch']);
+
+          $ref = '\''.$row['Uniqueref'].'\'';
+          $trl = '\''.$row['Notes'].'\'';
+          $plate = '\''.$row['Plate'].'\'';
+          $timein = '\''.$row['Capture_Date'].'\'';
+          $data .= '<tr>';
+          $data .= '<td>'.$row['Plate'].' <span class="badge badge-success">ANPR</span></td>';
+          $data .= '<td>'.date("d/m/y H:i:s", strtotime($row['Capture_Date'])).'</td>';
+          $data .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
+          $data .= '<td><button type="button" class="btn btn-danger" onClick="PaymentPaneToggle('.$ref.', '.$plate.', '.$trl.', '.$timein.', 1)" data-toggle="modal" data-target="#PM_Director_Modal"><i class="fa fa-cog"></i></button></td>';
+          $data .= '</tr>';
+        }
+
+        $html .= $data;
+        $html .= '</tbody>
+                </table>';
+
+        echo json_encode($html);
+        $this->mssql = null;
+        $this->mysql = null;
+        $this->user = null;
+        $this->pm = null;
+      } else if($_CONFIG['ANPR']['Type'] == "Rev") {
+        $this->rev = new Rev;
+        $this->mysql = new MySQL;
+        $this->user = new User;
+        $this->pm = new PM;
+        // Params
+        $Site = $this->user->Info("Site");
+
+        $Plate = '%'.$Plate.'%';
+
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Plate LIKE ? AND Site = ? AND Parked_Column = 1");
+        $stmt->bindParam(1, $Plate);
+        $stmt->bindParam(2, $Site);
+        $stmt->execute();
+        $stmt2 = $this->rev->dbc->prepare("SELECT * FROM rev_plates WHERE Plate LIKE ? AND LaneGroup = 1 AND LaneID = 1 AND Status < 1");
+        $stmt2->bindParam(1, $Plate);
+        $stmt2->execute();
+        $data = '';
+        foreach($stmt->fetchAll() as $row) {
+
+          $url = $_CONFIG['ANPR']['HTTP_HOST'].':'.$_CONFIG['ANPR']['HTTP_PORT']."/";
+
+          $ref = '\''.$row['Uniqueref'].'\'';
+          $timein = '\''.$row['Arrival'].'\'';
+          $data .= '<tr>';
+          $data .= '<td>'.$row['Plate'].' <span class="badge badge-primary">PM</span></td>';
+          $data .= '<td>'.date("d/m/y H:i:s", strtotime($row['Arrival'])).'</td>';
+          $data .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$url.$row['Img_Patch'].'"></img></td>';
+          $data .= '<td><button type="button" class="btn btn-danger" onClick="UpdateVehPaneToggle('.$ref.', '.$timein.')" data-toggle="modal" data-target="#PM_Director_Modal"><i class="fa fa-cog"></i></button></td>';
+          $data .= '</tr>';
+        }
+        $html = '<table class="table table-dark table-hover table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Plate</th>
+                      <th scope="col">Arrival</th>
+                      <th scope="col">Patch</th>
+                      <th scope="col"><i class="fa fa-cogs"></i></th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+
+        foreach($stmt2->fetchAll() as $row) {
+          if($row['Images'] != null OR $row['Images'] != '') {
+            $images = json_decode($row['Images'], true);
+            $img = $_CONFIG['ANPR']['HTTP_HOST'].':'.$_CONFIG['ANPR']['HTTP_PORT']."/".$images['Plate'];
+          } else {
+            $img = "";
+          }
+          $ref = '\''.$row['Uniqueref'].'\'';
+          $plate = '\''.$row['Plate'].'\'';
+          $timein = '\''.$row['CaptureTime'].'\'';
+          $trl = '\''.''.'\'';
+          $data .= '<tr>';
+          $data .= '<td>'.$row['Plate'].' <span class="badge badge-success">ANPR</span></td>';
+          $data .= '<td>'.date("d/m/y H:i:s", strtotime($row['CaptureTime'])).'</td>';
+          $data .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$img.'"></img></td>';
+          $data .= '<td><button type="button" class="btn btn-danger" onClick="PaymentPaneToggle('.$ref.', '.$plate.', '.$trl.', '.$timein.', 1)" data-toggle="modal" data-target="#PM_Director_Modal"><i class="fa fa-cog"></i></button></td>';
+          $data .= '</tr>';
+        }
+
+        $html .= $data;
+        $html .= '</tbody>
+                </table>';
+
+        echo json_encode($html);
+        $this->rev = null;
+        $this->mysql = null;
+        $this->user = null;
+        $this->pm = null;
       }
-      $html = '<table class="table table-dark table-hover table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">Plate</th>
-                    <th scope="col">Arrival</th>
-                    <th scope="col">Patch</th>
-                    <th scope="col"><i class="fa fa-cogs"></i></th>
-                  </tr>
-                </thead>
-                <tbody>';
-
-      foreach($stmt2->fetchAll() as $row) {
-        $patch = str_replace($this->pm->Site_Info($Site, 'ANPR_Imgstr'), $this->pm->Site_Info($Site, 'ANPR_Img'), $row['Patch']);
-
-        $ref = '\''.$row['Uniqueref'].'\'';
-        $trl = '\''.$row['Notes'].'\'';
-        $plate = '\''.$row['Plate'].'\'';
-        $timein = '\''.$row['Capture_Date'].'\'';
-        $data .= '<tr>';
-        $data .= '<td>'.$row['Plate'].' <span class="badge badge-success">ANPR</span></td>';
-        $data .= '<td>'.date("d/m/y H:i:s", strtotime($row['Capture_Date'])).'</td>';
-        $data .= '<td><img style="max-width: 120px; max-height: 50px;" src="'.$patch.'"></img></td>';
-        $data .= '<td><button type="button" class="btn btn-danger" onClick="PaymentPaneToggle('.$ref.', '.$plate.', '.$trl.', '.$timein.', 1)" data-toggle="modal" data-target="#PM_Director_Modal"><i class="fa fa-cog"></i></button></td>';
-        $data .= '</tr>';
-      }
-
-      $html .= $data;
-      $html .= '</tbody>
-              </table>';
-
-      echo json_encode($html);
-      $this->mssql = null;
-      $this->mysql = null;
-      $this->user = null;
-      $this->pm = null;
     }
     // Blacklist
     function ViewBlacklist($Type)
