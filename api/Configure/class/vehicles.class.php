@@ -487,8 +487,8 @@
 
         if($this->checks->Check_Site_Exists($Site) == TRUE)
         {
-          $Uniqueref = mt_rand(000000000000, 999999999999);
-          $stmt = $this->rev->dbc->prepare("INSERT INTO rev_plates (Uniqueref, Plate, OriginalPlate, Country, CaptureTime, ExpiryTime, Images, CameraID, LaneID, LaneName, LaneGroup, Parkingref, ExitCode, ManualEntry, Status) VALUES (?, ?, ?, 'NON', ?, ?, '', '0', '1', 'Entry Lane', '1', '', '00000', '1', '0')");
+          $Uniqueref = mt_rand(11111111, 99999999);
+          $stmt = $this->rev->dbc->prepare("INSERT INTO rev_plates (Uniqueref, Plate, OriginalPlate, Country, CaptureTime, ExpiryTime, Images, CameraID, LaneID, LaneName, LaneGroup, Parkingref, ExitCode, ManualEntry, Confidence, Status) VALUES (?, ?, ?, 'NON', ?, ?, '', '0', '1', 'Entry Lane', '1', '', '00000', '1', '', '0')");
           $stmt->bindParam(1, $Uniqueref);
           $stmt->bindParam(2, $Plate);
           $stmt->bindParam(3, $Plate);
