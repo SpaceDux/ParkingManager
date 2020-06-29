@@ -296,7 +296,7 @@
 			$SNAP = "";
 			$Fuel = "";
 
-			$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND Status < 1 AND VehicleType = ? OR Site = ? AND Expiry = 1 AND Status < 1 AND VehicleType = ? ORDER BY Gross ASC");
+			$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND Status < 1 AND VehicleType = ? OR Site = ? AND Expiry = 1 AND Status < 1 AND VehicleType = ? AND AutoCharge = 0 ORDER BY Gross ASC");
 			$stmt->bindParam(1, $campus);
 			$stmt->bindParam(2, $Expiry);
 			$stmt->bindParam(3, $Type);
@@ -305,7 +305,7 @@
 
 			$stmt->execute();
 
-			$stmt2 = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Status < 1 AND VehicleType = 0 ORDER BY Gross ASC");
+			$stmt2 = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Status < 1 AND VehicleType = 0 AND AutoCharge = 0 ORDER BY Gross ASC");
 			$stmt2->bindParam(1, $campus);
 			$stmt2->execute();
 
@@ -419,14 +419,17 @@
 			$this->pm = null;
 		}
 		// Add payment into db
-		function New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Capture_Time, $Expiry, $CardType = '', $CardNo = '', $CardEx = '', $Booking)
+		function New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP, $Capture_Time, $Expiry, $CardType = '', $CardNo = '', $CardEx = '', $Booking, $Author = '')
 		{
 			$this->mysql = new MySQL;
 			$this->user = new User;
 			$this->pm = new PM;
 
 			$Site = $this->user->Info("Site");
-			$Author = $this->user->Info("FirstName");
+			if($Author == '')
+			{
+				$Author = $this->user->Info("FirstName");
+			}
 			$Service_Name = $this->Payment_TariffInfo($Service, "Name");
 			$Ticket_Name = $this->Payment_TariffInfo($Service, "TicketName");
 			$Service_Settlement_Group = $this->Payment_TariffInfo($Service, "Settlement_Group");
@@ -477,7 +480,7 @@
 			$this->pm = null;
 		}
 		// Authorise Transaction / Payment
-		function Proccess_Transaction($Method, $Type, $Ref, $Plate, $Name = '', $Trl = '', $Time, $VehType, $Service, $Account_ID = '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '')
+		function Proccess_Transaction($Method, $Type, $Ref, $Plate, $Name = '', $Trl = '', $Time, $VehType, $Service, $Account_ID = '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '', $Author = '')
 		{
 			$this->vehicles = new Vehicles;
 			$this->etp = new ETP;
@@ -487,6 +490,7 @@
 
 			$name = $this->user->Info("FirstName");
 			$Service_Expiry = $this->Payment_TariffInfo($Service, "Expiry");
+
 			if($Type != 1) {
 				$Time = $this->vehicles->Info($Ref, "Expiry");
 				$Expiry = date("Y-m-d H:i:s", strtotime($Time.' +'.$Service_Expiry.' hours'));
@@ -509,7 +513,7 @@
 					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
 					if($VehRec['Status'] == '1') {
 						// Create Payment Record
-						$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+						$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking, $Author);
 						if($Payment['Status'] == '1') {
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
@@ -522,7 +526,7 @@
 					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
 					if($VehRec['Status'] == '1') {
 						// Create Payment Record
-						$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+						$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking, $Author);
 						if($Payment['Status'] == '1') {
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
@@ -535,7 +539,7 @@
 					$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID, $Booking);
 					if($VehRec['Status'] == '1') {
 						// Create Payment Record
-						$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+						$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking, $Author);
 						if($Payment['Status'] == '1') {
 							$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 							echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
@@ -551,7 +555,7 @@
 						$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
 						if($VehRec['Status'] == '1') {
 							// Create Payment Record
-							$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+							$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking, $Author);
 							if($Payment['Status'] == '1') {
 								$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 								echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
@@ -573,7 +577,7 @@
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
 							if($VehRec['Status'] == '1') {
 								// Create Payment Record
-								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 								if($Payment['Status'] == '1') {
 									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
@@ -595,7 +599,7 @@
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
 							if($VehRec['Status'] == '1') {
 								// Create Payment Record
-								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 								if($Payment['Status'] == '1') {
 									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
@@ -615,7 +619,7 @@
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
 							if($VehRec['Status'] == '1') {
 								// Create Payment Record
-								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 								if($Payment['Status'] == '1') {
 									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
@@ -635,7 +639,7 @@
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
 							if($VehRec['Status'] == '1') {
 								// Create Payment Record
-								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 								if($Payment['Status'] == '1') {
 									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
@@ -655,7 +659,7 @@
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
 							if($VehRec['Status'] == '1') {
 								// Create Payment Record
-								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 								if($Payment['Status'] == '1') {
 									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
@@ -675,7 +679,7 @@
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
 							if($VehRec['Status'] == '1') {
 								// Create Payment Record
-								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 								if($Payment['Status'] == '1') {
 									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
@@ -695,7 +699,7 @@
 							$VehRec = $this->vehicles->Parking_Record_Create($Ref, $Plate, $Trl, $Name, $Time, $Expiry, $VehType, $Account_ID = null, $Booking);
 							if($VehRec['Status'] == '1') {
 								// Create Payment Record
-								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+								$Payment = $this->New_Transaction($VehRec['VID'], $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 								if($Payment['Status'] == '1') {
 									$this->vehicles->ANPR_PaymentUpdate($Ref, $Expiry);
 									echo json_encode(array('Result' => '1', 'Ref' => $Payment['TID']));
@@ -712,7 +716,7 @@
 				// If $TYPE is 2 (Renewal)
 				if($Method == 1) {
 					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
-					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking, $Author);
 					if($Payment['Status'] == '1') {
 						$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
@@ -722,7 +726,7 @@
 					}
 				} else if($Method == 2) {
 					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
-					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking, $Author);
 					if($Payment['Status'] == '1') {
 						$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
@@ -732,7 +736,7 @@
 					}
 				} else if($Method == 3) {
 					$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
-					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+					$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID, $ETP = null, $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking, $Author);
 					if($Payment['Status'] == '1') {
 						$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 						$this->vehicles->ExpiryUpdate($Ref, $Expiry);
@@ -745,7 +749,7 @@
 					$ETP = $this->etp->Proccess_Transaction_SNAP($ETPID, $Plate, $Name);
 					if($ETP['Status'] > "0") {
 						$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
-						$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking);
+						$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType = null, $FuelCardNo = null, $FuelCardExpiry = null, $Booking, $Author);
 						if($Payment['Status'] == '1') {
 							$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 							$this->vehicles->ExpiryUpdate($Ref, $Expiry);
@@ -765,7 +769,7 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 							if($Payment['Status'] == '1') {
 								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
@@ -785,7 +789,7 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 							if($Payment['Status'] == '1') {
 								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
@@ -803,7 +807,7 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 							if($Payment['Status'] == '1') {
 								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
@@ -821,7 +825,7 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 							if($Payment['Status'] == '1') {
 								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
@@ -839,7 +843,7 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 							if($Payment['Status'] == '1') {
 								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
@@ -857,7 +861,7 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 							if($Payment['Status'] == '1') {
 								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
@@ -875,7 +879,7 @@
 						if($ETP['Status'] > "0") {
 							$ANPR = $this->vehicles->Info($Ref, 'ANPRRef');
 							// Create Payment Record
-							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking);
+							$Payment = $this->New_Transaction($Ref, $Method, $Plate, $Name, $Service, $Account_ID = null, $ETP['TID'], $Time, $Expiry, $CardType, $FuelCardNo, $FuelCardExpiry, $Booking, $Author);
 							if($Payment['Status'] == '1') {
 								$this->vehicles->ANPR_PaymentUpdate($ANPR, $Expiry);
 								$this->vehicles->ExpiryUpdate($Ref, $Expiry);
@@ -1455,7 +1459,7 @@
 			$this->user = null;
 		}
 		// add a new tariff to pm
-		function New_Tariff($Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti, $Kiosk, $Portal)
+		function New_Tariff($Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti, $Kiosk, $Portal, $Auto)
 		{
 			$this->mysql = new MySQL;
 			$this->pm = new PM;
@@ -1464,7 +1468,7 @@
 			$Time = date("Y-m-d H:i:s");
 
 
-			$stmt = $this->mysql->dbc->prepare("INSERT INTO tariffs VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			$stmt = $this->mysql->dbc->prepare("INSERT INTO tariffs VALUES('', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			$stmt->bindParam(1, $Uniqueref);
 			$stmt->bindParam(2, $Site);
 			$stmt->bindParam(3, $Name);
@@ -1489,7 +1493,8 @@
 			$stmt->bindParam(22, $Status);
 			$stmt->bindParam(23, $Kiosk);
 			$stmt->bindParam(24, $Portal);
-			$stmt->bindParam(25, $Time);
+			$stmt->bindParam(25, $Auto);
+			$stmt->bindParam(26, $Time);
 			$stmt->execute();
 			if($stmt->rowCount() > 0) {
 				$result = array('Result' => '1', 'Message' => 'New Tariff has successfully been added into ParkingManager.');
@@ -1526,13 +1531,13 @@
 			$this->mysql = null;
 		}
 		//
-		function Update_Tariff($Ref, $Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti, $Kiosk, $Portal)
+		function Update_Tariff($Ref, $Name, $TicketName, $Gross, $Nett, $Expiry, $Group, $Cash, $Card, $Account, $SNAP, $Fuel, $ETPID, $Meal, $Shower, $Discount, $WiFi, $VehType, $Site, $Status, $SettlementGroup, $SettlementMulti, $Kiosk, $Portal, $Auto)
 		{
 			$this->mysql = new MySQL;
 			$this->pm = new PM;
 
 			$Time = date("Y-m-d H:i:s");
-			$stmt = $this->mysql->dbc->prepare("UPDATE tariffs SET Name = ?, TicketName = ?, Gross = ?, Nett = ?, Expiry = ?, Tariff_Group = ?, Cash = ?, Card = ?, Account = ?, Snap = ?, Fuel = ?, ETPID = ?, Meal_Vouchers = ?, Shower_Vouchers = ?, Discount_Vouchers = ?, Wifi_Vouchers = ?, VehicleType = ?, Site = ?, Status = ?, Settlement_Group = ?, Settlement_Multi = ?, Last_Updated = ?, Kiosk = ?, Portal = ? WHERE Uniqueref = ?");
+			$stmt = $this->mysql->dbc->prepare("UPDATE tariffs SET Name = ?, TicketName = ?, Gross = ?, Nett = ?, Expiry = ?, Tariff_Group = ?, Cash = ?, Card = ?, Account = ?, Snap = ?, Fuel = ?, ETPID = ?, Meal_Vouchers = ?, Shower_Vouchers = ?, Discount_Vouchers = ?, Wifi_Vouchers = ?, VehicleType = ?, Site = ?, Status = ?, Settlement_Group = ?, Settlement_Multi = ?, Last_Updated = ?, Kiosk = ?, Portal = ?, AutoCharge = ? WHERE Uniqueref = ?");
 			$stmt->bindParam(1, $Name);
 			$stmt->bindParam(2, $TicketName);
 			$stmt->bindParam(3, $Gross);
@@ -1557,7 +1562,8 @@
 			$stmt->bindParam(22, $Time);
 			$stmt->bindParam(23, $Kiosk);
 			$stmt->bindParam(24, $Portal);
-			$stmt->bindParam(25, $Ref);
+			$stmt->bindParam(25, $Auto);
+			$stmt->bindParam(26, $Ref);
 			$stmt->execute();
 			if($stmt->rowCount() > 0) {
 				$result = array('Result' => '1', 'Message' => 'Tariff has successfully been updated in ParkingManager.');
@@ -1984,6 +1990,201 @@
 			}
 
 			$this->mysql = null;
+		}
+		// Self Billing (SNAP+Account)
+		function AuthSelfBill_Renewal($parkingRef)
+		{
+			try {
+				$this->mysql = new MySQL;
+
+				$stmt = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Uniqueref = ? AND Parked_Column = 1 LIMIT 1");
+				$stmt->bindParam(1, $parkingRef);
+				$stmt->execute();
+				if($stmt->rowCount() > 0)
+				{
+					$Time = date("Y-m-d H:i:s");
+					$Parking = $stmt->fetch(\PDO::FETCH_ASSOC);
+					// Get hrs overdue
+					$date1 = new \DateTime($Parking['Expiry']);
+					$date2 = new \DateTime($Time);
+					$diff = $date2->diff($date1);
+					$hours = $diff->h;
+					$hours = $hours + ($diff->days*24);
+					// Check last payment method.
+					$stmt = $this->mysql->dbc->prepare("SELECT * FROM transactions WHERE Parkingref = ? AND Method > 2 ORDER BY Processed_Time DESC LIMIT 1");
+					$stmt->bindValue(1, $Parking['Uniqueref']);
+					$stmt->execute();
+					if($stmt->rowCount() > 0)
+					{
+						$Payment = $stmt->fetch(\PDO::FETCH_ASSOC);
+						$Method = $Payment['Method'];
+						if($Method == 3)
+						{
+							// RevPay
+							// Get the Tariff.
+							if($hours < 5)
+							{
+								if($hours >= 2 AND $hours <= 3)
+								{
+									// Get 3hr Tariff.
+									$stmt = $this->mysql->dbc->prepare("SELECT Uniqueref FROM tariffs WHERE Tariff_Group = 2 AND Expiry = 3 AND Account = 1 AND AutoCharge = 1 AND Status = 0");
+									$stmt->execute();
+									if($stmt->rowCount() > 0)
+									{
+										$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
+										$Service = $Tariff['Uniqueref'];
+										ob_start();
+										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, $Parking['AccountID'], $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '', $Author);
+										$Response = ob_get_clean();
+										$Response = json_decode($Response, true);
+										if($Response['Result'] > 0)
+										{
+											return array("Status" => "1", "Message" => "Vehicle has successfully been AutoCharged, allow exit.");
+										}
+										else
+										{
+											return array("Status" => "0", "Message" => "Sorry, we couldn't complete the AutoCharge.");
+										}
+									}
+								}
+								else
+								{
+									// Get 4hr Tariff.
+									$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Tariff_Group = 2 AND Expiry = 4 AND Account = 1 AND AutoCharge = 1 AND Status = 0");
+									$stmt->execute();
+									if($stmt->rowCount() > 0)
+									{
+										$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
+										$Service = $Tariff['Uniqueref'];
+										ob_start();
+										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, $Parking['AccountID'], $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '');
+										$Response = ob_get_clean();
+										$Response = json_decode($Response, true);
+										if($Response['Result'] > 0)
+										{
+											return array("Status" => "1", "Message" => "Vehicle has successfully been AutoCharged, allow exit.");
+										}
+										else
+										{
+											return array("Status" => "0", "Message" => "Sorry, we couldn't complete the AutoCharge.");
+										}
+									}
+								}
+							}
+							else if($hours > 4 AND $hours <= 26)
+							{
+								// Get 24hr Tariff.
+								$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Tariff_Group = 2 AND Expiry = 24 AND Account = 1 AND VehicleType = ? AND AutoCharge = 1");
+								$stmt->bindValue(1, $Parking['Type']);
+								$stmt->execute();
+								if($stmt->rowCount() > 0)
+								{
+									$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
+									$Service = $Tariff['Uniqueref'];
+									ob_start();
+									$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, $Parking['AccountID'], $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '');
+									$Response = ob_get_clean();
+									$Response = json_decode($Response, true);
+									if($Response['Result'] > 0)
+									{
+										return array("Status" => "1", "Message" => "Vehicle has successfully been AutoCharged, allow exit.");
+									}
+									else
+									{
+										return array("Status" => "0", "Message" => "Sorry, we couldn't complete the AutoCharge.");
+									}
+								}
+							}
+						}
+						else if($Method == 4)
+						{
+							// Get the Tariff.
+							if($hours < 5)
+							{
+								if($hours >= 2 AND $hours <= 3)
+								{
+									// Get 3hr Tariff.
+									$stmt = $this->mysql->dbc->prepare("SELECT Uniqueref FROM tariffs WHERE Tariff_Group = 2 AND Expiry = 3 AND Snap = 1 AND AutoCharge = 1 AND Status = 0");
+									$stmt->execute();
+									if($stmt->rowCount() > 0)
+									{
+										$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
+										$Service = $Tariff['Uniqueref'];
+										ob_start();
+										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '');
+										$Response = ob_get_clean();
+										$Response = json_decode($Response, true);
+										if($Response['Result'] > 0)
+										{
+											return array("Status" => "1", "Message" => "Vehicle has successfully been AutoCharged, allow exit.");
+										}
+										else
+										{
+											return array("Status" => "0", "Message" => "Sorry, we couldn't complete the AutoCharge.");
+										}
+									}
+								}
+								else
+								{
+									// Get 4hr Tariff.
+									$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Tariff_Group = 2 AND Expiry = 4 AND Snap = 1 AND AutoCharge = 1 AND Status = 0");
+									$stmt->execute();
+									if($stmt->rowCount() > 0)
+									{
+										ob_start();
+										$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
+										$Service = $Tariff['Uniqueref'];
+										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '');
+										$Response = ob_get_clean();
+										$Response = json_decode($Response, true);
+										if($Response['Result'] > 0)
+										{
+											return array("Status" => "1", "Message" => "Vehicle has successfully been AutoCharged, allow exit.");
+										}
+										else
+										{
+											return array("Status" => "0", "Message" => "Sorry, we couldn't complete the AutoCharge.");
+										}
+									}
+								}
+							}
+							else if($hours > 4 AND $hours <= 26)
+							{
+								// Get 24hr Tariff.
+								$stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Tariff_Group = 2 AND Expiry = 24 AND Snap = 1 AND VehicleType = ? AND AutoCharge = 1 AND Status = 0");
+								$stmt->bindValue(1, $Parking['Type']);
+								$stmt->execute();
+								if($stmt->rowCount() > 0)
+								{
+									$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
+									$Service = $Tariff['Uniqueref'];
+									ob_start();
+									$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '');
+									$Response = ob_get_clean();
+									$Response = json_decode($Response, true);
+									if($Response['Result'] > 0)
+									{
+										return array("Status" => "1", "Message" => "Vehicle has successfully been AutoCharged, allow exit.");
+									}
+									else
+									{
+										return array("Status" => "0", "Message" => "Sorry, we couldn't complete the AutoCharge.");
+									}
+								}
+							}
+						}
+						else
+						{
+							return array("Status" => "0", "Message" => "Sorry, we can't authorise a self billing payment for this vehicle.");
+						}
+					} else {
+						return array("Status" => "0", "Message" => "Sorry, we can't authorise a self billing payment for this vehicle.");
+					}
+				}
+				$this->mysql = null;
+			} catch (\Exception $e) {
+				die($e->getMessage());
+			}
 		}
 	}
 ?>

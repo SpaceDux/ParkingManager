@@ -595,6 +595,13 @@
                 <option value="0">No</option>
               </select>
             </div>
+            <div class="col">
+              <label for="Tariff_SettlementMulti">AutoCharge Tariff</label>
+              <select class="form-control" name="Tariff_AutoCharge" id="Tariff_AutoCharge">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
             <br>
           </div>
           </div>
@@ -790,6 +797,13 @@
             <div class="col">
               <label for="Tariff_Portal_Update">Portal Only Tariff</label>
               <select class="form-control" name="Tariff_Portal_Update" id="Tariff_Portal_Update">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="Tariff_Portal_Update">AutoCharge Tariff</label>
+              <select class="form-control" name="Tariff_AutoCharge_Update" id="Tariff_AutoCharge_Update">
                 <option value="1">Yes</option>
                 <option value="0">No</option>
               </select>

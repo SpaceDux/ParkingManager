@@ -1,0 +1,2 @@
+ALTER TABLE `tariffs`
+	ADD COLUMN `AutoCharge` INT NOT NULL DEFAULT 0 AFTER `Portal`;

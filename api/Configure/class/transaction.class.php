@@ -17,23 +17,23 @@
       if($Prebooked == 1) {
         // Prebooked
         if($Type == 1) {
-          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND Meal_Vouchers > 0 AND Status = 0 AND Kiosk = 1 AND Portal = 1 ORDER BY Gross ASC");
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND Meal_Vouchers > 0 AND Status = 0 AND Kiosk = 1 AND Portal = 1 AND AutoCharge = 0 ORDER BY Gross ASC");
           $stmt->bindParam(1, $Site);
           $stmt->bindParam(2, $Expiry);
         } else {
-          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND Meal_Vouchers < 1 AND Status = 0 AND Kiosk = 1 AND Portal = 1 ORDER BY Gross ASC");
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND Meal_Vouchers < 1 AND Status = 0 AND Kiosk = 1 AND Portal = 1 AND AutoCharge = 0 ORDER BY Gross ASC");
           $stmt->bindParam(1, $Site);
           $stmt->bindParam(2, $Expiry);
         }
       } else {
         // Not prebooked
         if($Type == 1) {
-          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers > 0 AND Status = 0 AND Kiosk = 1 AND Portal = 0 ORDER BY Gross ASC");
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers > 0 AND Status = 0 AND Kiosk = 1 AND Portal = 0 AND AutoCharge = 0 ORDER BY Gross ASC");
           $stmt->bindParam(1, $Site);
           $stmt->bindParam(2, $Expiry);
           $stmt->bindParam(3, $Vehicle);
         } else {
-          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers < 1 AND Status = 0 AND Kiosk = 1 AND Portal = 0 ORDER BY Gross ASC");
+          $stmt = $this->mysql->dbc->prepare("SELECT * FROM tariffs WHERE Site = ? AND Expiry = ? AND VehicleType = ? AND Meal_Vouchers < 1 AND Status = 0 AND Kiosk = 1 AND Portal = 0 AND AutoCharge = 0 ORDER BY Gross ASC");
           $stmt->bindParam(1, $Site);
           $stmt->bindParam(2, $Expiry);
           $stmt->bindParam(3, $Vehicle);

@@ -29,11 +29,11 @@
            $parking->execute();
            $result = $parking->fetch(\PDO::FETCH_ASSOC);
            $timein = $result['Arrival'];
+           $time = $result['Expiry'];
+           $id = $result['Uniqueref'];
+           $Booking = $result['Bookingref'];
+           $parked_expiry = date("Y-m-d H:i:s", strtotime($time.' +135 minutes'));
            if($date > $timein) {
-             $time = $result['Expiry'];
-             $id = $result['Uniqueref'];
-             $Booking = $result['Bookingref'];
-             $parked_expiry = date("Y-m-d H:i:s", strtotime($time.' +135 minutes'));
              if($parked_expiry >= $expiry) {
                $query = $this->mysql->dbc->prepare("SELECT * FROM automated_exit WHERE ANPRRef = ? AND Site = ?");
                $query->bindParam(1, $anpr_key);
@@ -78,7 +78,7 @@
                  }
                }
              } else {
-                 //do nothing
+               // Do nothing
              }
            } else {
              // Do nothing
@@ -95,12 +95,12 @@
          $this->user = new User;
          $this->pm = new PM;
          $this->external = new External;
+         $this->payment = new Payment;
 
          $campus = $this->user->Info("Site");
-         // $this->user = null;
          $expiry = date("Y-m-d H:i:s");
 
-         $anpr = $this->rev->dbc->prepare("SELECT * FROM rev_plates WHERE LaneID = 2 AND Status = 5 ORDER BY CaptureTime DESC LIMIT 10");
+         $anpr = $this->rev->dbc->prepare("SELECT * FROM rev_plates WHERE LaneID = 2 ORDER BY CaptureTime DESC LIMIT 10");
          $anpr->execute();
          foreach ($anpr->fetchAll() as $row) {
            $plate = $row['Plate'];
@@ -113,11 +113,11 @@
            $parking->execute();
            $result = $parking->fetch(\PDO::FETCH_ASSOC);
            $timein = $result['Arrival'];
+           $time = $result['Expiry'];
+           $id = $result['Uniqueref'];
+           $Booking = $result['Bookingref'];
+           $parked_expiry = date("Y-m-d H:i:s", strtotime($time.' +135 minutes'));
            if($date > $timein) {
-             $time = $result['Expiry'];
-             $id = $result['Uniqueref'];
-             $Booking = $result['Bookingref'];
-             $parked_expiry = date("Y-m-d H:i:s", strtotime($time.' +135 minutes'));
              if($parked_expiry >= $expiry) {
                $query = $this->mysql->dbc->prepare("SELECT * FROM automated_exit WHERE ANPRRef = ? AND Site = ?");
                $query->bindParam(1, $anpr_key);
@@ -162,7 +162,29 @@
                  }
                }
              } else {
-                 //do nothing
+               // Try auto bill.
+               $auto = $this->payment->AuthSelfBill_Renewal($result['Uniqueref']);
+               if($auto['Status'] > 0)
+               {
+                 $query = $this->mysql->dbc->prepare("UPDATE parking_records SET Departure = ?, Parked_Column = '2' WHERE Uniqueref = ?");
+                 $query->bindParam(1, $date);
+                 $query->bindParam(2, $result['Uniqueref']);
+                 $query->execute();
+                 $query2 = $this->mysql->dbc->prepare("INSERT INTO automated_exit VALUES ('', ?, ?, ?, ?)");
+                 $query2->bindParam(1, $id);
+                 $query2->bindParam(2, $anpr_key);
+                 $query2->bindParam(3, $expiry);
+                 $query2->bindParam(4, $campus);
+                 $query2->execute();
+                 if($query2->execute()) {
+                   echo json_encode(array("Result" => "1", "Message" => 'ParkingManager has automatically charged & exit vehicle: '.$plate));
+                   ob_start();
+                   $this->pm->Barrier_Control(2, $campus);
+                   $barrier = ob_get_clean();
+                 }
+               } else {
+                 echo json_encode(array("Result" => "0", "Message" => 'ParkingManager could not automatically charge & exit vehicle: '.$plate));
+               }
              }
            } else {
              // Do nothing
@@ -173,6 +195,7 @@
          $this->user = null;
          $this->pm = null;
          $this->external = null;
+         $this->payment = null;
        }
      }
      // function Parking_Reinstate()
