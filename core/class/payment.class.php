@@ -426,9 +426,10 @@
 			$this->pm = new PM;
 
 			$Site = $this->user->Info("Site");
+			$Author = $this->user->Info("FirstName");
 			if($Author == '')
 			{
-				$Author = $this->user->Info("FirstName");
+				$Author == ''
 			}
 			$Service_Name = $this->Payment_TariffInfo($Service, "Name");
 			$Ticket_Name = $this->Payment_TariffInfo($Service, "TicketName");
@@ -2034,7 +2035,7 @@
 										$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
 										$Service = $Tariff['Uniqueref'];
 										ob_start();
-										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, $Parking['AccountID'], $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '', $Author);
+										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, $Parking['AccountID'], $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '', $Author = 'AutoCharge');
 										$Response = ob_get_clean();
 										$Response = json_decode($Response, true);
 										if($Response['Result'] > 0)
@@ -2057,7 +2058,7 @@
 										$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
 										$Service = $Tariff['Uniqueref'];
 										ob_start();
-										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, $Parking['AccountID'], $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '');
+										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, $Parking['AccountID'], $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '', $Author = 'AutoCharge');
 										$Response = ob_get_clean();
 										$Response = json_decode($Response, true);
 										if($Response['Result'] > 0)
@@ -2082,7 +2083,7 @@
 									$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
 									$Service = $Tariff['Uniqueref'];
 									ob_start();
-									$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, $Parking['AccountID'], $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '');
+									$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, $Parking['AccountID'], $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '', $Author = 'AutoCharge');
 									$Response = ob_get_clean();
 									$Response = json_decode($Response, true);
 									if($Response['Result'] > 0)
@@ -2111,7 +2112,7 @@
 										$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
 										$Service = $Tariff['Uniqueref'];
 										ob_start();
-										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '');
+										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '', $Author = 'AutoCharge');
 										$Response = ob_get_clean();
 										$Response = json_decode($Response, true);
 										if($Response['Result'] > 0)
@@ -2134,7 +2135,7 @@
 										ob_start();
 										$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
 										$Service = $Tariff['Uniqueref'];
-										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '');
+										$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '', $Author = 'AutoCharge');
 										$Response = ob_get_clean();
 										$Response = json_decode($Response, true);
 										if($Response['Result'] > 0)
@@ -2159,7 +2160,7 @@
 									$Tariff = $stmt->fetch(\PDO::FETCH_ASSOC);
 									$Service = $Tariff['Uniqueref'];
 									ob_start();
-									$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '');
+									$AddTransaction = $this->Proccess_Transaction($Method, 2, $parkingRef, $Parking['Plate'], $Name = 'Overstay AutoCharge', $Trl = '', $Time, $Parking['Type'], $Service, '', $FuelCardNo = '', $FuelCardExpiry = '', $FuelCardRC = '', $Author = 'AutoCharge');
 									$Response = ob_get_clean();
 									$Response = json_decode($Response, true);
 									if($Response['Result'] > 0)
