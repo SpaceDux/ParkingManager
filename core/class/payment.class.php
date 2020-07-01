@@ -426,10 +426,9 @@
 			$this->pm = new PM;
 
 			$Site = $this->user->Info("Site");
-			$Author = $this->user->Info("FirstName");
 			if($Author == '')
 			{
-				$Author == ''
+				$Author = $this->user->Info("FirstName");
 			}
 			$Service_Name = $this->Payment_TariffInfo($Service, "Name");
 			$Ticket_Name = $this->Payment_TariffInfo($Service, "TicketName");

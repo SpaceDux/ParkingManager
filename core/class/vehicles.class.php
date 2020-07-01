@@ -918,8 +918,16 @@
       }
 
       foreach($stmt2->fetchAll() as $row) {
+        $flag = $row['Flagged'];
         $ref = '\''.$row['Uniqueref'].'\'';
         $timein = '\''.$row['Arrival'].'\'';
+        if($flag == "1") {
+          $flagIco = '<i style="color: red;" class="far fa-flag"></i>';
+        } else if($flag == "2") {
+          $flagIco = '<i class="fas fa-user-edit" style="color: red; font-size: 25px;"></i>';
+        } else {
+          $flagIco = '';
+        }
 
         $html_exit .= '<tr>';
         $html_exit .= '<td>'.$flagIco.' '.$row['Name'].'</td>';
