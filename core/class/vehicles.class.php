@@ -1679,7 +1679,86 @@
 
       $this->external = null;
     }
+    //
+    function GetExpired()
+    {
+      $this->rev = new Rev;
+      $this->mysql = new MySQL;
+      $this->user = new User;
+      $this->pm = new PM;
 
+      $Site = $this->user->Info("Site");
+      $Time = date("Y-m-d H:i:s", strtotime("+2 hours"));
+
+      // Get REV expired
+      $stmt = $this->rev->dbc->prepare("SELECT * FROM rev_plates WHERE LaneID = 1 AND Status < 1 ORDER BY CaptureTime DESC");
+      $stmt->execute();
+
+      // Get PM
+      $stmt2 = $this->mysql->dbc->prepare("SELECT * FROM parking_records WHERE Parked_Column = 1 AND Site = ? ORDER BY Expiry DESC");
+      $stmt2->bindParam(1, $Site);
+      $stmt2->execute();
+
+      $html = '<table class="table table-bordered table-hover table-dark">
+                <thead>
+                  <tr>
+                    <td>Plate</td>
+                    <td>Time Over (hours)</td>
+                  </tr>
+                </thead>
+                <tbody>';
+
+      foreach($stmt->fetchAll() as $row)
+      {
+        $hour = $this->pm->Hour($row['CaptureTime'], "");
+        if($hour >= 2)
+        {
+          if($hour > 3) {
+            $html .= '<tr class="table-danger">
+                        <td>'.$row['Plate'].'</td>
+                        <td>'.$hour.'</td>
+                      </tr>';
+          } else {
+            $html .= '<tr class="table-warning">
+                        <td>'.$row['Plate'].'</td>
+                        <td>'.$hour.'</td>
+                      </tr>';
+          }
+        }
+      }
+
+      foreach($stmt2->fetchAll() as $row)
+      {
+        $hour = $this->pm->Hour($row['Expiry'], "");
+        if($Time >= $row['Expiry']) {
+          if($hour >= 2) {
+            if($hour > 3) {
+              $html .= '<tr class="table-danger">
+                          <td>'.$row['Plate'].'</td>
+                          <td>'.$hour.'</td>
+                        </tr>';
+            } else {
+              $html .= '<tr class="table-warning">
+                          <td>'.$row['Plate'].'</td>
+                          <td>'.$hour.'</td>
+                        </tr>';
+            }
+          }
+        }
+      }
+
+
+      $html .= '</tbody></table>';
+
+
+
+      return $html;
+
+      $this->rev = null;
+      $this->mysql = null;
+      $this->user = null;
+      $this->pm = null;
+    }
   }
 
 ?>

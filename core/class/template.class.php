@@ -62,6 +62,7 @@
 				$this->Assign('settlement_groups', $this->payment->Settlement_Groups());
 				$this->Assign('blacklist_alert', $this->vehicles->ViewBlacklist(1));
 				$this->Assign('blacklist_banned', $this->vehicles->ViewBlacklist(2));
+				$this->Assign('overstayed', $this->vehicles->GetExpired());
 			}
 			$this->user = null;
 			$this->pm = null;

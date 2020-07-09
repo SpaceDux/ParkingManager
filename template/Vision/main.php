@@ -421,6 +421,7 @@
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#PM_Director_Modal"><i class="fa fa-search"></i></button>
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#Portal_ViewBookings"><i class="fas fa-book-open"></i></button>
                 <button type="button" class="btn btn-secondary" onClick="ANPR_AddPlate()"><i class="fa fa-plus"></i></button>
+                <button type="button" data-toggle="modal" data-target="#Vehicles_Overstay" class="btn btn-secondary"><i class="fa fa-clock"></i></button>
                 <button type="button" class="btn btn-secondary" onClick="ANPR_Feed_Refresh()"><i class="fa fa-redo-alt"></i></button>
               </div>
             </div>
