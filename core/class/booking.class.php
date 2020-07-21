@@ -620,10 +620,6 @@
           if($Auth['Status'] == "1") {
             $success = 0;
             if($ETA != null OR $ETA != '') {
-              $stmt = $this->mysql->dbc->prepare("SELECT ETA FROM bookings WHERE Uniqueref = ?");
-              $stmt->bindParam(1, $Ref);
-              $stmt->execute();
-              $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
               $NewETA = date("Y-m-d H:i:s", strtotime($ETA));
 
@@ -786,8 +782,9 @@
       $Auth = $this->pm->PM_SiteAuthenticate_API($User, $Pass);
       if($Auth['Status'] == "1") {
         $Site = $Auth['Site_ID'];
-        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE id = ? AND Status IN(0,3)");
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE id = ? AND Status = 0 OR id = ? AND Status = 3");
         $stmt->bindParam(1, $Bay);
+        $stmt->bindParam(2, $Bay);
         $stmt->execute();
         if($stmt->rowCount() > 0) {
           $Bay = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -800,7 +797,7 @@
           if($stmt->rowCount() > 0) {
             $Ref = mt_rand(1111, 9999).date("YmdHis").mt_rand(1111, 9999);
             // Create booking
-            $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings (Uniqueref, Site, Plate, VehicleType, Date, ETA, ETD, Bay, Author, Company, Note, Last_Updated, Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
+            $stmt = $this->mysql->dbc->prepare("INSERT INTO bookings (Uniqueref, Site, Plate, VehicleType, Date, ETA, ETD, Bay, Author, Company, Note, Last_Updated, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0')");
             $stmt->bindParam(1, $Ref);
             $stmt->bindParam(2, $Site);
             $stmt->bindParam(3, $Plate);
