@@ -233,7 +233,7 @@
       if(!empty($Vehicle) AND !empty($Type) AND !empty($ETA) AND !empty($Break)) {
         $Plate = $this->vehicles->Vehicles_Info($Vehicle, "Plate");
 
-        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Author = ?");
+        $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Author = ? AND Status < 2");
         $stmt->bindValue(1, $_SESSION['ID']);
         $stmt->execute();
         if($stmt->rowCount() > 0) {
@@ -494,11 +494,11 @@
     {
       $this->mysql = new MySQL;
 
-      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Author = ? AND Status < 2");
+      $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Author = ? AND Status = 1");
       $stmt->bindValue(1, $_SESSION['ID']);
       $stmt->execute();
       if($stmt->rowCount() > 0) {
-        $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Author = '', Expiry = null, Status = 0 WHERE Author = ? AND Status < 2");
+        $stmt = $this->mysql->dbc->prepare("UPDATE bays SET Author = '', Expiry = '', Status = 0 WHERE Author = ? AND Status = 1");
         $stmt->bindValue(1, $_SESSION['ID']);
         $stmt->execute();
         if($stmt->rowCount() > 0) {
@@ -628,7 +628,7 @@
               $stmt->bindParam(2, $Ref);
               $stmt->execute();
               if($stmt->rowCount() > 0) {
-                $success+1;
+                $success++;
               }
             }
             if($Status != null OR $Status != '') {
