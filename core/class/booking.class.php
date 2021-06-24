@@ -230,7 +230,7 @@
         $ETD = date("Y-m-d H:i:s", strtotime($ETA.' + 48 hours'));
       }
 
-      if(!empty($Vehicle) AND !empty($Type) AND !empty($ETA) AND !empty($Break)) {
+      if(!empty($Vehicle) AND !empty($Type) AND !empty($ETA) AND !empty($Break) AND !empty($Company)) {
         $Plate = $this->vehicles->Vehicles_Info($Vehicle, "Plate");
 
         $stmt = $this->mysql->dbc->prepare("SELECT * FROM bays WHERE Author = ? AND Status < 2");

@@ -41,6 +41,37 @@
 
       $this->mysql = null;
     }
+
+    //Add vehicles to your account ON REGISTER
+    function Vehicles_AddPlateRegister($Plate, $Name, $Owner)
+    {
+      $this->mysql = new MySQL;
+
+      $Date = date("Y-m-d H:i:s");
+      $Ref = mt_rand(1111, 9999).date("YmdHis").mt_rand(1111, 9999);
+      $Plate = strtoupper($Plate);
+      $Plate = str_replace(" ", "", $Plate);
+      $Plate = str_replace("-", "", $Plate);
+
+      if(!empty($Plate) AND !empty($Name)) {
+        $stmt = $this->mysql->dbc->prepare("INSERT INTO vehicles (Uniqueref, Plate, Name, Assigned_Account, Date, Last_Updated, Owner, Status) VALUES (?, ?, ?, '', ?, ?, ?, '0')");
+        $stmt->bindParam(1, $Ref);
+        $stmt->bindParam(2, $Plate);
+        $stmt->bindParam(3, $Name);
+        $stmt->bindParam(4, $Date);
+        $stmt->bindParam(5, $Date);
+        $stmt->bindValue(6, $Owner);
+        if($stmt->execute()) {
+          return json_encode(array('Result' => 1, 'Message' => 'Plate added to your account.'));
+        } else {
+          return json_encode(array('Result' => 0, 'Message' => 'Please supply all required fields.'));
+        }
+      } else {
+        return json_encode(array('Result' => 0, 'Message' => 'Please supply all required fields.'));
+      }
+
+      $this->mysql = null;
+    }
     // Display active plates in a table via user update
     function Vehicles_MyPlatesAsTbl()
     {

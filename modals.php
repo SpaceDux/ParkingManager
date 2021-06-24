@@ -54,6 +54,13 @@
           <hr>
           <div class="row">
             <div class="col">
+              <label for="Join_Plate">Vehicle Registration</label>
+              <input type="text" class="form-control" name="Join_Plate" id="Join_Plate" placeholder="EX43 PLE" required>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
               By signing up to our website, you agree to our <a data-target="#CookiePolicy_Modal" data-toggle="modal"><b style="text-decoration: underline;cursor:pointer;">Cookie Policy</b></a> & <a data-target="#PrivacyPolicy_Modal" data-toggle="modal"><b style="text-decoration: underline;cursor:pointer;">Privacy Policy</b></a>
             </div>
           </div>
@@ -125,8 +132,8 @@
               </select>
             </div>
             <div class="col">
-              <label>What company do you drive for? (OPTIONAL)</label>
-              <input type="text" class="form-control form-control-lg" name="Company" placeholder="My Company Ltd">
+              <label>What company do you drive for? (REQUIRED)</label>
+              <input type="text" class="form-control form-control-lg" name="Company" placeholder="My Company Ltd" required>
             </div>
           </div>
           <hr>
@@ -135,9 +142,10 @@
               <label>What type of vehicle are you checking in with?</label>
               <select class="form-control form-control-lg" name="Type" required>
                 <option value="1">Cab & Trailer</option>
-                <option value="8">Car Transporter</option>
-                <option value="4">Rigid</option>
-                <option value="5">Coach</option>
+                <option value="5">Car Transporter</option>
+                <option value="3">Rigid</option>
+                <option value="4">Coach</option>
+                <option value="10">Rigid & Trailer</option>
               </select>
             </div>
           </div>

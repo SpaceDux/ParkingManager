@@ -6,14 +6,15 @@
     protected $mysql;
 
     // Register User to Portal
-    function User_Registration($First, $Last, $Email, $Password, $ConPassword, $Tel)
+    function User_Registration($First, $Last, $Email, $Password, $ConPassword, $Tel, $Plate)
     {
       $this->mysql = new MySQL;
       $this->mailer = new Mailer;
+      $this->vehicles = new Vehicles;
 
       $IPAddress = $_SERVER['REMOTE_ADDR'];
       // Ensure all data is present
-      if(!empty($First) AND !empty($Last) AND !empty($Email) AND !empty($Password) AND !empty($ConPassword) AND !empty($Tel)) {
+      if(!empty($First) AND !empty($Last) AND !empty($Email) AND !empty($Password) AND !empty($ConPassword) AND !empty($Tel) AND !empty($Plate)) {
         // Begin Data Checks.
         $check = $this->mysql->dbc->prepare("SELECT * FROM users WHERE EmailAddress = ?");
         $check->bindParam(1, $Email);
@@ -32,7 +33,7 @@
                 $Uniqueref = mt_rand(111, 999).date("YmdHis").mt_rand(1111,9999);
                 $Date = date("Y-m-d H:i:s");
                 // NOW REG ACCOUNT
-                $stmt = $this->mysql->dbc->prepare("INSERT INTO users (Uniqueref, FirstName, LastName, EmailAddress, Telephone, Password, Company, Associated_Account, User_Rank, MaxSpaces, LoggedIn, Last_Updated, Date_Registered, Registered_IP, Last_IP, Status, Activated, Strikes) VALUES (?, ?, ?, ?, ?, ?, '', '', '1', '3', '0', ?, ?, ?, ?, '0', '0', '0')");
+                $stmt = $this->mysql->dbc->prepare("INSERT INTO users (Uniqueref, FirstName, LastName, EmailAddress, Telephone, Password, Company, Associated_Account, User_Rank, MaxSpaces, LoggedIn, Last_Updated, Date_Registered, Registered_IP, Last_IP, Status, Activated, Strikes) VALUES (?, ?, ?, ?, ?, ?, '', '', '1', '3', '0', ?, ?, ?, ?, '0', '1', '0')");
                 $stmt->bindParam(1, $Uniqueref);
                 $stmt->bindParam(2, $First);
                 $stmt->bindParam(3, $Last);
@@ -44,12 +45,13 @@
                 $stmt->bindParam(9, $IPAddress);
                 $stmt->bindParam(10, $IPAddress);
                 if($stmt->execute()) {
-                  $Mail = $this->mailer->SendActivation($Email);
-                  if($Mail == 1) {
-                    echo json_encode(array('Result' => 1, 'Message' => 'Success, check your email for an activation link.'));
-                  } else {
-                    echo json_encode(array('Result' => 0, 'Message' => 'Something went wrong. Confirmation email could not be sent.'));
-                  }
+                  $this->vehicles->Vehicles_AddPlateRegister($Plate, "My Truck", $Uniqueref);
+                  // $Mail = $this->mailer->SendActivation($Email);
+                  // if($Mail == 1) {
+                    echo json_encode(array('Result' => 1, 'Message' => 'Successfully registered, you can now login.'));
+                  // } else {
+                    // echo json_encode(array('Result' => 0, 'Message' => 'Something went wrong. Confirmation email could not be sent.'));
+                  // }
                 } else {
                   echo json_encode(array('Result' => 0, 'Message' => 'Something went wrong, please try again.'));
                   }
